@@ -1,0 +1,1742 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="不同版本 JDK 特性介绍, 布袋青年">
+    <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>不同版本 JDK 特性介绍 | 布袋青年</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.2.1/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(/medias/featureimages/bg.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    <div>
+                        
+                        <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                        
+                        <span class="logo-span">布袋青年</span>
+                    </div>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fa fa-book" style="zoom: 0.6;"></i>
+      
+      <span>笔记</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/course/ds">
+          
+          <span>数据结构</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/linux">
+          
+          <span>Linux运维</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/network">
+          
+          <span>计算机网络</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>友链</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于我</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">布袋青年</div>
+        <div class="logo-desc">
+            
+            If I cannot overwhelm with my quality, I will overwhelm with my quantity.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+      
+      <li class="m-nav-item">
+        
+        <a href="/" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-home"></i>
+          
+          首页
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/tags" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-tags"></i>
+          
+          标签
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/categories" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-bookmark"></i>
+          
+          分类
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/archives" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-archive"></i>
+          
+          归档
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fa fa-book"></i>
+          
+          笔记
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/course/ds " style="margin-left:75px">
+              
+                  <span>数据结构</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/linux " style="margin-left:75px">
+              
+                  <span>Linux运维</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/network " style="margin-left:75px">
+              
+                  <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/friends" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          友链
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/about" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          关于我
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/contact" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-address-book"></i>
+          
+          留言板
+        </a>
+        
+            </li>
+            
+            
+    </ul>
+    
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/cryptojs/crypto-js.min.js"></script>
+    <script>
+        (function() {
+            let pwd = '';
+            if (pwd && pwd.length > 0) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                    alert('密码错误，将返回主页！');
+                    location.href = '/';
+                }
+            }
+        })();
+    </script>
+    
+    
+    
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/41.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">不同版本 JDK 特性介绍</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+    
+    <main class="post-container content">
+    
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.css">
+
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+        background-color: rgb(255, 255, 255,0.7);
+        border-radius: 10px;
+        box-shadow: 0 10px 35px 2px rgba(0, 0, 0, .15), 0 5px 15px rgba(0, 0, 0, .07), 0 2px 5px -5px rgba(0, 0, 0, .1) !important;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        /* 默认颜色，未设置黑色 */
+        max-height: calc(100vh - 250px);
+        padding-bottom: 20px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        /* 悬浮颜色 */
+        color: #72C1F2;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        /* 激活颜色 */
+        color: #52b3f0;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+
+    .intro{
+        background-color: #b542b9; 
+        width: 300px; 
+        height: 350px;
+        flex: left;
+        right: 20px;
+    }
+
+</style>
+
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                JAVA基础
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-06-17
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-12-08
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>俗话说得好：你发任你发，我用 <code>Java 8</code>，但不得不说新版本 <code>JDK</code> 中引入的一些特性让人眼前一亮，在新项目中可以考虑采用新版 <code>JDK</code> 进行开发，并且 <code>Spring Boot 3</code> 的最低支持版本也需 <code>JDK 17</code> 了，又给了你一个新项目抛弃 <code>Java 8</code> 的理由。</p>
+<blockquote>
+<p>本文即介绍不同版本 JDK 中我用的较多的新特性。</p>
+</blockquote>
+<h3 id="一、安装配置"><a href="#一、安装配置" class="headerlink" title="一、安装配置"></a>一、安装配置</h3><h4 id="1-JDK下载"><a href="#1-JDK下载" class="headerlink" title="1. JDK下载"></a>1. JDK下载</h4><p>在开始直接先进入 <code>Oracle JDK</code> 官网下载相应的 <code>JDK</code> 版本，为了更方便同时安装多个版本，建议下载 <code>zip</code> 格式解压即享，<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/downloads/#jdk20-windows">官网直达</a>。<br><img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/1.png"></p>
+<p>新版 <code>JDK</code> 并没有自带 <code>jre</code> 目录，因此我们需要手动编译生成，进入上述解压后的文件执行下述命令。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># Windwos 下执行</span>
+bin\jlink.exe --module-path jmods --add-modules java.desktop --output jre
+
+<span class="token comment" spellcheck="true"># Linux 下执行</span>
+bin/jlink --module-path jmods --add-modules java.desktop --output jre
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-IDEA配置"><a href="#2-IDEA配置" class="headerlink" title="2. IDEA配置"></a>2. IDEA配置</h4><p>若要在 <code>IDEA</code> 中指定工程的 <code>JDK</code> 版本，需要完成下述两个步骤。</p>
+<ul>
+<li><h5 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h5><p>  在 <code>IDEA</code> 左上角 <code>File</code> 选择 <code>Project Structure</code> 按照下图修改，添加上述解压的 <code>JDK</code> 目录即可。</p>
+<p>  同时可以选择图中的 <code>modules</code> 为工程的每个模块手动设置 <code>JDK</code> 版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/2.png" alt="Project Structure"></p>
+</li>
+<li><h5 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h5><p>  在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/3.png" alt="Java Compiler"></p>
+</li>
+</ul>
+<h4 id="3-Maven配置"><a href="#3-Maven配置" class="headerlink" title="3. Maven配置"></a>3. Maven配置</h4><ul>
+<li><h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>  在 <code>Maven</code> 工程的 <code>POM</code> 文件中添加下述属性配置用于指定 <code>JDK</code> 依赖版本，完成后刷新配置即可。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.source</span><span class="token punctuation">></span></span>17<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.source</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.target</span><span class="token punctuation">></span></span>17<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.target</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><h5 id="编译配置-1"><a href="#编译配置-1" class="headerlink" title="编译配置"></a>编译配置</h5><p>  在通过 <code>Maven</code> 进行 <code>install</code> 时若提示 <code>警告：源发行版17需要目标发行版17</code> 等类似信息时是因为 <code>IDEA</code> 中配置 <code>Maven</code> 版本与实际项目的版本不匹配，需要手动在 <code>IDEA</code> 配置中修改。</p>
+<p>  在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/4.png" alt="Maven Runner"></p>
+</li>
+</ul>
+<h3 id="二、JDK-9"><a href="#二、JDK-9" class="headerlink" title="二、JDK 9"></a>二、JDK 9</h3><h4 id="1-集合"><a href="#1-集合" class="headerlink" title="1. 集合"></a>1. 集合</h4><p>在 <code>JDK 9</code> 中为 <code>List</code> 等集合提供了 <code>of()</code> 初始化方式，实现更便捷的默认值初始化。</p>
+<p>相应的使用示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">collectionDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Set<span class="token operator">&lt;</span>Integer<span class="token operator">></span> set <span class="token operator">=</span> Set<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Set: "</span> <span class="token operator">+</span> set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"List: "</span> <span class="token operator">+</span> list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> Map<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Map: "</span> <span class="token operator">+</span> map<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-Stream"><a href="#2-Stream" class="headerlink" title="2. Stream"></a>2. Stream</h4><p>在 <code>JDK 8</code> 中引入了全新特性 <code>stream</code>，而在 <code>JDK 9</code> 中为 <code>stream</code> 添加了两个全新接口 <code>takeWhile()</code> 与 <code>dropWhile()</code>，具体信息如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">takeWhile()</td>
+        <td style="text-align: center;">当满足提供的条件时停止。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">dropWhile()</td>
+        <td style="text-align: center;">与 takeWhile 相反，当满足提供的条件时开始。</td>
+    </tr>
+</table>
+
+<p>在使用 <code>takeWhile()</code> 与 <code>dropWhile()</code> 接口前，可通过 <code>stream</code> 的 <code>sorted()</code> 接口对目标集合按照一定规则进行排序，使得目标集合呈现一定的线性排列，从而更好的应用上述两类方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">streamDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list1 <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// Break when "t > 3"</span>
+            <span class="token punctuation">.</span><span class="token function">takeWhile</span><span class="token punctuation">(</span>t <span class="token operator">-</span><span class="token operator">></span> t <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// list1: 1, 2</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"List takeWhile: "</span> <span class="token operator">+</span> list1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list2 <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// Start from "t > 3"</span>
+            <span class="token punctuation">.</span><span class="token function">dropWhile</span><span class="token punctuation">(</span>t <span class="token operator">-</span><span class="token operator">></span> t <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// list2: 3, 4</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"List dropWhile: "</span> <span class="token operator">+</span> list2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-私有接口"><a href="#3-私有接口" class="headerlink" title="3. 私有接口"></a>3. 私有接口</h4><p>在 <code>JDK 8</code> 引入了默认接口方法与静态接口方法，而在 <code>JDK 9</code> 提供了私有接口方法以达到代码复用的目的。</p>
+<p>通过 <code>private</code> 声明私有接口方法，其仅能在当前接口类中使用。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Calculator</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">default</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">saySomething</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">default</span> <span class="token keyword">void</span> <span class="token function">sayGoodbye</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">saySomething</span><span class="token punctuation">(</span><span class="token string">"Goodbye!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 私有接口方法
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">saySomething</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Call private interface, message: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-其它特性"><a href="#4-其它特性" class="headerlink" title="4. 其它特性"></a>4. 其它特性</h4><ul>
+<li><code>G1</code> 垃圾收集器在年轻代将不会回收 <code>Humongous</code> 块的对象空间。</li>
+</ul>
+<h3 id="三、JDK-11"><a href="#三、JDK-11" class="headerlink" title="三、JDK 11"></a>三、JDK 11</h3><h4 id="1-var定义"><a href="#1-var定义" class="headerlink" title="1. var定义"></a>1. var定义</h4><p>在 <code>JDK 11</code> 中引入了 <code>var</code> 关键字实现泛化定义，在声明声明对象时无需显式指定对象类型，由系统自动识别。</p>
+<p>如下中通过 <code>var</code> 定义了 <code>int</code> 变量与 <code>String</code> 变量。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">varDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    var a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"a: "</span> <span class="token operator">+</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    var str <span class="token operator">=</span> <span class="token string">"hello world!"</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Str: "</span> <span class="token operator">+</span> str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-字符方法"><a href="#2-字符方法" class="headerlink" title="2. 字符方法"></a>2. 字符方法</h4><p>在 <code>JDK 11</code> 中同时为字符串新增了一系列常用接口，具体描述如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isBlank()</td>
+        <td style="text-align: center;">判断字符串是否为空或内容皆为空格。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isEmpty()</td>
+        <td style="text-align: center;">判断字符串长度是否大于 0。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">repeat(n)</td>
+        <td style="text-align: center;">用于重复拼接字符串内容。</td>
+    </tr>
+</table>
+
+<p>上述方式的相应示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">strDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    var msg <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"isBlank: "</span> <span class="token operator">+</span> msg<span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"isEmpty: "</span> <span class="token operator">+</span> msg<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    var str <span class="token operator">=</span> <span class="token string">"ibudai"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// ibudaiibudai</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"repeat: "</span> <span class="token operator">+</span> str<span class="token punctuation">.</span><span class="token function">repeat</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-其它特性"><a href="#3-其它特性" class="headerlink" title="3. 其它特性"></a>3. 其它特性</h4><ul>
+<li>完善 <code>HTTP</code> 客户端 <code>API</code> 的标准化，提供更加便捷的操作 <code>HTTP</code> 请求，但我们更多使用的为 <code>OkHttp</code> 等封装类库，使用 <code>JDK</code> 自带的场景较少，这里不做详细介绍。</li>
+<li>正式引入 <code>ZGC（Z Garbage Collector）</code> 垃圾回收器，其为一种低停顿垃圾回收器，可以更好地利用内存，减少停顿时间。</li>
+</ul>
+<h3 id="四、JDK-13"><a href="#四、JDK-13" class="headerlink" title="四、JDK 13"></a>四、JDK 13</h3><h4 id="1-switch"><a href="#1-switch" class="headerlink" title="1. switch"></a>1. switch</h4><p>在 <code>JDK 13</code> 中为 <code>switch</code> 引入了全新的表达式语法，并在 <code>JDK 14</code> 中进一步得到完善。</p>
+<p>下面通过一个具体的示例演示 <code>switch</code> 表达式的作用。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">switchDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token keyword">switch</span> <span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token operator">-</span><span class="token operator">></span> num <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">-</span><span class="token operator">></span> num <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span> <span class="token operator">-</span><span class="token operator">></span> num <span class="token operator">+=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述的表达式对应的传统 <code>switch</code> 定义方式如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">switchDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token number">1</span><span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token number">2</span><span class="token operator">:</span>
+            value <span class="token operator">=</span> num <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token number">3</span><span class="token operator">:</span>
+        <span class="token keyword">case</span> <span class="token number">4</span><span class="token operator">:</span>
+            value <span class="token operator">=</span> num <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span><span class="token operator">:</span>
+            value <span class="token operator">=</span> num <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-yield"><a href="#2-yield" class="headerlink" title="2. yield"></a>2. yield</h4><p>在 <code>switch</code> 表达式中每个 <code>case</code> 对应的内容为一个函数， <code>break</code> 无法在此使用用于结束分支。因此 JDK 13 引入全新关键字 <code>yield</code> 用于结束分支并返回结果。</p>
+<p><code>yield</code> 关键字作用类似于 <code>break</code> 于 <code>return</code> 的结合，但 <code>break</code> 仅有中断效果没有返回结果功能，而 <code>return</code> 是结束整个方法块但 <code>yield</code> 仅结束对应的 <code>case</code> 分支。</p>
+<p>相应的 <code>yield</code> 关键字使用示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">switchDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token keyword">switch</span> <span class="token punctuation">(</span>num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            yield num <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">case</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            yield num <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">default</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            yield num <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-字符块"><a href="#3-字符块" class="headerlink" title="3. 字符块"></a>3. 字符块</h4><p>在 <code>JDK 13</code> 中为字符串引入了新的定义方式，即可通过三个引号 <code>&quot;&quot;&quot;</code> 声明，从而避免传统的字符冲突需要使用转义字符。</p>
+<p>如下 <code>str</code> 对象定义了一个 <code>json</code> 对象，通过 <code>&quot;&quot;&quot;</code> 即可省略旧版中转义字符的使用，同时也提高了可读性。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">strDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    String str <span class="token operator">=</span> <span class="token string">""</span>"
+            <span class="token punctuation">{</span>
+              <span class="token string">"name"</span><span class="token operator">:</span> <span class="token string">"alex"</span>
+            <span class="token punctuation">}</span>
+            <span class="token string">""</span>"<span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、JDK-14"><a href="#五、JDK-14" class="headerlink" title="五、JDK 14"></a>五、JDK 14</h3><h4 id="1-record"><a href="#1-record" class="headerlink" title="1. record"></a>1. record</h4><p>在 <code>JDK 14</code> 中引入新的关键字 <code>record</code> 用于 <code>bean</code> 对象，默认为对象重写了 <code>equals()</code>, <code>toString()</code>, <code>hashCode()</code> 方法，并提供便捷的 <code>getter</code> 方法。</p>
+<p>相应的 <code>record</code> 使用示例如下，通过 <code>对象.属性</code> 的方式即可实现对象成员变量的访问。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> record <span class="token function">User</span><span class="token punctuation">(</span>String id<span class="token punctuation">,</span> String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Jdk14Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">recordDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String id <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String name <span class="token operator">=</span> user<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"id: "</span> <span class="token operator">+</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"name: "</span> <span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"user: "</span> <span class="token operator">+</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-其它特性"><a href="#2-其它特性" class="headerlink" title="2. 其它特性"></a>2. 其它特性</h4><p>新增了低延迟垃圾器，通过 <code>UnlockExperimentalVMOptions</code> 参数指定是否激活。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># ZGC on Windows</span>
+-XX:+UnlockExperimentalVMOptions -XX:+UseZGC
+
+<span class="token comment" spellcheck="true"># ZGC on macOS</span>
+-XX:+UnlockExperimentalVMOptions -XX:+UseZGC
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="六、JDK-17"><a href="#六、JDK-17" class="headerlink" title="六、JDK 17"></a>六、JDK 17</h3><h4 id="1-sealed"><a href="#1-sealed" class="headerlink" title="1. sealed"></a>1. sealed</h4><p>在 <code>JDK 17</code> 中引入了新关键词 <code>sealed</code> 与 <code>permits</code> 用于限定类的继承关系。</p>
+<p><code>sealed</code> 关键字可作用于类<code>（class）</code>或接口<code>（interface）</code>，通过 <code>permit</code> 关键字指定允许继承的子类，只有被 <code>permits</code> 的类才允许继承类，同时继承的子类也需标注其是否为 <code>sealed</code> 或 <code>non-sealed</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> sealed <span class="token keyword">class</span> <span class="token class-name">Human</span> permits Student <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> non<span class="token operator">-</span>sealed <span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token keyword">extends</span> <span class="token class-name">Human</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 非法，Teacher 未在 permits 集合中</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Teacher</span> <span class="token keyword">extends</span> <span class="token class-name">Human</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-switch"><a href="#2-switch" class="headerlink" title="2. switch"></a>2. switch</h4><p>在 <code>JDK 17</code> 中为 <code>switch</code> 表达式升级了模式匹配，能够实现更灵活的类型比对判断。</p>
+<p>如下为官方文档中提供的示例代码：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">patternSwitch</span><span class="token punctuation">(</span>Object o<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">switch</span> <span class="token punctuation">(</span>o<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> Integer i <span class="token operator">-</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"int %d"</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> Long l <span class="token operator">-</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"long %d"</span><span class="token punctuation">,</span> l<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> Double d <span class="token operator">-</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"double %f"</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> String s <span class="token operator">-</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"String %s"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span> <span class="token operator">-</span><span class="token operator">></span> o<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="七、JDK-19"><a href="#七、JDK-19" class="headerlink" title="七、JDK 19"></a>七、JDK 19</h3><h4 id="1-虚拟线程"><a href="#1-虚拟线程" class="headerlink" title="1. 虚拟线程"></a>1. 虚拟线程</h4><p>在 JDK 19 中引入了新的虚拟线程概念，并在 JDK 21 得到完善加强。</p>
+<p>在之前的线程中一个线程则对应一个系统线程，针对轻度任务显然这种方式有点浪费，而虚拟线程可以粗暴的理解将一个系统工作线程进行二次拆分，从而达到更高的资源利用。</p>
+<p>虚拟线程的创建方式提供了基础的 <code>Thread.ofVirtual()</code> 与 <code>Thread.startVirtualThread()</code> 方式用于创建单线程，同时通过 <code>Executors.newVirtualThreadPerTaskExecutor()</code> 即可创建虚拟线程池。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">vtDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Start a virtual thread (Base on virtual)</span>
+    Thread t1 <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">ofVirtual</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// Set thread name</span>
+            <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"vt-1"</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// start(): Auto call "thread.start()"</span>
+            <span class="token comment" spellcheck="true">// unstarted(): Needed to manual call for "thread.start()"</span>
+            <span class="token punctuation">.</span><span class="token function">unstarted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// Task content</span>
+                <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread.ofPlatform(): Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Thread t2 <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">startVirtualThread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Task content</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread.startVirtualThread(): Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>参考链接</strong>：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/jdk-relnotes-index.html">JDK 发布文档</a></li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">烽火戏诸诸诸侯</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://great-jin.github.io/java/basis/feature/">https://great-jin.github.io/java/basis/feature/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq, qzone, wechat, weibo, douban, google" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC81NDI4My8zMDc1NA">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/db/mysql/struct/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/db/mysql/7.png" class="responsive-img" alt="MySQL存储机制详解">
+                        
+                        <span class="card-title">MySQL存储机制详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MySQL数据库存储机制详解。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-06-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/coding/license/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/coding/license.png" class="responsive-img" alt="常见开源协议介绍">
+                        
+                        <span class="card-title">常见开源协议介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            常见开源协议介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BC%96%E7%A8%8B/" class="post-category">
+                                    编程
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/License/">
+                        <span class="chip bg-color">License</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('100')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 布袋青年<br />'
+            + '文章作者: 烽火戏诸诸诸侯<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+    </div>
+
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('h2'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+        
+    
+    </main>
+    
+    
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            
+            <!-- 版权信息. -->
+            Copyright&nbsp;
+            
+                <span id="year">2021-2023</span>
+            
+            &nbsp;
+            <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+            &nbsp;&copy;All Rights Reserved
+
+            <!-- ICP备案信息. -->
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        window.setTimeout("calcSiteTime()", 1000);
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "9";
+                        var startDate = "16";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+                        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+                        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+                        
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已运行 ' + diffYears + ' 年 '  + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已随风漂流 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+
+            <!-- 站点访问统计 -->
+            
+                <span id="busuanzi_container_site_pv">
+                    <i class="far fa-eye"></i>&nbsp;
+                    总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                    &nbsp;|&nbsp;
+                    <i class="fas fa-users"></i>&nbsp;
+                    总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+                </span>
+            
+            
+                &nbsp;|&nbsp;
+                <i class="fas fa-chart-area"></i>&nbsp;
+                站点总字数:&nbsp;
+                <span class="white-color">211.3k</span>
+            
+            
+            
+                
+            
+            <br>
+
+
+            <!-- 驱动说明. -->
+            <i class="fa fa-rocket" aria-hidden="true"></i>
+            &nbsp;Powered By&nbsp;
+            <a href="https://hexo.io/" target="_blank">Hexo</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            
+            <i class="fa fa-globe" aria-hidden="true" /></i>
+            <span class="translate-style">
+                &nbsp;语言：
+                <a id="translateLink" href="javascript:translatePage();">繁体</a>
+            </span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            &nbsp;Theme By&nbsp;
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+
+            <script type="text/javascript" src="/js/tw_cn.js"></script>
+            <script type="text/javascript">
+                var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+                var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+                var cookieDomain = "https://great-jin.github.io/"; //Cookie地址, 一定要设定, 通常为你的网址
+                var msgToTraditionalChinese = "繁体"; //此处可以更改为你想要显示的文字
+                var msgToSimplifiedChinese = "简体"; //同上，但两处均不建议更改
+                var translateButtonId = "translateLink"; //默认互换id
+                translateInitilization();
+            </script>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/great-jin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:ibudai56@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/xiao-ming-92-43-49" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+    <!-- 樱花特效 -->
+    
+
+    <!-- 文字特效 -->
+    
+    <script async src="/js/text.js"></script>
+    
+    <script type="text/javascript"> var OriginTitile = document.title, st; 
+        document.addEventListener("visibilitychange", 
+        function () { document.hidden ? (document.title = "｡°(°¯᷄◠¯᷅°)°｡要记得回来哦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪你回来了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) }) 
+    </script>
+    
+    <script type="text/javascript"
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+    </script>
+    
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>

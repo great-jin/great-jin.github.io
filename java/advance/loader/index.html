@@ -1,0 +1,1856 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Java类加载器剖析, 布袋青年">
+    <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Java类加载器剖析 | 布袋青年</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.2.1/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(/medias/featureimages/bg.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    <div>
+                        
+                        <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                        
+                        <span class="logo-span">布袋青年</span>
+                    </div>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fa fa-book" style="zoom: 0.6;"></i>
+      
+      <span>笔记</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/course/ds">
+          
+          <span>数据结构</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/linux">
+          
+          <span>Linux运维</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/network">
+          
+          <span>计算机网络</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>友链</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于我</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">布袋青年</div>
+        <div class="logo-desc">
+            
+            If I cannot overwhelm with my quality, I will overwhelm with my quantity.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+      
+      <li class="m-nav-item">
+        
+        <a href="/" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-home"></i>
+          
+          首页
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/tags" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-tags"></i>
+          
+          标签
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/categories" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-bookmark"></i>
+          
+          分类
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/archives" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-archive"></i>
+          
+          归档
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fa fa-book"></i>
+          
+          笔记
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/course/ds " style="margin-left:75px">
+              
+                  <span>数据结构</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/linux " style="margin-left:75px">
+              
+                  <span>Linux运维</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/network " style="margin-left:75px">
+              
+                  <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/friends" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          友链
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/about" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          关于我
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/contact" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-address-book"></i>
+          
+          留言板
+        </a>
+        
+            </li>
+            
+            
+    </ul>
+    
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/cryptojs/crypto-js.min.js"></script>
+    <script>
+        (function() {
+            let pwd = '';
+            if (pwd && pwd.length > 0) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                    alert('密码错误，将返回主页！');
+                    location.href = '/';
+                }
+            }
+        })();
+    </script>
+    
+    
+    
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/30.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Java类加载器剖析</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+    
+    <main class="post-container content">
+    
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.css">
+
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+        background-color: rgb(255, 255, 255,0.7);
+        border-radius: 10px;
+        box-shadow: 0 10px 35px 2px rgba(0, 0, 0, .15), 0 5px 15px rgba(0, 0, 0, .07), 0 2px 5px -5px rgba(0, 0, 0, .1) !important;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        /* 默认颜色，未设置黑色 */
+        max-height: calc(100vh - 250px);
+        padding-bottom: 20px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        /* 悬浮颜色 */
+        color: #72C1F2;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        /* 激活颜色 */
+        color: #52b3f0;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+
+    .intro{
+        background-color: #b542b9; 
+        width: 300px; 
+        height: 350px;
+        flex: left;
+        right: 20px;
+    }
+
+</style>
+
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                JAVA进阶
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-26
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-12-08
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    21 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p><code>Java</code> 的类加载作为核心特性之一拥有众多的特性，理解和掌握类的加载方式和机制能够更好的了解程序的执行流程，本篇文章将详细介绍 Java 的类加载机制与其相关必备知识。</p>
+<blockquote>
+<p>下面就让我们直接开始吧</p>
+</blockquote>
+<h3 id="一、文件编译"><a href="#一、文件编译" class="headerlink" title="一、文件编译"></a>一、文件编译</h3><p>在介绍类加载器之前先介绍一下 <code>Java</code> 文件的基本编译与执行命令以供后续使用。</p>
+<h4 id="1-Class编译"><a href="#1-Class编译" class="headerlink" title="1. Class编译"></a>1. Class编译</h4><ul>
+<li><h5 id="文件编译"><a href="#文件编译" class="headerlink" title="文件编译"></a>文件编译</h5><p>  通过 <code>javac</code> 命令将 <code>.java</code> 文件编译为 <code>.class</code> 文件，默认输出到当前目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">javac MyBean.java  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><h5 id="编码处理"><a href="#编码处理" class="headerlink" title="编码处理"></a>编码处理</h5><p>  当 <code>Java</code> 文件中包含中文等编码时，在编译时需要指定编码格式，否则将会编译异常。 </p>
+<pre class="line-numbers language-bash"><code class="language-bash">javac -encoding utf-8 MyBean.java  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><h5 id="包名处理"><a href="#包名处理" class="headerlink" title="包名处理"></a>包名处理</h5><p>  默认 <code>javac</code> 命令编译的文件是不包含包路径的，通过参数 <code>-d</code> 编译生成的文件将在同级目录创建包名层级文件夹。其中 <code>.</code> 表示保存至当前目录下，可根据需要指定目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">javac -d <span class="token keyword">.</span> MyBean.java  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><h5 id="依赖处理"><a href="#依赖处理" class="headerlink" title="依赖处理"></a>依赖处理</h5><p>  如需要的编译的类中引用了其它类，在编译时则需要通过 -cp 指定依赖类的 class 文件。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">javac -cp ./Denpend.class -d <span class="token keyword">.</span> MyBean.java  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<ul>
+<li><h5 id="编译版本"><a href="#编译版本" class="headerlink" title="编译版本"></a>编译版本</h5>  当编程环境中存在多个 <code>JDK</code> 版本时，可以通过输入完整路径从而指定 <code>JDK</code> 编译版本。<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">"C:\Program Files\Java\jdk1.8.0_202\bin\javac"</span> -d <span class="token operator">&lt;</span>target_path<span class="token operator">></span> MyBean.java  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<h4 id="2-文件执行"><a href="#2-文件执行" class="headerlink" title="2. 文件执行"></a>2. 文件执行</h4><ul>
+<li><h5 id="Class运行"><a href="#Class运行" class="headerlink" title="Class运行"></a>Class运行</h5><p>  <code>Class</code> 文件运行较为简单，直接通过 <code>java</code> + <code>文件名</code> 即可，需要注意的是若文件时编译设置了包名则运行时同样需要指定包名。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 运行不含包名 class 文件</span>
+java MyBean  
+
+<span class="token comment" spellcheck="true"># 运行含包名 class 文件</span>
+java xyz.ibudai.MyBean  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><h5 id="Jar运行"><a href="#Jar运行" class="headerlink" title="Jar运行"></a>Jar运行</h5><p>  运行 <code>Jar</code> 文件与 运行 <code>Class</code> 文件类似，只需添加 <code>-jar</code> 参数即可。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">java -jar jar-name.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="二、加载机制"><a href="#二、加载机制" class="headerlink" title="二、加载机制"></a>二、加载机制</h3><h4 id="1-加载过程"><a href="#1-加载过程" class="headerlink" title="1. 加载过程"></a>1. 加载过程</h4><p>所谓类加载过程，简单一句话而言即将编译完成的 <code>class</code> 文件通过特定的方式载入 <code>JVM</code> 虚拟机内存中，之后应该就可以在虚拟机内存中进行读取。</p>
+<p>类加载器将字节码文件加载到内存中主要经历三个阶段 <code>加载 -&gt; 连接 -&gt; 实例化</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/loader/1.png"></p>
+<p>注意的是 <code>.class</code> 并不是一次性全部加载到内存中，而是在 <code>Java</code> 应用程序需要的时候才会加载。也就是说当 <code>JVM</code> 请求一个类进行加载的时候，类加载器就会尝试查找定位这个类，当查找对应的类之后将他的完全限定类定义加载到运行时数据区中。</p>
+<h4 id="2-加载阶段"><a href="#2-加载阶段" class="headerlink" title="2. 加载阶段"></a>2. 加载阶段</h4><p>主要负责查找并且加载类的二进制数据文件，其实就是 <code>class</code> 文件，简单而言即将编译后的 <code>class</code> 文件以二进制的形式加载进 <code>JVM</code> 内存中。</p>
+<h4 id="3-连接阶段"><a href="#3-连接阶段" class="headerlink" title="3. 连接阶段"></a>3. 连接阶段</h4><p>主要是确保类文件的正确性，比如 <code>class</code> 的版本，<code>class</code> 文件的魔术因子是否正确。</p>
+<blockquote>
+<p><strong>(1) 验证(文件)</strong></p>
+</blockquote>
+<ul>
+<li>验证文件格式，是否以魔数 <code>0xCAFEBABE</code> 开头。</li>
+<li>主、次版本号是否在当前 <code>Java</code> 虚拟机接受范围之内。</li>
+<li>常量池的常量中是否有不被支持的常量类型（检查常量 <code>tag</code> 标志）。</li>
+<li>文件中各个部分及文件本身是否有被删除的或附加的其他信息。</li>
+</ul>
+<blockquote>
+<p><strong>(2) 验证(元数据)</strong></p>
+</blockquote>
+<ul>
+<li>类是否有父类（除了 <code>java.lang.Object</code> 之外，所有的类都应当有父类）。</li>
+<li>类的父类是否继承了不允许被继承的类（被final修饰的类）。</li>
+<li>如果这个类不是抽象类，是否实现了其父类或接口之中要求实现的所有方法。</li>
+<li>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的 <code>final</code> 字段，或者出现不符合规则的方法重载，例如方法参数都一致，但返回值类型却不同等）。</li>
+</ul>
+<blockquote>
+<p><strong>(3) 验证(字节码)</strong></p>
+</blockquote>
+<ul>
+<li>通过数据流分析和控制流分析，确定程序语义是合法的、符合逻辑的。</li>
+<li>保证任何跳转指令都不会跳转到方法体以外的字节码指令上。</li>
+</ul>
+<blockquote>
+<p><strong>(4) 准备</strong></p>
+</blockquote>
+<p>准备阶段是正式为类中定义的变量（即静态变量，被 <code>static</code> 修饰的变量）分配内存并设置类变量初始值的阶段。当前阶段在进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在 <code>Java</code> 堆中。</p>
+<blockquote>
+<p><strong>(5) 解析</strong></p>
+</blockquote>
+<p>解析阶段是 <code>Java</code> 虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
+<h4 id="4-初始化阶段"><a href="#4-初始化阶段" class="headerlink" title="4. 初始化阶段"></a>4. 初始化阶段</h4><p>准备阶段时，变量已经赋过一次系统要求的初始零值，而在初始化阶段，则会根据程序员通过程序编码制定的主观计划去初始化类变量和其他资源。除了在加载阶段用户应用程序可以通过自定义类加载器的方式局部参与外，其余动作都完全由 <code>Java</code> 虚拟机来主导控制。</p>
+<p>如定义的 <code>static int i = 123;</code> 等类变量在准备阶段已经完成初始化，而类的普通成员变量如 <code>int j;</code> 仍未进行初始化，因此经过初始化阶段之后 <code>int j;</code> 则会初始化为 <code>int j = 0;</code>，类中其它普通成员变量同理。</p>
+<h3 id="三、类加载器"><a href="#三、类加载器" class="headerlink" title="三、类加载器"></a>三、类加载器</h3><h4 id="1-基本类别"><a href="#1-基本类别" class="headerlink" title="1. 基本类别"></a>1. 基本类别</h4><p>在 <code>Java</code> 中类加载器分为以下四类，各类加载器说明如下：<br><img src="/album/loading.gif" data-original="/album/article/java/loader/2.png"></p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">加载器</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">BootstrapClassLoader</td>  
+        <td style="text-align: center;">顶层加载器，主要负责加载核心的类库(java.lang.*等)。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">ExtClassLoader</td>  
+        <td style="text-align: center;">主要负责加载 jre/lib/ext 目录下的一些扩展的 JAR 包。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">AppClassLoader</td>  
+        <td style="text-align: center;">主要负责加载应用程序的主函数 main 等。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">CustomClassLoader</td>  
+        <td style="text-align: center;">自定义类加载器，即我们继承 ClassLoad 而自定义加载器，属于最底层加载器。</td>  
+    </tr>
+</table>
+    
+
+<h4 id="2-命名空间"><a href="#2-命名空间" class="headerlink" title="2. 命名空间"></a>2. 命名空间</h4><p>每一个类加载器实例都有各自的命名空间，命名空间是由该加载器及其所有父加载器所构成的，因此在每个类加载器中同一个 <code>class</code> 都是独一无二的。</p>
+<p>在类加载器进行类加载的时候，首先会到加载记录表也就是缓存中，查看该类是否已经被加载过了，如果已经被加载过了就不会重复加载，否则将会认为其是首次加载。但是使用不同的类加载器，或者同一个类加载器的不同实例，去加载同一个 <code>class</code> 则会在堆内存和方法区产生多个 <code>class</code> 的对象。</p>
+<h4 id="3-运行时包"><a href="#3-运行时包" class="headerlink" title="3. 运行时包"></a>3. 运行时包</h4><p>在 <code>JVM</code> 运行时 <code>class</code> 会有一个运行时包，运行时的包是由类加载器的命名空间和类的全限定名称共同组成的，在判断类的属性或方法等作用域是也是基于运行时包进行的。</p>
+<p>例如由系统类加载加载的 <code>com.example.Test</code> 类其对应的运行时包则为：</p>
+<pre class="line-numbers language-java"><code class="language-java">BootstrapclassLoader<span class="token punctuation">.</span>ExtclassLoader<span class="token punctuation">.</span>Appclassloader<span class="token punctuation">.</span>com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>Test
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="4-初始类加载器"><a href="#4-初始类加载器" class="headerlink" title="4. 初始类加载器"></a>4. 初始类加载器</h4><p>根据 <code>JVM</code> 规范的规定，在类的加载过程中，所有参与的类加载器即使没有亲自加载过该类也都会被标识为该类的初始类加载器。</p>
+<p>在基于双亲委派的机制下，类依次经过了系统类加载器、扩展类加载器、根类加载器，则这些加载器都称为被加载类的初始类加载器，<code>JVM</code> 会在每一个类加载器维护的列表中添加该 <code>class</code> 类型。</p>
+<p>以 <code>String</code> 类为例，根据双亲委派机制其依次经过了三个类加载器，因此对应的初始类加载如下：<br><img src="/album/loading.gif" data-original="/album/article/java/loader/3.png"></p>
+<h4 id="5-加载类型"><a href="#5-加载类型" class="headerlink" title="5. 加载类型"></a>5. 加载类型</h4><p>类加载器负责从不同的源（例如文件系统、网络、内存等）加载类的字节码，如最常见的 <code>.class</code> 文件，将其转换为 <code>Java</code> 对象使得程序可以使用这些类。</p>
+<p>类加载器同时还负责解析类的依赖关系，即查找并加载被当前类所依赖的其他类，以及确定每个类应该由哪个类加载器来加载。</p>
+<blockquote>
+<p><code>Java</code> 类加载机制具有以下特点：</p>
+<ul>
+<li><strong>懒加载</strong>: 只有在需要使用类时才会加载该类，以节省内存和加载时间。</li>
+<li><strong>双亲委派</strong>: 类加载器会按照层次结构来加载类，即先委托父类加载器加载，如果父类加载器无法加载则再交给自己来加载。</li>
+<li><strong>缓存机制</strong>: 已经加载过的类会被缓存，避免重复加载同一类。</li>
+<li><strong>破坏双亲委派机制</strong>: 允许用户自定义类加载器来加载类，从而可以实现一些自定义的类加载策略，例如热部署、插件化等。</li>
+</ul>
+</blockquote>
+<h3 id="四、双亲委派"><a href="#四、双亲委派" class="headerlink" title="四、双亲委派"></a>四、双亲委派</h3><p>双亲委派机制是类加载中非常重要的一类加载机制，通过该机制保证了类的安全完整性。</p>
+<p>默认 <code>JDK</code> 中使用的即双亲委派机制，你可以在 <code>java.lang</code> 包下找到 <code>ClassLoader</code> 类，下面就从源码的角度分析双亲委派机制。</p>
+<h4 id="1-加载方式"><a href="#1-加载方式" class="headerlink" title="1. 加载方式"></a>1. 加载方式</h4><p>在 <code>Java</code> 中加载类可以共有 <code>Class.forName()</code> 与 <code>Classloader.laodClass()</code> 两种方式，下面分别进行介绍。</p>
+<ul>
+<li><h5 id="Class-forName"><a href="#Class-forName" class="headerlink" title="Class.forName()"></a>Class.forName()</h5><p>  通过 <code>Class.forName()</code> 方式加载不仅会将当前类加载进内存并且会初始化对象，可在需被加载的类中添加 <code>static</code> 静态块打印提示，当使用 <code>Class.forName()</code> 加载类时可以发现静态块代码将会被执行，说明此时创建了对象。</p>
+<p>  若想实现类加载但不创建对象可通过 <code>Class.forName(className, false, classLoader)</code> 方法加载，其中第二个参数用于指定是否创建对象，第三个参数指定类加载器。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    String className <span class="token operator">=</span> <span class="token string">"xyz.ibudai.bean.User"</span><span class="token punctuation">;</span>
+    ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz1 <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz2 <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>className<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> classLoader<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"clazz1 loader: "</span> <span class="token operator">+</span> clazz1<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"clazz2 loader: "</span> <span class="token operator">+</span> clazz2<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><h5 id="Classloader-laodClass"><a href="#Classloader-laodClass" class="headerlink" title="Classloader.laodClass()"></a>Classloader.laodClass()</h5><p>  通过 <code>laodClass()</code> 方式加载并不会解析类只实现加载并不会创建相应对象，只有当对象被引用时才会初始化。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    String className <span class="token operator">=</span> <span class="token string">"xyz.ibudai.bean.User"</span><span class="token punctuation">;</span>
+    ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz3 <span class="token operator">=</span> classLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"clazz3 loader: "</span> <span class="token operator">+</span> clazz3<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<p>需要注意一点 <code>java.lang.String</code> 等核心类库是在 <code>JVM</code> 启动时加载的，它们位于 <code>Java</code> 虚拟机的核心类库中，并由 <code>Bootstrap ClassLoader</code> 加载。因此在获取这些类的类加载器时，结果通常为 <code>null</code> ，需要注意的是 <code>null</code> 表示类加载器未知或者无法确定，而非没有类加载器。</p>
+<h4 id="2-方法描述"><a href="#2-方法描述" class="headerlink" title="2. 方法描述"></a>2. 方法描述</h4><p>在解析核心源码之前先过一遍下面这个表格，其中各方法在后面将会涉及到，在此简单描述其作用功能，后续不作详细描述。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>  
+        <th style="text-align: center;">作用</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">getClassLoadingLock()</td>  
+        <td style="text-align: center;">防止类被同时加载。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">findLoadedClass()</td>  
+        <td style="text-align: center;">判断类是否加载过，若加载过则返回加载器否则返回 null。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">findBootstrapClassOrNull()</td>  
+        <td style="text-align: center;">委托父加载器进行加载，不存父加载器返回 null。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">findClass()</td>  
+        <td style="text-align: center;">根据完整类名读取 .class 文件并调用 defineClass() 查找对应的 java.lang.Class 对象。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">defineClass()</td>  
+        <td style="text-align: center;">将 byte 字节流转换为 java.lang.Class 对象，字节流可以来源 .class 文件等途径。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">resolveClass()</td>  
+        <td style="text-align: center;">在类加载过程中字节码文件被加载到 JVM 中并不会立即转换成 java.lang.Class 对象。只有在使用这个类时才会调用 resolveClass() 进行转化，才能够进行创建实例等操作。</td>  
+    </tr>
+</table>
+
+
+<h4 id="3-源码解读"><a href="#3-源码解读" class="headerlink" title="3. 源码解读"></a>3. 源码解读</h4><p>在类加载实现中最为核心的即为 <code>loadClass()</code> 方法，其通过 <code>synchronized</code> 关键字保证类不会被重复加载，下面为 <code>JDK</code> 中 <code>loadClass()</code> 的源码，在关键处我都提供了注释说明。</p>
+<p>其中 <code>parent</code> 即为当前加载器的父级加载器。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">loadClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> <span class="token keyword">boolean</span> resolve<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+    <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token function">getClassLoadingLock</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 1. 判断类是否已经加载过</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> c <span class="token operator">=</span> <span class="token function">findLoadedClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 1.1 若不为空表明已加载则返回</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 2. 未加载 -> 判断是否存在父加载器</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 2.1 存在 -> 递归调用直至获取顶层父加载器</span>
+                    c <span class="token operator">=</span> parent<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 2.2 不存在(已达顶层加载器) -> 委托父类进行加载</span>
+                    c <span class="token operator">=</span> <span class="token function">findBootstrapClassOrNull</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// ClassNotFoundException thrown if class not found</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// 3. 没有父加载器可以加载类 -> 由类自身实现加载</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                c <span class="token operator">=</span> <span class="token function">findClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、自定义加载"><a href="#五、自定义加载" class="headerlink" title="五、自定义加载"></a>五、自定义加载</h3><p>自定义类加载器最常见的分为两种，遵循双亲委派机制与打破双亲委派机制，这里主要讨论后者。</p>
+<h4 id="1-父类继承"><a href="#1-父类继承" class="headerlink" title="1. 父类继承"></a>1. 父类继承</h4><p>新建自定义加载器类 <code>CustomClassLoader</code> 并继承 <code>ClassLoader</code> ，在类中定义构造方法与默认 <code>class</code> 文件存放路径等基本信息。构造函数中的 <code>super()</code> 与 <code>super(parent)</code> 用于指定当前加载器的父级加载器，前者默认获取当前上下文的类加载器为父加载器，在绝大多数情况下为 <code>AppClassLoader</code> 。</p>
+<p>在实际应用中通常只有特定类需要实现自定义加载，因此这里定义了集合 <code>targetList</code> 存放需要实现自定义加载的目标类，不在此集合中类则使用默认的加载方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomClassLoader</span> <span class="token keyword">extends</span> <span class="token class-name">ClassLoader</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> Path classDir<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Path DEFAULT_CLASS_DIR <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"E:\\Workspace\\Class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> targetList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        targetList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"xyz.ibudai.bean.TestA"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        targetList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"xyz.ibudai.bean.TestB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 使用默认的信息
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">CustomClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>classDir <span class="token operator">=</span> DEFAULT_CLASS_DIR<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 指定文件目录与父类加载器
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">CustomClassLoader</span><span class="token punctuation">(</span>String path<span class="token punctuation">,</span> ClassLoader parent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>classDir <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-loadClass"><a href="#2-loadClass" class="headerlink" title="2. loadClass()"></a>2. loadClass()</h4><p>接下来也是自定义类加载的重点，在 <code>JDK</code> 中类的加载核心流程由 <code>loadClass()</code> 方法控制，想要打破默认的双亲委派机制就必须重写该方法。</p>
+<p>重写的 <code>loadClass()</code> 其具象化的加载实现流程如下：</p>
+<blockquote>
+<p><strong>(1) 检查当前类是否已经被加载过？</strong></p>
+</blockquote>
+<ul>
+<li>若已加载，则返回结果。</li>
+<li>若未加载，则进入下一步。</li>
+</ul>
+<blockquote>
+<p><strong>(2) 加载类是否在目标集合中？</strong></p>
+</blockquote>
+<ul>
+<li>若是，则实现自定义 <code>.class</code> 文件读取加载。</li>
+<li>若否，则调用父加载器的 <code>loadClass()</code> 加载重试，即仍按双亲委派机制。</li>
+</ul>
+<blockquote>
+<p><strong>(3) 判断自定义加载是否成功？</strong></p>
+</blockquote>
+<ul>
+<li>若是，则返回结果。</li>
+<li>若否，则调用父加载器的 <code>loadClass()</code> 加载重试，即仍按双亲委派机制。</li>
+</ul>
+<p>上述逻辑流程相对应的代码实现如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">loadClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> <span class="token keyword">boolean</span> resolve<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+    <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token function">getClassLoadingLock</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> c <span class="token operator">=</span> <span class="token function">findLoadedClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 若已加载则返回</span>
+            <span class="token keyword">return</span> c<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>targetList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 若在目标集合则自定义加载</span>
+                c <span class="token operator">=</span> <span class="token function">customFindClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> ignored<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 加载异常重新委派父类加载</span>
+                c <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> resolve<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 加载不成功重新委派父类加载</span>
+            c <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> resolve<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-findClass"><a href="#3-findClass" class="headerlink" title="3. findClass()"></a>3. findClass()</h4><p>在类的加载中 <code>loadClass()</code> 用于控制类的加载流程，而 <code>findClass()</code> 则用于控制具体的 <code>.class</code> 文件加载实现，即如何将 <code>.class</code> 装载进 <code>JVM</code> 中。</p>
+<p>这里我选择的是新建 <code>customFindClass()</code> 方法而并非重写 <code>findClass()</code> 目的在于防止当自定义类加载失败时重新调用父类的 <code>loadClass()</code> 时其在调用 <code>findClass()</code> 时发生混乱冲突。</p>
+<p>在 <code>customFindClass()</code> 中实现了将编译后的类文件载入 <code>JVM</code> 中，即从本地读取编译后的 <code>.class</code> 文件转为字节数据并通过 <code>defineClass()</code> 查找对应的 <code>java.lang.Class</code> 对象。</p>
+<p>其中 <code>name</code> 为类文件的完整类名，例如：<code>xyz.ibudai.bean.TestA</code> 。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">customFindClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 读取 class 的二进制数据</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classBytes <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">readClassBytes</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>classBytes <span class="token operator">==</span> null <span class="token operator">||</span> classBytes<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ClassNotFoundException</span><span class="token punctuation">(</span><span class="token string">"The class byte "</span> <span class="token operator">+</span> name <span class="token operator">+</span> <span class="token string">" is empty."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 调用 defineClass 方法定义 class</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">defineClass</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> classBytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> classBytes<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 将 class 文件转为字节数组以供后续内存载入
+ */</span>
+<span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">readClassBytes</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 将包名分符转换为文件路径分隔符</span>
+    String classPath <span class="token operator">=</span> name<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">,</span> <span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Path classFullPath <span class="token operator">=</span> classDir<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>classPath <span class="token operator">+</span> <span class="token string">".class"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>classFullPath<span class="token punctuation">.</span><span class="token function">toFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ClassNotFoundException</span><span class="token punctuation">(</span><span class="token string">"Class file "</span> <span class="token operator">+</span> classFullPath <span class="token operator">+</span> <span class="token string">" doesn't exists."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>ByteArrayOutputStream out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Files<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>classFullPath<span class="token punctuation">,</span> out<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> out<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ClassNotFoundException</span><span class="token punctuation">(</span><span class="token string">"Read class "</span> <span class="token operator">+</span> classFullPath <span class="token operator">+</span> <span class="token string">" file to byte error."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-测试示例"><a href="#4-测试示例" class="headerlink" title="4. 测试示例"></a>4. 测试示例</h4><p>完成上述的示例之后通过一个示例验证一下我们类加载效果。</p>
+<p>新建测试类 <code>TestA</code> 并通过 <code>java -d . TestA.java</code> 命令将其编译为 <code>.class</code> 文件，将编译完成的带包名层级结构的 <code>.class</code> 文件移动至 <code>CustomClassLoader</code> 类中定义的默认目录下。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestA</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成上述操作后编写相应的测试示例，分别通过默认的类加载与 <code>CustomClassLoader</code> 两种方式实现 <code>TestA</code> 类的加载，并分别输出了 <code>TestA</code> 的具体加载类信息。</p>
+<p>相对应的测试示例代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">loadTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 默认类加载器加载类</span>
+    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz1 <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"xyz.ibudai.bean.TestA"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Loader-1: "</span> <span class="token operator">+</span> clazz1<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 自定义类加载器加载类</span>
+    CustomClassLoader myLoader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CustomClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setContextClassLoader</span><span class="token punctuation">(</span>myLoader<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clazz2 <span class="token operator">=</span> myLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span><span class="token string">"xyz.ibudai.bean.TestA"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Loader-2: "</span> <span class="token operator">+</span> clazz2<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述程序运行的结果如下，从结果可以看出通过 <code>CustomClassLoader</code> 我们成功实现了 <code>TestA</code> 的自定义加载。</p>
+<pre class="line-numbers language-java"><code class="language-java">Loader<span class="token operator">-</span><span class="token number">1</span><span class="token operator">:</span> sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span>Launcher$AppClassLoader<span class="token annotation punctuation">@18b4aac2</span>
+Loader<span class="token operator">-</span><span class="token number">2</span><span class="token operator">:</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>loader<span class="token punctuation">.</span>CustomClassLoader<span class="token annotation punctuation">@1b9e1916</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="六、进阶操作"><a href="#六、进阶操作" class="headerlink" title="六、进阶操作"></a>六、进阶操作</h3><h4 id="1-上下文加载器"><a href="#1-上下文加载器" class="headerlink" title="1. 上下文加载器"></a>1. 上下文加载器</h4><p>在之前的示例中通过了 <code>Thread.currentThread().getContextClassLoader()</code> 获取了当前上下文的类加载，那么上下文类加载究竟有何用处？</p>
+<p>在 <code>Java</code> 程序启动时会将核心类交由 <code>Bootstrap Classloader</code> 加载，但存在一部分服务提供者接口 <code>(SPI)</code> 只定义的规范接口，如最常见的 <code>JDBC</code> 其具体的实现都是由各大数据库厂商自行实现。而这部分接口实现类显然无法被系统类加载器加载（系统类加载只会加载核心包，不会加载第三方来源包），而默认的类加载机制（<code>双亲委派机制</code>）并不支持父加载器向下委派，上下文加载器正是为此而生，通过子委派（由当前线程上下文加载器加载 <code>SPI</code> 实现类）的方式打破了双亲委派机制。</p>
+<p><code>Java</code> 应用运行时的初始线程的上下文类加载器是系统类加载器（<code>AppClassLoader</code>），线程的上下文类加载器的获取与设置通过 <code>Thread.currentThread().getContextClassLoader()</code> 与 <code>Thread.currentThread().setContextClassLoader()</code> 方法即可，一个线程若没有指定则默认继承其父线程上下文类加载器。</p>
+<h4 id="2-动态加载"><a href="#2-动态加载" class="headerlink" title="2. 动态加载"></a>2. 动态加载</h4><p>在 <code>Java</code> 启动时会将相关的类进行加载，而通过 <code>URLClassLoader</code> 即可实现程序运行期间的动态类加载。</p>
+<p><code>URLClassLoader</code> 继承于 <code>ClassLoader</code>，其可以通过 <code>URL</code> 从资源文件从加载类，如下示例中即通过 <code>URLClassLoader</code> 加载 <code>JAR</code> 驱动包。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ClassLoader <span class="token function">getClassLoader</span><span class="token punctuation">(</span>String driverPath<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 获取当前线程上下文加载器</span>
+    ClassLoader parent <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    URL<span class="token punctuation">[</span><span class="token punctuation">]</span> urls<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        File driver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>driverPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 驱动包不存在抛出异常</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>driver<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">FileNotFoundException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// File 转 URL 资源格式</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>driver<span class="token punctuation">.</span><span class="token function">toURI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toURL</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        urls <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">URLClassLoader</span><span class="token punctuation">(</span>urls<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-类的卸载"><a href="#3-类的卸载" class="headerlink" title="3. 类的卸载"></a>3. 类的卸载</h4><p>虽然通过 <code>URLClassLoader</code> 可实现类的动态加载，但 <code>Java</code> 中并没有提供显式的方式实现类的卸载，想要卸载一个已经加载的类只能通过垃圾回收的方式实现。</p>
+<blockquote>
+<p>一个类若想通过垃圾回收卸载则需要满足以下三个条件：</p>
+<ul>
+<li>当前类不存在任何实例，即所有对象实例都已被销毁。</li>
+<li>当前类不存在引用（<code>Reference</code>）。</li>
+<li>当前类的类加载已被垃圾回收（<code>GC</code>）。</li>
+</ul>
+</blockquote>
+<h3 id="七、类隔离"><a href="#七、类隔离" class="headerlink" title="七、类隔离"></a>七、类隔离</h3><p>在上面我们介绍了类的加载方式并且重点分析了双亲委派机制，下面介绍一下类加载的应用场景。</p>
+<h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>与之前提到线程上下文加载器类似（子线程默认继承父线程加载器），一个类的引用类同样都将由该应用类的类加载器加载，即若在 <code>ClassA</code> 中引用了 <code>ClassB</code> ，则 <code>ClassB</code> 也将会由 <code>ClassA</code> 的类加载进行加载，这也正是能够类隔离的实现原理之一。</p>
+<p>那么类隔离的作用是究竟是什么呢？正如上述所言，类的加载具有引用传递性，而一个模块中一个类只会加载一次，在类加载时通过 <code>findLoadedClass()</code> 判断是否加载，如是则跳过加载，也就是 <code>JVM</code> 虚拟机中每个类有且仅有一份。</p>
+<h4 id="2-示例介绍"><a href="#2-示例介绍" class="headerlink" title="2. 示例介绍"></a>2. 示例介绍</h4><p>根据上述的介绍当程序需要依赖同一个类的多个版本时该方式将会产生大量的问题。</p>
+<p>如工程中存在两个模块 <code>module-a</code> 和 <code>module-b</code> ，二者分别依赖了 <code>module-c</code> 的 <code>1.0</code> 和 <code>2.0</code> 两个版本，但由于 <code>module-a</code> 与 <code>module-b</code> 同属一个工程都由 <code>AppClassLoader</code> 进行加载，最终在 <code>JVM</code> 仅会加载 <code>module-c</code> 的一个版本并非两个版本共同加载。<br><img src="/album/loading.gif" data-original="/album/article/java/loader/6.png"></p>
+<p>根据 <code>Maven</code> 中先定义先导入顺序，若 <code>module-a</code> 定义在前则最终加载的 <code>module-c</code> 则为 <code>1.0</code> 版本，此时若 <code>module-b</code> 引用了 <code>2.0</code> 中新特性在运行时则会抛出 <code>ClassNotFoundException</code>。</p>
+<p>在 <code>Java</code> 中同一个类由不同的类加载器加载对于 <code>JVM</code> 而言是两个不同的类，因此针对上述情况我们只要自定义类加载并将 <code>module-a</code> 与 <code>module-b</code> 分别通过两个不同的类加载（这里不同的类加载并不是指不同的类加载类别，只需由两个不同的实例对象即可）进行加载即可。如上述我们自定义实现了类加载 <code>CustomClassLoader</code> ，我们通过其两个实例 <code>loader1</code> 与 <code>loader2</code> 分别对 <code>module-a</code> 与 <code>module-b</code> 进行加载类加载引用继承原理 <code>module-c</code> 将被加载分别加载两次，从而实现多版本的兼容隔离加载。<br><img src="/album/loading.gif" data-original="/album/article/java/loader/7.png"></p>
+<p>需要注意这里的 <code>CustomClassLoader1</code> 和 <code>CustomClassLoader2</code> 所对应的自定义类加载器必须重写 <code>loadClass()</code> 方法并破坏其双亲委派机制，否则仍会逐层向上代理最终加载类的加载器都将为系统类加载器。</p>
+<hr>
+<p><strong>参考文档</strong></p>
+<ol>
+<li>《Java高并发编程详解-多线程与架构设计》</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">烽火戏诸诸诸侯</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://great-jin.github.io/java/advance/loader/">https://great-jin.github.io/java/advance/loader/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq, qzone, wechat, weibo, douban, google" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC81NDI4My8zMDc1NA">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/java/basis/function/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/31.png" class="responsive-img" alt="Java函数式编程详解">
+                        
+                        <span class="card-title">Java函数式编程详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Java函数式编写详解。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/spring/tool/security/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/spring/7.png" class="responsive-img" alt="Spring Security权限认证实战">
+                        
+                        <span class="card-title">Spring Security权限认证实战</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Security权限认证实战教程。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    Spring工具
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('100')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 布袋青年<br />'
+            + '文章作者: 烽火戏诸诸诸侯<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+    </div>
+
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('h2'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+        
+    
+    </main>
+    
+    
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            
+            <!-- 版权信息. -->
+            Copyright&nbsp;
+            
+                <span id="year">2021-2023</span>
+            
+            &nbsp;
+            <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+            &nbsp;&copy;All Rights Reserved
+
+            <!-- ICP备案信息. -->
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        window.setTimeout("calcSiteTime()", 1000);
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "9";
+                        var startDate = "16";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+                        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+                        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+                        
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已运行 ' + diffYears + ' 年 '  + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已随风漂流 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+
+            <!-- 站点访问统计 -->
+            
+                <span id="busuanzi_container_site_pv">
+                    <i class="far fa-eye"></i>&nbsp;
+                    总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                    &nbsp;|&nbsp;
+                    <i class="fas fa-users"></i>&nbsp;
+                    总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+                </span>
+            
+            
+                &nbsp;|&nbsp;
+                <i class="fas fa-chart-area"></i>&nbsp;
+                站点总字数:&nbsp;
+                <span class="white-color">211.3k</span>
+            
+            
+            
+                
+            
+            <br>
+
+
+            <!-- 驱动说明. -->
+            <i class="fa fa-rocket" aria-hidden="true"></i>
+            &nbsp;Powered By&nbsp;
+            <a href="https://hexo.io/" target="_blank">Hexo</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            
+            <i class="fa fa-globe" aria-hidden="true" /></i>
+            <span class="translate-style">
+                &nbsp;语言：
+                <a id="translateLink" href="javascript:translatePage();">繁体</a>
+            </span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            &nbsp;Theme By&nbsp;
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+
+            <script type="text/javascript" src="/js/tw_cn.js"></script>
+            <script type="text/javascript">
+                var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+                var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+                var cookieDomain = "https://great-jin.github.io/"; //Cookie地址, 一定要设定, 通常为你的网址
+                var msgToTraditionalChinese = "繁体"; //此处可以更改为你想要显示的文字
+                var msgToSimplifiedChinese = "简体"; //同上，但两处均不建议更改
+                var translateButtonId = "translateLink"; //默认互换id
+                translateInitilization();
+            </script>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/great-jin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:ibudai56@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/xiao-ming-92-43-49" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+    <!-- 樱花特效 -->
+    
+
+    <!-- 文字特效 -->
+    
+    <script async src="/js/text.js"></script>
+    
+    <script type="text/javascript"> var OriginTitile = document.title, st; 
+        document.addEventListener("visibilitychange", 
+        function () { document.hidden ? (document.title = "｡°(°¯᷄◠¯᷅°)°｡要记得回来哦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪你回来了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) }) 
+    </script>
+    
+    <script type="text/javascript"
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+    </script>
+    
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>

@@ -1,0 +1,1772 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kafka发布订阅实战, 布袋青年">
+    <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kafka发布订阅实战 | 布袋青年</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.2.1/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(/medias/featureimages/bg.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    <div>
+                        
+                        <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                        
+                        <span class="logo-span">布袋青年</span>
+                    </div>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fa fa-book" style="zoom: 0.6;"></i>
+      
+      <span>笔记</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/course/ds">
+          
+          <span>数据结构</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/linux">
+          
+          <span>Linux运维</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/network">
+          
+          <span>计算机网络</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>友链</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于我</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">布袋青年</div>
+        <div class="logo-desc">
+            
+            If I cannot overwhelm with my quality, I will overwhelm with my quantity.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+      
+      <li class="m-nav-item">
+        
+        <a href="/" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-home"></i>
+          
+          首页
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/tags" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-tags"></i>
+          
+          标签
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/categories" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-bookmark"></i>
+          
+          分类
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/archives" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-archive"></i>
+          
+          归档
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fa fa-book"></i>
+          
+          笔记
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/course/ds " style="margin-left:75px">
+              
+                  <span>数据结构</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/linux " style="margin-left:75px">
+              
+                  <span>Linux运维</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/network " style="margin-left:75px">
+              
+                  <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/friends" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          友链
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/about" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          关于我
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/contact" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-address-book"></i>
+          
+          留言板
+        </a>
+        
+            </li>
+            
+            
+    </ul>
+    
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/cryptojs/crypto-js.min.js"></script>
+    <script>
+        (function() {
+            let pwd = '';
+            if (pwd && pwd.length > 0) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                    alert('密码错误，将返回主页！');
+                    location.href = '/';
+                }
+            }
+        })();
+    </script>
+    
+    
+    
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/kafka/2.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kafka发布订阅实战</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+    
+    <main class="post-container content">
+    
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.css">
+
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+        background-color: rgb(255, 255, 255,0.7);
+        border-radius: 10px;
+        box-shadow: 0 10px 35px 2px rgba(0, 0, 0, .15), 0 5px 15px rgba(0, 0, 0, .07), 0 2px 5px -5px rgba(0, 0, 0, .1) !important;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        /* 默认颜色，未设置黑色 */
+        max-height: calc(100vh - 250px);
+        padding-bottom: 20px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        /* 悬浮颜色 */
+        color: #72C1F2;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        /* 激活颜色 */
+        color: #52b3f0;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+
+    .intro{
+        background-color: #b542b9; 
+        width: 300px; 
+        height: 350px;
+        flex: left;
+        right: 20px;
+    }
+
+</style>
+
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kafka/">
+                                <span class="chip bg-color">Kafka</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                中间件
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-07-01
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-12-08
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p><code>Kafka</code> 是由 <code>Apache</code> 软件基金会开发的一个开源流处理平台，是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者在网站中的所有动作流数据，目的是通过 <code>Hadoop</code> 的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消息。</p>
+<blockquote>
+<p><code>Kafka</code> 作为一种分布式消息队列被广泛应用于以下场景中：</p>
+<ul>
+<li><strong>消息通讯</strong>：作为一种分布式消息传递的工具，实现高效的异步消息通讯。</li>
+<li><strong>大数据流处理</strong>：通过批量发送消息、消息压缩等机制有效地处理大量的数据流，为大数据处理提供了支持。</li>
+<li><strong>日志收集与处理</strong>：实现高吞吐量、低延迟的数据采集和处理，常被用于日志的采集、传输和处理。</li>
+<li><strong>数据解耦和异步处理</strong>：通过将数据放入 Kafka 队列，不同的系统和应用可以异步地获取和处理数据，降低系统之间的耦合性。</li>
+</ul>
+</blockquote>
+<p>总之，如果需要处理大量的消息数据，实现数据解耦和异步处理，或者需要实现高吞吐量的数据传输和处理等，都可以考虑引入 <code>Kafka</code> 。下面分别介绍如何在 <code>Maven</code> 工程与 <code>Spring</code> 工程中集成 <code>Kafka</code> 实现消息发布订阅。</p>
+<h3 id="一、Maven集成"><a href="#一、Maven集成" class="headerlink" title="一、Maven集成"></a>一、Maven集成</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>maven</code> 项目中导入 <code>kafka</code> 的相关依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>kafka-clients<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.10.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>kafka_2.11<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.10.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-数据编码"><a href="#2-数据编码" class="headerlink" title="2. 数据编码"></a>2. 数据编码</h4><p><code>Kafka</code> 提供默认字符串编解码，但如果需要发送复杂的对象数据，则需要自定义编解码方式。</p>
+<p>在实际开发中最常见的方式即通过序列化将 <code>Java</code> 对象转化为 <code>Json</code> 字符串传输，可以选择 <code>Jackson</code> 等框架实现数据的序列化，这里以自定义序列化实现为例。</p>
+<ul>
+<li><p><strong>实体类</strong><br>  创建一个实体类，用于模拟后续数据传输。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String password<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>自定义编码</strong><br>  通过实现 <code>Serializer</code> 类并重写 <code>serialize()</code> 重写数据对象编码方式。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EncodeKafka</span> <span class="token keyword">implements</span> <span class="token class-name">Serializer</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>Map configs<span class="token punctuation">,</span> <span class="token keyword">boolean</span> isKey<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">serialize</span><span class="token punctuation">(</span>String topic<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>
+            ByteArrayOutputStream bos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ObjectOutputStream oos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectOutputStream</span><span class="token punctuation">(</span>bos<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 写入 ByteArrayOutputStream</span>
+            oos<span class="token punctuation">.</span><span class="token function">writeObject</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            oos<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// ByteArrayOutputStream 导出为字符数组</span>
+            bytes <span class="token operator">=</span> bos<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> bytes<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"EncodeKafka is close."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p><strong>自定义解码</strong><br>  通过实现 <code>Serializer</code> 类并重写 <code>Deserializer()</code> 重写数据对象编码方式。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DecodeKafka</span> <span class="token keyword">implements</span> <span class="token class-name">Deserializer</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> <span class="token operator">?</span><span class="token operator">></span> configs<span class="token punctuation">,</span> <span class="token keyword">boolean</span> isKey<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> User <span class="token function">deserialize</span><span class="token punctuation">(</span>String topic<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        User user<span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>
+            ByteArrayInputStream bis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ObjectInputStream ois <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectInputStream</span><span class="token punctuation">(</span>bis<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            user <span class="token operator">=</span> ois<span class="token punctuation">.</span><span class="token function">readObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"DecodeKafka is close."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h4 id="3-生产者"><a href="#3-生产者" class="headerlink" title="3. 生产者"></a>3. 生产者</h4><p>创建消息生产者 <code>KafkaProducer</code> 用于发送消息，相应的配置如下：</p>
+<blockquote>
+<p>其中参数 <code>acks</code> 的取值范围如下：</p>
+<ul>
+<li>0 : 表示 <code>Producer</code> 不用等待任何确认信号，会一直发送消息，否则 <code>Producer</code> 进入等待状态。</li>
+<li>1 : 表示 <code>Producer</code> 等待 <code>leader</code> 将数据写入本地 <code>log</code> (不关心 <code>follower</code> 是否写入)，然后继续发送。</li>
+<li>-1 : 表示 <code>leader</code> 等待所有备份都成功写入日志，可以保证数据一定不会丢失。</li>
+</ul>
+</blockquote>
+<p>注意生产者发送的消息在消费后仍存在并不会消失，可根据需要配置 <code>Kafka</code> 应用服务参数设置持久化策略，如配置 <code>3</code> 天自动过期，此时消息才会被删除。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">bootstrap.servers</td>  
+        <td style="text-align: center;">配置 kafka 服务地址。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">acks</td>  
+        <td style="text-align: center;">用于通知 broker 接收到 message 后是否向 Producer 发送确认信号。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">retries</td>  
+        <td style="text-align: center;">数据发送失败重试次数。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">linger.ms</td>  
+        <td style="text-align: center;">Producer 组将会汇总任何在请求与发送之间到达的消息记录一个单独批量的请求。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">batch.size</td>  
+        <td style="text-align: center;">Producer 批处理消息记录，以减少请求次数。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">timeout.ms</td>  
+        <td style="text-align: center;">等待 Followers 的确认时间，如果确认的请求数目在此时间内没有实现则会返回错误。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">buffer.memory</td>  
+        <td style="text-align: center;">可以用于缓存数据的内存大小。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">compression.type</td>  
+        <td style="text-align: center;">数据压缩类型，可选项: none、gzip、snappy。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">metadata.fetch.timeout.ms</td>  
+        <td style="text-align: center;">等待元数据 fetch 成功完成所需要的时间。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">key.serializer</td>  
+        <td style="text-align: center;">Key 序列化方式。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">value.serializer</td>  
+        <td style="text-align: center;">Value 序列化方式。</td>  
+    </tr>
+</table>
+
+<p>下面看一个具体的配置示例：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> String HOST <span class="token operator">=</span> <span class="token string">"127.0.0.1:9092"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String TOPIC <span class="token operator">=</span> <span class="token string">"user-topic"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String KEY_ENCODE <span class="token operator">=</span> <span class="token string">"org.apache.kafka.common.serialization.StringSerializer"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String VALUE_ENCODE <span class="token operator">=</span> <span class="token string">"demo.utils.EncodeKafka"</span><span class="token punctuation">;</span>
+
+    Properties props <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"bootstrap.servers"</span><span class="token punctuation">,</span> HOST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"acks"</span><span class="token punctuation">,</span> <span class="token string">"0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"retries"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"linger.ms"</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"batch.size"</span><span class="token punctuation">,</span> <span class="token number">16384</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"timeout.ms"</span><span class="token punctuation">,</span> <span class="token number">30000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"buffer.memory"</span><span class="token punctuation">,</span> <span class="token number">33554432</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"compression.type"</span><span class="token punctuation">,</span> <span class="token string">"gzip"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"metadata.fetch.timeout.ms"</span><span class="token punctuation">,</span> <span class="token number">30000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"key.serializer"</span><span class="token punctuation">,</span> KEY_ENCODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"value.serializer"</span><span class="token punctuation">,</span> VALUE_ENCODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 根据属性创建生产者</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>KafkaProducer<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> User<span class="token operator">></span> producer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">KafkaProducer</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果 topic 不存在，则会自动创建，默认 replication-factor 为 1，partitions为0</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            String KEY <span class="token operator">=</span> UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"User "</span> <span class="token operator">+</span> i<span class="token punctuation">,</span> <span class="token string">"Pwd "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            producer<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ProducerRecord</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>TOPIC<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            i<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Topic: "</span> <span class="token operator">+</span> TOPIC <span class="token operator">+</span> <span class="token string">", 发送结束."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-消费者"><a href="#4-消费者" class="headerlink" title="4. 消费者"></a>4. 消费者</h4><p>创建消费者 <code>KafkaConsumer</code> 并订阅 <code>topic</code> 接收上述 <code>Produce</code> 发送的消息，相应的配置参考下表。</p>
+<blockquote>
+<p>其中中描述的 <code>offset</code> 即偏移量，作用是标记当前接收的消息位置。</p>
+<ul>
+<li>若 <code>enable.auto.commit</code> 设置为 <code>true</code> 则只会接收最新队列消息。</li>
+<li>若 <code>enable.auto.commit</code> 设置为 <code>false</code> 则每次启动一个消费组进程都将会从头开始接收消息。</li>
+</ul>
+</blockquote>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">bootstrap.servers</td>  
+        <td style="text-align: center;">配置 kafka 服务地址。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">group.id</td>  
+        <td style="text-align: center;">唯一标识 consumer 进程所在组的字符串。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">enable.auto.commit</td>  
+        <td style="text-align: center;">Consumer 所 fetch 的消息的 offset 是否自动的同步到 zookeeper。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">auto.commit.interval.ms</td>  
+        <td style="text-align: center;">consumer 向 zookeeper 提交 offset 的频率。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">session.timeout.ms</td>  
+        <td style="text-align: center;">设置会话超时时间。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">key.deserializer</td>  
+        <td style="text-align: center;">消息 Key 值解码方式。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">value.deserializer</td>  
+        <td style="text-align: center;">消息 Value 值解码方式.</td>  
+    </tr>
+</table>
+
+<p>下面同样提供一个具体的示例，运行下述消费者实现 <code>Topic</code> 订阅，此时再运行上述的生产者发送消息即可看到在消费者在控制台打印接受的信息。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> String HOST <span class="token operator">=</span> <span class="token string">"127.0.0.1:9092"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String TOPIC <span class="token operator">=</span> <span class="token string">"user-topic"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String GROUP <span class="token operator">=</span> <span class="token string">"consumer"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String KEY_DECODE <span class="token operator">=</span> <span class="token string">"org.apache.kafka.common.serialization.StringDeserializer"</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> String VALUE_DECODE <span class="token operator">=</span> <span class="token string">"demo.utils.DecodeKafka"</span><span class="token punctuation">;</span>
+
+    Properties props <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"bootstrap.servers"</span><span class="token punctuation">,</span> HOST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"group.id"</span><span class="token punctuation">,</span> GROUP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"enable.auto.commit"</span><span class="token punctuation">,</span> <span class="token string">"true"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"auto.commit.interval.ms"</span><span class="token punctuation">,</span> <span class="token string">"1000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"session.timeout.ms"</span><span class="token punctuation">,</span> <span class="token string">"30000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"key.deserializer"</span><span class="token punctuation">,</span> KEY_DECODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    props<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"value.deserializer"</span><span class="token punctuation">,</span> VALUE_DECODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 根据属性创建消费者</span>
+    KafkaConsumer<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> User<span class="token operator">></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">KafkaConsumer</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 订阅 Topic</span>
+    consumer<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>TOPIC<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Subscribed to topic: "</span> <span class="token operator">+</span> TOPIC<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 接收订阅消息</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 每隔 100 毫秒读取一次消息队列</span>
+        ConsumerRecords<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> User<span class="token operator">></span> records <span class="token operator">=</span> consumer<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>ConsumerRecord<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> User<span class="token operator">></span> record <span class="token operator">:</span> records<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            User result <span class="token operator">=</span> record<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、Spring集成"><a href="#二、Spring集成" class="headerlink" title="二、Spring集成"></a>二、Spring集成</h3><p>在 <code>Spring Boot</code> 中集成 <code>Kafka</code> 则更为简单，下面介绍配置步骤。</p>
+<h4 id="1-依赖导入-1"><a href="#1-依赖导入-1" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>同样在 <code>Spring Boot</code> 项目中引入相关 <code>Maven</code> 依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.8.5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h4><p>在项目的 <code>yml</code> 配置文件中添加 <code>Kafka</code> 相关配置。</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">kafka</span><span class="token punctuation">:</span>
+    <span class="token key atrule">bootstrap-servers</span><span class="token punctuation">:</span> 127.0.0.1<span class="token punctuation">:</span><span class="token number">9092</span>
+    <span class="token key atrule">topic</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>topic
+    <span class="token comment" spellcheck="true"># 生产者</span>
+    <span class="token key atrule">producer</span><span class="token punctuation">:</span>
+      <span class="token key atrule">acks</span><span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token key atrule">retries</span><span class="token punctuation">:</span> <span class="token number">3</span>
+      <span class="token key atrule">batch-size</span><span class="token punctuation">:</span> <span class="token number">16384</span>
+      <span class="token key atrule">buffer-memory</span><span class="token punctuation">:</span> <span class="token number">33554432</span>
+      <span class="token key atrule">key-serializer</span><span class="token punctuation">:</span> org.apache.kafka.common.serialization.StringSerializer
+      <span class="token key atrule">value-serializer</span><span class="token punctuation">:</span> org.apache.kafka.common.serialization.StringSerializer
+    <span class="token comment" spellcheck="true"># 消费者</span>
+    <span class="token key atrule">consumer</span><span class="token punctuation">:</span>
+      <span class="token key atrule">group-id</span><span class="token punctuation">:</span> comsumer
+      <span class="token key atrule">enable-auto-commit</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+      <span class="token key atrule">auto-offset-reset</span><span class="token punctuation">:</span> latest
+      <span class="token key atrule">key-deserializer</span><span class="token punctuation">:</span> org.apache.kafka.common.serialization.StringDeserializer
+      <span class="token key atrule">value-deserializer</span><span class="token punctuation">:</span> org.apache.kafka.common.serialization.StringDeserializer
+    <span class="token comment" spellcheck="true"># 监听器</span>
+    <span class="token key atrule">listener</span><span class="token punctuation">:</span>
+      <span class="token key atrule">concurrency</span><span class="token punctuation">:</span> <span class="token number">6</span>
+      <span class="token key atrule">ack-mode</span><span class="token punctuation">:</span> MANUAL
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-接收者"><a href="#3-接收者" class="headerlink" title="3. 接收者"></a>3. 接收者</h4><p>创建发送者用于订阅 <code>Topic</code> 接收发送者信息。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsumerController</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@KafkaListener</span><span class="token punctuation">(</span>topics <span class="token operator">=</span> <span class="token string">"test_topic"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">listen</span><span class="token punctuation">(</span>ConsumerRecord<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token punctuation">,</span> <span class="token operator">?</span><span class="token operator">></span> record<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"topic = %s, offset = %d, value = %s \n"</span><span class="token punctuation">,</span>
+                record<span class="token punctuation">.</span><span class="token function">topic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> record<span class="token punctuation">.</span><span class="token function">offset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> record<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-发送者"><a href="#4-发送者" class="headerlink" title="4. 发送者"></a>4. 发送者</h4><p>通过调用 <code>KafkaTemplate</code> 即可实现消息发送，若需要发送复杂对象，可配套 <code>Jackson</code> 等工具实现。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"api/kafka"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ProducerController</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> KafkaTemplate<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> String<span class="token operator">></span> kafkaTemplate<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/send"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        String msg <span class="token operator">=</span> <span class="token string">"hello world"</span><span class="token punctuation">;</span>
+        String key <span class="token operator">=</span> UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        kafkaTemplate<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"test_topic"</span><span class="token punctuation">,</span> key<span class="token punctuation">,</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">烽火戏诸诸诸侯</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://great-jin.github.io/db/kafka/subscribe/">https://great-jin.github.io/db/kafka/subscribe/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kafka/">
+                                    <span class="chip bg-color">Kafka</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq, qzone, wechat, weibo, douban, google" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC81NDI4My8zMDc1NA">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/maven/deploy/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/maven/2.png" class="responsive-img" alt="Maven打包部署教程">
+                        
+                        <span class="card-title">Maven打包部署教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Java Maven工程打包部署教程。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    服务部署
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
+                    </a>
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/db/redis/channel/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/db/redis/5.png" class="responsive-img" alt="Redis发布订阅实战">
+                        
+                        <span class="card-title">Redis发布订阅实战</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Redis 消息发布订阅功能实战。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('100')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 布袋青年<br />'
+            + '文章作者: 烽火戏诸诸诸侯<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+    </div>
+
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('h2'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+        
+    
+    </main>
+    
+    
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            
+            <!-- 版权信息. -->
+            Copyright&nbsp;
+            
+                <span id="year">2021-2023</span>
+            
+            &nbsp;
+            <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+            &nbsp;&copy;All Rights Reserved
+
+            <!-- ICP备案信息. -->
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        window.setTimeout("calcSiteTime()", 1000);
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "9";
+                        var startDate = "16";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+                        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+                        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+                        
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已运行 ' + diffYears + ' 年 '  + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已随风漂流 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+
+            <!-- 站点访问统计 -->
+            
+                <span id="busuanzi_container_site_pv">
+                    <i class="far fa-eye"></i>&nbsp;
+                    总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                    &nbsp;|&nbsp;
+                    <i class="fas fa-users"></i>&nbsp;
+                    总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+                </span>
+            
+            
+                &nbsp;|&nbsp;
+                <i class="fas fa-chart-area"></i>&nbsp;
+                站点总字数:&nbsp;
+                <span class="white-color">211.3k</span>
+            
+            
+            
+                
+            
+            <br>
+
+
+            <!-- 驱动说明. -->
+            <i class="fa fa-rocket" aria-hidden="true"></i>
+            &nbsp;Powered By&nbsp;
+            <a href="https://hexo.io/" target="_blank">Hexo</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            
+            <i class="fa fa-globe" aria-hidden="true" /></i>
+            <span class="translate-style">
+                &nbsp;语言：
+                <a id="translateLink" href="javascript:translatePage();">繁体</a>
+            </span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            &nbsp;Theme By&nbsp;
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+
+            <script type="text/javascript" src="/js/tw_cn.js"></script>
+            <script type="text/javascript">
+                var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+                var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+                var cookieDomain = "https://great-jin.github.io/"; //Cookie地址, 一定要设定, 通常为你的网址
+                var msgToTraditionalChinese = "繁体"; //此处可以更改为你想要显示的文字
+                var msgToSimplifiedChinese = "简体"; //同上，但两处均不建议更改
+                var translateButtonId = "translateLink"; //默认互换id
+                translateInitilization();
+            </script>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/great-jin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:ibudai56@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/xiao-ming-92-43-49" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+    <!-- 樱花特效 -->
+    
+
+    <!-- 文字特效 -->
+    
+    <script async src="/js/text.js"></script>
+    
+    <script type="text/javascript"> var OriginTitile = document.title, st; 
+        document.addEventListener("visibilitychange", 
+        function () { document.hidden ? (document.title = "｡°(°¯᷄◠¯᷅°)°｡要记得回来哦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪你回来了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) }) 
+    </script>
+    
+    <script type="text/javascript"
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+    </script>
+    
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>

@@ -1,0 +1,1599 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="MySQL存储机制详解, 布袋青年">
+    <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>MySQL存储机制详解 | 布袋青年</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.2.1/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/css/my.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(/medias/featureimages/bg.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    <div>
+                        
+                        <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                        
+                        <span class="logo-span">布袋青年</span>
+                    </div>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fa fa-book" style="zoom: 0.6;"></i>
+      
+      <span>笔记</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/course/ds">
+          
+          <span>数据结构</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/linux">
+          
+          <span>Linux运维</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/course/network">
+          
+          <span>计算机网络</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>友链</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于我</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">布袋青年</div>
+        <div class="logo-desc">
+            
+            If I cannot overwhelm with my quality, I will overwhelm with my quantity.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+      
+      <li class="m-nav-item">
+        
+        <a href="/" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-home"></i>
+          
+          首页
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/tags" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-tags"></i>
+          
+          标签
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/categories" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-bookmark"></i>
+          
+          分类
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/archives" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-archive"></i>
+          
+          归档
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fa fa-book"></i>
+          
+          笔记
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/course/ds " style="margin-left:75px">
+              
+                  <span>数据结构</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/linux " style="margin-left:75px">
+              
+                  <span>Linux运维</span>
+                      </a>
+                    </li>
+                   <li>
+    
+          <a href="/course/network " style="margin-left:75px">
+              
+                  <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/friends" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          友链
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/about" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-user-circle"></i>
+          
+          关于我
+        </a>
+        
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/contact" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-address-book"></i>
+          
+          留言板
+        </a>
+        
+            </li>
+            
+            
+    </ul>
+    
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/cryptojs/crypto-js.min.js"></script>
+    <script>
+        (function() {
+            let pwd = '';
+            if (pwd && pwd.length > 0) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                    alert('密码错误，将返回主页！');
+                    location.href = '/';
+                }
+            }
+        })();
+    </script>
+    
+    
+    
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/mysql/7.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MySQL存储机制详解</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    
+    
+    <main class="post-container content">
+    
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.css">
+
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+        background-color: rgb(255, 255, 255,0.7);
+        border-radius: 10px;
+        box-shadow: 0 10px 35px 2px rgba(0, 0, 0, .15), 0 5px 15px rgba(0, 0, 0, .07), 0 2px 5px -5px rgba(0, 0, 0, .1) !important;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        /* 默认颜色，未设置黑色 */
+        max-height: calc(100vh - 250px);
+        padding-bottom: 20px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        /* 悬浮颜色 */
+        color: #72C1F2;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        /* 激活颜色 */
+        color: #52b3f0;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+
+    .intro{
+        background-color: #b542b9; 
+        width: 300px; 
+        height: 350px;
+        flex: left;
+        right: 20px;
+    }
+
+</style>
+
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-06-20
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2023-12-08
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    15 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="一、数据结构"><a href="#一、数据结构" class="headerlink" title="一、数据结构"></a>一、数据结构</h3><p><code>B</code>树、 <code>B+</code>树和红黑树都是常见的平衡查找树数据结构，用于在大规模数据集中高效地进行查找、插入和删除操作。它们的设计目标是通过平衡树的结构来保证在最坏情况下的时间复杂度接近于 <code>O(log n)</code> ，其中 <code>n</code> 表示数据集的大小。</p>
+<h4 id="1-B树"><a href="#1-B树" class="headerlink" title="1. B树"></a>1. B树</h4><p><code>B</code> 树是一种自平衡的树型数据结构，其叶子节点与非叶子节点都可用于存储数据。</p>
+<p>如存在一组数据 <code>[2, 4, 6, 8, 10]</code> 则其对应的 <code>B</code> 树形式之一为下图所示。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/1.png" alt="B树"></p>
+<blockquote>
+<ul>
+<li>它的结构类似于一个多路搜索树，每个节点可以包含多个子节点和关键字。</li>
+<li><code>B</code>树的特点是可以存储大量的数据，并且能够高效地支持随机访问和范围查询。</li>
+<li><code>B</code>树的节点可以存储大量的关键字，而且节点可以有多个子节点，这使得 <code>B</code> 树在磁盘等外部存储上具有良好的性能，因为每个节点可以存储大量的关键字，从而减少了磁盘 <code>I/O</code> 的次数。</li>
+</ul>
+</blockquote>
+<h4 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B+树"></a>2. B+树</h4><p><code>B+</code> 树是在 <code>B</code> 树基础上进行了改进的一种树型数据结构，其所有数据皆在叶子节点，<code>MySQL</code> 中即通过 <code>B+</code> 树存储数据。</p>
+<p>同样的若存在一组数据 <code>[2, 4, 6, 8, 10]</code> 则其对应的 <code>B+</code> 树形式之一为下图所示，非叶子节点仅用于数据的索引，不存储真实数据。注意这里仅以最基本的二路 <code>B+</code> 树为例，若在 <code>MySQL</code> 中通常为数十上百路的形式存储。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/2.png" alt="B+树"></p>
+<blockquote>
+<ul>
+<li><code>B+</code> 树与 <code>B</code> 树相似，但其所有的关键字都出现在叶子节点上。</li>
+<li><code>B+</code> 树中每个叶子节点之间通过链表连接，形成一个有序的数据链表。</li>
+<li>内部节点只包含用于导航的关键字，而不存储数据本身。这样的设计使得 <code>B+</code> 树更适合用于范围查询，因为范围查询可以直接沿着叶子节点的链表进行遍历，而无需回溯到内部节点。</li>
+</ul>
+</blockquote>
+<h4 id="3-红黑树"><a href="#3-红黑树" class="headerlink" title="3. 红黑树"></a>3. 红黑树</h4><p>红黑树是一种自平衡的二叉查找树，它在树的节点上增加了额外的颜色属性，可以是红色或黑色。红黑树的数据存储于非叶子节点，而叶子节点通常是 <code>NIL(占位符)</code> 节点，即不存储实际的数据，只是用来表示树的末端。</p>
+<blockquote>
+<p>红黑树具有以下特点：</p>
+<ul>
+<li>每个节点都有一个颜色属性，要么是红色，要么是黑色。</li>
+<li>根节点是黑色的。</li>
+<li>所有叶子节点（<code>NIL</code>节点）都是黑色的。</li>
+<li>如果一个节点是红色的，则它的子节点必须是黑色的。</li>
+<li>从根节点到叶子节点的每条路径上，黑色节点的数量相同。</li>
+</ul>
+</blockquote>
+<p>红黑树通过保持上述特性来保持平衡。这使得红黑树在插入和删除节点时能够保持树的平衡性，并且可以在最坏情况下保证 <code>O(log n)</code> 的查找、插入和删除操作。</p>
+<h4 id="4-差异点"><a href="#4-差异点" class="headerlink" title="4. 差异点"></a>4. 差异点</h4><p><code>B</code> 树和 <code>B+</code> 树适用于存储大规模数据的场景，特别是磁盘上的数据存储，它们具有高度的扇出性能，可以减少磁盘 <code>I/O</code> 次数，提高数据访问效率。而 <code>B+</code> 树相对于 <code>B</code> 树在范围查询和顺序访问方面有更好的性能。</p>
+<p>红黑树则适用于内存中的数据结构，它通过颜色属性的调整来保持树的平衡性，具有更快的插入和删除操作。</p>
+<h3 id="二、存储引擎"><a href="#二、存储引擎" class="headerlink" title="二、存储引擎"></a>二、存储引擎</h3><h4 id="1-InnoDB"><a href="#1-InnoDB" class="headerlink" title="1. InnoDB"></a>1. InnoDB</h4><p><code>InnoDB</code> 存储引擎支持事务，其设计目标主要面向在线事务处理(<code>OLTP</code>)的应用。其特点是行锁设计、支持外键，并支持类似于 <code>Oracle</code> 的非锁定读，即默认读取操作不会产生锁。从 <code>MySQL</code> 数据库 <code>5.5.8</code> 版本开始 <code>InnoDB</code> 存储引擎是默认的存储引擎。</p>
+<p><code>InnoDB</code> 存储引擎将数据放在一个逻辑的表空间中，这个表空间就像黑盒一样由 <code>InnoDB</code> 存储引擎自身进行管理。从 <code>MySQL4.1</code>(包括4.1) 版本开始，它可以将每个 <code>InnoDB</code> 存储引擎的表单独存放到一个独立的 <code>ibd</code> 文件中。此外 <code>InnoDB</code> 存储引擎支持 用裸设备(<code>row disk</code>)用来建立其表空间。</p>
+<p><code>InnoDB</code> 通过使用多版本并发控制(<code>MVCC</code>)来获得高并发性，并且实现了 <code>SQL</code> 标准的 <code>4</code> 种隔离级别，默认为 <code>REPEATABLE</code> 级别。同时，使用一种被称为 <code>next-key locking</code> 的策略来避免幻读(<code>phantom</code>)现象的产生。除此之外，<code>InnoDB</code> 储存引擎还提供了插入缓冲(<code>insert buffer</code>)、二次写(<code>double write</code>)、自适应哈希索引(<code>adaptive hash index</code>)、预读(<code>read ahead</code>)等高性能和高可用的功能。</p>
+<p>对于表中数据的存储，<code>InnoDB</code> 存储引擎采用了聚集(<code>clustered</code>)的方式，因此每张表的存储都是按主键的顺序进行存放。如果没有显式地在表定义时指定主键，<code>InnoDB</code> 存储引擎会为每一行生成一个 <code>6</code> 字节的 <code>ROWID</code>，并以此作为主键。</p>
+<h4 id="2-MyISAM"><a href="#2-MyISAM" class="headerlink" title="2. MyISAM"></a>2. MyISAM</h4><p><code>MyISAM</code> 存储引擎不支持事务、表锁设计，支持全文索引，主要面向一些 <code>OLAP</code>  数据库应用。在 <code>MySQL5.5.8</code> 版本之前 <code>MyISAM</code> 存储引擎是默认的存储引擎（除 <code>Windows</code> 版本外)。</p>
+<p>数据库系统与文件系统很大的一个不同之处在于对事务的支持，然而 <code>MyISAM</code> 存储引擎是不支持事务的。究其根本，这也不是很难理解。试想用户是否在所有的应用中都需要事务呢？在数据仓库中，如果没有 <code>ETL</code> 这些操作，只是简单的报表查询是否还需要事务的支持呢？此外 <code>MyISAM</code> 存储引擎的另一个与众不同的地方是它的缓冲池只缓存(<code>cache</code>)索引文件，而不缓冲数据文件，这点和大多数的数据库都非常不同。</p>
+<p><code>MyISAM</code> 存储引擎表由 <code>MYD</code> 和 <code>MYI</code> 组成，其中 <code>MYD</code> 用来存放数据文件，· 用来存放索引文件。可以通过使用 <code>myisampack</code> 工具来进一步压缩数据文件，因为 <code>myisampack</code> 工具使用赫夫曼(<code>Huffman</code>)编码静态算法来压缩数据，因此使用 <code>myisampack</code> 工具压缩后的表是只读的，当然用户也可以通过 <code>myisampack</code> 来解压数据文件。</p>
+<h3 id="三、表结构"><a href="#三、表结构" class="headerlink" title="三、表结构"></a>三、表结构</h3><p>从 <code>InnoDB</code> 存储引擎的逻辑存储结构看，所有数据都被逻辑地存放在一个空间中，称之为表空间(<code>tablespace</code>)。</p>
+<p>表空间又由段(<code>segment</code>)、区(<code>extent</code>)、页(<code>page</code>)组成。页在一些文档中有时也称为块(<code>block</code>)，存储结构大致如图所示。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/4.png"></p>
+<h4 id="1-段-Segment"><a href="#1-段-Segment" class="headerlink" title="1. 段(Segment)"></a>1. 段(Segment)</h4><p>表空间是由各个段组成的，常见的段有数据段、索引段、回滚段等。</p>
+<p><code>InnoDB</code> 存储引擎表是索引组织的(<code>index organized</code>)，因此数据即索引，索引即数据。那么数据段即为 <code>B+</code> 树的叶子节点，索引段即为 <code>B+</code> 树的非索引节点。</p>
+<p>在 <code>InnoDB</code> 存储引擎中，对段的管理都是由引擎自身所完成，<code>DBA</code> 不能也没有必要对其进行控制，和 <code>Oracle</code> 数据库中的自动段空间管理( <code>ASSM</code> )类似，从一定程度上简化了 <code>DBA</code> 对于段的管理。</p>
+<h4 id="2-区-extent"><a href="#2-区-extent" class="headerlink" title="2. 区(extent)"></a>2. 区(extent)</h4><p>区是由连续页组成的空间，在任何情况下每个区的大小都为 <code>1MB</code>，为了保证区中页的连续性，<code>InnoDB</code> 存储引擎一次从磁盘申请 <code>4~5</code> 个区。</p>
+<p>在默认情况下，<code>InnoDB</code> 存储引擎页的大小为 <code>16KB</code>，即一个区中一共有 <code>64</code> 个连续的页。<code>InnoDB 1.Ox</code> 版本引入压缩页，即每个页的大小可通过参数 <code>KEY SIZE</code> 调整为 <code>2K、4K、8K</code>，因此每个区对应页的数量就应该为 <code>512、256、128</code>，但不论页的大小怎么变化，区的大小总是为 <code>1M</code>。</p>
+<h4 id="3-页-page"><a href="#3-页-page" class="headerlink" title="3. 页(page)"></a>3. 页(page)</h4><p><code>InnoDB</code> 同大多数数据库一样有页(<code>Page</code>)的概念（也可以称为块），页是 <code>InnoDB</code> 磁盘管理的最小单位，默认每个页的大小为 <code>16KB</code>。</p>
+<p>从 <code>InnoDB 1.2.x</code> 版本开始，可以通过参数 <code>innodb_page_size</code> 将页的大小设置为 <code>4K、8K、l6K</code>，设置后表中索引页的大小都为 <code>innodb_page_size</code> 所指定的大小且不允许二次修改，除非通过 <code>mysqldump</code> 导人和导出操作来产生新的库。</p>
+<p>一个 <code>16k</code> 大小的页并不是全部空间都用于存放记录数据，其被拆分为三部分，其中页头用于存放页号与页的指针等信息，只有数据区才是真正用于存放的数据的部分，其结构示意图如下：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/7.png"></p>
+<h4 id="4-行-row"><a href="#4-行-row" class="headerlink" title="4. 行(row)"></a>4. 行(row)</h4><p><code>Compact</code> 行记录是在 <code>MySQL 5.0</code> 中引入的，其设计目标是高效地存储数据。简单来说，一个页中存放的行数据越多，其性能就越高，其存储结构示意图如下。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/5.png"></p>
+<blockquote>
+<p><strong>(1) 变长字段长度列表</strong></p>
+</blockquote>
+<ul>
+<li>按照列的顺序逆序放置的。</li>
+<li>若列的长度小于 <code>255</code> 字节，用 <code>1</code> 字节表示，若大于 <code>255</code> 个字节，用 <code>2</code> 字节表示。</li>
+<li>最大不可以超过 <code>2</code> 字节，因为 <code>MySQL</code> 中 <code>VARCHAR</code> 类型的最大长度限制为 <code>65535</code>。</li>
+</ul>
+<blockquote>
+<p><strong>(2) NULL 标志位</strong></p>
+</blockquote>
+<ul>
+<li>该部分所占的字节应该为 <code>1</code> 字节。</li>
+<li>标识该行数据中是否有 <code>NULL</code> 值，有则用 <code>1</code> 表示。</li>
+</ul>
+<blockquote>
+<p><strong>(3) 记录头信息(record header)</strong></p>
+</blockquote>
+<ul>
+<li>固定占用 <code>5</code> 字节( <code>40</code> 位)，含义见下表。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/6.png"></li>
+</ul>
+<p>需要特别注意的是，<code>NULL</code> 不占该部分任何空间，即 <code>NULL</code> 除了占有 <code>NULL</code> 标志位，实际存储不占有任何空间。另外每行数据中除了用户定义的列外，还有两个隐藏列，事务 <code>ID</code> 列和回滚指针列，分别为 <code>6</code> 字节和 <code>7</code> 字节的大小。此外若 <code>InnoDB</code> 表没有定义主键，每行还会增加一个 <code>6</code> 字节的 <code>rowid</code> 列。</p>
+<h4 id="5-存储结构"><a href="#5-存储结构" class="headerlink" title="5. 存储结构"></a>5. 存储结构</h4><p>在 <code>MySQL</code> 中数据是依据 <code>B+</code> 树结构进行存在，即非叶子节点仅用于索引作用，真实行数据记录都存于叶子节点中，其结构示例图如下：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/8.png"></p>
+<h3 id="四、存储机制"><a href="#四、存储机制" class="headerlink" title="四、存储机制"></a>四、存储机制</h3><h4 id="1-读写机制"><a href="#1-读写机制" class="headerlink" title="1. 读写机制"></a>1. 读写机制</h4><p>在 <code>MySQL</code> 中数据存储包含 <code>内存</code> 与 <code>磁盘</code> 两个部分，增删改操作首先会被写入到 <code>redo log</code> 中，保证数据的持久性。同时为了提高写入性能，<code>MySQL</code> 还引入了 <code>Change Buffer</code> 机制，将写入的数据先暂存在 <code>Change Buffer</code> 中，再由后台线程定时将其刷入磁盘。</p>
+<p>在执行查询操作时，先从 <code>Change Buffer</code> 中读取数据，如果数据已经被修改，会将修改后的数据写回磁盘，然后再返回给查询请求。如果数据没有被修改，则直接返回内存中的数据。这样可以避免频繁地从磁盘读取数据，提高查询性能。</p>
+<blockquote>
+<p><code>Change Buffer</code> 的执行顺序如下：</p>
+<ul>
+<li>增删改操作时，记录 <code>redo log</code>，同时将数据写入 <code>Change Buffer</code>。</li>
+<li>后台线程定时将 <code>Change Buffer</code> 中的数据刷入磁盘。</li>
+<li>当 <code>MySQL</code> 崩溃后，重启时会先检查 <code>redo log</code>，将未持久化的数据写入磁盘，然后再将 <code>Change Buffer</code> 中的数据刷入磁盘。</li>
+</ul>
+</blockquote>
+<h4 id="2-Redo-log"><a href="#2-Redo-log" class="headerlink" title="2. Redo log"></a>2. Redo log</h4><p><code>Redo Log</code> 是一种记录 <code>MySQL</code> 数据更改的机制，它记录了数据的变化情况，以便在系统崩溃或意外宕机时进行数据恢复。</p>
+<p><code>Redo Log</code> 分为两个部分：<code>内存缓冲区</code> 和 <code>磁盘文件</code>。内存缓冲区是用来提高性能的，当事务提交时，缓冲区中的数据会被写入磁盘文件，以保证数据的持久性。当 <code>MySQL</code> 执行事务时，先将事务的变更操作记录到 <code>Redo Log</code> 中，再将数据写入磁盘，在系统发生崩溃或宕机时，可以通过 <code>Redo Log</code> 中记录的数据来恢复数据的变更操作。</p>
+<blockquote>
+<p><code>Redo log</code> 中同样维护着一套缓存，通过 <code>innodb_flush_log_at_trx_commit</code> 属性配置级别，推荐设置为 <code>2</code>。</p>
+<ul>
+<li><strong>1</strong>：实时将变更刷入服务器磁盘中，稳定性最高效率最低。</li>
+<li><strong>0</strong>：将变更刷入 <code>Redo log buffer</code> ，再定期将 <code>Redo log buffer</code> 数据写入磁盘。</li>
+<li><strong>2</strong>：将变更刷入物理机内存中，再每隔一秒执行一次数据磁盘写入操作，更推荐此方案。</li>
+</ul>
+</blockquote>
+<h4 id="3-Undo-log"><a href="#3-Undo-log" class="headerlink" title="3. Undo log"></a>3. Undo log</h4><p><code>Undo log</code> 用于处理事务数据回滚，将修改前数据存入 <code>Undo log</code> ，此时若发生事务即可直接从 <code>Undo log</code> 中读取变化前数据实现事务数据回滚。</p>
+<h4 id="4-Bin-log"><a href="#4-Bin-log" class="headerlink" title="4. Bin log"></a>4. Bin log</h4><p><code>Bin log</code> 是 <code>MySQL</code> 的一种服务器日志，用于记录所有数据库更新操作，包括数据定义语句和数据操作语句等。与 <code>Redo log</code> 不同，<code>Bin log</code> 是在 <code>MySQL Server</code> 层产生的，记录的是 <code>SQL</code> 语句或者语句的逻辑，而不是物理的数据变更操作。</p>
+<p><code>Bin log</code> 可以用于数据恢复、数据复制和数据同步等操作，也可以用于查询和数据分析等工作。</p>
+<h4 id="5-Change-Buffer"><a href="#5-Change-Buffer" class="headerlink" title="5. Change Buffer"></a>5. Change Buffer</h4><p><code>Change Buffer</code>(变更缓存) 是一种缓存机制，它会将某些更新操作缓存在内存中，而不是直接写入磁盘，这样可以减少磁盘随机写入，提高性能。</p>
+<p>当查询需要用到已经缓存在 <code>Change Buffer</code> 中的记录时， <code>MySQL</code> 会将缓存中的数据写入磁盘并清空缓存。如果缓存中的数据过多或占用内存过大， <code>MySQL</code> 会将缓存中的数据写入磁盘并清空缓存，以保证内存的可用性。</p>
+<blockquote>
+<p><code>Change Buffer</code> 中的操作应用到原数据页，得到最新结果的过程称为 <code>merge</code>。</p>
+<ul>
+<li>访问这个数据页会触发 <code>merge</code> 。</li>
+<li>系统有后台线程会定期 <code>merge</code> 。</li>
+<li>在数据库正常关闭 <code>(shutdown)</code> 的过程中，也会执行 <code>merge</code> 操作</li>
+</ul>
+</blockquote>
+<h4 id="6-区别差异"><a href="#6-区别差异" class="headerlink" title="6. 区别差异"></a>6. 区别差异</h4><p><code>Change Buffer</code> 和 <code>Redo Log</code> 都是 <code>MySQL</code> 提高性能和保证数据一致性的重要机制，它们的作用是互相补充的。</p>
+<ul>
+<li><code>Change Buffer</code> 用来提高更新操作的性能，而 <code>Redo Log</code> 则用来保证数据的一致性和可恢复性。</li>
+<li><code>Bin log</code> 记录的是 <code>Server</code> 层逻辑变更，而 <code>Redo Log</code> 记录的是物理层数据变更。</li>
+</ul>
+<h4 id="7-二阶段提交"><a href="#7-二阶段提交" class="headerlink" title="7. 二阶段提交"></a>7. 二阶段提交</h4><p>在上面介绍了 <code>MySQL</code> 数据的操作流程，变更的数据会先写入 <code>Change Buffer</code> 中再有执行器定期写入 <code>Redo log</code>，若通过 <code>SQL</code> 等操作变更则会同时触发 <code>Bin log</code> 机制，其基本的执行流程如下所示。</p>
+<p>下图中以数据插入为例，若为更新等操作在 <code>Change Buffer</code> 与 <code>Redo log</code> 之间通常存在 <code>Undo log</code> 操作用于数据的事务回滚。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/9.png"></p>
+<p>但上述的存在一种特殊情况，即 <code>Redo log</code> 写入是正常但由于某些原因使得 <code>Bin log</code> 没有正常更新，也就导致了 <code>Redo log</code> 与 <code>Bin log</code> 二者数据出现不一致的情况。</p>
+<p>为此 <code>MySQL</code> 中引入了二阶段提交操作，将 <code>Redo log</code> 操作拆分为准备（<code>prepare</code>）与提交（<code>commit</code>），若 <code>Bin log</code> 出现异常则 <code>Redo log</code> 状态将停止于 <code>prepare</code>，当通过 <code>Redo log</code> 恢复数据时读取状态为 <code>prepare</code> 将通过事务回滚读取 <code>Bin log</code> 的值，即发生变更之前的数据，从而保证了数据的一致性。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/10.png"></p>
+<h3 id="五、MVCC介绍"><a href="#五、MVCC介绍" class="headerlink" title="五、MVCC介绍"></a>五、MVCC介绍</h3><p>多版本并发控制 <code>MVCC</code> 是一种无锁读取的优化策略，它的无锁是特指读取时不需要加锁。</p>
+<p>基本思路是对数据库的任何修改都不会直接覆盖之前的数据，而是产生一个新版副本与老版本共存，以此达到读取时可以完全不加锁的目的。</p>
+<h4 id="1-实现机制"><a href="#1-实现机制" class="headerlink" title="1. 实现机制"></a>1. 实现机制</h4><p><code>MVCC</code> 用来解决读写冲突的无锁并发控制，就是为事务分配单向增长的时间戳，为每个数据修改保存一个版本，版本与事务时间戳相关联。</p>
+<p><code>MVCC</code> 的实现原理主要是基于版本链、<code>undo</code> 日志与 <code>Read View</code> 实现，<code>InnoDB</code> 在每行数据都增加三个隐藏字段，一个唯一行号，一个记录创建的版本号，一个记录删除的版本号。</p>
+<blockquote>
+<ul>
+<li>创建版本号： <code>insert</code> 操作时事务的 <code>id</code>。</li>
+<li>删除版本号： <code>insert</code> 时为 <code>null</code>，删除时为当前事务的 <code>id</code>。  </li>
+</ul>
+</blockquote>
+<p>当读操作时，读取的是删除版本号为 <code>null</code> 或创建版本号最大的数据，保证我们读取的是最新的数据。</p>
+<h4 id="2-版本链"><a href="#2-版本链" class="headerlink" title="2. 版本链"></a>2. 版本链</h4><p>数据库中的每行数据除了肉眼看见的数据，还有几个隐藏字段，分别是 <code>db_trx_id</code>、<code>db_roll_pointer</code>、<code>db_row_id</code>。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">字段</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">db_row_id</td>
+        <td style="text-align: center;">隐含一个大小为 6byte 的自增 ID，如果数据表没有主键，则自动以 db_row_id 产生一个聚簇索引。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">db_trx_id</td>
+        <td style="text-align: center;">记录创建这条记录/最后一次修改该记录的事务 ID，大小为 6byte。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">db_roll_pointer</td>
+        <td style="text-align: center;">回滚指针(版本链关键，大小为 7byte)，指向这条记录的上一个版本(存储于 rollback segment 里)。</td>
+    </tr>
+</table>
+<br/>
+
+<p>实际还有一个删除 <code>flag</code> 隐藏字段，记录被更新或删除并不代表真的删除，而是删除 <code>flag</code> 变了。当通过 delete 关键字执行删除命令时，系统并不是真正意义上的进行删除，而是将对应记录的占用的空间标记为可用。</p>
+<hr>
+<p><strong>参考文档</strong></p>
+<ol>
+<li>《MySQL InnoDB存储》</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7116381265300815903">为什么大家说mysql数据库单表最大两千万？依据是啥？</a></li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">烽火戏诸诸诸侯</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://great-jin.github.io/db/mysql/struct/">https://great-jin.github.io/db/mysql/struct/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq, qzone, wechat, weibo, douban, google" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="MTAyMC81NDI4My8zMDc1NA">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/java/basis/schedule/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/15.png" class="responsive-img" alt="Java定时任务介绍">
+                        
+                        <span class="card-title">Java定时任务介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Java定时任务介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/basis/feature/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/41.png" class="responsive-img" alt="不同版本 JDK 特性介绍">
+                        
+                        <span class="card-title">不同版本 JDK 特性介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            不同版本 JDK 特性介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('100')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 布袋青年<br />'
+            + '文章作者: 烽火戏诸诸诸侯<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+    </div>
+
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('h2'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+        
+    
+    </main>
+    
+    
+    
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            
+            <!-- 版权信息. -->
+            Copyright&nbsp;
+            
+                <span id="year">2021-2023</span>
+            
+            &nbsp;
+            <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
+            &nbsp;&copy;All Rights Reserved
+
+            <!-- ICP备案信息. -->
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        window.setTimeout("calcSiteTime()", 1000);
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "9";
+                        var startDate = "16";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+                        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+                        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+                        
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已运行 ' + diffYears + ' 年 '  + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = '本站已随风漂流 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+
+            <!-- 站点访问统计 -->
+            
+                <span id="busuanzi_container_site_pv">
+                    <i class="far fa-eye"></i>&nbsp;
+                    总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                    &nbsp;|&nbsp;
+                    <i class="fas fa-users"></i>&nbsp;
+                    总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+                </span>
+            
+            
+                &nbsp;|&nbsp;
+                <i class="fas fa-chart-area"></i>&nbsp;
+                站点总字数:&nbsp;
+                <span class="white-color">211.3k</span>
+            
+            
+            
+                
+            
+            <br>
+
+
+            <!-- 驱动说明. -->
+            <i class="fa fa-rocket" aria-hidden="true"></i>
+            &nbsp;Powered By&nbsp;
+            <a href="https://hexo.io/" target="_blank">Hexo</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            
+            <i class="fa fa-globe" aria-hidden="true" /></i>
+            <span class="translate-style">
+                &nbsp;语言：
+                <a id="translateLink" href="javascript:translatePage();">繁体</a>
+            </span>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            &nbsp;Theme By&nbsp;
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+
+            <script type="text/javascript" src="/js/tw_cn.js"></script>
+            <script type="text/javascript">
+                var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
+                var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
+                var cookieDomain = "https://great-jin.github.io/"; //Cookie地址, 一定要设定, 通常为你的网址
+                var msgToTraditionalChinese = "繁体"; //此处可以更改为你想要显示的文字
+                var msgToSimplifiedChinese = "简体"; //同上，但两处均不建议更改
+                var translateButtonId = "translateLink"; //默认互换id
+                translateInitilization();
+            </script>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/great-jin" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:ibudai56@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+    <a href="https://www.zhihu.com/people/xiao-ming-92-43-49" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fab fa-zhihu1">知</i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/aos/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+    <!-- 樱花特效 -->
+    
+
+    <!-- 文字特效 -->
+    
+    <script async src="/js/text.js"></script>
+    
+    <script type="text/javascript"> var OriginTitile = document.title, st; 
+        document.addEventListener("visibilitychange", 
+        function () { document.hidden ? (document.title = "｡°(°¯᷄◠¯᷅°)°｡要记得回来哦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪你回来了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) }) 
+    </script>
+    
+    <script type="text/javascript"
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+    </script>
+    
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+
+</html>
