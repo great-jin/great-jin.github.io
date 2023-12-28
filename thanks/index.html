@@ -89,7 +89,7 @@
 <div class="thank-you-container">
   <div style="margin: 50px 0;">
     <h3>
-      <strong>您的支持是我前进最大的动力！</strong>
+      <strong>您的支持是我更新最大的动力！</strong>
     </h3>
   </div>
 
@@ -122,45 +122,38 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td>4</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>虚位以待</td>
-          <td>￥0</td>
-        </tr>
       </tbody>
     </table>
   </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Fetch JSON data
+    fetch('./donate.json') // Replace with the actual path to your JSON file
+      .then(response => response.json())
+      .then(data => {
+        // Process and display JSON data in the table
+        const tableBody = document.querySelector('table tbody');
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          const index = document.createElement('td');
+          const name = document.createElement('td');
+          const money = document.createElement('td');
+
+          index.textContent = item.index;
+          name.textContent = item.name;
+          money.textContent = item.money;
+
+          row.appendChild(index);
+          row.appendChild(name);
+          row.appendChild(money);
+
+          tableBody.appendChild(row);
+        });
+      }).catch(error => console.error('Error fetching JSON:', error));
+  });
+</script>
 </body>
 </html>
