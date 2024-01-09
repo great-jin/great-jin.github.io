@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Vue项目打包部署, 布袋青年">
+    <meta name="keywords" content="Vue构建部署教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Vue项目打包部署 | 布袋青年</title>
+    <title>Vue构建部署教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -354,7 +354,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Vue项目打包部署</h1>
+                    <h1 class="description center-align post-title">Vue构建部署教程</h1>
                 </div>
             </div>
         </div>
@@ -487,12 +487,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CentOS/">
+                                <span class="chip bg-color">CentOS</span>
+                            </a>
+                        
+                            <a href="/tags/Vue/">
+                                <span class="chip bg-color">Vue</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                服务部署
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -501,28 +518,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-08-07
+                    2023-12-30
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    704
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -542,7 +559,114 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h3 id="一、项目配置"><a href="#一、项目配置" class="headerlink" title="一、项目配置"></a>一、项目配置</h3><h4 id="1-路由变更"><a href="#1-路由变更" class="headerlink" title="1. 路由变更"></a>1. 路由变更</h4><p>修改前端项目的路由模式为 <code>Hash</code>，文件在 <code>src/router/index.js</code>，下述是 <code>Vue3</code> 的配置:</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createRouter<span class="token punctuation">,</span> createWebHashHistory<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue-router'</span>
+
+<span class="token keyword">const</span> routes <span class="token operator">=</span> pathArray
+
+<span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token function">createRouter</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 设置模式为 Hash</span>
+    history<span class="token punctuation">:</span> <span class="token function">createWebHashHistory</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>BASE_URL<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    routes
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> router
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-服务配置"><a href="#2-服务配置" class="headerlink" title="2. 服务配置"></a>2. 服务配置</h4><p>修改项目根目录下的 <code>vue.config.js</code> 文件，注意将其中的 <code>192.168.0.100</code> 替换为你自己的服务器 <code>IP</code>。</p>
+<p>其中 <code>8080</code> 是前端的访问端口，<code>9090</code> 为后端服务端口，<code>/daily-word</code> 为前端接口前缀，<code>/dailyWord</code> 为后端配置的 <code>servlet:context-path</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token function">defineConfig</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  devServer<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    open<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">// frontend server host and port</span>
+    host<span class="token punctuation">:</span> <span class="token string">"192.168.0.100"</span><span class="token punctuation">,</span>
+    port<span class="token punctuation">:</span> <span class="token string">"8080"</span><span class="token punctuation">,</span>
+    https<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    proxy<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">"/daily-word"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// backend server url</span>
+        target<span class="token punctuation">:</span> <span class="token string">"http://192.168.0.100:9090/"</span><span class="token punctuation">,</span>
+        ws<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        changOrigin<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        pathRewrite<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+          <span class="token comment" spellcheck="true">// Rewrite path prefix to backend "servlet:context-path"</span>
+          <span class="token string">"/daily-word"</span><span class="token punctuation">:</span> <span class="token string">"/dailyWord"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-应用打包"><a href="#3-应用打包" class="headerlink" title="3. 应用打包"></a>3. 应用打包</h4><p>在前端工程指定 <code>build</code> 命令完成后将会在项目根目录生成 <code>dist</code> 目录，其则为打包后的文件，将其上传到服务器的你期望的目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> run build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="二、后端配置"><a href="#二、后端配置" class="headerlink" title="二、后端配置"></a>二、后端配置</h3><h4 id="1-跨域处理"><a href="#1-跨域处理" class="headerlink" title="1. 跨域处理"></a>1. 跨域处理</h4><p>为了部署之后前端接口请求能正常访问后端服务，后端需要设置跨域白名单。</p>
+<p>在 <code>Spring</code> 工程中新建类并实现 <code>WebMvcConfigurer</code> 接口类定义跨域规则，这里为了方便我设置放行所有请求和地址，可根据需求进行调整。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CorsConfig</span> <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${auth.host.cors}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String hosts<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addCorsMappings</span><span class="token punctuation">(</span>CorsRegistry registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        String<span class="token punctuation">[</span><span class="token punctuation">]</span> crosHost <span class="token operator">=</span> hosts<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">","</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 设置允许跨域的路径</span>
+        registry<span class="token punctuation">.</span><span class="token function">addMapping</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 设置允许跨域请求的域名</span>
+                <span class="token punctuation">.</span><span class="token function">allowedOriginPatterns</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 是否允许cookie</span>
+                <span class="token punctuation">.</span><span class="token function">allowCredentials</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 设置允许的请求方式</span>
+                <span class="token punctuation">.</span><span class="token function">allowedMethods</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">,</span> <span class="token string">"POST"</span><span class="token punctuation">,</span> <span class="token string">"DELETE"</span><span class="token punctuation">,</span> <span class="token string">"PUT"</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 设置允许的header属性</span>
+                <span class="token punctuation">.</span><span class="token function">allowedHeaders</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 跨域允许时间</span>
+                <span class="token punctuation">.</span><span class="token function">maxAge</span><span class="token punctuation">(</span>TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">toMillis</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、服务部署"><a href="#三、服务部署" class="headerlink" title="三、服务部署"></a>三、服务部署</h3><h4 id="1-Nginx代理"><a href="#1-Nginx代理" class="headerlink" title="1. Nginx代理"></a>1. Nginx代理</h4><p>上述打包完成后的文件为静态资源，因此这里选择通过 <code>Nginx</code> 实现页面的访问，具体的 <code>Nginx</code> 部署教程之前的文章已经详细介绍过，这里不再重复详细展开，链接直达：<a href="https://great-jin.github.io/linux/nginx/">Nginx教程</a>。</p>
+<h4 id="2-请求转发"><a href="#2-请求转发" class="headerlink" title="2. 请求转发"></a>2. 请求转发</h4><p>由于 <code>Nginx</code> 静态资源不支持 <code>Post</code> 接口请求，因此需要将请求进行转发。</p>
+<pre class="line-numbers language-conf"><code class="language-conf">location / {
+    #root   html;
+    #index  index.html index.htm;
+    try_files $uri $uri/ /index.html;
+    error_page 405 =200  $request_uri;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-完整配置"><a href="#3-完整配置" class="headerlink" title="3. 完整配置"></a>3. 完整配置</h4><p>完成的 <code>Nginx</code> 配置文件如下，其中 <code>8080</code> 为页面访问地址，需要和第一步中配置的一致，<code>root</code> 配置打包上传的 <code>dist</code> 目录路径。</p>
+<p>注意将其中的 <code>192.168.0.100</code> 替换为你自己的服务器 <code>IP</code>。</p>
+<pre class="line-numbers language-conf"><code class="language-conf">server {
+    listen       8080;
+    server_name  localhost;
+    root         /home/budai/dailyword/dist;
+
+    location / {
+        #root   html;
+        #index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
+        error_page 405 =200  $request_uri;
+    }
+
+    location ^~ /daily-word {
+        proxy_pass http://192.168.0.100:9090/dailyWord;
+    }
+
+    location @405 {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        # ip为后端服务地址
+        proxy_pass http://192.168.0.100:9090$request_uri;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -568,7 +692,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/todo/vue/deploy.html">https://great-jin.github.io/todo/vue/deploy.html</a>
+                    <a href="https://great-jin.github.io/vue/deploy/">https://great-jin.github.io/vue/deploy/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -605,7 +729,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/CentOS/">
+                                    <span class="chip bg-color">CentOS</span>
+                                </a>
+                            
+                                <a href="/tags/Vue/">
+                                    <span class="chip bg-color">Vue</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -802,12 +934,12 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/todo/vue/deploy.html">
+                <a href="/vue/deploy/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/front/vue/3.png" class="responsive-img" alt="Vue项目打包部署">
+                        <img src="/album/banner/front/vue/3.png" class="responsive-img" alt="Vue构建部署教程">
                         
-                        <span class="card-title">Vue项目打包部署</span>
+                        <span class="card-title">Vue构建部署教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -818,17 +950,33 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-30
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    服务部署
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CentOS/">
+                        <span class="chip bg-color">CentOS</span>
+                    </a>
+                    
+                    <a href="/tags/Vue/">
+                        <span class="chip bg-color">Vue</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -836,36 +984,47 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/todo/vue/deploy.html">
+                <a href="/java/spring/tool/websocket/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/front/vue/3.png" class="responsive-img" alt="Vue项目打包部署">
+                        <img src="/album/banner/java/spring/19.png" class="responsive-img" alt="Websocket入门教程">
                         
-                        <span class="card-title">Vue项目打包部署</span>
+                        <span class="card-title">Websocket入门教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Vue项目打包部署教程。
+                            Spring Websocket通讯入门教程。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-30
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    Spring工具
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1136,7 +1295,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">211.3k</span>
+                <span class="white-color">215.3k</span>
             
             
             

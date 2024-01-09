@@ -521,21 +521,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-16
+                    2024-01-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    8 分
                 </div>
                 
 
@@ -590,10 +590,16 @@
 <blockquote>
 <p>为什么会存在误判情况？首先我们需要了解 <code>Bloom</code> 过滤器的实现原理。</p>
 </blockquote>
-<p>在之前的数据缓存中的， <code>Redis</code> 是根据用户指定的 <code>Key</code> 直接进行存储，而 <code>Bloom</code> 过滤器是将 <code>Key</code> 多次进行二次哈希算法求值时以二进制形式存于内存之中。</p>
-<!-- 我们都知道二进制在计算中是以 0 与 1 的形式存储，而 Key 进行多次的
+<h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p>在之前的数据缓存中的， <code>Redis</code> 是根据用户指定的 <code>Key</code> 直接进行存储，而 <code>Bloom</code> 过滤器是将 <code>Key</code> 多次进行二次哈希算法求值时以二进制形式存于内存之中。</p>
+<p>在传统 <code>key value</code> 形式中当需要判断一个数据是否存在时需要根据 <code>key</code> 去对应的内存中查找，而这样做的前提是需要将所有的数据对应的 <code>key</code> 进行存储。对于需用到其对应 <code>value</code> 的数据此类方式无伤大雅，但是对于 <code>value</code> 无用仅需判断是否存在的情况此类方式显然过度浪费。</p>
+<p>此处以用户注册为例，当需要判断对应的用户名是否已经被使用，最简单的方法即读取当前数据库中已使用的用户名进行匹配，而为了更好的效率，我们可能会将已存在的用户名存入 <code>Redis</code> 中从而提供检索匹配效率。但当用户数量达到一定量级，将全部的用户名存入 <code>Redis</code> 显然对服务器内存压力是不小的，而使用布隆过滤器则可大大节省内存占用。</p>
+<p>首先，让我们来看一个简化版的布隆过滤器实现思路，对于值无关数据若需要实现存在匹配，可以通过哈希算法实现。其实现逻辑为基础的哈希拉链法，即将目标数据经过特定哈希算法计算，将计算得到的数值在定长数组对应位置标识记为 <code>1</code>。</p>
+<p>如下图示例中对于输入的值 <code>key</code> 经过哈希算法 <code>Hash()</code> 计算后值为 <code>0</code>，则将对应下标位置标识置为 <code>1</code>，当多个 <code>key</code> 的哈希值重复时则采用拉链法，同时定长数组长度越大，重复的概率也就越小。<br><img src="/album/loading.gif" data-original="/album/article/db/redis/b1.png"></p>
+<h4 id="2-算法优化"><a href="#2-算法优化" class="headerlink" title="2. 算法优化"></a>2. 算法优化</h4><p>通过上述的方式，即可实现仅通过一个定长数组记录了之前庞大的数据，从而大大节省了内存占用。但是上述也提到了一个重复的问题，虽然采用拉链法可以进行解决，但却增加了复杂度，因此布隆过滤器中采用了多重哈希的实现思路。在之前提到的通过一个哈希算法计算标识，而若采用多重哈希的则将大大降低重复率，即一个 <code>key</code> 使用不同哈希算法计算值，将得到的多个值其对应定长数组标志置为 <code>1</code>。</p>
+<p>如下图中的 <code>key</code> 经过 <code>Hash1()</code> 与 <code>Hash2()</code> 两个算法计算后得到的值为 <code>0</code> 与 <code>1</code>，则将对应定长数组下标为 <code>0</code> 和 <code>1</code> 的标志置为 <code>1</code>。当判断一个数据是否存在时，仅需要对其执行对应的多个哈希算法，将得到的值在定长数组中进行检索，若所有对应位置的标识皆为 <code>1</code> 则表明该数据一定存在。<br><img src="/album/loading.gif" data-original="/album/article/db/redis/b2.png"></p>
+<h4 id="3-数据误判"><a href="#3-数据误判" class="headerlink" title="3. 数据误判"></a>3. 数据误判</h4><p>通过多重哈希的方式，即将原始数据巧妙的转化为基础的一维数组，从而提高了存储效率。在之前提到了布隆过滤器的实现存在误判的情景，即上述中两个不同的 <code>key</code> 的经过多个哈希算法计算得到的结果却一致，从而导致数据不存在却误判。对于此类情况只需增加哈希算法个数即可减少发生的概率，如由两个哈希算法提升至四个算法，此时重复的概率将进一步降低。</p>
+<p>经过上述的步骤，即将复杂的数据转化为一维数组，由因数组存放的数据皆为 <code>0</code>，<code>1</code>，故可将其替换为字节数组，即每一位存放 <code>1bit</code> 数据，相对于整型的 <code>4bit</code> 进一步节省了空间，布隆过滤器中也正是这么做的，称每一个定长数组为一个 位图，实现逻辑同上此处就不再重复阐述。</p>
 
-### 三、分布式锁 -->
                 
             </div>
             <hr/>
@@ -1220,7 +1226,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">211.3k</span>
+                <span class="white-color">215.3k</span>
             
             
             

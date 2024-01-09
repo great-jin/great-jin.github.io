@@ -525,21 +525,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    9 分
                 </div>
                 
 
@@ -757,6 +757,179 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"get(): "</span> <span class="token operator">+</span> node<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、文件读写"><a href="#四、文件读写" class="headerlink" title="四、文件读写"></a>四、文件读写</h3><h4 id="1-数据查询"><a href="#1-数据查询" class="headerlink" title="1. 数据查询"></a>1. 数据查询</h4><p>通过 <code>readTree()</code> 读取 <code>json</code> 数据文件，通过 <code>limit</code> 限制查看的条数，为 <code>-1</code> 时则无限制。</p>
+<p>其中 <code>condition</code> 对象为查询条件，其 <code>key</code> 为条件属性名，<code>value</code> 为属性对应值，如传入 <code>&#123;id: 1&#125;</code> 则查看文件数据中 <code>id</code> 值为 <code>1</code> 的数据对象。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>JsonNode<span class="token operator">></span> <span class="token function">query</span><span class="token punctuation">(</span>Integer limit<span class="token punctuation">,</span> String path<span class="token punctuation">,</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> condition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>JsonNode<span class="token operator">></span> nodeList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        File dbFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>dbFile<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>dbFile<span class="token punctuation">.</span><span class="token function">isFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            LOGGER<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">"File data {} not existed"</span><span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        JsonNode dbNode <span class="token operator">=</span> mapper<span class="token punctuation">.</span><span class="token function">readTree</span><span class="token punctuation">(</span>dbFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>JsonNode node <span class="token operator">:</span> dbNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">marchNode</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> condition<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>limit <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">&amp;&amp;</span> index<span class="token operator">++</span> <span class="token operator">>=</span> limit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                nodeList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> nodeList<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        LOGGER<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"list data error"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> Boolean <span class="token function">marchNode</span><span class="token punctuation">(</span>JsonNode node<span class="token punctuation">,</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> condition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">boolean</span> march <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Map<span class="token punctuation">.</span>Entry<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> item <span class="token operator">:</span> condition<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// March the node</span>
+        String key <span class="token operator">=</span> item<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Object value <span class="token operator">=</span> item<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String target <span class="token operator">=</span> node<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Objects<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            march <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> march<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-手动插入"><a href="#2-手动插入" class="headerlink" title="2. 手动插入"></a>2. 手动插入</h4><p>当向 <code>Json</code> 文件插入输入时最简单的方法是通过 <code>readTree()</code> 读取后更新对象再通过 <code>writeValue()</code> 回写，但存在一个问题即当文件过大时将整个数据读取对内存耗费较大，同时大文件回写也会耗费一定性能。</p>
+<p>因此对于 <code>Json</code> 文件的插入这里选择了通过手动 <code>IO</code> 方式插入，其实现逻辑如下：先将文件数组符号的 <code>]</code> 替换为 <code>,</code> ，此时写入需插入的对象，最后手动再补充一个 <code>]</code> 使之符合 <code>Json</code> 格式。</p>
+<p>对应步骤的数据内容如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 原数据</span>
+<span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// 步骤一, 替换 ]</span>
+<span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+<span class="token comment" spellcheck="true">// 步骤二，写入数据</span>
+<span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 步骤三，回填 ]</span>
+<span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述实现逻辑对应的代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> Boolean <span class="token function">saveToJsonArray</span><span class="token punctuation">(</span>T t<span class="token punctuation">,</span> String path<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">boolean</span> success <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>RandomAccessFile dbRaf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> <span class="token string">"rw"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dbRaf<span class="token punctuation">.</span><span class="token function">seek</span><span class="token punctuation">(</span>dbRaf<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Modify last character "]" to ","</span>
+        dbRaf<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">","</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Save data</span>
+        dbRaf<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>mapper<span class="token punctuation">.</span><span class="token function">writeValueAsBytes</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Append character "]" to last</span>
+        dbRaf<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"]"</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        success <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        LOGGER<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Save data error"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> success<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-数据删除"><a href="#3-数据删除" class="headerlink" title="3. 数据删除"></a>3. 数据删除</h4><p>删除文件中 <code>Json</code> 数组的指定对象原理与查询类似，同样通过 <code>Map</code> 作为条件先进行匹配过滤到对应数据的下标通过 <code>remove()</code> 删除，再将变更后的数据通过 <code>writeValue()</code> 回写至原文件。</p>
+<p>需要注意的是遍历 <code>readTree(</code>) 读取的数组对象时需要从后往前，如若从前向后遍历当执行 <code>remove()</code> 时将会导致后续的元素前移导致数据的遗落。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Boolean <span class="token function">deleteByMap</span><span class="token punctuation">(</span>String path<span class="token punctuation">,</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> condition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">boolean</span> success <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">boolean</span> changed <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        File dbFile <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ArrayNode dbNodeTree <span class="token operator">=</span> <span class="token punctuation">(</span>ArrayNode<span class="token punctuation">)</span> mapper<span class="token punctuation">.</span><span class="token function">readTree</span><span class="token punctuation">(</span>dbFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// From back to front in case index change cost element miss</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> dbNodeTree<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            JsonNode node <span class="token operator">=</span> dbNodeTree<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">marchNode</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> condition<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                changed <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                dbNodeTree<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>changed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            mapper<span class="token punctuation">.</span><span class="token function">writeValue</span><span class="token punctuation">(</span>dbFile<span class="token punctuation">,</span> dbNodeTree<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        success <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        LOGGER<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Delete data error"</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> success<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-数据更新"><a href="#4-数据更新" class="headerlink" title="4. 数据更新"></a>4. 数据更新</h4><p>对于 <code>Json</code> 文件的数据更新并没有直接的方式，可以选择先通过 <code>readTree()</code> 读取进行修改后再使用 <code>writeValue()</code> 进行回写更新，也可以进行全删全入，即先删除匹配的数据再执行插入操作，步骤和上述类似这里就不再详细介绍。</p>
+<h3 id="五、文件写入"><a href="#五、文件写入" class="headerlink" title="五、文件写入"></a>五、文件写入</h3><h4 id="1-覆盖写入"><a href="#1-覆盖写入" class="headerlink" title="1. 覆盖写入"></a>1. 覆盖写入</h4><p><code>Jackson</code> 提供了 <code>writeValue(File, JsonNode)</code> 用于写入数据至文件，但其会覆盖原文件内容。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * Before: {"id": 0}
+ * After:  {"id": 1}
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">replaceObj</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        JsonNode node <span class="token operator">=</span> mapper<span class="token punctuation">.</span><span class="token function">convertValue</span><span class="token punctuation">(</span>Map<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> JsonNode<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// writeValue(): replace file content with new value</span>
+        mapper<span class="token punctuation">.</span><span class="token function">writeValue</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-数据拼接"><a href="#2-数据拼接" class="headerlink" title="2. 数据拼接"></a>2. 数据拼接</h4><p>通过 <code>JsonGenerator</code> 进行数据写入时则可以将单个 <code>Json</code> 对象拼接到当前文件的尾部。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * Before: [{"id": 0}]
+ * After:  [{"id": 0}] {"id": 1}
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">appendObj</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        JsonFactory jsonFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JsonFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>
+            FileWriter fileWriter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileWriter</span><span class="token punctuation">(</span>location<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            JsonGenerator jsonGenerator <span class="token operator">=</span> jsonFactory<span class="token punctuation">.</span><span class="token function">createGenerator</span><span class="token punctuation">(</span>fileWriter<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// append object to file</span>
+            jsonGenerator<span class="token punctuation">.</span><span class="token function">writeStartObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jsonGenerator<span class="token punctuation">.</span><span class="token function">writeNumberField</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            jsonGenerator<span class="token punctuation">.</span><span class="token function">writeEndObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-数组写入"><a href="#3-数组写入" class="headerlink" title="3. 数组写入"></a>3. 数组写入</h4><p>通过 SequenceWriter 即可实现与 JsonGenerator 类似效果，不同的是其是将 Json 数组拼接到当前文件的尾部。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * Before: [{"id": 0}]
+ * After:  [{"id": 0}] [{"id": 1}]
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">appendArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>
+            FileWriter fileWriter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileWriter</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            SequenceWriter seqWriter <span class="token operator">=</span> mapper<span class="token punctuation">.</span><span class="token function">writer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">writeValuesAsArray</span><span class="token punctuation">(</span>fileWriter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// append an object array to json file</span>
+        seqWriter<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>Map<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// when "seqWriter.close()" then put "]"</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1380,7 +1553,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">211.3k</span>
+                <span class="white-color">215.3k</span>
             
             
             
