@@ -525,7 +525,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-16
+                    2024-01-14
                 </div>
                 
 
@@ -723,14 +723,14 @@
     <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">isAcknowledged</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、数据查询"><a href="#三、数据查询" class="headerlink" title="三、数据查询"></a>三、数据查询</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>这里除了需要引入 <code>ES</code> 连接客户端还引入 <code>Jackson</code> 的 <code>ObjectMapper</code> 用于 <code>Json</code> 数据转化。</p>
+<h3 id="三、数据操作"><a href="#三、数据操作" class="headerlink" title="三、数据操作"></a>三、数据操作</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>这里除了需要引入 <code>ES</code> 连接客户端还引入 <code>Jackson</code> 的 <code>ObjectMapper</code> 用于 <code>Json</code> 数据转化。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Autowired</span>
 <span class="token keyword">private</span> ObjectMapper objectMapper<span class="token punctuation">;</span>
 
 <span class="token annotation punctuation">@Autowired</span>
 <span class="token keyword">public</span> RestHighLevelClient restHighLevelClient<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-条件查询"><a href="#2-条件查询" class="headerlink" title="2. 条件查询"></a>2. 条件查询</h4><p>条件查询，根据文档的 <code>ID</code> 进行数据查询。</p>
+<h4 id="2-主键查询"><a href="#2-主键查询" class="headerlink" title="2. 主键查询"></a>2. 主键查询</h4><p>根据文档的 <code>ID</code> 进行数据查询，注意这个 <code>ID</code> 是 <code>ES</code> 为每一条的文档单独的值，在新增数据若未指定将会自动填充。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> User <span class="token function">get</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     GetRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GetRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -747,17 +747,66 @@
     <span class="token keyword">return</span> user<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-全量查询"><a href="#3-全量查询" class="headerlink" title="3. 全量查询"></a>3. 全量查询</h4><p>查询指定索引下所有数据。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">list</span><span class="token punctuation">(</span>String index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">indices</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h4 id="3-数据新增"><a href="#3-数据新增" class="headerlink" title="3. 数据新增"></a>3. 数据新增</h4><p>在指定索引下添加数据。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">save</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    IndexRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IndexRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    IndexResponse response<span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span> XContentType<span class="token punctuation">.</span>JSON<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-数据更新"><a href="#4-数据更新" class="headerlink" title="4. 数据更新"></a>4. 数据更新</h4><p>根据索引名与文档 <code>ID</code> 更新数据。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">update</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    UpdateRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UpdateRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    UpdateResponse response<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        request<span class="token punctuation">.</span><span class="token function">doc</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span> XContentType<span class="token punctuation">.</span>JSON<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="5-数据删除"><a href="#5-数据删除" class="headerlink" title="5. 数据删除"></a>5. 数据删除</h4><p>根据索引名与文档 <code>ID</code> 删除指定数据。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">deleted</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    DeleteRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DeleteRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    DeleteResponse response<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、数据插叙"><a href="#四、数据插叙" class="headerlink" title="四、数据插叙"></a>四、数据插叙</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>通过 <code>SearchSourceBuilder</code> 构造查询条件，设置为 <code>QueryBuilders.matchAllQuery()</code> 则不执行任何过滤。</p>
+<p>默认查询返回的数据仅 <code>10</code> 条，因此需要通过设置 <code>builder.trackTotalHits(true)</code> 取消该限制。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">list</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> Integer size<span class="token punctuation">,</span> Integer from<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 构造查询条件</span>
     SearchSourceBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchSourceBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 查询所有数据</span>
     builder<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">matchAllQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    builder<span class="token punctuation">.</span><span class="token function">timeout</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TimeValue</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MINUTES<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 取消条数限制</span>
     builder<span class="token punctuation">.</span><span class="token function">trackTotalHits</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 分页条件</span>
+    builder<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    builder<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>from<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 设置请求查询条件</span>
     request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>builder<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> list<span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         SearchResponse response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -773,116 +822,79 @@
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> list<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、数据操作"><a href="#四、数据操作" class="headerlink" title="四、数据操作"></a>四、数据操作</h3><h4 id="1-数据新增"><a href="#1-数据新增" class="headerlink" title="1. 数据新增"></a>1. 数据新增</h4><p>在指定索引下添加数据。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">save</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    IndexRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IndexRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    IndexResponse response<span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span> XContentType<span class="token punctuation">.</span>JSON<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-数据更新"><a href="#2-数据更新" class="headerlink" title="2. 数据更新"></a>2. 数据更新</h4><p>根据索引名与文档 <code>ID</code> 更新数据。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">update</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    UpdateRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UpdateRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    UpdateResponse response<span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        request<span class="token punctuation">.</span><span class="token function">doc</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span> XContentType<span class="token punctuation">.</span>JSON<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-数据删除"><a href="#3-数据删除" class="headerlink" title="3. 数据删除"></a>3. 数据删除</h4><p>根据索引名与文档 <code>ID</code> 删除指定数据。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">deleted</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    DeleteRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DeleteRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    DeleteResponse response<span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、高级查询"><a href="#五、高级查询" class="headerlink" title="五、高级查询"></a>五、高级查询</h3><p>同样和之前一样需要引入 <code>ObjectMapper</code> 和 <code>RestHighLevelClient</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Autowired</span>
-<span class="token keyword">public</span> ObjectMapper objectMapper<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-精准查询"><a href="#2-精准查询" class="headerlink" title="2. 精准查询"></a>2. 精准查询</h4><p><code>ES</code> 中通过 <code>BoolQueryBuilder</code> 构建查询条件，类似 <code>SQL</code> 语句中的 <code>where</code> 条件。</p>
+<p><code>BoolQueryBuilder</code> 具体的条件参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">termQuery()</td>
+        <td style="text-align: center;">精准查询，等价于 where id = 1。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">termQuerys()</td>
+        <td style="text-align: center;">区间查询，等价于 where id in (1)。</td>
+    </tr>
+</table>
 
-<span class="token annotation punctuation">@Autowired</span>
-<span class="token keyword">public</span> RestHighLevelClient restHighLevelClient<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="1-精准查询"><a href="#1-精准查询" class="headerlink" title="1. 精准查询"></a>1. 精准查询</h4><p>用于精准查询，类似 <code>SQL</code> 语句中的 <code>where</code> 条件，不同的是只允许包含单个条件。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">singleQuery</span><span class="token punctuation">(</span>String indexName<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">indices</span><span class="token punctuation">(</span>indexName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 构造查询条件</span>
-    SearchSourceBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchSourceBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Strings<span class="token punctuation">.</span><span class="token function">isNullOrEmpty</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        builder<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">termQuery</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>builder<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        SearchResponse response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>SearchHit hit <span class="token operator">:</span> response<span class="token punctuation">.</span><span class="token function">getHits</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getHits</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span>hit<span class="token punctuation">.</span><span class="token function">getSourceAsString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> userList<span class="token punctuation">;</span>
+<p>查询的具体步骤与分页查询操作类型，只需要将分页查询中 <code>builder.query(QueryBuilders.matchAllQuery())</code> 条件替换为对应下述构造得到的结果即可。</p>
+<p>因此此处仅介绍如何构造精准查询的 <code>QueryBuilders</code> 查询条件，示例代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Condition</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> QueryType queryType<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> String fieldName<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> Object fieldValues<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-多条件查询"><a href="#2-多条件查询" class="headerlink" title="2. 多条件查询"></a>2. 多条件查询</h4><p>用于多条件查询，类似 <code>SQL</code> 语句中的 <code>where ... and ... and ...</code> 效果。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">multipleQuery</span><span class="token punctuation">(</span>String indexName<span class="token punctuation">,</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">indices</span><span class="token punctuation">(</span>indexName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 构造查询条件</span>
-    SearchSourceBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchSourceBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    BoolQueryBuilder boolQueryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">boolQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Strings<span class="token punctuation">.</span><span class="token function">isNullOrEmpty</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        boolQueryBuilder<span class="token punctuation">.</span><span class="token function">must</span><span class="token punctuation">(</span><span class="token function">termQuery</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Strings<span class="token punctuation">.</span><span class="token function">isNullOrEmpty</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        boolQueryBuilder<span class="token punctuation">.</span><span class="token function">must</span><span class="token punctuation">(</span><span class="token function">termQuery</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    builder<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>boolQueryBuilder<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>builder<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        SearchResponse response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>SearchHit hit <span class="token operator">:</span> response<span class="token punctuation">.</span><span class="token function">getHits</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getHits</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span>hit<span class="token punctuation">.</span><span class="token function">getSourceAsString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">QueryTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> BoolQueryBuilder <span class="token function">createQueryBuilder</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Condition<span class="token operator">></span> conditionList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        BoolQueryBuilder boolQueryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">boolQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Condition condition <span class="token operator">:</span> conditionList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            QueryType queryType <span class="token operator">=</span> condition<span class="token punctuation">.</span><span class="token function">getQueryType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            String fieldName <span class="token operator">=</span> condition<span class="token punctuation">.</span><span class="token function">getFieldName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Object fieldValues <span class="token operator">=</span> condition<span class="token punctuation">.</span><span class="token function">getFieldValues</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            QueryBuilder queryBuilder<span class="token punctuation">;</span>
+            <span class="token keyword">switch</span> <span class="token punctuation">(</span>queryType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">case</span> EQUAL<span class="token operator">:</span>
+                    <span class="token comment" spellcheck="true">// termQuery(): "where fieldName = fieldValues"</span>
+                    queryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">termQuery</span><span class="token punctuation">(</span>fieldName<span class="token punctuation">,</span> fieldValues<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> NOT_EQUAL<span class="token operator">:</span>
+                    queryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">boolQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                            <span class="token punctuation">.</span><span class="token function">mustNot</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">matchQuery</span><span class="token punctuation">(</span>fieldName<span class="token punctuation">,</span> fieldValues<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> IN<span class="token operator">:</span>
+                    <span class="token comment" spellcheck="true">// termsQuery(): "where fieldName in (fieldValues...)"</span>
+                    queryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">termsQuery</span><span class="token punctuation">(</span>fieldName<span class="token punctuation">,</span> fieldValues<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">case</span> NOT_IN<span class="token operator">:</span>
+                    queryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">boolQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                            <span class="token punctuation">.</span><span class="token function">mustNot</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">termsQuery</span><span class="token punctuation">(</span>fieldName<span class="token punctuation">,</span> fieldValues<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token keyword">default</span><span class="token operator">:</span>
+                    <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// "filter()" more efficient then "must()"</span>
+            boolQueryBuilder<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>queryBuilder<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> boolQueryBuilder<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> userList<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-模糊查询"><a href="#3-模糊查询" class="headerlink" title="3. 模糊查询"></a>3. 模糊查询</h4><p>通过 <code>fuzzyQuery()</code> 可实现模糊查询，类似 <code>like</code> 查询效果，并可以利用 <code>fuzziness()</code> 进一步控制查询条件。</p>
 <p>如通过 <code>Fuzziness.ONE</code> 用于控制查询为目标值获取长度比目标值多 1 的数据，如查询模糊 <code>张</code>  则 <code>张三</code> 、 <code>张四</code> 都是满足条件的 但是 <code>张三1</code> 因为比 <code>张</code> 多两个字符则不满条件，当然也可以设置 <code>Fuzziness.TWO</code> 则超过两个字符的也满足条件。 </p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">vagueQuery</span><span class="token punctuation">(</span>String indexName<span class="token punctuation">,</span> String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">indices</span><span class="token punctuation">(</span>indexName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span>indexName<span class="token punctuation">)</span><span class="token punctuation">;</span>
     SearchSourceBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchSourceBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 查询名称中包含 "张三" 的数据，或者比 "张三" 多一个字符的数据，</span>
     builder<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">fuzzyQuery</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">fuzziness</span><span class="token punctuation">(</span>Fuzziness<span class="token punctuation">.</span>ONE<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>builder<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         SearchResponse response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -895,10 +907,34 @@
     <span class="token keyword">return</span> userList<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-区间查询"><a href="#4-区间查询" class="headerlink" title="4. 区间查询"></a>4. 区间查询</h4><p>用于区间查询，类似 <code>SQL</code> 语句中的 <code>between</code> 效果。</p>
+<h4 id="4-范围查询"><a href="#4-范围查询" class="headerlink" title="4. 范围查询"></a>4. 范围查询</h4><p>通过 <code>rangeQuery()</code> 实现区间查询，类似 <code>SQL</code> 语句中的 <code>&gt;, &gt;=, &lt;, &lt;=</code> 等关键字效果。</p>
+<p>常见比较符号与 <code>rangeQuery()</code> 方法参数对应参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">范围符</td>
+        <th style="text-align: center;">ES 关键字</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">></td>
+        <td style="text-align: center;">gt()</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">>=</td>
+        <td style="text-align: center;">gte()</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><</td>
+        <td style="text-align: center;">lt()</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;"><=</td>
+        <td style="text-align: center;">lte()</td>
+    </tr>
+</table>
+
+<p>如下示例中查询年龄字段值 <code>min &lt;= age &lt;= max</code> 的数据。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">filterQuery</span><span class="token punctuation">(</span>String indexName<span class="token punctuation">,</span> <span class="token keyword">int</span> min<span class="token punctuation">,</span> <span class="token keyword">int</span> max<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    request<span class="token punctuation">.</span><span class="token function">indices</span><span class="token punctuation">(</span>indexName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>indexName<span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 构造查询条件</span>
     SearchSourceBuilder builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchSourceBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     BoolQueryBuilder boolQueryBuilder <span class="token operator">=</span> QueryBuilders<span class="token punctuation">.</span><span class="token function">boolQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -906,6 +942,7 @@
     boolQueryBuilder<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>QueryBuilders<span class="token punctuation">.</span><span class="token function">rangeQuery</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">gte</span><span class="token punctuation">(</span>min<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">lte</span><span class="token punctuation">(</span>max<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     builder<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>boolQueryBuilder<span class="token punctuation">)</span><span class="token punctuation">;</span>
     request<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span>builder<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         SearchResponse response <span class="token operator">=</span> restHighLevelClient<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> RequestOptions<span class="token punctuation">.</span>DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1541,7 +1578,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">215.3k</span>
+                <span class="white-color">216.7k</span>
             
             
             
