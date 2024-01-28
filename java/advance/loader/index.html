@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.6k
+                    6.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    21 分
+                    24 分
                 </div>
                 
 
@@ -537,44 +537,33 @@
 <blockquote>
 <p>下面就让我们直接开始吧</p>
 </blockquote>
-<h3 id="一、文件编译"><a href="#一、文件编译" class="headerlink" title="一、文件编译"></a>一、文件编译</h3><p>在介绍类加载器之前先介绍一下 <code>Java</code> 文件的基本编译与执行命令以供后续使用。</p>
-<h4 id="1-Class编译"><a href="#1-Class编译" class="headerlink" title="1. Class编译"></a>1. Class编译</h4><ul>
-<li><h5 id="文件编译"><a href="#文件编译" class="headerlink" title="文件编译"></a>文件编译</h5><p>  通过 <code>javac</code> 命令将 <code>.java</code> 文件编译为 <code>.class</code> 文件，默认输出到当前目录。</p>
+<h3 id="一、文件编译"><a href="#一、文件编译" class="headerlink" title="一、文件编译"></a>一、文件编译</h3><p>在开始之前先介绍一下 <code>Java</code> 文件的基本编译与执行命令以供后续使用。</p>
+<h4 id="1-Class编译"><a href="#1-Class编译" class="headerlink" title="1. Class编译"></a>1. Class编译</h4><h5 id="1-文件编译"><a href="#1-文件编译" class="headerlink" title="(1) 文件编译"></a>(1) 文件编译</h5><p>通过 <code>javac</code> 命令将 <code>.java</code> 文件编译为 <code>.class</code> 文件，默认输出到当前目录。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">javac MyBean.java  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="编码处理"><a href="#编码处理" class="headerlink" title="编码处理"></a>编码处理</h5><p>  当 <code>Java</code> 文件中包含中文等编码时，在编译时需要指定编码格式，否则将会编译异常。 </p>
+<h5 id="2-编码处理"><a href="#2-编码处理" class="headerlink" title="(2) 编码处理"></a>(2) 编码处理</h5><p>当 <code>Java</code> 文件中包含中文等编码如注释等时，在编译时需要指定编码格式，否则将会编译异常。 </p>
 <pre class="line-numbers language-bash"><code class="language-bash">javac -encoding utf-8 MyBean.java  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="包名处理"><a href="#包名处理" class="headerlink" title="包名处理"></a>包名处理</h5><p>  默认 <code>javac</code> 命令编译的文件是不包含包路径的，通过参数 <code>-d</code> 编译生成的文件将在同级目录创建包名层级文件夹。其中 <code>.</code> 表示保存至当前目录下，可根据需要指定目录。</p>
+<h5 id="3-包名处理"><a href="#3-包名处理" class="headerlink" title="(3) 包名处理"></a>(3) 包名处理</h5><p>默认 <code>javac</code> 命令编译的文件是不包含包路径的，通过参数 <code>-d</code> 指定编译生成的文件将在同级目录创建与包名同层级文件夹。</p>
+<p>其中 <code>.</code> 表示保存至当前目录下，可根据需要指定目录。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">javac -d <span class="token keyword">.</span> MyBean.java  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="依赖处理"><a href="#依赖处理" class="headerlink" title="依赖处理"></a>依赖处理</h5><p>  如需要的编译的类中引用了其它类，在编译时则需要通过 -cp 指定依赖类的 class 文件。</p>
+<h5 id="4-依赖处理"><a href="#4-依赖处理" class="headerlink" title="(4) 依赖处理"></a>(4) 依赖处理</h5><p>如需要的编译的类中引用了其它类，在编译时则需要通过 <code>-cp</code> 指定依赖类的 <code>class</code> 文件。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">javac -cp ./Denpend.class -d <span class="token keyword">.</span> MyBean.java  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
-<ul>
-<li><h5 id="编译版本"><a href="#编译版本" class="headerlink" title="编译版本"></a>编译版本</h5>  当编程环境中存在多个 <code>JDK</code> 版本时，可以通过输入完整路径从而指定 <code>JDK</code> 编译版本。<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">"C:\Program Files\Java\jdk1.8.0_202\bin\javac"</span> -d <span class="token operator">&lt;</span>target_path<span class="token operator">></span> MyBean.java  
+<h5 id="5-编译版本"><a href="#5-编译版本" class="headerlink" title="(5) 编译版本"></a>(5) 编译版本</h5><p>当编程环境中存在多个 <code>JDK</code> 版本时，可以通过输入完整路径从而指定 <code>JDK</code> 编译版本。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token string">"C:\Program Files\Java\jdk1.8.0_202\bin\javac"</span> -d <span class="token operator">&lt;</span>target_path<span class="token operator">></span> MyBean.java  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-文件执行"><a href="#2-文件执行" class="headerlink" title="2. 文件执行"></a>2. 文件执行</h4><ul>
-<li><h5 id="Class运行"><a href="#Class运行" class="headerlink" title="Class运行"></a>Class运行</h5><p>  <code>Class</code> 文件运行较为简单，直接通过 <code>java</code> + <code>文件名</code> 即可，需要注意的是若文件时编译设置了包名则运行时同样需要指定包名。</p>
+<h4 id="2-文件执行"><a href="#2-文件执行" class="headerlink" title="2. 文件执行"></a>2. 文件执行</h4><h5 id="1-Class运行"><a href="#1-Class运行" class="headerlink" title="(1) Class运行"></a>(1) Class运行</h5><p><code>Class</code> 文件运行较为简单，直接通过 <code>java</code> + <code>文件名</code> 即可，需要注意的是若文件时编译设置了包名则运行时同样需要指定包名。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 运行不含包名 class 文件</span>
 java MyBean  
 
 <span class="token comment" spellcheck="true"># 运行含包名 class 文件</span>
 java xyz.ibudai.MyBean  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Jar运行"><a href="#Jar运行" class="headerlink" title="Jar运行"></a>Jar运行</h5><p>  运行 <code>Jar</code> 文件与 运行 <code>Class</code> 文件类似，只需添加 <code>-jar</code> 参数即可。</p>
+<h5 id="2-Jar运行"><a href="#2-Jar运行" class="headerlink" title="(2) Jar运行"></a>(2) Jar运行</h5><p>运行 <code>Jar</code> 文件与 运行 <code>Class</code> 文件类似，只需添加 <code>-jar</code> 参数即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">java -jar jar-name.jar
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="二、加载机制"><a href="#二、加载机制" class="headerlink" title="二、加载机制"></a>二、加载机制</h3><h4 id="1-加载过程"><a href="#1-加载过程" class="headerlink" title="1. 加载过程"></a>1. 加载过程</h4><p>所谓类加载过程，简单一句话而言即将编译完成的 <code>class</code> 文件通过特定的方式载入 <code>JVM</code> 虚拟机内存中，之后应该就可以在虚拟机内存中进行读取。</p>
 <p>类加载器将字节码文件加载到内存中主要经历三个阶段 <code>加载 -&gt; 连接 -&gt; 实例化</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/loader/1.png"></p>
 <p>注意的是 <code>.class</code> 并不是一次性全部加载到内存中，而是在 <code>Java</code> 应用程序需要的时候才会加载。也就是说当 <code>JVM</code> 请求一个类进行加载的时候，类加载器就会尝试查找定位这个类，当查找对应的类之后将他的完全限定类定义加载到运行时数据区中。</p>
@@ -662,7 +651,7 @@ java xyz.ibudai.MyBean
 </blockquote>
 <h3 id="四、双亲委派"><a href="#四、双亲委派" class="headerlink" title="四、双亲委派"></a>四、双亲委派</h3><p>双亲委派机制是类加载中非常重要的一类加载机制，通过该机制保证了类的安全完整性。</p>
 <p>默认 <code>JDK</code> 中使用的即双亲委派机制，你可以在 <code>java.lang</code> 包下找到 <code>ClassLoader</code> 类，下面就从源码的角度分析双亲委派机制。</p>
-<h4 id="1-加载方式"><a href="#1-加载方式" class="headerlink" title="1. 加载方式"></a>1. 加载方式</h4><p>在 <code>Java</code> 中加载类可以共有 <code>Class.forName()</code> 与 <code>Classloader.laodClass()</code> 两种方式，下面分别进行介绍。</p>
+<h4 id="1-加载方式"><a href="#1-加载方式" class="headerlink" title="1. 加载方式"></a>1. 加载方式</h4><p>在 <code>Java</code> 中加载类可以共有 <code>Class.forName()</code> 与 <code>Classloader.loadClass()</code> 两种方式，下面分别进行介绍。</p>
 <ul>
 <li><h5 id="Class-forName"><a href="#Class-forName" class="headerlink" title="Class.forName()"></a>Class.forName()</h5><p>  通过 <code>Class.forName()</code> 方式加载不仅会将当前类加载进内存并且会初始化对象，可在需被加载的类中添加 <code>static</code> 静态块打印提示，当使用 <code>Class.forName()</code> 加载类时可以发现静态块代码将会被执行，说明此时创建了对象。</p>
 <p>  若想实现类加载但不创建对象可通过 <code>Class.forName(className, false, classLoader)</code> 方法加载，其中第二个参数用于指定是否创建对象，第三个参数指定类加载器。</p>
@@ -680,7 +669,7 @@ java xyz.ibudai.MyBean
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><h5 id="Classloader-laodClass"><a href="#Classloader-laodClass" class="headerlink" title="Classloader.laodClass()"></a>Classloader.laodClass()</h5><p>  通过 <code>laodClass()</code> 方式加载并不会解析类只实现加载并不会创建相应对象，只有当对象被引用时才会初始化。</p>
+<li><h5 id="Classloader-loadClass"><a href="#Classloader-loadClass" class="headerlink" title="Classloader.loadClass()"></a>Classloader.loadClass()</h5><p>  通过 <code>loadClass()</code> 方式加载并不会解析类只实现加载并不会创建相应对象，只有当对象被引用时才会初始化。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String className <span class="token operator">=</span> <span class="token string">"xyz.ibudai.bean.User"</span><span class="token punctuation">;</span>
     ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -711,7 +700,7 @@ java xyz.ibudai.MyBean
     </tr>
     <tr>
         <td style="text-align: center;">findBootstrapClassOrNull()</td>  
-        <td style="text-align: center;">委托父加载器进行加载，不存父加载器返回 null。</td>  
+        <td style="text-align: center;">由顶级加载器加载类，代码由 C++ 实现，加载失败返回 null。</td>  
     </tr>
     <tr>
         <td style="text-align: center;">findClass()</td>  
@@ -740,6 +729,7 @@ java xyz.ibudai.MyBean
                 <span class="token comment" spellcheck="true">// 2. 未加载 -> 判断是否存在父加载器</span>
                 <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
                     <span class="token comment" spellcheck="true">// 2.1 存在 -> 递归调用直至获取顶层父加载器</span>
+                    <span class="token comment" spellcheck="true">// (逐步向上委派到顶级类加载器进行类加载)</span>
                     c <span class="token operator">=</span> parent<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
                     <span class="token comment" spellcheck="true">// 2.2 不存在(已达顶层加载器) -> 委托父类进行加载</span>
@@ -757,8 +747,9 @@ java xyz.ibudai.MyBean
         <span class="token keyword">return</span> c<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、自定义加载"><a href="#五、自定义加载" class="headerlink" title="五、自定义加载"></a>五、自定义加载</h3><p>自定义类加载器最常见的分为两种，遵循双亲委派机制与打破双亲委派机制，这里主要讨论后者。</p>
+<p>根据上述的源码解析可以看出一个类的加载由 <code>loadClass()</code> 复制加载器的委派流向，而 <code>findBootstrapClassOrNull()</code> 与 <code>findClass()</code> 负责具体的类文件加载逻辑。因此，若需要打破双亲委派机制，就需要重写 <code>loadClass()</code> 让其避免被顶级父加载器加载，同时需要重写 <code>findClass()</code> 如何将 <code>.class</code> 文件转为 <code>JVM</code> 可用的二进制数据。</p>
 <h4 id="1-父类继承"><a href="#1-父类继承" class="headerlink" title="1. 父类继承"></a>1. 父类继承</h4><p>新建自定义加载器类 <code>CustomClassLoader</code> 并继承 <code>ClassLoader</code> ，在类中定义构造方法与默认 <code>class</code> 文件存放路径等基本信息。构造函数中的 <code>super()</code> 与 <code>super(parent)</code> 用于指定当前加载器的父级加载器，前者默认获取当前上下文的类加载器为父加载器，在绝大多数情况下为 <code>AppClassLoader</code> 。</p>
 <p>在实际应用中通常只有特定类需要实现自定义加载，因此这里定义了集合 <code>targetList</code> 存放需要实现自定义加载的目标类，不在此集合中类则使用默认的加载方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomClassLoader</span> <span class="token keyword">extends</span> <span class="token class-name">ClassLoader</span> <span class="token punctuation">{</span>
@@ -840,10 +831,9 @@ java xyz.ibudai.MyBean
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-findClass"><a href="#3-findClass" class="headerlink" title="3. findClass()"></a>3. findClass()</h4><p>在类的加载中 <code>loadClass()</code> 用于控制类的加载流程，而 <code>findClass()</code> 则用于控制具体的 <code>.class</code> 文件加载实现，即如何将 <code>.class</code> 装载进 <code>JVM</code> 中。</p>
-<p>这里我选择的是新建 <code>customFindClass()</code> 方法而并非重写 <code>findClass()</code> 目的在于防止当自定义类加载失败时重新调用父类的 <code>loadClass()</code> 时其在调用 <code>findClass()</code> 时发生混乱冲突。</p>
+<h4 id="3-findClass"><a href="#3-findClass" class="headerlink" title="3. findClass()"></a>3. findClass()</h4><p>在类的加载中 <code>loadClass()</code> 用于控制类的加载流程，而 <code>findClass()</code> 则用于控制具体的 <code>.class</code> 文件加载实现，即如何将 <code>.class</code> 装载进 <code>JVM</code> 中。这里我选择的是新建 <code>customFindClass()</code> 方法而并非重写 <code>findClass()</code> 目的在于防止当自定义类加载失败时重新调用父类的 <code>loadClass()</code> 时其在调用 <code>findClass()</code> 时发生混乱冲突。</p>
 <p>在 <code>customFindClass()</code> 中实现了将编译后的类文件载入 <code>JVM</code> 中，即从本地读取编译后的 <code>.class</code> 文件转为字节数据并通过 <code>defineClass()</code> 查找对应的 <code>java.lang.Class</code> 对象。</p>
-<p>其中 <code>name</code> 为类文件的完整类名，例如：<code>xyz.ibudai.bean.TestA</code> 。</p>
+<p>其中 <code>name</code> 为类文件的完整类名，例如：<code>xyz.ibudai.bean.TestA</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">customFindClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 读取 class 的二进制数据</span>
     <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classBytes <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">readClassBytes</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -899,16 +889,59 @@ java xyz.ibudai.MyBean
 <pre class="line-numbers language-java"><code class="language-java">Loader<span class="token operator">-</span><span class="token number">1</span><span class="token operator">:</span> sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span>Launcher$AppClassLoader<span class="token annotation punctuation">@18b4aac2</span>
 Loader<span class="token operator">-</span><span class="token number">2</span><span class="token operator">:</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>loader<span class="token punctuation">.</span>CustomClassLoader<span class="token annotation punctuation">@1b9e1916</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="六、进阶操作"><a href="#六、进阶操作" class="headerlink" title="六、进阶操作"></a>六、进阶操作</h3><h4 id="1-上下文加载器"><a href="#1-上下文加载器" class="headerlink" title="1. 上下文加载器"></a>1. 上下文加载器</h4><p>在之前的示例中通过了 <code>Thread.currentThread().getContextClassLoader()</code> 获取了当前上下文的类加载，那么上下文类加载究竟有何用处？</p>
-<p>在 <code>Java</code> 程序启动时会将核心类交由 <code>Bootstrap Classloader</code> 加载，但存在一部分服务提供者接口 <code>(SPI)</code> 只定义的规范接口，如最常见的 <code>JDBC</code> 其具体的实现都是由各大数据库厂商自行实现。而这部分接口实现类显然无法被系统类加载器加载（系统类加载只会加载核心包，不会加载第三方来源包），而默认的类加载机制（<code>双亲委派机制</code>）并不支持父加载器向下委派，上下文加载器正是为此而生，通过子委派（由当前线程上下文加载器加载 <code>SPI</code> 实现类）的方式打破了双亲委派机制。</p>
-<p><code>Java</code> 应用运行时的初始线程的上下文类加载器是系统类加载器（<code>AppClassLoader</code>），线程的上下文类加载器的获取与设置通过 <code>Thread.currentThread().getContextClassLoader()</code> 与 <code>Thread.currentThread().setContextClassLoader()</code> 方法即可，一个线程若没有指定则默认继承其父线程上下文类加载器。</p>
-<h4 id="2-动态加载"><a href="#2-动态加载" class="headerlink" title="2. 动态加载"></a>2. 动态加载</h4><p>在 <code>Java</code> 启动时会将相关的类进行加载，而通过 <code>URLClassLoader</code> 即可实现程序运行期间的动态类加载。</p>
-<p><code>URLClassLoader</code> 继承于 <code>ClassLoader</code>，其可以通过 <code>URL</code> 从资源文件从加载类，如下示例中即通过 <code>URLClassLoader</code> 加载 <code>JAR</code> 驱动包。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ClassLoader <span class="token function">getClassLoader</span><span class="token punctuation">(</span>String driverPath<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// 获取当前线程上下文加载器</span>
-    ClassLoader parent <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h3 id="六、动态加载"><a href="#六、动态加载" class="headerlink" title="六、动态加载"></a>六、动态加载</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>Java</code> 中实现类的动态加载或运行时加载通常有两种方式，第一种就是通过定义自己的类加载器打破双亲委派机制实现，第二种就是通过 <code>JDK</code> 中自带的 <code>URLClassLoader</code> 实现。</p>
+<p>上面已经介绍了如何自定义加载器并打破双亲委派实现类的加载，下面着重介绍 <code>URLClassLoader</code> 如何实现类的动态加载。</p>
+<h4 id="2-源码解读"><a href="#2-源码解读" class="headerlink" title="2. 源码解读"></a>2. 源码解读</h4><p><code>URLClassLoader</code> 是 <code>JDK</code> 中自带的动态类加载器，其提供在程序运行期间通过外部资源动态加载类文件的能力。</p>
+<p>查看 <code>URLClassLoader</code> 的源码可看到其核心为继承 <code>ClassLoader</code> 并实现了 <code>findClass()</code> 与 <code>defineClass()</code> 方法。可以看到其并没有重写 <code>loadClass()</code> 说明其委派机制仍是基于双亲委派实现，那它又是如何实现的呢？</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">findClass</span><span class="token punctuation">(</span><span class="token keyword">final</span> String name<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> ClassNotFoundException
+<span class="token punctuation">{</span>
+    <span class="token keyword">final</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> result<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        result <span class="token operator">=</span> AccessController<span class="token punctuation">.</span><span class="token function">doPrivileged</span><span class="token punctuation">(</span>
+            <span class="token keyword">new</span> <span class="token class-name">PrivilegedExceptionAction</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">public</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+                    String path <span class="token operator">=</span> name<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">".class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    Resource res <span class="token operator">=</span> ucp<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>res <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                            <span class="token comment" spellcheck="true">// 调用 defineClass() 加载类</span>
+                            <span class="token keyword">return</span> <span class="token function">defineClass</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ClassNotFoundException</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassFormatError</span> e2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span><span class="token function">getDataError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                e2<span class="token punctuation">.</span><span class="token function">addSuppressed</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span><span class="token function">getDataError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                            <span class="token punctuation">}</span>
+                            <span class="token keyword">throw</span> e2<span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span> acc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span>PrivilegedActionException</span> pae<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token punctuation">(</span>ClassNotFoundException<span class="token punctuation">)</span> pae<span class="token punctuation">.</span><span class="token function">getException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ClassNotFoundException</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">defineClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> Resource res<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 略去代码</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据之前的介绍，双亲委派机制首先会通过层层委派到达顶级父加载器（通过为 <code>Bootstrap ClassLoader</code>），当到达顶级父加载器后，根据 <code>loadClass()</code> 代码可以得知其将会调用 <code>findBootstrapClassOrNull()</code> 尝试进行类加载。而 <code>Bootstrap ClassLoader</code> 将会从类空间中进行扫描类尝试读取加载，又因为 <code>URLClassLoader</code> 是通过外部资源进行的，很显然顶级父加载器无法在默认类空间中读取到对应的 <code>.class</code> 文件数据，因此 <code>findBootstrapClassOrNull()</code> 将会返回空。</p>
+<p>同样，在上面解析双亲委派机制 <code>loadClass()</code> 源码时已经提到了当 <code>findBootstrapClassOrNull()</code> 结果为 <code>null</code> 时，将会调用自身的 <code>findClass()</code> 方法，这也是 <code>URLClassLoader</code> 为何通过重写 <code>findClass()</code> 与 <code>defineClass()</code> 即实现了动态加载。</p>
+<p>而 <code>URLClassLoader</code> 实现的不仅是动态加载，其进行加载时每个加载器都是由其自身的 <code>loadClass()</code> 加载实现，因此只需要通过定义不同的 <code>URLClassLoader</code> 即可同时实现类隔离，因为一个不同类加载器加载的类对应是不相同的，即可以理解为 <code>JVM</code> 对于一个类的定义是 <code>加载器.类完整限定名</code>，当加载器不同时即便类的完整限定名相同 <code>JVM</code> 仍认定其为不同的类。</p>
+<p>但需要注意一点，在常用的 <code>Maven</code> 工程中，若在 <code>pom.xml</code> 文件中已经引入了 <code>URLClassLoader</code> 将要加载的类依赖时，根据双亲委派机制其最终的加载还是经由顶级父加载器的 <code>findBootstrapClassOrNull()</code> 实现，此时 <code>URLClassLoader</code> 的动态加载将失效，此类情景若想达到目的只能通过自定义类加载器破坏双亲委派机制实现。</p>
+<h4 id="3-实现示例"><a href="#3-实现示例" class="headerlink" title="3. 实现示例"></a>3. 实现示例</h4><p>基于上述理论，即可通过 <code>URLClassLoader</code> 实现从 <code>URL</code> 资源加载类，如下示例中即通过 <code>URLClassLoader</code> 加载 <code>JDBC</code> 驱动类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">loadDriver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     URL<span class="token punctuation">[</span><span class="token punctuation">]</span> urls<span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        String driverPath <span class="token operator">=</span> <span class="token string">"src/main/resources/mysql-driver.jar"</span>
         File driver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>driverPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// 驱动包不存在抛出异常</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>driver<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -920,20 +953,32 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">URLClassLoader</span><span class="token punctuation">(</span>urls<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    ClassLoader parent <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ClassLoader jarLoader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URLClassLoader</span><span class="token punctuation">(</span>urls<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 加载驱动类</span>
+        String className <span class="token operator">=</span> <span class="token string">"com.mysql.jdbc.Driver"</span>
+        Class<span class="token operator">&lt;</span>Driver<span class="token operator">></span> c <span class="token operator">=</span> jarLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-类的卸载"><a href="#3-类的卸载" class="headerlink" title="3. 类的卸载"></a>3. 类的卸载</h4><p>虽然通过 <code>URLClassLoader</code> 可实现类的动态加载，但 <code>Java</code> 中并没有提供显式的方式实现类的卸载，想要卸载一个已经加载的类只能通过垃圾回收的方式实现。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="七、进阶操作"><a href="#七、进阶操作" class="headerlink" title="七、进阶操作"></a>七、进阶操作</h3><h4 id="1-类的卸载"><a href="#1-类的卸载" class="headerlink" title="1. 类的卸载"></a>1. 类的卸载</h4><p>在 <code>Java</code> 中并没有提供显式的方式实现类的卸载，想要卸载一个已经加载的类只能通过垃圾回收的方式实现。</p>
 <blockquote>
 <p>一个类若想通过垃圾回收卸载则需要满足以下三个条件：</p>
 <ul>
 <li>当前类不存在任何实例，即所有对象实例都已被销毁。</li>
-<li>当前类不存在引用（<code>Reference</code>）。</li>
-<li>当前类的类加载已被垃圾回收（<code>GC</code>）。</li>
+<li>当前类不存在引用 <code>(Reference)</code>。</li>
+<li>当前类的类加载已被垃圾回收 <code>(GC)</code>。</li>
 </ul>
 </blockquote>
-<h3 id="七、类隔离"><a href="#七、类隔离" class="headerlink" title="七、类隔离"></a>七、类隔离</h3><p>在上面我们介绍了类的加载方式并且重点分析了双亲委派机制，下面介绍一下类加载的应用场景。</p>
-<h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>与之前提到线程上下文加载器类似（子线程默认继承父线程加载器），一个类的引用类同样都将由该应用类的类加载器加载，即若在 <code>ClassA</code> 中引用了 <code>ClassB</code> ，则 <code>ClassB</code> 也将会由 <code>ClassA</code> 的类加载进行加载，这也正是能够类隔离的实现原理之一。</p>
+<h4 id="2-上下文加载器"><a href="#2-上下文加载器" class="headerlink" title="2. 上下文加载器"></a>2. 上下文加载器</h4><p>在之前的示例中通过了 <code>Thread.currentThread().getContextClassLoader()</code> 获取了当前上下文的类加载，那么上下文类加载究竟有何用处？</p>
+<p>在 <code>Java</code> 程序启动时会将核心类交由 <code>Bootstrap Classloader</code> 加载，但存在一部分服务提供者接口 <code>(SPI)</code> 只定义的规范接口，如最常见的 <code>JDBC</code> 其具体的实现都是由各大数据库厂商自行实现。而这部分接口实现类显然无法被系统类加载器加载（系统类加载只会加载核心包，不会加载第三方来源包），而默认的类加载机制 <code>(双亲委派机制)</code>并不支持父加载器向下委派，上下文加载器正是为此而生，通过子委派（由当前线程上下文加载器加载 <code>SPI</code> 实现类）的方式打破了双亲委派机制。</p>
+<p><code>Java</code> 应用运行时的初始线程的上下文类加载器是系统类加载器 <code>(AppClassLoader)</code>，线程的上下文类加载器的获取与设置通过 <code>Thread.currentThread().getContextClassLoader()</code> 与 <code>Thread.currentThread().setContextClassLoader()</code> 方法即可，一个线程若没有指定则默认继承其父线程上下文类加载器。</p>
+<h3 id="八、类隔离"><a href="#八、类隔离" class="headerlink" title="八、类隔离"></a>八、类隔离</h3><p>在上面我们介绍了类的加载方式并且重点分析了双亲委派机制，下面介绍一下类加载的应用场景。</p>
+<h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>与之前提到线程上下文加载器类似（子线程默认继承父线程加载器），一个类的引用类同样都将由该应用类的类加载器加载，即若在 <code>ClassA</code> 中引用了 <code>ClassB</code> ，则 <code>ClassB</code> 也将会由 <code>ClassA</code> 的类加载进行加载，这也正是能够类隔离的实现原理之一。</p>
 <p>那么类隔离的作用是究竟是什么呢？正如上述所言，类的加载具有引用传递性，而一个模块中一个类只会加载一次，在类加载时通过 <code>findLoadedClass()</code> 判断是否加载，如是则跳过加载，也就是 <code>JVM</code> 虚拟机中每个类有且仅有一份。</p>
 <h4 id="2-示例介绍"><a href="#2-示例介绍" class="headerlink" title="2. 示例介绍"></a>2. 示例介绍</h4><p>根据上述的介绍当程序需要依赖同一个类的多个版本时该方式将会产生大量的问题。</p>
 <p>如工程中存在两个模块 <code>module-a</code> 和 <code>module-b</code> ，二者分别依赖了 <code>module-c</code> 的 <code>1.0</code> 和 <code>2.0</code> 两个版本，但由于 <code>module-a</code> 与 <code>module-b</code> 同属一个工程都由 <code>AppClassLoader</code> 进行加载，最终在 <code>JVM</code> 仅会加载 <code>module-c</code> 的一个版本并非两个版本共同加载。<br><img src="/album/loading.gif" data-original="/album/article/java/loader/6.png"></p>
@@ -1542,7 +1587,7 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">216.7k</span>
+                <span class="white-color">218.4k</span>
             
             
             

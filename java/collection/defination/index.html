@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.3k
+                    4.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
+                    18 分
                 </div>
                 
 
@@ -639,6 +639,7 @@
 </li>
 </ul>
 <h4 id="2-Vector"><a href="#2-Vector" class="headerlink" title="2. Vector"></a>2. Vector</h4><p><code>Vector</code> 底层封装了数组，在此基础上新增了扩容操作，弥补了普通数据必须在定义时固定长度的缺点，且元素操作封装了 <code>synchronized</code> 因此为线程安全容器，在多线程并发情况下可替代 <code>ArrayList</code> 容器。</p>
+<p>但由于 <code>Vector</code> 的锁是通过 <code>synchronized</code> 并基于类层级的，虽实现了线程安全当频繁操作时性能相对较低，在现行的编程中用到的较少。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// Vector addElement 源码实现，通过 synchronized 保证原子性</span>
 <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">addElement</span><span class="token punctuation">(</span>E obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     modCount<span class="token operator">++</span><span class="token punctuation">;</span>
@@ -646,7 +647,7 @@
     elementData<span class="token punctuation">[</span>elementCount<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通过 <code>new Vector&lt;&gt;()</code> 创建的容器默认大小为 <code>10</code>，也可通过 <code>new Vector&lt;&gt;(init, increase)</code> 指定初始容量与递增量，当数组长度达到 <code>init</code> 大小后，将会根据自动扩容 <code>increase</code> 个空间，若未指定默认的初始容量为 <code>10</code>，增长量为当前容量的一倍。</p>
+<p>通过 <code>new Vector&lt;&gt;()</code> 创建的容器默认大小为 <code>10</code>，也可通过 <code>new Vector&lt;&gt;(init, increase)</code> 指定初始容量与递增量，当数组长度达到 <code>init</code> 大小后，将会根据自动扩容 <code>increase</code> 个空间，若未指定默认的初始容量为 `10``，增长量为当前容量的一倍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">vectorDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 初始化长度 4, 超过则再扩容 5 个单位</span>
     Vector<span class="token operator">&lt;</span>Integer<span class="token operator">></span> vector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -771,6 +772,22 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>CopyOnWriteArrayList</code> 容器的 <code>set()</code> 与 <code>remove()</code> 等常用列表方法采取的实现方式类似，都是通过 <code>synchronized</code> 配合复制操作实现，这里不重复介绍。需要注意其 <code>get()</code> 方法没有实现加锁，因此在增改容器时若执行查询读取的数据仍可能是旧制，因为操作时发生在复制的容器中（未完成前引用指向的仍是旧容器），但其保证了最终的数据一致性。</p>
+<h4 id="4-SynchronizedList"><a href="#4-SynchronizedList" class="headerlink" title="4. SynchronizedList"></a>4. SynchronizedList</h4><p>在 <code>JDK</code> 中的 <code>Collections</code> 集合工具类中提供了 <code>synchronizedList()</code> 方法可将 <code>ArrayList</code> 转为线程安全容器。</p>
+<p>其是基于对象的 <code>synchronized</code> 锁，相对 Vector 更为轻量，同时与 <code>CopyOnWriteArrayList</code> 相比也更为节省内存。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 转为线程安全容器</span>
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> synList <span class="token operator">=</span> Collections<span class="token punctuation">.</span><span class="token function">synchronizedList</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true">// SynchronizedList 部分源码</span>
+<span class="token keyword">final</span> Object mutex<span class="token punctuation">;</span>    
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">,</span> E element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>mutex<span class="token punctuation">)</span> <span class="token punctuation">{</span>list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> element<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、Set集合"><a href="#四、Set集合" class="headerlink" title="四、Set集合"></a>四、Set集合</h3><h4 id="1-HashSet"><a href="#1-HashSet" class="headerlink" title="1. HashSet"></a>1. HashSet</h4><p><code>HashSet</code> 是无序集合，根据数据的哈希值进行排序存储，不允许存入重复元素，非线程安全。</p>
 <p>如果你查看 <code>HashSet</code> 的源码即可发现其是基于 <code>HashMap</code> 结构进行存储，其中对应的 <code>Key</code> 即为存入的数据，而 <code>value</code> 则填充了一个空对象，而 <code>HashMap</code> 是基于哈希值进行存储的，因此在去重或判断值等操作上 <code>HashSet</code> 往往相较于 <code>ArrayList</code> 拥有更好的性能。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// ============ HashSet 源码片段截取 ============</span>
@@ -809,7 +826,7 @@
 <p>当我们向 <code>HashMap</code> 中 <code>put</code> 键值对时， <code>HashMap</code> 会根据键的哈希值算出其在数组中的位置，然后将键值对存储在数组的对应位置上。如果发生哈希冲突 <code>HashMap</code> 会将发生冲突的键值对以链表的形式存储在对应位置上。但是，如果链表中的元素超过了一定的数量，为了提高查询效率， <code>HashMap</code> 会将链表转换为红黑树。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/map.png" alt="HashMap示意图"></p>
 <h4 id="2-HashMap"><a href="#2-HashMap" class="headerlink" title="2. HashMap"></a>2. HashMap</h4><p><code>HashMap</code> 是一种无序序列（根据哈希值进行排序存储）的数据结构，数据以键值对形式存储，非线程安全。</p>
 <p>其中 <code>key</code> 值不允许重复，对于存入 <code>key </code> 重复的元素进行覆盖，有且仅有一个元素的的 <code>key</code> 值为 <code>null</code> 。</p>
-<p><code>HashMap</code> 容器的存储效率由 <code>capacity</code> 与 <code>loadFactor</code> 变量控制，前者为容器的大小，默认为 <code>16</code>，后者为容器的扩容策略，取值范围为 <code>0~1</code> ，默认值为 <code>0.75</code>，当容器的内的元素数量达到 <code>capacity*loadFactor</code> 时将自动扩容为 <code>2*capacity</code>。如默认初始化容器大小为 <code>16</code>，当存入的个数超过 <code>12(16*0.75)</code> 时，容器大小将扩容至 <code>32(16*2)</code>。</p>
+<p><code>HashMap</code> 容器的存储效率由 <code>capacity</code> 与 <code>loadFactor</code> 变量控制，前者为容器的大小，默认为 <code>16</code>，后者为容器的扩容策略，取值范围为 <code>0~1</code>，默认值为 <code>0.75</code>，当容器的内的元素数量达到 <code>capacity*loadFactor</code> 时将自动扩容为 <code>2*capacity</code>。如默认初始化容器大小为 <code>16</code>，当存入的个数超过 <code>12(16*0.75)</code> 时，容器大小将扩容至 <code>32(16*2)</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">hashMapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -821,7 +838,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-LinkedHashMap"><a href="#3-LinkedHashMap" class="headerlink" title="3. LinkedHashMap"></a>3. LinkedHashMap</h4><p><code>LinkedHashMap</code> 与之前提到的 <code>LinkedHashSet</code> 类似，其底层基于链表实现，因此其容器内存储的数据并非和 HashMap 一样无序，而是根据存入的先后顺序而定。</p>
+<h4 id="3-LinkedHashMap"><a href="#3-LinkedHashMap" class="headerlink" title="3. LinkedHashMap"></a>3. LinkedHashMap</h4><p><code>LinkedHashMap</code> 与之前提到的 <code>LinkedHashSet</code> 类似，其底层基于链表实现，因此其容器内存储的数据并非和 <code>HashMap</code> 一样无序，而是根据存入的先后顺序而定。</p>
 <h4 id="4-TreeMap"><a href="#4-TreeMap" class="headerlink" title="4. TreeMap"></a>4. TreeMap</h4><p><code>TreeMap</code> 基于红黑树实现，对于存入的元素根据元素的 <code>Key</code> 进行排序，性能低于 <code>HashMap</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">rreeMapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TreeMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -917,9 +934,9 @@
                 <span class="token string">"GBK"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><p>栈<code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
+<h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
 <p>如存在一组数据 <code>[1, 2, 3, ..., n]</code> 并按照顺序压入栈内，则读取的顺序则正好相反为  <code>[n, ..., 3, 2, 1]</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/stack.png"></p>
-<p><code>Stack</code> 具体定义方式与常见操作如下：</p>
+<p>``Stack` 具体定义方式与常见操作如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">stackDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Stack<span class="token operator">&lt;</span>String<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 访问栈顶元素</span>
@@ -1592,7 +1609,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">216.7k</span>
+                <span class="white-color">218.4k</span>
             
             
             

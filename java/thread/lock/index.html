@@ -503,14 +503,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8.9k
+                    9.1k
                 </div>
                 
 
@@ -712,15 +712,15 @@ receive change: 3
 
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 创建两个子线程</span>
-        Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MyRunnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// 启动子线程</span>
-        thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
             <span class="token comment" spellcheck="true">// 等待子线程执行完毕</span>
-            thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            thread2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
@@ -794,28 +794,28 @@ receive change: 3
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
-    Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             count <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             count <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 输出结果未知</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但执行上述程序却发现每次输出得到的结果却并非为 <code>0</code> 且每次结果都不相同，这其实是因为 <code>Java</code> 中的一个加减乘除在底层编译时其对应的步骤不止一步。</p>
 <p>如最常用的自增 <code>i = i + 1</code> ，在底层编译实现时其对应着三个步骤： <code>读取</code> -&gt; <code>增加</code> -&gt; <code>写入</code> ，而这三步中的任意一步出现问题都会导致最终的结果异常。回到上面的代码中，当 <code>线程 1</code> 进行自增操作时，实际上可能只做了 <code>读取 增加</code> ，在完成写入之前 <code>线程 2</code> 却获取变量实例完成自减导致自增 <code>写入</code> 失败，结果就是经过一次自增自减结果却为 <code>-1</code> 。</p>
-<h4 id="3-分级锁"><a href="#3-分级锁" class="headerlink" title="3. 分级锁"></a>3. 分级锁</h4><p>在 <code>JDK1.8</code> 中 <code>JVM</code> 会根据使用情况对 <code>synchronized</code> 的锁进行升级，它大体可以按照下面的路径：<code>偏向锁</code> -&gt; <code>轻量级锁</code> -&gt; <code>重量级锁</code>。锁只能升级不能降级，所以一旦升级为重量级锁就只能依靠操作系统进行调度。</p>
-<p>锁升级过程中关系最大的就是对象头里的 <code>MarkWord</code> ，它包含 <code>Thread ID</code>、 <code>Age</code>、 <code>Biased</code>、 <code>Tag</code> 四个部分。其中<code>Biased</code> 有 <code>1bit</code> 大小，<code>Tag</code> 有 <code>2bit</code> ，锁升级即依据 <code>Thread Id</code>、 <code>Biased</code>、 <code>Tag</code> 三个变量值进行。</p>
+<h4 id="3-分级锁"><a href="#3-分级锁" class="headerlink" title="3. 分级锁"></a>3. 分级锁</h4><p>在 <code>JDK1.8</code> 中 <code>JVM</code> 会根据使用情况对 <code>synchronized</code> 的锁进行升级，它大体可以按照下面的路径：``偏向锁<code>-&gt;</code>轻量级锁<code>-&gt;</code>重量级锁`。锁只能升级不能降级，所以一旦升级为重量级锁就只能依靠操作系统进行调度。</p>
+<p>锁升级过程中关系最大的就是对象头里的 <code>MarkWord</code> ，它包含 <code>Thread ID</code>、 <code>Age</code>、 <code>Biased</code>、 <code>Tag</code> 四个部分。其中 <code>Biased</code> 有 <code>1bit</code> 大小，<code>Tag</code> 有 <code>2bit</code> ，锁升级即依据 <code>Thread Id</code>、 <code>Biased</code>、 <code>Tag</code> 三个变量值进行。</p>
 <ul>
 <li><h5 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h5><p>  在只有一个线程使用了锁的情况下，偏向锁能够保证更高的效率。</p>
 <p>  当第一个线程第一次访问同步块时，会先检测对象头 <code>Mark Word</code> 中的标志位 <code>Tag</code> 是否为 <code>01</code> ，以此判断此时对象锁是否处于无锁状态或者偏向锁状态（匿名偏向锁）。<code>01</code> 也是锁默认的状态，线程一旦获取了这把锁，就会把自己的线程 <code>ID</code> 写到 <code>MarkWord</code> 中，在其他线程来获取这把锁之前，锁都处于偏向锁状态。</p>
@@ -834,34 +834,61 @@ receive change: 3
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
-    Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">synchronized</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment" spellcheck="true">// 加锁</span>
                 synCount <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">synchronized</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment" spellcheck="true">// 加锁</span>
                 synCount <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需要注意通过 <code>synchronized(this)</code> 获取的锁是针对类层级，其相对较重也更耗费性能，当频繁使用为了更好的性能应该通过成员变量进行替换。</p>
+<p>再次改造上述的示例得到下述代码：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> Object object <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">synchronized</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment" spellcheck="true">// 加锁</span>
+                synCount <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">synchronized</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment" spellcheck="true">// 加锁</span>
+                synCount <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-ReentrantLock"><a href="#2-ReentrantLock" class="headerlink" title="2. ReentrantLock"></a>2. ReentrantLock</h4><p>在 <code>Java</code> 中提供了 <code>ReentrantLock</code> 实现更轻量化的加锁操作。</p>
 <p>我们知道一个锁只能同时被一个线程获取，因此当一个锁被其它线程持有时，使用 <code>synchronized</code> 将会一直尝试取锁直至获取锁对象，一旦逻辑异常极易出现死循环。而 <code>ReentrantLock</code> 除了基础加锁外提供 <code>tryLock()</code> 方法可设置取锁超时时间，到期未获取锁将推出阻塞继续执行剩余代码。</p>
-<h5 id="1-lock"><a href="#1-lock" class="headerlink" title="(1)lock()"></a>(1)lock()</h5><p>通过 <code>lock()</code> 即可实现加锁操作，同一个线程对象只能持有一把锁，注意当使用 <code>lock()</code> 执行加锁操作若失败则会一直尝试取锁，导致程序陷入阻塞无法执行后续代码。</p>
+<h5 id="1-lock"><a href="#1-lock" class="headerlink" title="(1) lock()"></a>(1) lock()</h5><p>通过 <code>lock()</code> 即可实现加锁操作，同一个线程对象只能持有一把锁，注意当使用 <code>lock()</code> 执行加锁操作若失败则会一直尝试取锁，导致程序陷入阻塞无法执行后续代码。</p>
 <p>在使用时建议将代码块置于 <code>try catch</code> 中，并在 <code>finally</code> 中通过 <code>unlock()</code> 释放锁，防止程序异常导致未正常释放锁从而引发死锁问题。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     Lock lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 加锁</span>
         lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -871,28 +898,28 @@ receive change: 3
             lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 锁被线程 1 持有无法获取</span>
         lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"get lock"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-tryLock"><a href="#2-tryLock" class="headerlink" title="(2)tryLock()"></a>(2)tryLock()</h5><p><code>tryLock()</code> 作用与 <code>lock()</code> 类似，但其可以设置取锁超时时间，在指定时间内若没有取到锁将继续返回 <code>false</code> 并继续执行剩余代码。</p>
-<p>如在下述示例中 <code>thread2</code> 在尝试加锁两秒后若未能加锁成功将会返回 <code>false</code> 并继续执行其后代码，若将其替换为 <code>lock()</code> 方法则其将进入死锁循环，导致程序资源的浪费。</p>
+<h5 id="2-tryLock"><a href="#2-tryLock" class="headerlink" title="(2) tryLock()"></a>(2) tryLock()</h5><p><code>tryLock()</code> 作用与 <code>lock()</code> 类似，但其可以设置取锁超时时间，在指定时间内若没有取到锁将继续返回 <code>false</code> 并继续执行剩余代码。</p>
+<p>如在下述示例中 <code>t2</code> 在尝试加锁两秒后若未能加锁成功将会返回 <code>false</code> 并继续执行其后代码，若将其替换为 <code>lock()</code> 方法则其将进入死锁循环，导致程序资源的浪费。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     Lock lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 加锁, 但不释放锁</span>
         lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
             <span class="token comment" spellcheck="true">// 尝试加锁，两秒后未取锁继续执行后续内容</span>
             <span class="token keyword">boolean</span> isLock <span class="token operator">=</span> lock<span class="token punctuation">.</span><span class="token function">tryLock</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -901,22 +928,22 @@ receive change: 3
             e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    thread2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    t2<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-ReadWriteLock"><a href="#3-ReadWriteLock" class="headerlink" title="3. ReadWriteLock"></a>3. ReadWriteLock</h4><p>上述的两类锁虽然能够实现原子性，但一刀切的锁显然在效率上会略到折扣，因此 <code>Java</code> 中提供了一系列读写锁， <code>ReadWriteLock</code> 即为其中之一。</p>
 <p>在查看需求大于修改的业务下，如针对论坛等功能，允许多用户同时查看但禁止多用户同时修改，通过读写锁将互斥逻辑实现剥离，实现更细粒度的并发控制，在保证线程安全的情况下实现不错的性能表现。</p>
-<h5 id="1-特性"><a href="#1-特性" class="headerlink" title="(1)特性"></a>(1)特性</h5><p><code>ReadWriteLock</code> 中分为 <code>读锁</code> 和 <code>写锁</code> ，其特性如下：</p>
+<h5 id="1-特性"><a href="#1-特性" class="headerlink" title="(1) 特性"></a>(1) 特性</h5><p><code>ReadWriteLock</code> 中分为 <code>读锁</code> 和 <code>写锁</code> ，其特性如下：</p>
 <ul>
 <li><code>读锁</code> 之间是不互斥的，即 <code>读锁</code> 可同时被多个线程持有。</li>
 <li><code>写锁</code> 之间也是互斥的，在同一时刻最多仅有一个线程能持有 <code>写锁</code> 。</li>
 <li><code>读锁</code> 和 <code>写锁</code> 之间是互斥的，即 <code>读锁</code> 和 <code>写锁</code> 不能同时持有，二者有且仅有一个处于持有状态。</li>
 </ul>
-<h5 id="2-初始化"><a href="#2-初始化" class="headerlink" title="(2)初始化"></a>(2)初始化</h5><p><code>ReadWriteLock</code> 初始化方式如下所示：</p>
+<h5 id="2-初始化"><a href="#2-初始化" class="headerlink" title="(2) 初始化"></a>(2) 初始化</h5><p><code>ReadWriteLock</code> 初始化方式如下所示：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 声明一个读写锁</span>
     ReadWriteLock rwLock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantReadWriteLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1042,7 +1069,7 @@ Writer-2 do write.
 Writer-2 sleep over.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-StampedLock"><a href="#4-StampedLock" class="headerlink" title="4. StampedLock"></a>4. StampedLock</h4><p><code>StampedLock</code> 同样分为读写锁，但其为乐观锁的一种，通过为锁提供版本号进行区别不同操作。</p>
-<h5 id="1-悲观锁"><a href="#1-悲观锁" class="headerlink" title="(1)悲观锁"></a>(1)悲观锁</h5><p><code>StampedLock</code> 中的 <code>readLock()</code> 与<code> writeLock()</code> 即为悲观锁，具体效果与 <code>ReentrantReadWriteLock</code> 类似，这里不作详细介绍，具体方法参考下表。</p>
+<h5 id="1-悲观锁"><a href="#1-悲观锁" class="headerlink" title="(1) 悲观锁"></a>(1) 悲观锁</h5><p><code>StampedLock</code> 中的 <code>readLock()</code> 与<code> writeLock()</code> 即为悲观锁，具体效果与 <code>ReentrantReadWriteLock</code> 类似，这里不作详细介绍，具体方法参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -1079,7 +1106,7 @@ Writer-2 sleep over.
 </table>
 
 
-<h5 id="2-乐观锁"><a href="#2-乐观锁" class="headerlink" title="(2)乐观锁"></a>(2)乐观锁</h5><p>通过 <code>tryOptimisticRead()</code> 可返回一个版本号，注意此时并没有仍是无锁状态，通过 <code>validate(stamp)</code> 方法可以验证此时是否有写入发生即是否有写锁处于持有状态，可根据结果设计不同的处理逻辑</p>
+<h5 id="2-乐观锁"><a href="#2-乐观锁" class="headerlink" title="(2) 乐观锁"></a>(2) 乐观锁</h5><p>通过 <code>tryOptimisticRead()</code> 可返回一个版本号，注意此时并没有仍是无锁状态，通过 <code>validate(stamp)</code> 方法可以验证此时是否有写入发生即是否有写锁处于持有状态，可根据结果设计不同的处理逻辑</p>
 <p>常用的接口方法与其对应的描述信息参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1144,10 +1171,9 @@ Writer-2 sleep over.
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、分布式锁"><a href="#六、分布式锁" class="headerlink" title="六、分布式锁"></a>六、分布式锁</h3><p>在实际生产开发中，为了实现高可用我们通过将服务通过集群部署在不同节点上，而此时用户的单个操作可能就会被集群中的多个节点重复执行。针对这种情况，上面的两类锁显然就不太适用，因为二者都是针对单节点的服务而言，因此这时候就需要用到分布式锁。</p>
+<h3 id="六、RedissonLock"><a href="#六、RedissonLock" class="headerlink" title="六、RedissonLock"></a>六、RedissonLock</h3><p>在实际生产开发中，为了实现高可用我们通过将服务通过集群部署在不同节点上，而此时用户的单个操作可能就会被集群中的多个节点重复执行。针对这种情况，上面的两类锁显然就不太适用，因为二者都是针对单节点的服务而言，因此这时候就需要用到分布式锁。</p>
 <p>用简单一点的大白话来讲，可以把整个集群环境当成一个主线程，而每个节点就是一个线程，分布式锁就是用于控制不同节点间的操作原子性。</p>
-<h4 id="1-RedissonLock"><a href="#1-RedissonLock" class="headerlink" title="1. RedissonLock"></a>1. RedissonLock</h4><p><code>RedissonLock</code> 是一款基于 <code>Redis</code> 实现的分布式锁，下面详细介绍一下其使用。</p>
-<h5 id="1-Redis连接"><a href="#1-Redis连接" class="headerlink" title="(1)Redis连接"></a>(1)Redis连接</h5><p>因为是基于 <code>Redis</code> 实现所以需要提前创建服务连接。</p>
+<h4 id="1-Redis连接"><a href="#1-Redis连接" class="headerlink" title="1. Redis连接"></a>1. Redis连接</h4><p><code>RedissonLock</code> 是一款基于 <code>Redis</code> 实现的分布式锁，下面详细介绍一下其使用，因为是基于 <code>Redis</code> 实现所以需要提前创建服务连接。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Config config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     config<span class="token punctuation">.</span><span class="token function">useSingleServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -1161,7 +1187,7 @@ Writer-2 sleep over.
     redissonClient <span class="token operator">=</span> Redisson<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="(2)基本使用"></a>(2)基本使用</h5><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，这里就不再具体举例，仅介绍一下其常用方法。</p>
+<h4 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2. 基本使用"></a>2. 基本使用</h4><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，这里就不再具体举例，仅介绍一下其常用方法。</p>
 <p>需要注意一点如果在加锁时未设置过期时间则默认为 <code>30s</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">infoDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1191,12 +1217,12 @@ Writer-2 sleep over.
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"lock count: "</span> <span class="token operator">+</span> lock<span class="token punctuation">.</span><span class="token function">getHoldCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-看门狗机制"><a href="#3-看门狗机制" class="headerlink" title="(3)看门狗机制"></a>(3)看门狗机制</h5><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
-<p>默认的看门狗时间为 <code>30s</code>，即每隔 <code>10s</code> 会读取当前锁的状态，若锁仍为持有状态则自动延长加锁时间 <code>30s</code> 。当然你也可以在创建连接时通过 <code>setLockWatchdogTimeout()</code> 指定看门狗程序时间，如设置为 <code>60s</code> 则每隔 <code>60/3=20s</code> 会检查锁的状态，若锁未释放则延长 <code>60s</code>。</p>
+<h4 id="3-看门狗机制"><a href="#3-看门狗机制" class="headerlink" title="3. 看门狗机制"></a>3. 看门狗机制</h4><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
+<p>默认的看门狗时间为 <code>30s</code>，即每隔 <code>10s</code> 会读取当前锁的状态，若锁仍为持有状态则自动延长加锁时间 <code>30s</code> 。当然你也可以在创建连接时通过 <code>setLockWatchdogTimeout()</code> 指定看门狗程序时间，如设置为 <code>60s</code> 则每隔 <code>60/3=20s</code> 会检查锁的状态，若锁未释放则延长 `60s``。</p>
 <p>下面看一个具体示例，在 <code>线程 1</code> 中创建锁时并没有指定过期时间，因此默认过期时间为 <code>30s</code> ，但是因为看门狗机制将会每隔 <code>10s</code> 读取一次锁状态，这里通过 <code>sleep()</code> 模拟任务耗时 <code>60s</code> ，因此当 <code>30s</code> 后锁过期时间又会自动续期到 <code>30s</code>，因此 <code>线程 2</code> 将无法获取锁。只有当休眠结束后释放锁看门狗机制失效后 <code>线程 2</code> 才能获取锁。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">watchDogDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 不指定时间，默认 30s 过期</span>
         lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -1212,7 +1238,7 @@ Writer-2 sleep over.
     <span class="token comment" spellcheck="true">// 间隔启动第二个线程</span>
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    Thread thread2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    Thread t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 无法拿到锁</span>
         lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -1225,7 +1251,7 @@ Writer-2 sleep over.
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="七、线程工具"><a href="#七、线程工具" class="headerlink" title="七、线程工具"></a>七、线程工具</h3><h4 id="1-CountDownLatch"><a href="#1-CountDownLatch" class="headerlink" title="1. CountDownLatch"></a>1. CountDownLatch</h4><p><code>CountDownLatch</code> 可以理解为计数器，通过巧妙的应用它我们即可控制线程的流程。</p>
-<h5 id="1-初始化"><a href="#1-初始化" class="headerlink" title="(1)初始化"></a>(1)初始化</h5><p>计数器的 <code>await()</code> 方法会判断当前计数器值是否为 <code>0</code> ，若否则会进入阻塞状态。</p>
+<h5 id="1-初始化"><a href="#1-初始化" class="headerlink" title="(1) 初始化"></a>(1) 初始化</h5><p>计数器的 <code>await()</code> 方法会判断当前计数器值是否为 <code>0</code> ，若否则会进入阻塞状态。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 初始化值为 1 的计数器</span>
     CountDownLatch latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1243,7 +1269,7 @@ Writer-2 sleep over.
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"end"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-并发模拟"><a href="#2-并发模拟" class="headerlink" title="(2)并发模拟"></a>(2)并发模拟</h5><p>通过 CountDownLatch 可以快速实现并发事件的任务模拟，具体示例如下：</p>
+<h5 id="2-并发模拟"><a href="#2-并发模拟" class="headerlink" title="(2) 并发模拟"></a>(2) 并发模拟</h5><p>通过 <code>CountDownLatch</code> 可以快速实现并发事件的任务模拟，具体示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">concurrentDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     CountDownLatch latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1265,7 +1291,7 @@ Writer-2 sleep over.
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-CyclicBarrier"><a href="#2-CyclicBarrier" class="headerlink" title="2. CyclicBarrier"></a>2. CyclicBarrier</h4><p><code>CyclicBarrier</code> 又译为栅栏，即可以实现批量的线程控制，当一组线程到达都到达该临界状态的时候触发。</p>
-<h5 id="1-初始化-1"><a href="#1-初始化-1" class="headerlink" title="(1)初始化"></a>(1)初始化</h5><p>通过 <code>await()</code> 方法实现线程阻塞的效果，当指定数量的线程进入该阻塞状态则触发 <code>CyclicBarrier</code> 中定义的事件，注意当该事件抛出异常时将会在 <code>await()</code> 处抛出 <code>BrokenBarrierException</code> 异常。</p>
+<h5 id="1-初始化-1"><a href="#1-初始化-1" class="headerlink" title="(1) 初始化"></a>(1) 初始化</h5><p>通过 <code>await()</code> 方法实现线程阻塞的效果，当指定数量的线程进入该阻塞状态则触发 <code>CyclicBarrier</code> 中定义的事件，注意当该事件抛出异常时将会在 <code>await()</code> 处抛出 <code>BrokenBarrierException</code> 异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 当指定数量的线程到达 await 状态则触发事件</span>
     CyclicBarrier cyclicBarrier <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CyclicBarrier</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -1289,7 +1315,7 @@ Writer-2 sleep over.
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-同步示例"><a href="#2-同步示例" class="headerlink" title="(2)同步示例"></a>(2)同步示例</h5><p>了解了基本使用下面来看一个更贴合实际的案例。</p>
+<h5 id="2-同步示例"><a href="#2-同步示例" class="headerlink" title="(2) 同步示例"></a>(2) 同步示例</h5><p>了解了基本使用下面来看一个更贴合实际的案例。</p>
 <p>通过 <code>Random</code> 库模拟生成了十万个随机数并实现求和的目的，为了达到更高效的目的这里将数组集合拆分为 <code>3</code> 个子数组并分别求和最后将 <code>3</code> 个任务结果相加即可。当每个子任务计算完成后通过 <code>await()</code> 进入阻塞，等待其它子任务完成计算，而当 <code>3</code> 个子任务都计算完成进入阻塞则触发 <code>CyclicBarrier</code> 的最后累加，将三个任务的结果相加得到最终结果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1331,7 +1357,7 @@ Writer-2 sleep over.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Semaphore"><a href="#3-Semaphore" class="headerlink" title="3. Semaphore"></a>3. Semaphore</h4><p><code>Semaphore</code> 能够实现限制线程访问数量的效果，可以粗暴的理解为一个阻塞的线程队列，只有指定数量的线程能同时访问资源，到达阈值后将陷入阻塞。</p>
 <p><code>Semaphore</code> 作用类似于普通的线程锁都是用于限制并发访问，不同是 <code>Semaphore</code> 允许被多线程同时持有。</p>
-<h5 id="1-初始化-2"><a href="#1-初始化-2" class="headerlink" title="(1)初始化"></a>(1)初始化</h5><p><code>Semaphore</code> 同样提供 <code>acquire()</code> 与 <code>tryAcquire()</code> 两种方式访问资源。</p>
+<h5 id="1-初始化-2"><a href="#1-初始化-2" class="headerlink" title="(1) 初始化"></a>(1) 初始化</h5><p><code>Semaphore</code> 同样提供 <code>acquire()</code> 与 <code>tryAcquire()</code> 两种方式访问资源。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 初始化并指定并发大小</span>
     Semaphore semaphore <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Semaphore</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1348,7 +1374,7 @@ Writer-2 sleep over.
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-同步示例-1"><a href="#2-同步示例-1" class="headerlink" title="(2)同步示例"></a>(2)同步示例</h5><p>我们知道常见的 <code>IO</code> 是阻塞的，因此在文件下载等业务场景下想实现多任务下载就必须通过多线程方式，但若没有合理限制并发数将导致系统资源被大量占用。这种情况可以通过创建一个指定大小的 <code>IO</code> 专用线程池资源来实现，但往往一个系统中还有其它服务需要使用线程如果为每个模块创建单独的线程池显然是不合适且耗费资源的。</p>
+<h5 id="2-同步示例-1"><a href="#2-同步示例-1" class="headerlink" title="(2) 同步示例"></a>(2) 同步示例</h5><p>我们知道常见的 <code>IO</code> 是阻塞的，因此在文件下载等业务场景下想实现多任务下载就必须通过多线程方式，但若没有合理限制并发数将导致系统资源被大量占用。这种情况可以通过创建一个指定大小的 <code>IO</code> 专用线程池资源来实现，但往往一个系统中还有其它服务需要使用线程如果为每个模块创建单独的线程池显然是不合适且耗费资源的。</p>
 <p><code>Semaphore</code> 则完美解决这个问题，通过其即可限制同一资源的线程并发数，下面看个例子让我们更好的理解：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
  * 初始化大小为 3，即只能同时 3 个任务并发
@@ -1403,7 +1429,7 @@ Writer-2 sleep over.
 <blockquote>
 <p>下面着重对方式一的实现思路解析。</p>
 </blockquote>
-<p>方式一的核心在于确定流程的加锁顺序，对于同一组操作要保证加锁顺序的一致性。如之前 <code>user-</code>1 向 <code>user-2</code> 与 <code>user-2</code> 向 <code>user-1</code> 转账的示例中，因保证其无论如何触发都保证先对对 <code>user-1</code> 加锁再对 <code>user-2</code> 加锁，或者顺序倒置，但重点的是要保证应用每次调用都使用这个顺序。</p>
+<p>方式一的核心在于确定流程的加锁顺序，对于同一组操作要保证加锁顺序的一致性。如之前 <code>user-1</code> 向 <code>user-2</code> 与 <code>user-2</code> 向 <code>user-1</code> 转账的示例中，因保证其无论如何触发都保证先对对 <code>user-1</code> 加锁再对 <code>user-2</code> 加锁，或者顺序倒置，但重点的是要保证应用每次调用都使用这个顺序。</p>
 <p>稍微修改上述的示例，通过计算对象的哈希值进行比对从而保证加锁顺序的一致，通过引入第三个加锁对象用于防止两个对象 <code>hashCode()</code> 一致的情况，相应的代码示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> Object obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -2043,7 +2069,7 @@ Writer-2 sleep over.
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">216.7k</span>
+                <span class="white-color">218.4k</span>
             
             
             
