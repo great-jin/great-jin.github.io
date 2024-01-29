@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-28
+                    2024-01-29
                 </div>
                 
 
@@ -646,7 +646,7 @@ receive change: 3
 <br/>
 
 <p>同样以 <code>AtomicInteger</code> 举例，示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AtomicDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">atomicDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     AtomicInteger atomicInteger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AtomicInteger</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 修改值</span>
     atomicInteger<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -743,6 +743,7 @@ receive change: 3
 <p>如 <code>Java</code> 中时间格式化 <code>SimpleDateFormat</code> 对象是非线程安全的，当多线程并发操作时将会抛出异常，此时即可通过 <code>ThreadLocal</code> 为每个线程定义单独的 <code>SimpleDateFormat</code> 对象。</p>
 <p>如下示例中定义了容量为 <code>5</code> 的线程池模拟并发，并在每个线程中通过 <code>SimpleDateFormat</code> 实现时间格式化，若在 <code>for</code> 循环上一步定义公共的 <code>SimpleDateFormat</code> 对象并在每个子线程调用其实现时间转为将会抛出异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SafeDateFormatTest</span> <span class="token punctuation">{</span>
+    
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> ThreadLocal<span class="token operator">&lt;</span>DateFormat<span class="token operator">></span> dateFormatThreadLocal <span class="token operator">=</span> ThreadLocal<span class="token punctuation">.</span><span class="token function">withInitial</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -771,7 +772,7 @@ receive change: 3
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、锁的介绍"><a href="#四、锁的介绍" class="headerlink" title="四、锁的介绍"></a>四、锁的介绍</h3><h4 id="1-基本分类"><a href="#1-基本分类" class="headerlink" title="1. 基本分类"></a>1. 基本分类</h4><p><code>Java</code> 线程锁的分类如果进行细分的话是非常多的，这里仅对常遇到的一些分类简要介绍，注意下面分类之间并不是互斥的。</p>
 <ul>
 <li><h5 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h5><p>  乐观锁顾名思义就是以更宽松的方式进行加锁，认为别的线程在持有锁的时候不进行值变化只做读取，因此允许多个对象同时持有锁，同伴版本号机制控制实现一致性。</p>
@@ -2069,7 +2070,7 @@ Writer-2 sleep over.
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             

@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-14
+                    2024-01-29
                 </div>
                 
 
@@ -537,10 +537,9 @@
 <blockquote>
 <p>话不多说，下面我们就直奔主题开始介绍相关知识吧。</p>
 </blockquote>
-<h3 id="一、异常捕获"><a href="#一、异常捕获" class="headerlink" title="一、异常捕获"></a>一、异常捕获</h3><h4 id="1-处理方式"><a href="#1-处理方式" class="headerlink" title="1. 处理方式"></a>1. 处理方式</h4><p>程序异常是开发时不可避免的，很多时候我们需要针对不同异常进行不同的处理，最常用的就是<code>try&#123;&#125; catch()&#123;&#125;</code>语句，这里主要说明一下两种常见异常处理的异同。</p>
-<ul>
-<li><h5 id="堆栈打印"><a href="#堆栈打印" class="headerlink" title="堆栈打印"></a>堆栈打印</h5><p>  当用 <code>printStackTrace()</code> 处理异常时，在程序出现异常时将会在控制台或日志文件中输出异常信息，然后继续执行之后的代码。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Exception1Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h3 id="一、异常处理"><a href="#一、异常处理" class="headerlink" title="一、异常处理"></a>一、异常处理</h3><h4 id="1-捕获方式"><a href="#1-捕获方式" class="headerlink" title="1. 捕获方式"></a>1. 捕获方式</h4><p>程序异常是开发时不可避免的，很多时候我们需要针对不同异常进行不同的处理，最常用的就是 <code>try&#123;&#125; catch()&#123;&#125;</code> 语句，这里主要说明一下两种常见异常处理的异同。</p>
+<h5 id="1-堆栈打印"><a href="#1-堆栈打印" class="headerlink" title="(1) 堆栈打印"></a>(1) 堆栈打印</h5><p>当用 <code>printStackTrace()</code> 处理异常时，在程序出现异常时将会在控制台或日志文件中输出异常信息，然后继续执行之后的代码。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">exceptionDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         Integer<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -551,9 +550,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"This is will show."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="异常抛出"><a href="#异常抛出" class="headerlink" title="异常抛出"></a>异常抛出</h5><p>  通过 <code>throw new xxxException()</code> 则会将异常信息根据调用层级逐层向上抛出，程序将在异常处中断，不会继续执行后续代码。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Exception2Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="2-异常抛出"><a href="#2-异常抛出" class="headerlink" title="(2) 异常抛出"></a>(2) 异常抛出</h5><p>通过 <code>throw new xxxException()</code> 则会将异常信息根据调用层级逐层向上抛出，程序将在异常处中断，不会继续执行后续代码。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">exceptionDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         Integer<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -564,8 +562,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"This is will not show."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-捕获示例"><a href="#2-捕获示例" class="headerlink" title="2. 捕获示例"></a>2. 捕获示例</h4><p>在上一点中介绍了两种捕获异常的处理方式，那在实际的程序开发中应该如何进行选择呢？</p>
 <p>最常见的一种规范即底层异常永远向上抛出，由最顶层统一处理。如下示例中 <code>demo()</code> 调用了 <code>task()</code> 方法，相对而言 <code>task()</code> 更为底层因此其捕获异常时通过 <code>throw</code> 关键字向上抛出，而 <code>demo()</code> 为最顶层则可以通过 <code>printStackTrace()</code> 打印异常堆栈，当然也可以选择继续抛出由系统处理异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
@@ -619,18 +615,17 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-断言处理"><a href="#4-断言处理" class="headerlink" title="4. 断言处理"></a>4. 断言处理</h4><p>在 <code>JDK 1.4</code> 中引入断言语法更简洁的实现异常抛出，在 <code>try catch</code> 中是无法预判异常环节从而用其实现捕获，断言则更多的用于条件判断。</p>
+<h3 id="二、异常断言"><a href="#二、异常断言" class="headerlink" title="二、异常断言"></a>二、异常断言</h3><p>在 <code>JDK 1.4</code> 中引入断言语法更简洁的实现异常抛出，在 <code>try catch</code> 中是无法预判异常环节从而用其实现捕获，断言则更多的用于条件判断。</p>
 <p>即通过断言用于判断是否满足先决条件，若否则在该处抛出异常，若是则正常执行后续代码，下面通过示例说明。</p>
-<ul>
-<li><h5 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h5><p>  通过 <code>assert</code> 可实现更便捷的数据合法性验证，其基本语法如下，当表达式 <code>&lt;expression&gt;</code> 返回值为 <code>false</code> 时将抛出一个异常，通过 <code>&lt;message&gt;</code> 定义异常信息提示。</p>
+<h4 id="1-assert"><a href="#1-assert" class="headerlink" title="1. assert"></a>1. assert</h4><p>通过 <code>assert</code> 可实现更便捷的数据合法性验证，其基本语法如下，当表达式 <code>&lt;expression&gt;</code> 返回值为 <code>false</code> 时将抛出一个异常，通过 <code>&lt;message&gt;</code> 定义异常信息提示。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">assert</span> <span class="token operator">&lt;</span>expression<span class="token operator">></span> <span class="token operator">:</span> <span class="token operator">&lt;</span>message<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>  下面通过一个具体示例演示效果，两个示例的作用效果相同，除了抛出的异常类型不同。</p>
+<p>下面通过一个具体示例演示效果，两个示例的作用效果相同，除了抛出的异常类型不同。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AssertDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">int</span> y <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
     <span class="token keyword">assert</span> y <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">:</span> <span class="token string">"The value of y is lower then zero"</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-
+    
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AssertDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">int</span> y <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span><span class="token punctuation">(</span>y <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -638,8 +633,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Assert"><a href="#Assert" class="headerlink" title="Assert"></a>Assert</h5><p>  更简洁的语法规则，效果同上，当捕获到异常后将中断程序，不会继续执行后续内容。</p>
+<h4 id="2-Assert"><a href="#2-Assert" class="headerlink" title="2. Assert"></a>2. Assert</h4><p>更简洁的语法规则，效果同上，当捕获到异常后将中断程序，不会继续执行后续内容。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Assert2Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String msg <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
 
@@ -649,10 +643,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"1111"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="二、日志监控"><a href="#二、日志监控" class="headerlink" title="二、日志监控"></a>二、日志监控</h3><p>在开发时如果需要查看某一处代码信息时我们可以直接使用 <code>println()</code> 进行打印输出，但生成环境下控制台信息显然变得没有意义，此时我们就需要通过日志进行信息打印。</p>
-<h4 id="1-日志打印"><a href="#1-日志打印" class="headerlink" title="1. 日志打印"></a>1. 日志打印</h4><p><code>Java</code> 提供原生日志工具类，导入包即可使用。</p>
+<h3 id="三、日志监控"><a href="#三、日志监控" class="headerlink" title="三、日志监控"></a>三、日志监控</h3><p>在开发时如果需要查看某一处代码信息时我们可以直接使用 <code>println()</code> 进行打印输出，但生成环境下控制台信息显然变得没有意义，此时我们就需要通过日志进行信息打印。</p>
+<h4 id="1-日志打印"><a href="#1-日志打印" class="headerlink" title="1. 日志打印"></a>1. 日志打印</h4><p>``Java` 提供原生日志工具类，导入包即可使用。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>Logger<span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">LogDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -664,7 +656,7 @@
     logger<span class="token punctuation">.</span><span class="token function">severe</span><span class="token punctuation">(</span><span class="token string">"process will be terminated..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-Log4j框架"><a href="#2-Log4j框架" class="headerlink" title="2. Log4j框架"></a>2. Log4j框架</h4><p>除了自带的日志框架，<code>Log4j</code> 是当下较为流行的日志插件，在项目工程中引入下列依赖，其中 <code>slf4j</code> 指的是日志规范。</p>
+<h4 id="2-Log4j框架"><a href="#2-Log4j框架" class="headerlink" title="2. Log4j框架"></a>2. Log4j框架</h4><p>除了自带的日志框架，``Log4j<code>是当下较为流行的日志插件，在项目工程中引入下列依赖，其中</code>slf4j` 指的是日志规范。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.slf4j<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>slf4j-log4j12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -677,7 +669,7 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
 <span class="token comment" spellcheck="true">// 当前类与其子类都可用</span>
 Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>Slf4j</code> 规范针对不同级别的日志提供不同的接口方法如：<code>info()</code>、 <code>warn()</code>、 <code>debug()</code>、 <code>error()</code>， 基本使用示例如下:</p>
+<p><code>Slf4j` 规范针对不同级别的日志提供不同的接口方法如：</code>info()<code>、 `warn()</code>、 <code>debug()``、 </code>error()``， 基本使用示例如下:</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>Logger<span class="token punctuation">;</span>
 <span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>LoggerFactory<span class="token punctuation">;</span>
 
@@ -693,7 +685,7 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Logbak配置"><a href="#三、Logbak配置" class="headerlink" title="三、Logbak配置"></a>三、Logbak配置</h3><h4 id="1-项目配置"><a href="#1-项目配置" class="headerlink" title="1. 项目配置"></a>1. 项目配置</h4><p>在工程的 <code>application.yml</code> 添加 <code>logging.config</code> 用于指定日志配置文件路径。</p>
+<h3 id="四、Logbak配置"><a href="#四、Logbak配置" class="headerlink" title="四、Logbak配置"></a>四、Logbak配置</h3><h4 id="1-项目配置"><a href="#1-项目配置" class="headerlink" title="1. 项目配置"></a>1. 项目配置</h4><p>在工程的 <code>application.yml</code> 添加 <code>logging.config</code> 用于指定日志配置文件路径。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token comment" spellcheck="true"># 日志配置文件</span>
 <span class="token key atrule">logging</span><span class="token punctuation">:</span>
   <span class="token key atrule">config</span><span class="token punctuation">:</span> classpath<span class="token punctuation">:</span>logback<span class="token punctuation">-</span>spring.xml
@@ -1456,7 +1448,7 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             

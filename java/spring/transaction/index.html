@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.6k
                 </div>
                 
 
@@ -591,31 +591,33 @@
 </blockquote>
 <h4 id="4-隔离级别"><a href="#4-隔离级别" class="headerlink" title="4. 隔离级别"></a>4. 隔离级别</h4><p>为了解决上述中的几大问题事务引入了隔离级别，其描述一个事务必须与由其他事务进行的资源或数据更改相隔离的程度。</p>
 <p><code>Spring</code> 的事物隔离级别可取参数如下，其中 <code>MYSQL</code> 默认为 <code>REPEATABLE_READ</code> 级别。</p>
-<blockquote>
-<p><strong>(1) Isolation.READ_UNCOMMITTED</strong></p>
+<h5 id="1-Isolation-READ-UNCOMMITTED"><a href="#1-Isolation-READ-UNCOMMITTED" class="headerlink" title="(1) Isolation.READ_UNCOMMITTED"></a>(1) Isolation.READ_UNCOMMITTED</h5><blockquote>
 <ul>
 <li>读取未提交数据，若事务已经开始写数据，则其它事务仅允许读此行数据。</li>
 <li>该隔离级别会出现脏读。</li>
 </ul>
-<p><strong>(2) Isolation.READ_COMMITTED</strong></p>
+</blockquote>
+<h5 id="2-Isolation-READ-COMMITTED"><a href="#2-Isolation-READ-COMMITTED" class="headerlink" title="(2) Isolation.READ_COMMITTED"></a>(2) Isolation.READ_COMMITTED</h5><blockquote>
 <ul>
 <li>读取已提交数据，若是写事务将会禁止其他事务访问该行数据。</li>
 <li>避免了脏读，但会出现不可重复读。</li>
 </ul>
-<p><strong>(3) Isolation.REPEATABLE_READ</strong></p>
+</blockquote>
+<h5 id="3-Isolation-REPEATABLE-READ"><a href="#3-Isolation-REPEATABLE-READ" class="headerlink" title="(3) Isolation.REPEATABLE_READ"></a>(3) Isolation.REPEATABLE_READ</h5><blockquote>
 <ul>
 <li>一个事务内多次读同一个数据，当前事务还没结束则其它事务不能访问该数据。</li>
 <li>读取数据的事务将会禁止写事务(但允许读事务)，写事务则禁止任何其他事务(包括了读写)。</li>
 <li>该隔离级别会出现幻读。</li>
 </ul>
-<p><strong>(4) Isolation.SERIALIZABLE</strong></p>
+</blockquote>
+<h5 id="4-Isolation-SERIALIZABLE"><a href="#4-Isolation-SERIALIZABLE" class="headerlink" title="(4) Isolation.SERIALIZABLE"></a>(4) Isolation.SERIALIZABLE</h5><blockquote>
 <ul>
 <li>要求事务序列化执行，事务只能一个接着一个地执行，但不能并发执行。</li>
 </ul>
 </blockquote>
 <h3 id="二、注解介绍"><a href="#二、注解介绍" class="headerlink" title="二、注解介绍"></a>二、注解介绍</h3><h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p>在 <code>Spring</code> 工程中使用注解相对较为简单，通过 <code>@Transactiona</code> 注解即可实现对事件开启事务。</p>
-<p>当注解作用于类上时将会为类中所有声明为 <code>pulbic</code> 的方法开启事务，当作用于单个方法时则只为当前方法开启事务。为了细化事务粒度，更推荐使用后者配置事务。</p>
-<p>注意当同时在类上和方式上同时使用事务注解则方法上的将会覆盖类上注解的配置，且 <code>@Transactiona</code> 作用于方法时方法必须声明为 public，否则将不会生效。</p>
+<p>当注解作用于类上时将会为类中所有声明为 <code>pulbic</code> 的方法开启事务，当作用于单个方法时则只为当前方法开启事务，为了细化事务粒度，更推荐使用后者配置事务。</p>
+<p>注意当同时在类上和方式上同时使用事务注解则方法上的将会覆盖类上注解的配置，且 <code>@Transactiona</code> 作用于方法时方法必须声明为 <code>public</code>，否则将不会生效。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TransactionServiceImpl1</span> <span class="token keyword">implements</span> <span class="token class-name">TransactionService</span> <span class="token punctuation">{</span>
     
@@ -626,35 +628,30 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-注解参数"><a href="#2-注解参数" class="headerlink" title="2. 注解参数"></a>2. 注解参数</h4><ul>
-<li><h5 id="propagation"><a href="#propagation" class="headerlink" title="propagation"></a>propagation</h5><p>  通过 <code>propagation</code> 可指定事务的传播行为，具体可选参数值参考第一大点说明。</p>
-<p>  配置示例代码如下，其中 <code>NOT_SUPPORTED</code> 表示当前不开启事务。</p>
+<h4 id="2-注解参数"><a href="#2-注解参数" class="headerlink" title="2. 注解参数"></a>2. 注解参数</h4><h5 id="1-propagation"><a href="#1-propagation" class="headerlink" title="(1) propagation"></a>(1) propagation</h5><p>通过 <code>propagation</code> 可指定事务的传播行为，具体可选参数值参考第一大点说明。</p>
+<p>配置示例代码如下，其中 <code>NOT_SUPPORTED</code> 表示当前不开启事务。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>propagation <span class="token operator">=</span> Propagation<span class="token punctuation">.</span>NOT_SUPPORTED<span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="isolation"><a href="#isolation" class="headerlink" title="isolation"></a>isolation</h5><p>  通过 <code>isolation</code> 用于指定事务的隔离级别，具体可选参数值参考第一大点说明，具体使用方式同 <code>propagation</code> 。</p>
-</li>
-<li><h5 id="readOnly"><a href="#readOnly" class="headerlink" title="readOnly"></a>readOnly</h5><p>  通过 <code>readOnly</code> 表示当前事务是否为只读事务，若设置为 true 则在方法体内执行写操作将会抛出异常。</p>
-<p>  未替事务指定 <code>readOnly</code> 时默认值为 <code>false</code>，配置示例如下：</p>
+<h5 id="2-isolation"><a href="#2-isolation" class="headerlink" title="(2) isolation"></a>(2) isolation</h5><p>通过 <code>isolation</code> 用于指定事务的隔离级别，具体可选参数值参考第一大点说明，具体使用方式同 <code>propagation</code> 。</p>
+<h5 id="3-readOnly"><a href="#3-readOnly" class="headerlink" title="(3) readOnly"></a>(3) readOnly</h5><p>通过 <code>readOnly</code> 表示当前事务是否为只读事务，若设置为 true 则在方法体内执行写操作将会抛出异常。</p>
+<p>未替事务指定 <code>readOnly</code> 时默认值为 `false``，配置示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>readOnly <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">insert</span><span class="token punctuation">(</span>SysUser user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> sysUserDao<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="rollbackFor"><a href="#rollbackFor" class="headerlink" title="rollbackFor"></a>rollbackFor</h5><p>  通过 <code>rollbackFor</code> 参数可以指定在何种情况下进行事务回滚，最常见的设置即配置为异常时回滚。</p>
-<p>  如下示例中指定类在抛出 <code>IllegalArgumentException</code> 异常时进行事务回滚。</p>
+<h5 id="4-rollbackFor"><a href="#4-rollbackFor" class="headerlink" title="(4) rollbackFor"></a>(4) rollbackFor</h5><p>通过 <code>rollbackFor</code> 参数可以指定在何种情况下进行事务回滚，最常见的设置即配置为异常时回滚。</p>
+<p>如下示例中指定类在抛出 <code>IllegalArgumentException</code> 异常时进行事务回滚。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>rollbackFor <span class="token operator">=</span> IllegalArgumentException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">insert</span><span class="token punctuation">(</span>SysUser user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> sysUserDao<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="noRollbackFor"><a href="#noRollbackFor" class="headerlink" title="noRollbackFor"></a>noRollbackFor</h5><p>  <code>noRollbackFor</code> 顾名思义即定义在何种情况下不进行回滚。</p>
-<p>  如下示例中定义了只要出现异常即进行事务回滚，但当抛出 <code>IllegalArgumentException</code> 异常则不回滚。</p>
+<h5 id="5-noRollbackFor"><a href="#5-noRollbackFor" class="headerlink" title="(5) noRollbackFor"></a>(5) noRollbackFor</h5><p><code>noRollbackFor</code> 顾名思义即定义在何种情况下不进行回滚。</p>
+<p>如下示例中定义了只要出现异常即进行事务回滚，但当抛出 <code>IllegalArgumentException</code> 异常则不回滚。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>
         rollbackFor <span class="token operator">=</span> Exception<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
         noRollbackFor <span class="token operator">=</span> IllegalArgumentException<span class="token punctuation">.</span><span class="token keyword">class</span>
@@ -663,8 +660,39 @@
     <span class="token keyword">return</span> sysUserDao<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
+<h4 id="3-事务失效"><a href="#3-事务失效" class="headerlink" title="3. 事务失效"></a>3. 事务失效</h4><p>注意在 <code>Spring</code> 中无法实现在事务定义类中调用事务方法，否则将会导致代理失败从而引起事务不生效。</p>
+<p>即事务的定义与调用不应该处于同一个类中，如下述示例中 <code>demo()</code> 调用同一个类中事务方法 <code>execute()</code> 可能导致事务失效。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 此处事务可能失效</span>
+        <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// dosomething</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因此事务的定义与调用应分开于不同的类中，改造上述的示例得到下述结果。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestA</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        TestB testB <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        testB<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestB</span> <span class="token punctuation">{</span>
+    
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// dosomething</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1262,7 +1290,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             

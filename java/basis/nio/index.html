@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-28
+                    2024-01-29
                 </div>
                 
 
@@ -699,7 +699,7 @@
     </tr>
 </table>
 
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">file1Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fileDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Path path <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">boolean</span> isExist <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>isExist<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -739,7 +739,7 @@
 </table>
 
 <p>上述接口方法对应的操作示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">file2Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fileDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Path path <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Convert path to "File"</span>
     File file <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">toFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -772,8 +772,8 @@
 <h3 id="三、概念介绍"><a href="#三、概念介绍" class="headerlink" title="三、概念介绍"></a>三、概念介绍</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>在 <code>NIO</code> 中有三个核心：通道 <code>(Channel)</code>，缓冲区 <code>(Buffer)</code>，选择器 <code>(Selector)</code>。</p>
 <p>传统 <code>IO</code> 基于字节流和字符流进行操作，而 <code>NIO</code> 则是基于 <code>Channel</code> 与和 <code>Buffer</code> 进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中，而 <code>Selector</code> 则是用于监听多个通道的事件（如连接打开，数据到达），从而实现单线程监听多个数据通道。</p>
 <ul>
-<li><h5 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h5><p>  <code>Channel</code> 和 <code>IO</code> 中的 <code>Stream</code> 是差不多一个等级的，只不过 <code>Stream</code> 是单向的，譬如：<code>InputStream</code>, <code>OutputStream</code>，而 <code>Channel</code> 是双向的，既可以用来进行读操作，又可以用来进行写操作。</p>
-<p>  <code>NIO</code> 中的 <code>Channel</code> 的主要实现有： <code>FileChannel</code> ，<code>DatagramChannel</code>  ，<code>SocketChannel</code>  ，<code>ServerSocketChannel</code>，分别对应文件 <code>IO</code> 、<code>UDP</code> 和 <code>TCP</code> (Server 和 Client)。</p>
+<li><h5 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h5><p>  <code>Channel</code> 和 <code>IO</code> 中的 <code>Stream</code> 是差不多一个等级的，只不过 <code>Stream</code> 是单向的，譬如：<code>InputStream</code>，<code>OutputStream</code>，而 <code>Channel</code> 是双向的，既可以用来进行读操作，又可以用来进行写操作。</p>
+<p>  <code>NIO</code> 中的 <code>Channel</code> 的主要实现有： <code>FileChannel</code>，<code>DatagramChannel</code>，<code>SocketChannel</code>，<code>ServerSocketChannel</code>，分别对应文件 <code>IO</code>、<code>UDP</code> 和 <code>TCP</code> (Server 和 Client)。</p>
 </li>
 <li><h5 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h5><p>  <code>NIO</code> 中的关键 <code>Buffer</code> 实现有：<code>ByteBuffer, CharBuffer, DoubleBuffer, FloatBuffer, IntBuffer, LongBuffer, ShortBuffer</code>，分别对应基本数据类型: <code>byte, char, double, float, int, long, short</code>，相对应的还有 <code>MappedByteBuffer, HeapByteBuffer, DirectByteBuffer</code> 等等。</p>
 </li>
@@ -883,7 +883,7 @@
 <p>如下图即通过 <code>NIO</code> 缓冲区 <code>Buffer</code> 进行文件读写的示例图。<br><img src="/album/loading.gif" data-original="/album/article/java/io/nio/2.png"></p>
 <h4 id="4-选择器"><a href="#4-选择器" class="headerlink" title="4. 选择器"></a>4. 选择器</h4><p>选择器 <code>Selector</code> 常用于在单线程中管理多个 <code>Channel</code>，如网络框架 <code>netty</code> 中即为通过封装 <code>NIO</code> 实现，有兴趣的可自行查看其源码，这里不作详细描述。<br><img src="/album/loading.gif" data-original="/album/article/java/io/nio/3.png"></p>
 <h3 id="四、读写示例"><a href="#四、读写示例" class="headerlink" title="四、读写示例"></a>四、读写示例</h3><h4 id="1-文件读取"><a href="#1-文件读取" class="headerlink" title="1. 文件读取"></a>1. 文件读取</h4><p>通过 <code>NIO</code> 缓冲区文件读取的完整示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ReadFileDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">readFileDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String sourcePath <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\nio\\user.csv"</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>FileChannel channel <span class="token operator">=</span> FileChannel<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>sourcePath<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// set buffer space</span>
@@ -902,7 +902,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-文件写入"><a href="#2-文件写入" class="headerlink" title="2. 文件写入"></a>2. 文件写入</h4><p>通过 <code>NIO</code> 缓冲区文件写入的完整示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">WriteFileDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">writeFileDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String msg <span class="token operator">=</span> <span class="token string">"Message from NIO."</span><span class="token punctuation">;</span>
     String targetPath <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\nio\\info.txt"</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>FileChannel channel <span class="token operator">=</span> FileChannel<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> StandardOpenOption<span class="token punctuation">.</span>CREATE<span class="token punctuation">,</span> StandardOpenOption<span class="token punctuation">.</span>WRITE<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1701,7 +1701,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             

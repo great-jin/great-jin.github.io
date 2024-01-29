@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    2.6k
                 </div>
                 
 
@@ -538,25 +538,21 @@
 <p>下面即针对上述中的时间类进行展示介绍</p>
 </blockquote>
 <h3 id="一、Date类"><a href="#一、Date类" class="headerlink" title="一、Date类"></a>一、Date类</h3><p>在 <code>JDK 8</code> 之前包含两类 <code>Date</code> 类型，即 <code>java.util.Date</code> 与 <code>java.sql.Date</code> ，下面将分别进行介绍。</p>
-<h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><ul>
-<li><h5 id="java-util-Date"><a href="#java-util-Date" class="headerlink" title="java.util.Date"></a>java.util.Date</h5><p>  <code>java.util.Date</code> 类提供包含空构造器，允许通过 <code>new Date()</code> 获取当前系统时间。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><h5 id="1-java-util-Date"><a href="#1-java-util-Date" class="headerlink" title="(1) java.util.Date"></a>(1) java.util.Date</h5><p><code>java.util.Date</code> 类提供包含空构造器，允许通过 <code>new Date()</code> 获取当前系统时间。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"java.util.Date: "</span> <span class="token operator">+</span> date<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="java-sql-Date"><a href="#java-sql-Date" class="headerlink" title="java.sql.Date"></a>java.sql.Date</h5><p>  <code>java.sql.Date</code> 继承于 <code>java.util.Date</code> ，不包含空构造器，无法通过 <code>new Date()</code> 创建对象，在通过构造函数创建时必须传值。</p>
-<p>  同时 <code>java.sql.date</code> 的时间格式是 <code>yyyy-MM-dd</code> ，没有时间精度，强制获取时分秒则会抛异常。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SQLDateDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="2-java-sql-Date"><a href="#2-java-sql-Date" class="headerlink" title="(2) java.sql.Date"></a>(2) java.sql.Date</h5><p><code>java.sql.Date</code> 继承于 <code>java.util.Date</code> ，不包含空构造器，无法通过 <code>new Date()</code> 创建对象，在通过构造函数创建时必须传值。</p>
+<p>同时 <code>java.sql.date</code> 的时间格式是 <code>yyyy-MM-dd</code> ，没有时间精度，强制获取时分秒则会抛异常。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>Date date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>Date</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"java.util.Date: "</span> <span class="token operator">+</span> date<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-系统时间"><a href="#2-系统时间" class="headerlink" title="2. 系统时间"></a>2. 系统时间</h4><p>在使用 <code>java.sql.Date</code> 创建时间对象时需要传入时间戳值， <code>JDK</code> 提供两类常用的系统时间获取： <code>currentTimeMillis()</code> 和 <code>nanoTime()</code> ，二者都是获取当前系统时间，区别仅在时间精度。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">TimestampDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">timestampDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 返回系统时间，精确度为毫秒</span>
     <span class="token keyword">long</span> millTime <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"millTime："</span> <span class="token operator">+</span> millTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -567,8 +563,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-格式化"><a href="#3-格式化" class="headerlink" title="3. 格式化"></a>3. 格式化</h4><p>若需要对时间进行格式化 <code>JDK</code> 提供了 <code>SimpleDateFormat</code> 与 <code>DateFormat</code> 两种方式，根据自身喜好选择。</p>
-<ul>
-<li><h5 id="DateFormat"><a href="#DateFormat" class="headerlink" title="DateFormat"></a>DateFormat</h5><p>  <code>DateFormat</code> 根据不同的时间类型提供多种格式化方案，示例如下：</p>
+<h5 id="1-DateFormat"><a href="#1-DateFormat" class="headerlink" title="(1) DateFormat"></a>(1) DateFormat</h5><p><code>DateFormat</code> 根据不同的时间类型提供多种格式化方案，示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">dateFormat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Date date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// SHORT 风格的日期时间格式化: 22-10-10 下午3:12</span>
@@ -584,8 +579,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>df3<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="SimpleDateFormat"><a href="#SimpleDateFormat" class="headerlink" title="SimpleDateFormat"></a>SimpleDateFormat</h5><p>  <code>SimpleDateFormat</code> 则提供自定义的时间格式化模板，示例如下：</p>
+<h5 id="2-SimpleDateFormat"><a href="#2-SimpleDateFormat" class="headerlink" title="(2) SimpleDateFormat"></a>(2) SimpleDateFormat</h5><p><code>SimpleDateFormat</code> 则提供自定义的时间格式化模板，通入传入时间格式串实现时间格式化。</p>
+<p>需要注意 <code>SimpleDateFormat</code> 为线程不安全类，切勿在多线程情景下使用，其使用示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">dateFormat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Date date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 格式化日期</span>
@@ -599,8 +594,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"SimpleDateFormat 2："</span> <span class="token operator">+</span> dateStr2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="4-时间比较"><a href="#4-时间比较" class="headerlink" title="4. 时间比较"></a>4. 时间比较</h4><p>当需要比较两个时间节点先后顺序可以通过自带的 <code>after()</code> 和 <code>before()</code> 方法判断，同时也可以转为时间戳进而比较先后顺序。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">compareDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
     SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd hh:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -645,8 +638,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Year: "</span> <span class="token operator">+</span> year<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-转化计算"><a href="#2-转化计算" class="headerlink" title="2. 转化计算"></a>2. 转化计算</h4><ul>
-<li><h5 id="时间转化"><a href="#时间转化" class="headerlink" title="时间转化"></a>时间转化</h5><p>  通过 <code>add(Fiedd, n)</code> 方法可以之前或之后的时间点。</p>
+<h4 id="2-转化计算"><a href="#2-转化计算" class="headerlink" title="2. 转化计算"></a>2. 转化计算</h4><h5 id="1-时间转化"><a href="#1-时间转化" class="headerlink" title="(1) 时间转化"></a>(1) 时间转化</h5><p>通过 <code>add(Fiedd, n)</code> 方法可以之前或之后的时间点。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 当前时间后移</span>
@@ -659,8 +651,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="时间计算"><a href="#时间计算" class="headerlink" title="时间计算"></a>时间计算</h5><p>  当然 <code>Calendar</code> 也可以与常见的 <code>Date</code> 类相互转化，通过 <code>setTime()</code> 和 <code>getTime()</code> 即可。</p>
+<h5 id="2-时间计算"><a href="#2-时间计算" class="headerlink" title="(2) 时间计算"></a>(2) 时间计算</h5><p>当然 <code>Calendar</code> 也可以与常见的 <code>Date</code> 类相互转化，通过 <code>setTime()</code> 和 <code>getTime()</code> 即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">convert</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Date 类转 Calendar</span>
@@ -672,19 +663,15 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-工具类"><a href="#3-工具类" class="headerlink" title="3. 工具类"></a>3. 工具类</h4><ul>
-<li><h5 id="第n天时间"><a href="#第n天时间" class="headerlink" title="第n天时间"></a>第n天时间</h5><p>  根据传入的整数获取第前 ·· 天的日期。</p>
+<h4 id="3-工具类"><a href="#3-工具类" class="headerlink" title="3. 工具类"></a>3. 工具类</h4><h5 id="1-第n天时间"><a href="#1-第n天时间" class="headerlink" title="(1) 第n天时间"></a>(1) 第n天时间</h5><p>根据传入的整数获取第前 <code>n</code> 天的日期。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Date <span class="token function">getNBefore</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     calendar<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DAY_OF_YEAR<span class="token punctuation">,</span> calendar<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DAY_OF_YEAR<span class="token punctuation">)</span> <span class="token operator">-</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span> calendar<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="星期始末"><a href="#星期始末" class="headerlink" title="星期始末"></a>星期始末</h5><p>  在开发中常需要获取指定日期的星期起始时间，即周一与周日的日期，通过 <code>Calendar</code> 即可轻松实现，下面简单介绍一下实现思路。</p>
-<p>  首先通过 <code>get(Calendar.DAY_OF_WEEK)</code> 获取传入的时间与周一和周日的偏移量，即分别距离二者多少天，通过得到的差值利用 <code>add()</code> 方法即可获取当周的起始时间，然后在根据是要获取上周起始还是下周起始将时间再次加减七天即可。</p>
+<h5 id="2-星期始末"><a href="#2-星期始末" class="headerlink" title="(2) 星期始末"></a>(2) 星期始末</h5><p>在开发中常需要获取指定日期的星期起始时间，即周一与周日的日期，通过 <code>Calendar</code> 即可轻松实现，下面简单介绍一下实现思路。</p>
+<p>首先通过 <code>get(Calendar.DAY_OF_WEEK)</code> 获取传入的时间与周一和周日的偏移量，即分别距离二者多少天，通过得到的差值利用 <code>add()</code> 方法即可获取当周的起始时间，然后在根据是要获取上周起始还是下周起始将时间再次加减七天即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">getWeekDate</span><span class="token punctuation">(</span>String type<span class="token punctuation">,</span> Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     calendar<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -692,6 +679,7 @@
     <span class="token keyword">if</span> <span class="token punctuation">(</span>dayOfWeek <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         dayOfWeek <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+    
     <span class="token comment" spellcheck="true">// 获取当前与周一周日的时间偏移量</span>
     <span class="token keyword">int</span> offset1 <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">-</span> dayOfWeek<span class="token punctuation">;</span>
     <span class="token keyword">int</span> offset2 <span class="token operator">=</span> <span class="token number">7</span> <span class="token operator">-</span> dayOfWeek<span class="token punctuation">;</span>
@@ -725,9 +713,8 @@
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> dateArr<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="月份始末"><a href="#月份始末" class="headerlink" title="月份始末"></a>月份始末</h5><p>  月份的起始时间与星期的获取方式类型，不再详细介绍。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-月份始末"><a href="#3-月份始末" class="headerlink" title="(3) 月份始末"></a>(3) 月份始末</h5><p>月份的起始时间与星期的获取方式类型，不再详细介绍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">getMonthDate</span><span class="token punctuation">(</span>String type<span class="token punctuation">,</span> Date nowDays<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     calendar<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>nowDays<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -748,8 +735,6 @@
     <span class="token keyword">return</span> dateArr<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="四、LocalDate"><a href="#四、LocalDate" class="headerlink" title="四、LocalDate"></a>四、LocalDate</h3><p>对于一个开发者而言， <code>java.util.Date</code> 和 <code>java.sql.Date</code> 两类重名显然是很糟糕的设计，因此在 <code>JDK8</code> 后引入了全新的日期类 <code>LocalDate</code> 提供更简易的时间日期操作。</p>
 <h4 id="1-初始化-2"><a href="#1-初始化-2" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><p>在新版本 <code>java.time</code> 包中一共引入了三类全新时间格式： <code>LocalDate</code>、<code>LocalTime</code>、<code>LocalDateTime</code> 依次对应精度为： <code>yyyy-MM-dd</code>、<code>hh:mm:ss.SSS</code>、<code>yyyy-MM-dd hh:mm:ss.SSS</code>，从而解决了旧版中两类 <code>Date</code> 类型名称相同的尴尬情景。</p>
 <p>三类时间类型都提供 <code>now()</code> 和 <code>of()</code> 两种初始化方式，分别代表获取当前时间和根据输入转化时间，相应的初始化示例如下：</p>
@@ -777,7 +762,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Time zone: "</span> <span class="token operator">+</span> zonedDateTime<span class="token punctuation">.</span><span class="token function">getZone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-格式化"><a href="#2-格式化" class="headerlink" title="2. 格式化"></a>2. 格式化</h4><p>针对全新的时间类型同样提供了新的时间格式化器 <code>DateTimeFormatter</code> ，与 <code>SimpleDateFormat</code> 使用类似其通过 ofPattern() 构造方式指定时间格式。</p>
+<h4 id="2-格式化"><a href="#2-格式化" class="headerlink" title="2. 格式化"></a>2. 格式化</h4><p>针对全新的时间类型同样提供了新的时间格式化器 <code>DateTimeFormatter</code> ，与 <code>SimpleDateFormat</code> 使用类似其通过 <code>ofPattern()</code> 构造方式指定时间格式。</p>
 <p><code>DateTimeFormatter</code> 同样提供 <code>pase()</code> 与 <code>format()</code> 两种格式方式，分别将字符串转为时间类型与将时间类型格式化为字符串类型，示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     LocalDate localDate <span class="token operator">=</span> LocalDate<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -795,8 +780,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-类型转化"><a href="#3-类型转化" class="headerlink" title="3. 类型转化"></a>3. 类型转化</h4><p><code>LocalDate</code> 等时间类型也可与传统的 <code>Date</code> 类型相互转化，下面分别进行介绍。</p>
 <p>注意下述示例中的 <code>Date</code> 类型完整包名为 <code>java.util</code> ，若选择 <code>java.sql</code> 下的 <code>Date</code> 其转化同通过 <code>valueOf()</code> 方法即可。</p>
-<ul>
-<li><h5 id="Date-lt-gt-Time"><a href="#Date-lt-gt-Time" class="headerlink" title="Date &lt;-&gt; Time"></a>Date &lt;-&gt; Time</h5><p>  <code>java.util.Date</code> 转化为 <code>java.time.LocalDate</code> 等类型。</p>
+<h5 id="1-Date-lt-gt-Time"><a href="#1-Date-lt-gt-Time" class="headerlink" title="(1) Date &lt;-&gt; Time"></a>(1) Date &lt;-&gt; Time</h5><p><code>java.util.Date</code> 转化为 <code>java.time.LocalDate</code> 等类型。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">convert</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Date date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate localDate <span class="token operator">=</span> date<span class="token punctuation">.</span><span class="token function">toInstant</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -815,8 +799,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"localDateTime: "</span> <span class="token operator">+</span> localDateTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Time-lt-gt-Date"><a href="#Time-lt-gt-Date" class="headerlink" title="Time &lt;-&gt; Date"></a>Time &lt;-&gt; Date</h5><p>  <code>java.time.LocalDate</code> 等类型转化为 <code>java.util.Date</code> 类型。</p>
+<h5 id="2-Time-lt-gt-Date"><a href="#2-Time-lt-gt-Date" class="headerlink" title="(2) Time &lt;-&gt; Date"></a>(2) Time &lt;-&gt; Date</h5><p><code>java.time.LocalDate</code> 等类型转化为 <code>java.util.Date</code> 类型。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">convert1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     LocalDate localDate <span class="token operator">=</span> LocalDate<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Instant instant1 <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">atStartOfDay</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -832,12 +815,9 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"date3: "</span> <span class="token operator">+</span> date3<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="4-时间计算"><a href="#4-时间计算" class="headerlink" title="4. 时间计算"></a>4. 时间计算</h4><p><code>LocalDate</code> 等系列时间类型除了涵盖了基础的 <code>Date</code> 功能，同时也能达到 <code>Calendar</code> 的部分效果。</p>
-<ul>
-<li><h5 id="单位获取"><a href="#单位获取" class="headerlink" title="单位获取"></a>单位获取</h5><p>  通过 <code>getYear()</code> 等方法获取指定精度单位值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="1-单位获取"><a href="#1-单位获取" class="headerlink" title="(1) 单位获取"></a>(1) 单位获取</h5><p>通过 <code>getYear()</code> 等方法获取指定精度单位值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     LocalDate localDate <span class="token operator">=</span> LocalDate<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">int</span> year <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">getYear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">int</span> month <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">getMonth</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -847,42 +827,37 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Day: "</span> <span class="token operator">+</span> day<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="指定时间"><a href="#指定时间" class="headerlink" title="指定时间"></a>指定时间</h5><p>  通过 <code>withYear()</code> 等方法修改指定精度单位值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="2-指定时间"><a href="#2-指定时间" class="headerlink" title="(2) 指定时间"></a>(2) 指定时间</h5><p>通过 <code>withYear()</code> 等方法修改指定精度单位值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// Change date</span>
     LocalDate withYear <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">withYear</span><span class="token punctuation">(</span><span class="token number">2021</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate withMonth <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">withMonth</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate withDay <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">withDayOfMonth</span><span class="token punctuation">(</span><span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nTo 2021 Year: "</span> <span class="token operator">+</span> withYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"To 2021 Year: "</span> <span class="token operator">+</span> withYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"To Oct: "</span> <span class="token operator">+</span> withMonth<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"To 27: "</span> <span class="token operator">+</span> withDay<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="时间前推"><a href="#时间前推" class="headerlink" title="时间前推"></a>时间前推</h5><p>  通过 <code>minusYears()</code> 等方法前推指定精度单位值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="3-时间前推"><a href="#3-时间前推" class="headerlink" title="(3) 时间前推"></a>(3) 时间前推</h5><p>通过 <code>minusYears()</code> 等方法前推指定精度单位值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     LocalDate beforeYear <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">minusYears</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate beforeMonth <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">minusMonths</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate beforeDay <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">minusDays</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nBefore 1 Year: "</span> <span class="token operator">+</span> beforeYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before 1 Year: "</span> <span class="token operator">+</span> beforeYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before 1 Month: "</span> <span class="token operator">+</span> beforeMonth<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before 1 Day: "</span> <span class="token operator">+</span> beforeDay<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="时间后移"><a href="#时间后移" class="headerlink" title="时间后移"></a>时间后移</h5><p>  通过 <code>plusYears()</code> 等方法后移指定精度单位值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="4-时间后移"><a href="#4-时间后移" class="headerlink" title="(4) 时间后移"></a>(4) 时间后移</h5><p>通过 <code>plusYears()</code> 等方法后移指定精度单位值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo4</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     LocalDate afterYear <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">plusYears</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate afterMonth <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">plusMonths</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     LocalDate afterDay <span class="token operator">=</span> localDate<span class="token punctuation">.</span><span class="token function">plusDays</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nAfter 1 Year: "</span> <span class="token operator">+</span> afterYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After 1 Year: "</span> <span class="token operator">+</span> afterYear<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After 1 Month: "</span> <span class="token operator">+</span> afterMonth<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After 1 Day: "</span> <span class="token operator">+</span> afterDay<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -1480,7 +1455,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             

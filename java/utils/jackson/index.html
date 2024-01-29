@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-14
+                    2024-01-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    2.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -564,10 +564,8 @@
     objectMapper<span class="token punctuation">.</span><span class="token function">setDefaultPropertyInclusion</span><span class="token punctuation">(</span>JsonInclude<span class="token punctuation">.</span>Include<span class="token punctuation">.</span>NON_DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-注解介绍"><a href="#2-注解介绍" class="headerlink" title="2. 注解介绍"></a>2. 注解介绍</h4><ul>
-<li><h5 id="JsonIgnore"><a href="#JsonIgnore" class="headerlink" title="@JsonIgnore"></a>@JsonIgnore</h5><p>  作用于实体类属性字段，当进行对象序列化时忽略该字段。</p>
+<h4 id="2-注解介绍"><a href="#2-注解介绍" class="headerlink" title="2. 注解介绍"></a>2. 注解介绍</h4><h5 id="1-JsonIgnore"><a href="#1-JsonIgnore" class="headerlink" title="(1) @JsonIgnore"></a>(1) @JsonIgnore</h5><p>作用于实体类属性字段，当进行对象序列化时忽略该字段。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-    
     <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">/**
@@ -576,50 +574,40 @@
     <span class="token annotation punctuation">@JsonIgnore</span>
     <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="JsonProperty"><a href="#JsonProperty" class="headerlink" title="@JsonProperty"></a>@JsonProperty</h5><p>  作用于实体类属性字段，常用于定义转化时字段出现顺序与字段重命名。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-JsonProperty"><a href="#2-JsonProperty" class="headerlink" title="(2) @JsonProperty"></a>(2) @JsonProperty</h5><p>作用于实体类属性字段，常用于定义转化时字段出现顺序与字段重命名。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-
     <span class="token annotation punctuation">@JsonProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"sex"</span><span class="token punctuation">,</span> index <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="JsonFormat"><a href="#JsonFormat" class="headerlink" title="@JsonFormat"></a>@JsonFormat</h5><p>  作用于实体类属性字段 ，用于指定时间字段格式。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-JsonFormat"><a href="#3-JsonFormat" class="headerlink" title="(3) @JsonFormat"></a>(3) @JsonFormat</h5><p>作用于实体类属性字段 ，用于指定时间字段格式。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-
     <span class="token annotation punctuation">@JsonFormat</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> Date birthday<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="JsonPropertyOrder"><a href="#JsonPropertyOrder" class="headerlink" title="@JsonPropertyOrder"></a>@JsonPropertyOrder</h5><p>  作用于 <code>类</code> ，用于批量指定转化时字段出现顺序。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-JsonPropertyOrder"><a href="#4-JsonPropertyOrder" class="headerlink" title="(4) @JsonPropertyOrder"></a>(4) @JsonPropertyOrder</h5><p>作用于 <code>类</code> ，用于批量指定转化时字段出现顺序。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@JsonPropertyOrder</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"Id"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-        
     <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
 
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="JsonIgnoreProperties"><a href="#JsonIgnoreProperties" class="headerlink" title="@JsonIgnoreProperties"></a>@JsonIgnoreProperties</h5><p>  作用于 <code>类</code> ，用于批量指定转化时忽略的字段。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="5-JsonIgnoreProperties"><a href="#5-JsonIgnoreProperties" class="headerlink" title="(5) @JsonIgnoreProperties"></a>(5) @JsonIgnoreProperties</h5><p>作用于 <code>类</code> ，用于批量指定转化时忽略的字段。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@JsonIgnoreProperties</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Seller</span> <span class="token punctuation">{</span>
-        
     <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
 
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
     <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="二、序列化"><a href="#二、序列化" class="headerlink" title="二、序列化"></a>二、序列化</h3><h4 id="1-对象转化"><a href="#1-对象转化" class="headerlink" title="1. 对象转化"></a>1. 对象转化</h4><p><code>Jackson</code> 可以实现 <code>bean</code> 对象与 <code>Json</code> 字符串之间的相互转化。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、序列化"><a href="#二、序列化" class="headerlink" title="二、序列化"></a>二、序列化</h3><h4 id="1-对象转化"><a href="#1-对象转化" class="headerlink" title="1. 对象转化"></a>1. 对象转化</h4><p><code>Jackson</code> 可以实现 <code>Java</code> 对象与 <code>Json</code> 字符串之间的相互转化。</p>
 <p>通过 <code>readValue()</code> 与 <code>writeValueAsString()</code> 方法实现二者之间的转换。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">JsonTran</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">jsonTran</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
     User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// bean 对象 -> json 字符串</span>
     String result <span class="token operator">=</span> objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>user1<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -630,14 +618,20 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>user2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-复杂转化"><a href="#2-复杂转化" class="headerlink" title="2. 复杂转化"></a>2. 复杂转化</h4><ul>
-<li><h5 id="List转化"><a href="#List转化" class="headerlink" title="List转化"></a>List转化</h5><p>  在通过 <code>Jackson</code> 对复杂对象如 <code>List</code> 列表序列化时，默认 <code>List</code> 中对象反序列化的结果是 <code>Map</code> 对象，而通过 <code>TypeReference</code> 即可指定序列化的内容。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">ListDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
+<h4 id="2-复杂转化"><a href="#2-复杂转化" class="headerlink" title="2. 复杂转化"></a>2. 复杂转化</h4><p>在 <code>Jackson</code> 中 <code>readValue()</code> 与 <code>convertValue()</code> 等能实现对象数据的转化，二者的主要区别如下：</p>
+<blockquote>
+<ul>
+<li><code>convertValue()</code> 适用于从已有的 <code>Java</code> 对象间转化。</li>
+<li><code>readValue()</code> 适用于外部资源（<code>Json</code>数据等）转为 <code>Java</code> 对象。</li>
+</ul>
+</blockquote>
+<h5 id="1-List转化"><a href="#1-List转化" class="headerlink" title="(1) List转化"></a>(1) List转化</h5><p>在通过 <code>Jackson</code> 对复杂对象如 <code>List</code> 列表序列化时，默认 <code>List</code> 中对象反序列化的结果是 <code>Map</code> 对象，而通过 <code>TypeReference</code> 即可指定序列化的内容。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">listDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"111"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"222"</span><span class="token punctuation">,</span> <span class="token string">"Jack"</span><span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"333"</span><span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token string">"female"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
+            
     ObjectMapper objectMapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// To json string</span>
     String result <span class="token operator">=</span> objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>userList<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -647,8 +641,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>userList1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Map转化"><a href="#Map转化" class="headerlink" title="Map转化"></a>Map转化</h5><p>  通过 <code>convertValue()</code> 与 <code>TypeReference</code> 可以实现将 <code>Java</code> 对象转化为 <code>Map</code> 对象。</p>
+<h5 id="2-对象转化"><a href="#2-对象转化" class="headerlink" title="(2) 对象转化"></a>(2) 对象转化</h5><p>通过 <code>convertValue()</code> 与 <code>TypeReference</code> 可以实现将 <code>Java</code> 对象转化为 <code>Map</code> 对象。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">MapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
     User user1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Bean to Map</span>
@@ -661,8 +654,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Origin value(To map): "</span> <span class="token operator">+</span> user2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="三、Json对象"><a href="#三、Json对象" class="headerlink" title="三、Json对象"></a>三、Json对象</h3><h4 id="1-JsonNode"><a href="#1-JsonNode" class="headerlink" title="1. JsonNode"></a>1. JsonNode</h4><p><code>JsonNode</code> 是 <code>Jackson</code> 内置提供的一种 <code>Json</code> 对象格式， <code>Jackson</code> 提供了一系列接口实现 <code>Java</code> 对象与其之间的转化。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -671,15 +662,15 @@
     </tr>
     <tr>
         <td style="text-align: center;">valueToTree()</td>
-        <td style="text-align: center;">转化 ``bean`` 对象 为 ``json`` 对象。</td>
+        <td style="text-align: center;">转化 `bean` 对象 为 `json` 对象。</td>
     </tr>
     <tr>
         <td style="text-align: center;">readTree()</td>
-        <td style="text-align: center;">转化 ``json`` 字符串 为 ``json`` 对象。</td>
+        <td style="text-align: center;">转化 `json` 字符串 为 `json` 对象。</td>
     </tr>
     <tr>
         <td style="text-align: center;">treeToValue()</td>
-        <td style="text-align: center;">转化 ``json`` 对象 为 ``bean`` 对象。</td>
+        <td style="text-align: center;">转化 `json` 对象 为 `bean` 对象。</td>
     </tr>
 </table>
 
@@ -1501,7 +1492,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">218.4k</span>
+                <span class="white-color">220.7k</span>
             
             
             
