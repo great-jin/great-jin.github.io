@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-29
+                    2024-01-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.4k
+                    3.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    15 分
                 </div>
                 
 
@@ -533,7 +533,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、迭代器使用"><a href="#一、迭代器使用" class="headerlink" title="一、迭代器使用"></a>一、迭代器使用</h3><h4 id="1-Iterator"><a href="#1-Iterator" class="headerlink" title="1. Iterator"></a>1. Iterator</h4><ul>
+                <h3 id="一、迭代器"><a href="#一、迭代器" class="headerlink" title="一、迭代器"></a>一、迭代器</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><ul>
 <li><strong>next()：</strong> 访问后一位元素。</li>
 <li><strong>hasNext()：</strong> 是否存在下一位，返回 <code>Boolean</code>。</li>
 <li><strong>remove()：</strong> 删除上一次调用 <code>next</code> 返回的元素。</li>
@@ -546,23 +546,15 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 利用迭代器遍历集合</span>
+    <span class="token comment" spellcheck="true">// 效果等价于 for 循环</span>
     Iterator iter <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">while</span> <span class="token punctuation">(</span>iter<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>iter<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">// 效果同迭代器遍历，更常用</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>String str <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">// 使用 lambda 表达式遍历</span>
-    list<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>str <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-ListIterator"><a href="#2-ListIterator" class="headerlink" title="2. ListIterator"></a>2. ListIterator</h4><ul>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-列表迭代"><a href="#2-列表迭代" class="headerlink" title="2. 列表迭代"></a>2. 列表迭代</h4><p><code>ListIterator</code> 继承于 <code>Iterator</code>，拓展提供了更丰富的操作。</p>
+<ul>
 <li><strong>next()：</strong> 访问后一位元素。</li>
 <li><strong>previous()：</strong> 访问前一位元素。</li>
 <li><strong>hasNext()：</strong> 是否存在下一位，返回 <code>Boolean</code> 。</li>
@@ -580,14 +572,15 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>iter<span class="token punctuation">.</span><span class="token function">previous</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、原生方法"><a href="#二、原生方法" class="headerlink" title="二、原生方法"></a>二、原生方法</h3><h4 id="1-Contains"><a href="#1-Contains" class="headerlink" title="1. Contains"></a>1. Contains</h4><p>通过 <code>contains()</code> 用于判断是否包含元素。</p>
+<h3 id="二、集合工具"><a href="#二、集合工具" class="headerlink" title="二、集合工具"></a>二、集合工具</h3><h4 id="1-包含查询"><a href="#1-包含查询" class="headerlink" title="1. 包含查询"></a>1. 包含查询</h4><p>不论是 <code>Set</code> 还是 <code>List</code> 其都提供了 <code>contains()</code> 用于判断是否包含元素。</p>
+<p>虽然 <code>JDK</code> 中常见的集合都提供了 <code>contains()</code> 方法，但各自的实现过程却相差甚远。对于 <code>List</code> 而言其通过单次循环复杂度为 <code>O(n)</code>，而 <code>Set</code> 则存储结构为 <code>Map</code> 在实现效率上远超 <code>List</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">containsDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"AA"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"BB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 是否包含元素</span>
-    Boolean isContains <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> <span class="token string">"BB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Boolean isContains <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"BB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-模糊查询"><a href="#2-模糊查询" class="headerlink" title="2. 模糊查询"></a>2. 模糊查询</h4><p>通过 <code>contains()</code> 可以快速定位集合是否包含某一元素，其相当于精确查询，但如果需要实现模糊查询呢？</p>
@@ -596,6 +589,7 @@
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"张三"</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"李四"</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     String key <span class="token operator">=</span> <span class="token string">"张"</span><span class="token punctuation">;</span>
     Pattern pattern <span class="token operator">=</span> Pattern<span class="token punctuation">.</span><span class="token function">compile</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> Pattern<span class="token punctuation">.</span>CASE_INSENSITIVE<span class="token punctuation">)</span><span class="token punctuation">;</span>
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -607,8 +601,9 @@
     <span class="token punctuation">}</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-集合子串"><a href="#3-集合子串" class="headerlink" title="3. 集合子串"></a>3. 集合子串</h4><p>通过 <code>subList(start, end)</code> 可用于获取集合的子串，需要注意数组越界问题。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-子串截取"><a href="#3-子串截取" class="headerlink" title="3. 子串截取"></a>3. 子串截取</h4><p>通过 <code>subList(start, end)</code> 可用于获取集合的子串，需要注意数组越界问题。</p>
+<p>需要注意截取的字串其类型为 <code>SubList</code> 继承于 <code>AbstractList</code>，而 <code>SubList</code> 中并不包含空构造器，在序列化传输时可能会异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">subListDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -625,11 +620,10 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list3<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-列表排序"><a href="#4-列表排序" class="headerlink" title="4. 列表排序"></a>4. 列表排序</h4><p><code>List</code> 是一个有序集合，即数据的存放顺序是根据存入的次序相关的。而对于已经存在的 <code>List</code> 集合进行二次排序即可通过 <code>Collections.sort()</code> 接口是实现。</p>
-<h5 id="1-基本排序"><a href="#1-基本排序" class="headerlink" title="(1) 基本排序"></a>(1) 基本排序</h5><p>通过 <code>Collections.sort()</code> 对集合内容进行排序。</p>
+<h3 id="三、集合排序"><a href="#三、集合排序" class="headerlink" title="三、集合排序"></a>三、集合排序</h3><h4 id="1-基本排序"><a href="#1-基本排序" class="headerlink" title="1. 基本排序"></a>1. 基本排序</h4><p>在 <code>JDK</code> 中提供了 <code>Collections.sort()</code> 方法实现集合内容进行排序。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Collections<span class="token punctuation">;</span> 
 
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">listSort</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sortDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Mark"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -639,8 +633,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-动态排序"><a href="#2-动态排序" class="headerlink" title="(2) 动态排序"></a>(2) 动态排序</h5><p>若列表存储的为实体对象，可根据实体对象某一字段值进行排序。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+<h4 id="2-动态排序"><a href="#2-动态排序" class="headerlink" title="2. 动态排序"></a>2. 动态排序</h4><p>若列表存储的为实体对象，可根据实体对象某一字段值进行排序。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
     <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
 
@@ -654,20 +648,43 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">/**
      * 根据年龄字段排序
      */</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Mark"</span><span class="token punctuation">,</span> <span class="token number">45</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>User<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Mark"</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         list<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>Comparator<span class="token punctuation">.</span><span class="token function">comparing</span><span class="token punctuation">(</span>User<span class="token operator">:</span><span class="token operator">:</span>getAge<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Steam操作"><a href="#三、Steam操作" class="headerlink" title="三、Steam操作"></a>三、Steam操作</h3><p>在 <code>Java 8</code> 中引入新概念 <code>stream</code> ，其包含对集合的部分基本操作。</p>
+<h4 id="3-排序接口"><a href="#3-排序接口" class="headerlink" title="3. 排序接口"></a>3. 排序接口</h4><p>针对列表等集合类型实现排序可通过 <code>Comparator</code> 搭配 <code>lambda</code> 表达式快速实现，而对于数组数据同样可通过 <code>Arrays.sort()</code> 与 <code>Comparator&lt;T&gt;</code> 接口实现。</p>
+<p>同样与上述 <code>User</code> 排序类型，下述为利用 <code>Comparator&lt;T&gt;</code> 接口实现，其中 <code>compare()</code> 返回值取值范围为：<code>(-1，0，1)</code>，依次代表 <code>(大于，等于，小于)</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SortTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        User<span class="token punctuation">[</span><span class="token punctuation">]</span> users <span class="token operator">=</span> <span class="token punctuation">{</span>
+                <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"Mark"</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        Arrays<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>users<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">UserComparator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>users<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">UserComparator</span> <span class="token keyword">implements</span> <span class="token class-name">Comparator</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">compare</span><span class="token punctuation">(</span>User user1<span class="token punctuation">,</span> User user2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> Integer<span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span>user1<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> user2<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、Steam操作"><a href="#四、Steam操作" class="headerlink" title="四、Steam操作"></a>四、Steam操作</h3><p>在 <code>Java 8</code> 中引入新概念 <code>stream</code> ，其包含对集合的部分基本操作。</p>
 <h4 id="1-串行流"><a href="#1-串行流" class="headerlink" title="1. 串行流"></a>1. 串行流</h4><p><code>Stream</code> 提供两种遍历方式：串行流与并发流。通过的 <code>stream</code> 流的方式可以利用 <code>lambda</code> 表达式实现更便捷的操作，相应的方法与其描述参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -725,8 +742,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-并发流"><a href="#2-并发流" class="headerlink" title="2. 并发流"></a>2. 并发流</h4><p>除了串行流 <code>Stream</code> 同时提供了并发流 <code>parallelStream()</code> 从而实现更高效的计算，其使用 <code>Fork-Join</code> 框架，默认并发数为 <code>CPU</code> 核心的两倍。</p>
-<p>若需要指定 <code>parallelStream()</code> 并发数可通过外层包裹 <code>ForkJoinPool()</code> 线程池控制。</p>
-<p><strong>使用 parallelStream() 一定要注意 lambda 表达式中涉及的操作都是线程安全！</strong><br><strong>使用 parallelStream() 一定要注意 lambda 表达式中涉及的操作都是线程安全！</strong><br><strong>使用 parallelStream() 一定要注意 lambda 表达式中涉及的操作都是线程安全！</strong></p>
+<p>若需要指定 <code>parallelStream()</code> 并发数可通过外层包裹 <code>ForkJoinPool()</code> 线程池控制，同时在使用时一定要注意其 <code>lambda</code> 表达式中涉及的操作都是线程安全。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">streamDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -840,8 +856,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、性能对照"><a href="#四、性能对照" class="headerlink" title="四、性能对照"></a>四、性能对照</h3><p>不知道你有没有这么一个疑惑，随着 <code>JDK</code> 的升级， <code>Java</code> 针对集合提供越来越多的遍历方式，但它们之间又孰优孰劣？今天就让我们用实际代码来测试一下不同遍历方式之间的性能差异。</p>
-<h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>先盘点一下 <code>Java</code> 为让我们提供了哪些遍历方式，我相信大家用的最多的应该就是 <code>for</code> 循环了，但在 <code>JDK 8</code> 之后，<code>Java</code> 引入了 <code>Lambda</code> 表达式与 <code>Stream</code> 流的概念，其中流又分为串行流 <code>stream</code> 与 并行流 <code>parallelStream</code> 两类。</p>
+<h3 id="五、性能对照"><a href="#五、性能对照" class="headerlink" title="五、性能对照"></a>五、性能对照</h3><p>不知道你有没有这么一个疑惑，随着 <code>JDK</code> 的升级， <code>Java</code> 针对集合提供越来越多的遍历方式，但它们之间又孰优孰劣？今天就让我们用实际代码来测试一下不同遍历方式之间的性能差异。</p>
+<h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>先盘点一下 <code>Java</code> 为让我们提供了哪些遍历方式，我相信大家用的最多的应该就是 <code>for</code> 循环了，但在 <code>JDK 8</code> 之后，<code>Java</code> 引入了 <code>Lambda</code> 表达式与 <code>Stream</code> 流的概念，其中流又分为串行流 <code>stream</code> 与 并行流 <code>parallelStream</code> 两类。</p>
 <p>下面针对不同的方式举个简单例子说明：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitedDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1633,7 +1649,7 @@ lambda 表达式 foreach 耗时<span class="token operator">:</span> <span class
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">220.9k</span>
+                <span class="white-color">221.6k</span>
             
             
             

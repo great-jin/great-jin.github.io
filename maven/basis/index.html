@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-01-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.3k
+                    4.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    18 分
+                    20 分
                 </div>
                 
 
@@ -538,10 +538,10 @@
 <blockquote>
 <p>Maven 是一个项目管理工具，可以对 Java 项目进行构建、依赖管理。</p>
 </blockquote>
-<h3 id="一、基础配置"><a href="#一、基础配置" class="headerlink" title="一、基础配置"></a>一、基础配置</h3><h4 id="1-仓库配置"><a href="#1-仓库配置" class="headerlink" title="1. 仓库配置"></a>1. 仓库配置</h4><p>在 <code>Maven</code> 中引入了仓库的概念，开发人员将所编写的 <code>JAR</code> 按照相应格式推送到仓库中，当其他开发者需要引用这个 jar 包时在工程中引用相应依赖，则会先从中央仓库进行下载到本地仓库，此时项目将读取本地仓库的内容。</p>
+<h3 id="一、基础配置"><a href="#一、基础配置" class="headerlink" title="一、基础配置"></a>一、基础配置</h3><h4 id="1-仓库配置"><a href="#1-仓库配置" class="headerlink" title="1. 仓库配置"></a>1. 仓库配置</h4><p>在 <code>Maven</code> 中引入了仓库的概念，开发人员将所编写的 <code>JAR</code> 按照相应格式推送到仓库中，当其他开发者需要引用这个 <code>JAR</code> 包时在工程中引用相应依赖，则会先从中央仓库进行下载到本地仓库，此时项目将读取本地仓库的内容。</p>
 <p>对于部分组织或机构通常会在此基础上额外搭建私人仓库，在引用依赖时会先从私人仓库进行读取，如果未找到再从中央仓库下载至私人仓库，最后再下载到本地仓库。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/1.png"></p>
 <p>通过这种方式开发者则无需再手动管理繁杂的项目 <code>JAR</code> 包，从而实现更高的效率。</p>
-<h4 id="2-基本信息"><a href="#2-基本信息" class="headerlink" title="2. 基本信息"></a>2. 基本信息</h4><p>一个最基本的 <code>Maven</code> 项目通常应包含如下内容，当我们引用一个模块时，也是通过 <code>groupId</code>、 <code>artifactId</code>、 <code>version</code> 三项内容进行确定。</p>
+<h4 id="2-基本信息"><a href="#2-基本信息" class="headerlink" title="2. 基本信息"></a>2. 基本信息</h4><p>一个最基本的 <code>Maven</code> 项目通常应包含如下内容，当我们引用一个模块时，也是通过 <code>groupId</code>，<code>artifactId</code> 与 <code>version</code> 三项进行确定。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">标&nbsp;&nbsp;签</td>  
@@ -583,7 +583,8 @@
     
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、依赖管理"><a href="#二、依赖管理" class="headerlink" title="二、依赖管理"></a>二、依赖管理</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>通过 <code>dependencies</code> 标签我们即可导入所需要的工程依赖。</p>
+<h3 id="二、依赖管理"><a href="#二、依赖管理" class="headerlink" title="二、依赖管理"></a>二、依赖管理</h3><h4 id="1-依赖引用"><a href="#1-依赖引用" class="headerlink" title="1. 依赖引用"></a>1. 依赖引用</h4><p>通过 <code>dependencies</code> 标签我们即可导入所需要的工程依赖。</p>
+<p>如下述示例即在当前 <code>Maven</code> 工程中导入 <code>mysql jdbc</code> 驱动依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>mysql<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -593,7 +594,8 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其中 <code>scope</code> 的可选值如下：</p>
+<h4 id="2-作用域"><a href="#2-作用域" class="headerlink" title="2. 作用域"></a>2. 作用域</h4><p>在导入依赖时可通过 <code>scope</code> 标签定义依赖的作用域，默认省略时值为 <code>compile</code>。</p>
+<p>依赖作用域可选值及其说明参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">作用域</td>  
@@ -601,7 +603,7 @@
     </tr>
     <tr>
         <td style="text-align: center;">compile</td>  
-        <td style="text-align: center;">编译时需要用到该 JAR 包（默认）</td>  
+        <td style="text-align: center;">编译时需要用到该 JAR 包（默认）。</td>  
     </tr>
     <tr>
         <td style="text-align: center;">runtime</td>  
@@ -613,49 +615,27 @@
     </tr>
     <tr>
         <td style="text-align: center;">test</td>  
-        <td style="text-align: center;">编译Test时需要用到该 JAR 包。</td>  
+        <td style="text-align: center;">仅在编译 Test 时需要用到该 JAR 包。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">system</td>  
+        <td style="text-align: center;">搭配 systemPath 用于手动指定 JAR 文件路径。</td>  
     </tr>
 </table>
 
-
-<h4 id="2-间接依赖"><a href="#2-间接依赖" class="headerlink" title="2. 间接依赖"></a>2. 间接依赖</h4><p>当项目需要引用到其它依赖时，只需指定所依赖的工程的基本信息即可，剩下的一切都交给 <code>Maven</code> 处理。即便是所要依赖的工程依赖了其它工程，我们也只需引入项目所直接的依赖的工程。</p>
-<p>如下图示例中 <code>Dependency-A</code> 引用了 <code>Dependency-B</code> ，而 <code>Dependency-B</code> 又依赖于 <code>Dependency-C</code> ，在传统项目中若在 <code>Dependency-A</code> 中引用 <code>Dependency-B</code> 则需要同时手动添加 <code>Dependency-B</code> 与 <code>Dependency-C</code> 所对应的 <code>JAR</code> 包，但在 <code>Maven</code> 中我们只需要引入 <code>Dependency-B</code> 即可， <code>Mavne</code> 会自动将子模块所依赖的包导入。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/2.png"></p>
-<ul>
-<li><h5 id="依赖顺序"><a href="#依赖顺序" class="headerlink" title="依赖顺序"></a>依赖顺序</h5><p>  在 <code>maven</code> 工程中遵循先定义先导入的原则，即当存在多个相同间接依赖，优先导入其父依赖定义在前的简洁依赖。</p>
-<p>  举个例子，如工程中引入 <code>Dependency-A</code> 与 <code>Dependency-B</code> 两个依赖，二者又分别引用了不同版本的 <code>Dependency-C</code> ，但对于 <code>Maven</code> 而言最终编译时同一个依赖即便是不同的版本也只会选择一份。</p>
-<p>  其计算规则如下：若 <code>Dependency-A</code> 定义在 <code>Dependency-B</code> 之前则最终将导入 <code>Dependency-A</code> 中的 <code>C-1.0</code> 版本。而在右侧图例中虽然 <code>Dependency-A</code> 引入优先级高于 <code>Dependency-B</code> ，但是 <code>C-2.0</code> 的间接依赖层级高于 <code>C-1.0</code>，因此将导入 <code>C-2.0</code> 版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/maven/4.png"></p>
-</li>
-</ul>
-<h4 id="3-依赖排除"><a href="#3-依赖排除" class="headerlink" title="3. 依赖排除"></a>3. 依赖排除</h4><p>在引用多个模块时可能会发生版本兼容冲突问题，通过 <code>excludes</code> 标签即可实现依赖排除。</p>
-<p>如下我们在工程中引入了 <code>demo-a</code> 依赖，但其又引用 <code>dependency-b</code> 依赖，如想要在当前工程中移除 <code>dependency-b</code> 依赖，此时即可通过 <code>excludes</code> 标签将 <code>dependency-b</code> 排除依赖。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-a<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>excludes</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclude</span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>dependency-b<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclude</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>excludes</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>除了手动通过 <code>excludes</code> 标签排除依赖，被引模块也可以在导入依赖时通过 <code>optional</code> 标签禁用依赖传递。</p>
-<p>上述示例中若在 <code>demo-a</code> 工程中引入 <code>dependency-b</code> 依赖时添加 <code>optional</code> 标签，那么其它工程在引入 <code>demo-a</code> 依赖时将不会将  <code>dependency-b</code> 作为间接依赖导入。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-b<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>optional</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>optional</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+<p>默认寻找依赖是通过对应配置的 <code>Maven</code> 仓库中获取，当配置 <code>scope</code> 为 <code>system</code> 时将会绕过 <code>Maven</code> 仓库管理机制，即可以手动指定依赖路径。</p>
+<p>如下述示例中即配置手动读取 <code>D:/repo/demo-1.0-SNAPSHOT.jar</code> 依赖文件。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>system<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+    <span class="token comment" spellcheck="true">&lt;!-- 手动指定路径 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>systemPath</span><span class="token punctuation">></span></span>D:/repo/demo-1.0-SNAPSHOT.jar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>systemPath</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-变量配置"><a href="#4-变量配置" class="headerlink" title="4. 变量配置"></a>4. 变量配置</h4><p>当项目中引入了大量依赖，为了方便管理通常将引入依赖的版本通过变量进行统一配置，从而实现更直观的依赖管理。</p>
-<p>通过 <code>properties</code> 标签即可自定义变量配置，然后使用 <code>$&#123;&#125;</code> 引用变量。</p>
+<h4 id="3-变量配置"><a href="#3-变量配置" class="headerlink" title="3. 变量配置"></a>3. 变量配置</h4><p>当项目中引入了大量依赖，为了更便捷的统一管理，通常会将引入依赖的版本由变量进行统一配置，从而实现更直观的依赖管理。</p>
+<p>通过 <code>properties</code> 标签即可自定义变量配置，然后使用 <code>$&#123;&#125;</code> 引用变量，注意模块间的变量是继承的，子模块可选择重写覆盖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mysql.version</span><span class="token punctuation">></span></span>8.0.30<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mysql.version</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>junit.version</span><span class="token punctuation">></span></span>4.13.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>junit.version</span><span class="token punctuation">></span></span>
@@ -675,6 +655,35 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-依赖排除"><a href="#4-依赖排除" class="headerlink" title="4. 依赖排除"></a>4. 依赖排除</h4><p>在引用多个模块时可能会发生版本兼容冲突问题，通过 <code>excludes</code> 标签即可实现依赖排除。</p>
+<p>如下我们在工程中引入了 <code>demo-a</code> 依赖，但其又引用 <code>demo-b</code> 依赖，如想要在当前工程中移除 <code>demo-b</code> 依赖，此时即可通过 <code>excludes</code> 标签将 <code>demo-b</code> 排除依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-a<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>excludes</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclude</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-b<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclude</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>excludes</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>除了手动通过 <code>excludes</code> 标签排除依赖，被引模块也可以在导入依赖时通过 <code>optional</code> 标签禁用依赖传递。</p>
+<p>上述示例中若在 <code>demo-a</code> 工程中引入 <code>demo-b</code> 依赖时添加 <code>optional</code> 标签，那么其它工程在引入 <code>demo-a</code> 依赖时将不会将  <code>demo-b</code> 作为间接依赖导入。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>demo-b<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token comment" spellcheck="true">&lt;!-- 默认 false, 设置为 true 禁用依赖传递 --></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>optional</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>optional</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、模块配置"><a href="#三、模块配置" class="headerlink" title="三、模块配置"></a>三、模块配置</h3><h4 id="1-模块管理"><a href="#1-模块管理" class="headerlink" title="1. 模块管理"></a>1. 模块管理</h4><p>当我们项目包含多个子项目时，通过 <code>modules</code> 标签即可实现模块管理。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token comment" spellcheck="true">&lt;!-- maven-demo pom.xml --></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modules</span><span class="token punctuation">></span></span>
@@ -695,13 +704,29 @@
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>module-1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、统一管理"><a href="#四、统一管理" class="headerlink" title="四、统一管理"></a>四、统一管理</h3><h4 id="1-依赖管理"><a href="#1-依赖管理" class="headerlink" title="1. 依赖管理"></a>1. 依赖管理</h4><p>当一共项目包含多个模块，且多个模块引用了相同依赖时显然重复引用是不太合适的，而通过 <code>dependencyManagement</code> 即可很好的解决依赖共用的问题。</p>
-<p>将项目依赖统一定义在父模块的 <code>dependencyManagement</code> 标签中，子模块只需继承父模块并在 <code>dependencies</code> 引入所需的依赖，便可自动读取父模块 <code>dependencyManagement</code> 所指定的版本。</p>
-<p><code>dependencyManagement</code> 既不会在当前模块引入依赖，也不会给其子模块引入依赖，但其可以被继承的，只有在子模块下同样声明了该依赖，才会引入到模块中，子模块中只需在依赖中引入 <code>groupId</code> 与 <code>artifactId</code> 即可, 也可以指定版本则会进行覆盖。    </p>
-<h4 id="2-模块示例"><a href="#2-模块示例" class="headerlink" title="2. 模块示例"></a>2. 模块示例</h4><p>接下来以下图中的模块层级关系进行举例：<br><img src="/album/loading.gif" data-original="/album/article/java/maven/3.png"></p>
+<h4 id="3-间接依赖"><a href="#3-间接依赖" class="headerlink" title="3. 间接依赖"></a>3. 间接依赖</h4><p>当项目需要引用到其它依赖时，只需指定所依赖的工程的基本信息即可，剩下的一切都交给 <code>Maven</code> 处理。即便是所要依赖的工程依赖了其它工程，我们也只需引入项目所直接的依赖的工程。</p>
+<p>如下图示例中 <code>Dependency-A</code> 引用了 <code>Dependency-B</code> ，而 <code>Dependency-B</code> 又依赖于 <code>Dependency-C</code> ，在传统项目中若在 <code>Dependency-A</code> 中引用 <code>Dependency-B</code> 则需要同时手动添加 <code>Dependency-B</code> 与 <code>Dependency-C</code> 所对应的 <code>JAR</code> 包，但在 <code>Maven</code> 中我们只需要引入 <code>Dependency-B</code> 即可， <code>Mavne</code> 会自动将子模块所依赖的包导入。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/2.png"></p>
 <ul>
-<li><h5 id="maven-demo"><a href="#maven-demo" class="headerlink" title="maven-demo"></a>maven-demo</h5><p>  在 <code>maven-demo</code> 的 <code>dependencyManagement</code> 定义 <code>mysql</code> 和 <code>junit</code> 两个依赖。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencyManagement</span><span class="token punctuation">></span></span>
+<li><h5 id="依赖顺序"><a href="#依赖顺序" class="headerlink" title="依赖顺序"></a>依赖顺序</h5><p>  在 <code>maven</code> 工程中遵循先定义先导入的原则，即当存在多个相同间接依赖，优先导入其父依赖定义在前的简洁依赖。</p>
+<p>  举个例子，如工程中引入 <code>Dependency-A</code> 与 <code>Dependency-B</code> 两个依赖，二者又分别引用了不同版本的 <code>Dependency-C</code> ，但对于 <code>Maven</code> 而言最终编译时同一个依赖即便是不同的版本也只会选择一份。</p>
+<p>  其计算规则如下：若 <code>Dependency-A</code> 定义在 <code>Dependency-B</code> 之前则最终将导入 <code>Dependency-A</code> 中的 <code>C-1.0</code> 版本。而在右侧图例中虽然 <code>Dependency-A</code> 引入优先级高于 <code>Dependency-B</code> ，但是 <code>C-2.0</code> 的间接依赖层级高于 <code>C-1.0``，因此将导入 </code>C-2.0` 版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/maven/4.png"></p>
+</li>
+</ul>
+<h3 id="四、统一管理"><a href="#四、统一管理" class="headerlink" title="四、统一管理"></a>四、统一管理</h3><h4 id="1-导入管理"><a href="#1-导入管理" class="headerlink" title="1. 导入管理"></a>1. 导入管理</h4><p>当一共项目包含多个模块，且多个模块引用了相同依赖时显然重复引用是不太合适的，而通过 <code>dependencyManagement</code> 即可很好的解决依赖共用的问题。</p>
+<p>将项目依赖统一定义在父模块的 <code>dependencyManagement</code> 标签中，子模块只需继承父模块并在 <code>dependencies</code> 引入所需的依赖，便可自动读取父模块 <code>dependencyManagement</code> 所指定的版本等信息。</p>
+<p><code>dependencyManagement</code> 既不会在当前模块引入依赖，也不会给其子模块引入依赖，同时其是可以被继承的。只有在子模块下同样声明了该依赖，才会引入到模块中，子模块中只需在依赖中引入 <code>groupId</code> 与 <code>artifactId</code> 即可, 也可以指定版本则会进行覆盖。    </p>
+<h4 id="2-模块示例"><a href="#2-模块示例" class="headerlink" title="2. 模块示例"></a>2. 模块示例</h4><p>接下来以下图中的模块层级关系进行举例：<br><img src="/album/loading.gif" data-original="/album/article/java/maven/3.png"></p>
+<h5 id="1-maven-demo"><a href="#1-maven-demo" class="headerlink" title="(1) maven-demo"></a>(1) maven-demo</h5><p>在 <code>maven-demo</code> 的 <code>dependencyManagement</code> 定义 <code>mysql</code> 和 <code>junit</code> 两个依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modules</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>module</span><span class="token punctuation">></span></span>maven-1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>module</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>module</span><span class="token punctuation">></span></span>maven-2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>module</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>module</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencyManagement</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>mysql<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -715,15 +740,16 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencyManagement</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="module-1"><a href="#module-1" class="headerlink" title="module-1"></a>module-1</h5><p>  在 <code>module-1</code> 中继承 <code>maven-demo</code> 工程，引入 <code>mysql</code>，无需指定版本，将会自动读取父模块中 <code>dependencyManagement</code> 中所指定的版本。当然你也可以选择指定版本，则将会进行覆盖，但并不建议这么操作，将提高项目维护难度。</p>
-<p>  <code>module-1</code> 的 <code>pom</code> 文件内容如下：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-module-1"><a href="#2-module-1" class="headerlink" title="(2) module-1"></a>(2) module-1</h5><p>在 <code>module-1</code> 中继承 <code>maven-demo</code> 工程，并引入 <code>mysql</code>，此时无需指定版本将会自动读取父模块中 <code>dependencyManagement</code> 中所指定的版本。当然你也可以选择指定版本，则将会进行覆盖，但并不建议这么操作，将提高项目维护难度。</p>
+<p><code>module-1</code> 的 <code>pom</code> 文件内容如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">></span></span>
+        
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
@@ -731,33 +757,31 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mysql-connector-java<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="module-2"><a href="#module-2" class="headerlink" title="module-2"></a>module-2</h5><p>  在 <code>module-2</code> 配置同  <code>module-1</code>，通过 <code>dependencyManagement</code> 我们即实现了项目依赖版本的统一管理。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-module-2"><a href="#3-module-2" class="headerlink" title="(3) module-2"></a>(3) module-2</h5><p>在 <code>module-2</code> 配置同  <code>module-1</code>，通过 <code>dependencyManagement</code> 实现了项目依赖版本的统一管理。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">></span></span>
 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>junit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>junit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-依赖导入"><a href="#3-依赖导入" class="headerlink" title="3. 依赖导入"></a>3. 依赖导入</h4><p>上面介绍了如何通过 <code>dependencyManagement</code> 实现全局的依赖版本管理，但如果工程中的两个子模块都需要配置相同的 <code>dependencyManagement</code> 配置时，当然你可以选择通过继承父模块来实现，也可以用笨办法直接复制粘贴一份。</p>
-<p>在上述的 <code>maven-demo</code> 创建同级模块 <code>maven-demo1</code> ，如果要实现 <code>maven-demo</code> 中配置的 <code>dependencyManagement</code> 则在其 <code>dependencyManagement</code> 配置中导入 <code>maven-demo</code> 并将 <code>scope</code> 设置为 <code>import</code>，并将 <code>type</code> 设置为 <code>pom</code>。</p>
-<p>通过导入即可实现更轻量化的模块信息继承，具体配置内容如下：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-模块导入"><a href="#3-模块导入" class="headerlink" title="3. 模块导入"></a>3. 模块导入</h4><p>上面介绍了如何通过 <code>dependencyManagement</code> 实现全局的依赖版本管理，但如果工程中的两个子模块都需要配置相同的 <code>dependencyManagement</code> 配置时，既可以选择通过继承方式实现，也可以直接复制粘贴一份。</p>
+<p>除此之外，<code>Maven</code> 提供了一种更便捷的方式快速导入。在上述的 <code>maven-demo</code> 创建同级模块 <code>maven-demo1</code>，如果要实现 <code>maven-demo</code> 中配置的 <code>dependencyManagement</code> 则在其 <code>dependencyManagement</code> 配置中导入 <code>maven-demo</code> 即可，配置示例如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencyManagement</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>xyz.ibudai<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>maven-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
             <span class="token comment" spellcheck="true">&lt;!-- 导入目标模块的 dependencyManagement --></span>
             <span class="token comment" spellcheck="true">&lt;!-- 依赖范围为 import --></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>import<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
@@ -788,7 +812,8 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>archive</span><span class="token punctuation">></span></span>  
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifest</span><span class="token punctuation">></span></span>  
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mainClass</span><span class="token punctuation">></span></span>org.example.MyTest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mainClass</span><span class="token punctuation">></span></span> 
+                <span class="token comment" spellcheck="true">&lt;!-- 替换为主类完整限定名 --></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mainClass</span><span class="token punctuation">></span></span>fully.qualified.MainClass<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mainClass</span><span class="token punctuation">></span></span> 
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>addDefaultSpecificationEntries</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>addDefaultSpecificationEntries</span><span class="token punctuation">></span></span>
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>addDefaultImplementationEntries</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>addDefaultImplementationEntries</span><span class="token punctuation">></span></span> 
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manifest</span><span class="token punctuation">></span></span>
@@ -800,7 +825,7 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>archive</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>  
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在之前的工程 <code>POM</code> 文件中添加上述构建插件重新进行打包，可以看到 <code>MANIFEST.MF</code> 文件中即添加了我们配置的额外属性。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">Manifest-Version</span><span class="token punctuation">:</span> <span class="token number">1.0</span>
 <span class="token key atrule">Archiver-Version</span><span class="token punctuation">:</span> Plexus Archiver
@@ -833,13 +858,14 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>finalName</span><span class="token punctuation">></span></span>${project.artifactId}-${project.version}-all<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>finalName</span><span class="token punctuation">></span></span>  
         <span class="token comment" spellcheck="true">&lt;!-- disabled default file name suffix of "jar-with-dependencies" --></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>appendAssemblyId</span><span class="token punctuation">></span></span>false<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>appendAssemblyId</span><span class="token punctuation">></span></span>  
-        <span class="token comment" spellcheck="true">&lt;!-- Add all dependency to jar file --></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>descriptorRefs</span><span class="token punctuation">></span></span>  
+            <span class="token comment" spellcheck="true">&lt;!-- Add all dependency to jar file --></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>descriptorRef</span><span class="token punctuation">></span></span>jar-with-dependencies<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>descriptorRef</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>descriptorRefs</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>attach</span><span class="token punctuation">></span></span>false<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>attach</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>archive</span><span class="token punctuation">></span></span>  
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifest</span><span class="token punctuation">></span></span>  
+                <span class="token comment" spellcheck="true">&lt;!-- replace to your main class name --></span>
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mainClass</span><span class="token punctuation">></span></span>fully.qualified.MainClass<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mainClass</span><span class="token punctuation">></span></span> 
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>addDefaultSpecificationEntries</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>addDefaultSpecificationEntries</span><span class="token punctuation">></span></span>
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>addDefaultImplementationEntries</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>addDefaultImplementationEntries</span><span class="token punctuation">></span></span> 
@@ -857,34 +883,29 @@
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>execution</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>executions</span><span class="token punctuation">></span></span>  
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在工程 <code>POM</code> 配置中添加上述信息并重新编译打包工程，可以看到此时 <code>JAR</code> 文件中除了自定义创建的 <code>MyTest.clss</code> 文件外同时包含了依赖的第三方库。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/7.png"></p>
 <h4 id="3-Shade"><a href="#3-Shade" class="headerlink" title="3. Shade"></a>3. Shade</h4><p><code>Shade</code> 插件的功能更为强大，其提供了两个功能：第一个即与 <code>assembly</code> 类似可实现依赖的打包编译，与 <code>assembly</code> 不同的是 <code>Shade</code> 提供了更灵活的执行策略，可指定需要打包编译的依赖集合。</p>
 <p>另一个即实现包的重命名功能，我们都知道 <code>Maven</code> 并不允许在一共工程中同时引入单个依赖的不同版本，而通过 <code>Shade</code> 插件即可实现二次包装从而绕开该限制。</p>
 <p>下面介绍一个 <code>Shade</code> 插件中各标签的使用。</p>
-<ul>
-<li><h5 id="artifactSet"><a href="#artifactSet" class="headerlink" title="artifactSet"></a>artifactSet</h5><p>  通过 <code>includes</code> 标签可以指定需要一同打包编译的第三方依赖。</p>
-<p>  定义的格式为：<code>groupId:artifactId</code>。</p>
+<h5 id="1-artifactSet"><a href="#1-artifactSet" class="headerlink" title="(1) artifactSet"></a>(1) artifactSet</h5><p>通过 <code>includes</code> 标签可以指定需要一同打包编译的第三方依赖。</p>
+<p>定义的格式为：<code>groupId:artifactId</code>。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactSet</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>includes</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>include</span><span class="token punctuation">></span></span>groupId:artifactId<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>include</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>includes</span><span class="token punctuation">></span></span>  
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactSet</span><span class="token punctuation">></span></span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="relocations"><a href="#relocations" class="headerlink" title="relocations"></a>relocations</h5><p>  通过 <code>relocations</code> 标签即可实现模块的重命名功能。</p>
-<p>  其中 <code>pattern</code> 为需要重命名的模块包， <code>shadedPattern</code> 为重命名后的模块名。</p>
+<h5 id="2-relocations"><a href="#2-relocations" class="headerlink" title="(2) relocations"></a>(2) relocations</h5><p>通过 <code>relocations</code> 标签即可实现模块的重命名功能。</p>
+<p>其中 <code>pattern</code> 为需要重命名的模块包， <code>shadedPattern</code> 为重命名后的模块名。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relocations</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relocation</span><span class="token punctuation">></span></span>  
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pattern</span><span class="token punctuation">></span></span>old.package.name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pattern</span><span class="token punctuation">></span></span>  
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>shadedPattern</span><span class="token punctuation">></span></span>new.package.name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>shadedPattern</span><span class="token punctuation">></span></span>  
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pattern</span><span class="token punctuation">></span></span>old.package.name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pattern</span><span class="token punctuation">></span></span>  
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>shadedPattern</span><span class="token punctuation">></span></span>new.package.name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>shadedPattern</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>relocation</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>relocations</span><span class="token punctuation">></span></span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<ul>
-<li><h5 id="filters"><a href="#filters" class="headerlink" title="filters"></a>filters</h5><p>  通过 <code>filters</code> 标签可以实现非必要文件的排除，如常见的协议文件等，可通过文件名或类型实现匹配。</p>
+<h5 id="3-filters"><a href="#3-filters" class="headerlink" title="(3) filters"></a>(3) filters</h5><p>通过 <code>filters</code> 标签可以实现非必要文件的排除，如常见的协议文件等，可通过文件名或类型实现匹配。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filters</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifact</span><span class="token punctuation">></span></span>*:*<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifact</span><span class="token punctuation">></span></span>  
@@ -895,8 +916,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter</span><span class="token punctuation">></span></span>  
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filters</span><span class="token punctuation">></span></span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="完整配置"><a href="#完整配置" class="headerlink" title="完整配置"></a>完整配置</h5><p>  <code>Shade</code> 同样可以通过 <code>execution</code> 设置作用阶段，上述介绍标签的完整配置内容如下：</p>
+<h5 id="4-完整配置"><a href="#4-完整配置" class="headerlink" title="(4) 完整配置"></a>(4) 完整配置</h5><p><code>Shade</code> 同样可以通过 <code>execution</code> 设置作用阶段，上述介绍标签的完整配置内容如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">></span></span>  
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>  
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.maven.plugins<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>  
@@ -944,8 +964,6 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>  
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <p>在之前的工程中添加上述配置并重新打包，可以看到编译后的 <code>Jackson</code> 模块包层级已经变成我们自定义的内容，而 <code>Java</code> 的类加载即通过类的完成限定名（包名+类名）来区分是否为同一个类，因此通过 <code>Shade</code> 插件即可实现 <code>Maven</code> 的单一工程多版本引入。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/8.png"></p>
 <h3 id="六、构建配置"><a href="#六、构建配置" class="headerlink" title="六、构建配置"></a>六、构建配置</h3><p>在上面介绍了工程的依赖管理与多模块的管理配置，下面介绍一下工程打包构建时涉及的配置。</p>
 <p>注意以下所有配置项都是定义在 <code>&lt;build&gt;</code> 标签组内，下述不再重复说明。</p>
@@ -989,6 +1007,38 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="七、模块编译"><a href="#七、模块编译" class="headerlink" title="七、模块编译"></a>七、模块编译</h3><h4 id="1-构建命令"><a href="#1-构建命令" class="headerlink" title="1. 构建命令"></a>1. 构建命令</h4><p>在 <code>Maven</code> 工程中常见的打包编译命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 清除已下载打包文件</span>
+mvn clean 
+
+<span class="token comment" spellcheck="true"># 下载工程依赖文件</span>
+mvn <span class="token function">install</span> 
+
+<span class="token comment" spellcheck="true"># 打包工程模块为可执行文件</span>
+mvn package
+
+<span class="token comment" spellcheck="true"># 推送模块至配置的远程仓库</span>
+mvn deploy
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-编译参数"><a href="#2-编译参数" class="headerlink" title="2. 编译参数"></a>2. 编译参数</h4><p>除了上述提到的编译命令，在执行时可通过 <code>-D</code> 添加编译参数，如跳过测试编译等等。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 跳过单元测试</span>
+mvn clean <span class="token function">install</span> -DskipTests
+
+<span class="token comment" spellcheck="true"># 跳过所有测试检查</span>
+mvn clean <span class="token function">install</span> -Dmaven.test.skip<span class="token operator">=</span>true
+
+<span class="token comment" spellcheck="true"># 跳过 enforcer 检查</span>
+mvn clean <span class="token function">install</span> -Denforcer.skip
+
+<span class="token comment" spellcheck="true"># 跳过 Checkstyle 检查</span>
+mvn clean <span class="token function">install</span> -Dcheckstyle.skip
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>Maven</code> 中，参数传递时是否需要设置 <code>=true</code> 取决于 <code>Maven</code> 插件或构建脚本中对这些属性的处理方式。通常在没有设置时属性值为 <code>true</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下述两个命令生效结果是一致的。</span>
+mvn clean <span class="token function">install</span> -Denforcer.skip
+
+mvn clean <span class="token function">install</span> -Denforcer.skip<span class="token operator">=</span>true
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1590,7 +1640,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">220.9k</span>
+                <span class="white-color">221.6k</span>
             
             
             

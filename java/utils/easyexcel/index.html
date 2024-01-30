@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-29
+                    2024-01-30
                 </div>
                 
 
@@ -651,17 +651,13 @@ ExcelTypeEnum<span class="token punctuation">.</span>XLSX
     <span class="token punctuation">[</span><span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token string">"user-2"</span><span class="token punctuation">,</span> <span class="token string">"Male"</span><span class="token punctuation">,</span> <span class="token string">"2023-01-01 00:00:02"</span><span class="token punctuation">]</span>
 <span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>同理，上述动态数据写入的逻辑想对应的程序代码如下：</p>
+<p>根据上述逻辑，其相对应的程序代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">dynamicWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
-    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>String<span class="token operator">>></span> heads <span class="token operator">=</span> Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">,</span> <span class="token string">"birthday"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>Arrays<span class="token operator">:</span><span class="token operator">:</span>asList<span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
     List<span class="token operator">&lt;</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">>></span> dataList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> map <span class="token operator">=</span> Map<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
                 <span class="token string">"id"</span><span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">,</span>
-                <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"User-"</span> <span class="token operator">+</span> i<span class="token punctuation">,</span>
+                <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"user-"</span> <span class="token operator">+</span> i<span class="token punctuation">,</span>
                 <span class="token string">"gender"</span><span class="token punctuation">,</span> <span class="token string">"Male"</span><span class="token punctuation">,</span>
                 <span class="token string">"birthday"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -676,6 +672,10 @@ ExcelTypeEnum<span class="token punctuation">.</span>XLSX
         <span class="token punctuation">}</span>
         rowDatas<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// Excel head</span>
+    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>String<span class="token operator">>></span> heads <span class="token operator">=</span> Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">,</span> <span class="token string">"birthday"</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>Arrays<span class="token operator">:</span><span class="token operator">:</span>asList<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Writer data</span>
     String fileLocate <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\info.xls"</span><span class="token punctuation">;</span>
     EasyExcel<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>fileLocate<span class="token punctuation">)</span>
@@ -1319,7 +1319,7 @@ ExcelTypeEnum<span class="token punctuation">.</span>XLSX
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">220.9k</span>
+                <span class="white-color">221.6k</span>
             
             
             

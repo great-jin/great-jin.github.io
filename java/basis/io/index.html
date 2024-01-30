@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-29
+                    2024-01-30
                 </div>
                 
 
@@ -818,7 +818,10 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Message 4 write complete."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、RandomAccessFile"><a href="#六、RandomAccessFile" class="headerlink" title="六、RandomAccessFile"></a>六、RandomAccessFile</h3><h4 id="1-模式介绍"><a href="#1-模式介绍" class="headerlink" title="1. 模式介绍"></a>1. 模式介绍</h4><p><code>RandomAccessFile</code> 独立于基本的 <code>IO</code> 流，是专门为文件读写提供的一种设计，与之前的提到的不同的是 <code>RandomAccessFile</code> 可通过指定模式使之既可读又可写，从而提高代码效率。在初始化对象时传入文件路径并指定操作模式，其中操作模式包含下列四种。</p>
+<h3 id="六、随机文件"><a href="#六、随机文件" class="headerlink" title="六、随机文件"></a>六、随机文件</h3><h4 id="1-模式介绍"><a href="#1-模式介绍" class="headerlink" title="1. 模式介绍"></a>1. 模式介绍</h4><p><code>RandomAccessFile</code> 独立于基本的 <code>IO</code> 流，是专门为文件读写提供的一种设计，与之前的提到的不同的是 <code>RandomAccessFile</code> 可通过指定模式使之既可读又可写，从而提高代码效率。</p>
+<blockquote>
+<p>在初始化对象时传入文件路径并指定操作模式，其中操作模式包含下列四种。</p>
+</blockquote>
 <h5 id="1-r-模式"><a href="#1-r-模式" class="headerlink" title="(1) r 模式"></a>(1) r 模式</h5><p>以只读方式打开指定文件，如果试图对该 <code>RandomAccessFile</code> 指定的文件执行写入方法则会抛出 <code>IOException</code>。</p>
 <h5 id="2-rw-模式"><a href="#2-rw-模式" class="headerlink" title="(2) rw 模式"></a>(2) rw 模式</h5><p>以读取、写入方式打开指定文件，如果该文件不存在，则尝试创建文件。</p>
 <h5 id="3-rws-模式"><a href="#3-rws-模式" class="headerlink" title="(3) rws 模式"></a>(3) rws 模式</h5><p>以读取、写入方式打开指定文件，相对于 <code>rw</code> 模式，还要求对文件的内容或元数据的每个更新都同步写入到底层存储设备，默认情形下(<code>rw</code>模式下)是使用 <code>buffer</code> 的，只有 <code>cache</code> 满的或者使用 <code>close()</code> 时候才真正的写到文件。</p>
@@ -871,7 +874,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、序列化转化"><a href="#七、序列化转化" class="headerlink" title="七、序列化转化"></a>七、序列化转化</h3><p>在计算机中任何数据都是以二进制的形式存储，因此当项目中涉及到数据对象的传输存储时，通过我们需要将复杂的对象数据转化为字节数据，下面介绍几类常见的对象数据转化。</p>
+<h3 id="七、对象序列化"><a href="#七、对象序列化" class="headerlink" title="七、对象序列化"></a>七、对象序列化</h3><p>在计算机中任何数据都是以二进制的形式存储，因此当项目中涉及到数据对象的传输存储时，通过我们需要将复杂的对象数据转化为字节数据，下面介绍几类常见的对象数据转化。</p>
 <h4 id="1-字节转换"><a href="#1-字节转换" class="headerlink" title="1. 字节转换"></a>1. 字节转换</h4><h5 id="1-byte转InputStream"><a href="#1-byte转InputStream" class="headerlink" title="(1) byte转InputStream"></a>(1) byte转InputStream</h5><p>将 <code>byte[]</code> 转为 <code>InputStream</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> InputStream <span class="token function">byteToInputStream</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -931,7 +934,7 @@
     <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span> obj<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="八、数据拆分"><a href="#八、数据拆分" class="headerlink" title="八、数据拆分"></a>八、数据拆分</h3><h4 id="1-文件拆分"><a href="#1-文件拆分" class="headerlink" title="1. 文件拆分"></a>1. 文件拆分</h4><p>针对大文件的处理，通常都会涉及到拆分与合并从而降低系统资源占用与提高服务性能。</p>
+<h3 id="八、资源拆合"><a href="#八、资源拆合" class="headerlink" title="八、资源拆合"></a>八、资源拆合</h3><h4 id="1-文件拆分"><a href="#1-文件拆分" class="headerlink" title="1. 文件拆分"></a>1. 文件拆分</h4><p>针对大文件的处理，通常都会涉及到拆分与合并从而降低系统资源占用与提高服务性能。</p>
 <p>对于文件的拆分，首先确定拆分的思路：即先按照文件的大小等分确定拆分块的大小，如 <code>95MB</code> 的文件限制单个块大小不超过 <code>10MB</code>，则应该拆分为 <code>10</code> 个块，最后一个块不足 <code>10MB</code> 仍单独为一个文件块。确认文件块后即可开始按序读取文件内容，当读取的内容值到达文件块限制时则创建一个新文件。为了获取更高的性能，针对单个文件快仍采用类似的拆分写入，即分批不断添加数据至文件末端。</p>
 <p>将上述的逻辑转化为相应的代码如下，这里采用 <code>RandomAccessFile</code> 进行文件的读取，并将读取的内容拆分为多个文件，拆分后每个文件名形式如：<code>split.0，split.1</code>。同时这里 <code>BufferedOutputStream</code> 最终输出为单个文件块，若需要上传至 <code>OSS</code> 系统可替换该部分将 <code>RandomAccessFile</code> 读取数据转为 <code>InputStream</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileSplitTest</span> <span class="token punctuation">{</span>
@@ -1669,7 +1672,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">220.9k</span>
+                <span class="white-color">221.6k</span>
             
             
             
