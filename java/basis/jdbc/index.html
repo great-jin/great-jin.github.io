@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -693,12 +693,11 @@ String id2 <span class="token operator">=</span> <span class="token string">"123
 String pwd2 <span class="token operator">=</span> <span class="token string">"123456"</span><span class="token punctuation">;</span>
 String sql2 <span class="token operator">=</span> <span class="token string">"select * from tb_user where id = "</span> <span class="token operator">+</span> id2 <span class="token operator">+</span> <span class="token string">" and password = "</span> <span class="token operator">+</span> pwd2<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="PreparedStatement"><a href="#PreparedStatement" class="headerlink" title="PreparedStatement"></a>PreparedStatement</h5><p>  为了防止上述情况， <code>Java</code> 通过 <code>PreparedStatement</code> 提供了预编机制，通过占位符 <code>?</code> 防止恶意 <code>SQL</code> 注入攻击。</p>
-<p>  即将语句中待输入的字符串通过 <code>?</code> 进行占位，后续再进行赋值，而后面无论用户输入什么值，都会将输入当成属性值而不会编译为 <code>SQL</code> 语句。</p>
+<p>为了防止上述情况， <code>Java</code> 通过 <code>PreparedStatement</code> 提供了预编机制，引入占位符 <code>?</code> 防止恶意 <code>SQL</code> 注入攻击。</p>
+<p>即将语句中待输入的字符串通过 <code>?</code> 进行占位，后续再进行赋值，而后面无论用户输入什么值，都会将输入当成属性值而不会编译为 <code>SQL</code> 语句。</p>
 <pre class="line-numbers language-java"><code class="language-java">String sql3 <span class="token operator">=</span> "select <span class="token operator">*</span> from tb_user where id <span class="token operator">=</span> <span class="token operator">?</span> and pwd <span class="token operator">=</span> <span class="token operator">?</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>  下面通过具体实现案例加深了解。</p>
+<p>下面通过具体实现案例加深了解。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 占位符预编译，提升安全性</span>
     String sql <span class="token operator">=</span> <span class="token string">"select * from tb_user where id = ? and pwd = ?"</span><span class="token punctuation">;</span>
@@ -719,16 +718,13 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
     <span class="token punctuation">}</span>  
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="二、进阶操作"><a href="#二、进阶操作" class="headerlink" title="二、进阶操作"></a>二、进阶操作</h3><p>在之前介绍通过 <code>JDBC</code> 方式实现基本的数据查询，下面即更深入的介绍如何实现高效查询。</p>
 <h4 id="1-查询参数"><a href="#1-查询参数" class="headerlink" title="1. 查询参数"></a>1. 查询参数</h4><p>在 <code>Statement</code> 与 <code>ResultSet</code> 中都提供 <code>fetchSize</code> 参数用于指定单次查询的行数。</p>
 <p>当每次通过 <code>executeQuery()</code> 执行查询都将返回一个结果集，若查询结果过大时，一次性加载内存中显然是十分不合理的，通过 <code>fetchSize</code> 即设置每次读取的记录数，然后分批进行读取从而降低内存负载。</p>
 <p>简而言之，若 <code>fetchSize</code> 越小，加载进内存的数据则越少，但与数据库服务之间的通讯频次则越高，反之则内存压力大而服务器压力小，需要根据具体的业务场景而定。</p>
 <p>在 <code>MySQL</code> 中默认是一次性将数据读入内存，而在 <code>Oracle</code> 中默认的 <code>fetchSize</code> 则为 <code>10</code> 。</p>
-<ul>
-<li><h5 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h5><p>  既然 <code>Statement</code> 与 <code>ResultSet</code> 都提供了 <code>fetchSize</code> 参数，那二者又有何区别？</p>
-<p>  因为 <code>ResultSet</code> 是由 <code>Statement</code> 执行而来，所以 <code>ResultSet</code> 将会继承 <code>Statement</code> 中配置的 <code>fetchSize</code> 。这样的设计的一大目的是为了通过 <code>Statement</code> 给所有结果集指定 <code>fetchSize</code> ，但是当存在不同的结果集可根据场景实现覆盖。</p>
+<h5 id="1-区别"><a href="#1-区别" class="headerlink" title="(1) 区别"></a>(1) 区别</h5><p>既然 <code>Statement</code> 与 <code>ResultSet</code> 都提供了 <code>fetchSize</code> 参数，那二者又有何区别？</p>
+<p>因为 <code>ResultSet</code> 是由 <code>Statement</code> 执行而来，所以 <code>ResultSet</code> 将会继承 <code>Statement</code> 中配置的 <code>fetchSize</code> 。这样的设计的一大目的是为了通过 <code>Statement</code> 给所有结果集指定 <code>fetchSize</code> ，但是当存在不同的结果集可根据场景实现覆盖。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">(</span>
         Connection con <span class="token operator">=</span> DriverManager<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         Statement stmt <span class="token operator">=</span> con<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
@@ -752,8 +748,6 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
     ex<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-结果缓存"><a href="#2-结果缓存" class="headerlink" title="2. 结果缓存"></a>2. 结果缓存</h4><p>通过 <code>ResultSet</code> 可以读取执行结果，但前提是会话必须一直处于连通状态，即当出现连接波动可能导致程序异常丢失结果。</p>
 <p>对此 <code>java.sql</code> 包中提供 <code>CachedRowSet</code> 以缓存的方式的读取数据，即将数据先刷入本地缓存中再实现读取，此时即便连接关闭也可实现数据读取，配合 <code>fetchSize</code> 参数可实现全量数据的本地缓存读取，当然此种方式对内存压力相对较高。</p>
 <p><code>CachedRowSet</code> 的具体使用示例如下：</p>
@@ -1574,7 +1568,7 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

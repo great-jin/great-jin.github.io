@@ -503,14 +503,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    901
+                    919
                 </div>
                 
 
@@ -541,7 +541,7 @@
 <p>Docker 是近些年来被广泛使用的一项技术，是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux 或 Windows 操作系统的机器上，也可以实现虚拟化。</p>
 </blockquote>
 <p>对于编程工作者而言，当临时需要用到某个环境即可快速通过容器构建服务，简单且又高效。下面将简单介绍 <code>Docker</code> 的基本操作。</p>
-<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>默认安装路径：<code>/var/lib/docker</code> 。</p>
+<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>默认安装路径：<code>/var/lib/docker</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">yum -y <span class="token function">install</span> docker                   <span class="token comment" spellcheck="true"># 通过 yum 源安装</span>
 
 systemctl start docker                  <span class="token comment" spellcheck="true"># 启动服务</span>
@@ -591,7 +591,7 @@ systemctl <span class="token function">enable</span> docker             <span cl
 
 systemctl disable docker            <span class="token comment" spellcheck="true"># 关闭开机启动</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-镜像配置"><a href="#2-镜像配置" class="headerlink" title="2. 镜像配置"></a>2. 镜像配置</h4><p>默认 Docker 下载容器从其官网进行拉取，可通过修改配置文件手动指定镜像地址。</p>
+<h4 id="2-镜像配置"><a href="#2-镜像配置" class="headerlink" title="2. 镜像配置"></a>2. 镜像配置</h4><p>默认 <code>Docker</code> 下载容器从其官网进行拉取，可通过修改配置文件手动指定镜像地址。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑配置文件</span>
 <span class="token function">vi</span> /etc/docker/daemon.json
 
@@ -603,60 +603,43 @@ systemctl disable docker            <span class="token comment" spellcheck="true
 <span class="token comment" spellcheck="true"># 修改文件后需重启服务</span>
 systemctl restart docker
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-容器创建"><a href="#3-容器创建" class="headerlink" title="3. 容器创建"></a>3. 容器创建</h4><ul>
-<li><h5 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h5><pre class="line-numbers language-bash"><code class="language-bash">--restart<span class="token operator">=</span>always                                <span class="token comment" spellcheck="true"># 自启服务</span>
+<h4 id="3-容器创建"><a href="#3-容器创建" class="headerlink" title="3. 容器创建"></a>3. 容器创建</h4><h5 id="1-基本命令"><a href="#1-基本命令" class="headerlink" title="(1) 基本命令"></a>(1) 基本命令</h5><pre class="line-numbers language-bash"><code class="language-bash">--restart<span class="token operator">=</span>always                                <span class="token comment" spellcheck="true"># 自启服务</span>
 
 --privileged<span class="token operator">=</span>true                               <span class="token comment" spellcheck="true"># 赋予权限</span>
- 
-docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>no       <span class="token comment" spellcheck="true"># 关闭容器应用自启  </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h5><p> 通过 <code>-p</code> 实现容器端口与外部服务端口映射通讯，如下行命令中即将容器 <code>3306</code> 端口映射到外部的 <code>4306</code> ，因此访问对应服务时应设置端口为 <code>4306</code> 。</p>
+     
+docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>no       <span class="token comment" spellcheck="true"># 关闭容器自启  </span>
+     
+docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>always   <span class="token comment" spellcheck="true"># 开启容器自启  </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-端口映射"><a href="#2-端口映射" class="headerlink" title="(2) 端口映射"></a>(2) 端口映射</h5><p>通过 <code>-p</code> 实现容器端口与外部服务端口映射通讯，如下行命令中即将容器 <code>3306</code> 端口映射到外部的 <code>4306</code> ，因此访问对应服务时应设置端口为 <code>4306</code> 。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -d -p 4306:3306 mysql:5.7
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="文件映射"><a href="#文件映射" class="headerlink" title="文件映射"></a>文件映射</h5><p> 通过 <code>-v</code> 实现容器内外的文件映射，当我们构建的服务需要修改配置文件时只需修改映射出来的文件即可。</p>
+<h5 id="3-文件映射"><a href="#3-文件映射" class="headerlink" title="(3) 文件映射"></a>(3) 文件映射</h5><p>通过 <code>-v</code> 实现容器内外的文件映射，当我们构建的服务需要修改配置文件时只需修改映射出来的文件即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
-   -p 4306:3306 \
-   -v /home/dockerdata/mysql/conf:/etc/mysql/conf.d \ 
-   mysql:5.7
+-p 4306:3306 \
+-v /home/dockerdata/mysql/conf:/etc/mysql/conf.d \ 
+mysql:5.7
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="三、容器管理"><a href="#三、容器管理" class="headerlink" title="三、容器管理"></a>三、容器管理</h3><h4 id="1-镜像操作"><a href="#1-镜像操作" class="headerlink" title="1. 镜像操作"></a>1. 镜像操作</h4><ul>
-<li><p><strong>删除镜像</strong></p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker images                      <span class="token comment" spellcheck="true"># 查看所有镜像</span>
+<h3 id="三、容器管理"><a href="#三、容器管理" class="headerlink" title="三、容器管理"></a>三、容器管理</h3><h4 id="1-镜像操作"><a href="#1-镜像操作" class="headerlink" title="1. 镜像操作"></a>1. 镜像操作</h4><h5 id="1-删除镜像"><a href="#1-删除镜像" class="headerlink" title="(1) 删除镜像"></a>(1) 删除镜像</h5><pre class="line-numbers language-bash"><code class="language-bash">docker images                      <span class="token comment" spellcheck="true"># 查看所有镜像</span>
 
 docker rmi <span class="token operator">&lt;</span>Images ID<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 删除对应镜像</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-容器操作"><a href="#2-容器操作" class="headerlink" title="2. 容器操作"></a>2. 容器操作</h4><ul>
-<li><p><strong>进入容器</strong></p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token function">bash</span>         <span class="token comment" spellcheck="true"># 进入容器</span>
+<h4 id="2-容器操作"><a href="#2-容器操作" class="headerlink" title="2. 容器操作"></a>2. 容器操作</h4><h5 id="1-进入容器"><a href="#1-进入容器" class="headerlink" title="(1) 进入容器"></a>(1) 进入容器</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token function">bash</span>         <span class="token comment" spellcheck="true"># 进入容器</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p><strong>容器查看</strong></p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">ps</span>               <span class="token comment" spellcheck="true"># 查看运行中容器</span>
+<h5 id="2-容器查看"><a href="#2-容器查看" class="headerlink" title="(2) 容器查看"></a>(2) 容器查看</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">ps</span>               <span class="token comment" spellcheck="true"># 查看运行中容器</span>
 
 docker <span class="token function">ps</span> -a            <span class="token comment" spellcheck="true"># 查看所有容器</span>
 
 docker <span class="token function">rename</span> <span class="token operator">&lt;</span>oldname<span class="token operator">></span> <span class="token operator">&lt;</span>newname<span class="token operator">></span>      <span class="token comment" spellcheck="true"># 重命名</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>删除容器</strong></p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">rm</span> <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 删除对应容器</span>
+<h5 id="3-删除容器"><a href="#3-删除容器" class="headerlink" title="(3) 删除容器"></a>(3) 删除容器</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">rm</span> <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 删除对应容器</span>
 
 docker <span class="token function">rm</span> -f <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>         <span class="token comment" spellcheck="true"># 删除运行中容器</span>
 
 docker <span class="token function">rm</span> <span class="token variable"><span class="token variable">$(</span>docker <span class="token function">ps</span> -a -q<span class="token variable">)</span></span>        <span class="token comment" spellcheck="true"># 删除所有容器(慎用)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>日志查看</strong></p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker logs <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>          <span class="token comment" spellcheck="true"># 查看运行日志</span>
+<h5 id="4-日志查看"><a href="#4-日志查看" class="headerlink" title="(4) 日志查看"></a>(4) 日志查看</h5><pre class="line-numbers language-bash"><code class="language-bash">docker logs <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>          <span class="token comment" spellcheck="true"># 查看运行日志</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -902,6 +885,54 @@ docker <span class="token function">rm</span> <span class="token variable"><span
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/java/web/mybatis/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/util/mybatis.jpg" class="responsive-img" alt="MyBatis基础教程">
+                        
+                        <span class="card-title">MyBatis基础教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MyBatis基本操作示例。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
+                                    后端
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MyBatis/">
+                        <span class="chip bg-color">MyBatis</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/linux/nginx/">
                     <div class="card-image">
                         
@@ -917,9 +948,9 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-01
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -935,64 +966,12 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Nginx/">
-                        <span class="chip bg-color">Nginx</span>
-                    </a>
-                    
                     <a href="/tags/Linux/">
                         <span class="chip bg-color">Linux</span>
                     </a>
                     
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/windows/exception/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/win/2.jpg" class="responsive-img" alt="Windows异常解决方案">
-                        
-                        <span class="card-title">Windows异常解决方案</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            记录Windows使用中遇到的异常及解决方案。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-30
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Windows/" class="post-category">
-                                    Windows
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%BC%82%E5%B8%B8%E8%AE%B0%E5%BD%95/">
-                        <span class="chip bg-color">异常记录</span>
-                    </a>
-                    
-                    <a href="/tags/Windows/">
-                        <span class="chip bg-color">Windows</span>
+                    <a href="/tags/Nginx/">
+                        <span class="chip bg-color">Nginx</span>
                     </a>
                     
                 </div>
@@ -1266,7 +1245,7 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

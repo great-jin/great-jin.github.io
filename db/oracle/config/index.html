@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    754
+                    763
                 </div>
                 
 
@@ -544,7 +544,7 @@ jdbc:oracle:thin:@<span class="token operator">&lt;</span>TNSName<span class="to
 <span class="token comment" spellcheck="true">-- Service name 格式</span>
 jdbc:oracle:thin:@<span class="token comment" spellcheck="true">//&lt;host>:&lt;port>/&lt;SERVICE_NAME>  </span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-命令连接"><a href="#2-命令连接" class="headerlink" title="2. 命令连接"></a>2. 命令连接</h4><p>通过命令行方式连接数据库。</p>
+<h4 id="2-命令连接"><a href="#2-命令连接" class="headerlink" title="2. 命令连接"></a>2. 命令连接</h4><p>通过命令行方式连接数据库，命令步骤如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 进入容器</span>
 docker <span class="token keyword">exec</span> <span class="token operator">-</span>it oracle <span class="token operator">/</span>bin<span class="token operator">/</span>bash
 
@@ -616,30 +616,27 @@ sqlplus
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看版本</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$version<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="2-角色信息"><a href="#2-角色信息" class="headerlink" title="2. 角色信息"></a>2. 角色信息</h4><ul>
-<li><h5 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h5><p>  通过查询 <code>dba_users</code> 表获取已创建的用户信息。</p>
+<h4 id="2-角色信息"><a href="#2-角色信息" class="headerlink" title="2. 角色信息"></a>2. 角色信息</h4><h5 id="1-用户信息"><a href="#1-用户信息" class="headerlink" title="(1) 用户信息"></a>(1) 用户信息</h5><p>通过查询 <code>dba_users</code> 表获取已创建的用户信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看所有用户详细信息</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_users<span class="token punctuation">;</span>
- 
+   
 <span class="token comment" spellcheck="true">-- 查看所有用户简要信息</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_users<span class="token punctuation">;</span>
- 
+   
 <span class="token comment" spellcheck="true">-- 查看当前登录用户信息</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_users<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="权限信息"><a href="#权限信息" class="headerlink" title="权限信息"></a>权限信息</h5><p>  通过查询 <code>dba_sys_privs</code> 表获取已创建的用户权限信息。</p>
+<h5 id="2-权限信息"><a href="#2-权限信息" class="headerlink" title="(2) 权限信息"></a>(2) 权限信息</h5><p>通过查询 <code>dba_sys_privs</code> 表获取已创建的用户权限信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看所有用户权限</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_sys_privs<span class="token punctuation">;</span>
-
+ 
 <span class="token comment" spellcheck="true">-- 查看当前用户权限</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_sys_privs<span class="token punctuation">;</span>
-
+ 
 <span class="token comment" spellcheck="true">-- 查看指定用户拥有的权限</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_sys_privs <span class="token keyword">where</span> grantee<span class="token operator">=</span><span class="token string">'BUDAI'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="角色信息"><a href="#角色信息" class="headerlink" title="角色信息"></a>角色信息</h5><p>  通过查询 <code>dba_role_privs</code> 表获取已创建的用角色信息。</p>
+<h5 id="3-角色信息"><a href="#3-角色信息" class="headerlink" title="(3) 角色信息"></a>(3) 角色信息</h5><p>通过查询 <code>dba_role_privs</code> 表获取已创建的用角色信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看整个系统的权限角色列表</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_role_privs<span class="token punctuation">;</span>
 
@@ -649,8 +646,6 @@ sqlplus
 <span class="token comment" spellcheck="true">-- 查看指定用户的角色</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_role_privs <span class="token keyword">where</span> grantee<span class="token operator">=</span><span class="token string">'BUDAI'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -892,6 +887,54 @@ sqlplus
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/windows/config/link/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/win/5.png" class="responsive-img" alt="鼠标右击快速打开项目">
+                        
+                        <span class="card-title">鼠标右击快速打开项目</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Windows 鼠标右击快速打开项目。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Windows/" class="post-category">
+                                    Windows
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Windows/">
+                        <span class="chip bg-color">Windows</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/db/mysql/config/">
                     <div class="card-image">
                         
@@ -907,9 +950,9 @@ sqlplus
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -927,54 +970,6 @@ sqlplus
                     
                     <a href="/tags/MySQL/">
                         <span class="chip bg-color">MySQL</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/java/basis/nio/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/28.png" class="responsive-img" alt="Java NIO介绍">
-                        
-                        <span class="card-title">Java NIO介绍</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java NIO基础知识介绍。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1248,7 +1243,7 @@ sqlplus
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

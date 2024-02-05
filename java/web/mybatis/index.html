@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    815
+                    827
                 </div>
                 
 
@@ -533,7 +533,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>目前后端与数据库交互的框架技术繁多，但主流上使用的依然是 <code>MyBatis</code> ，通过 <code>xml</code> 配置将业务中的 <code>SQL</code> 语句剥离出来，从而降低模块间的耦合性和代码的可读性。只要你熟悉 <code>Java</code> 和 <code>SQL</code> ，<code>MyBatis</code> 无疑是当下相对较优的解决方案。</p>
+                <p>目前后端与数据库交互的框架技术繁多，但主流上使用的依然是 <code>MyBatis</code> ，通过 <code>xml</code> 配置将业务中的 <code>SQL</code> 语句剥离出来，从而降低模块间的耦合性和代码的可读性。只要你熟悉 <code>Java</code> 和 <code>SQL</code>，那么 <code>MyBatis</code> 无疑是当下相对较优的解决方案。</p>
 <p>在开发中经常业务相对较为复杂的需求，其中往往就是要涉及到多表联结，此时 <code>MyBatis</code> 的优势就更为明显。将复杂的 <code>SQL</code> 语句从代码中抽离出来，实现高可读、易维护等特点。</p>
 <blockquote>
 <p>本文简单介绍 MyBatis 文件配置和基本 SQL 命令编写。</p>
@@ -562,16 +562,15 @@
         person_name,
         tel
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sql</span><span class="token punctuation">></span></span>
-
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mapper</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、基本操作"><a href="#二、基本操作" class="headerlink" title="二、基本操作"></a>二、基本操作</h3><h4 id="1-查询"><a href="#1-查询" class="headerlink" title="1. 查询"></a>1. 查询</h4><p>通过 <code>select</code> 标签实现查询功能。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、基本操作"><a href="#二、基本操作" class="headerlink" title="二、基本操作"></a>二、基本操作</h3><h4 id="1-数据查询"><a href="#1-数据查询" class="headerlink" title="1. 数据查询"></a>1. 数据查询</h4><p>通过 <code>select</code> 标签实现查询功能。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>get<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>userResult<span class="token punctuation">"</span></span> <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>String<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     select * from tb_user
     where id = #{ id }
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-新增"><a href="#2-新增" class="headerlink" title="2. 新增"></a>2. 新增</h4><p>通过 <code>insert</code> 标签实现数据插入操作。</p>
+<h4 id="2-数据新增"><a href="#2-数据新增" class="headerlink" title="2. 数据新增"></a>2. 数据新增</h4><p>通过 <code>insert</code> 标签实现数据插入操作。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>insert</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>add<span class="token punctuation">"</span></span> <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.budailad.entity.User<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     insert into tb_user
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>trim</span> <span class="token attr-name">prefix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(<span class="token punctuation">"</span></span> <span class="token attr-name">suffix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>)<span class="token punctuation">"</span></span> <span class="token attr-name">suffixOverrides</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>,<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -598,7 +597,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>trim</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>insert</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-更新"><a href="#3-更新" class="headerlink" title="3. 更新"></a>3. 更新</h4><p>通过 <code>update</code> 标签实现数据更新操作。</p>
+<h4 id="3-数据更新"><a href="#3-数据更新" class="headerlink" title="3. 数据更新"></a>3. 数据更新</h4><p>通过 <code>update</code> 标签实现数据更新操作。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>update<span class="token punctuation">"</span></span> <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>com.budailad.entity.User<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     update tb_user
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>set</span><span class="token punctuation">></span></span>
@@ -612,7 +611,7 @@
     where id = #{ id }
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>update</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-删除"><a href="#4-删除" class="headerlink" title="4. 删除"></a>4. 删除</h4><p>通过 <code>delete</code> 标签实现数据删除操作。</p>
+<h4 id="4-数据删除"><a href="#4-数据删除" class="headerlink" title="4. 数据删除"></a>4. 数据删除</h4><p>通过 <code>delete</code> 标签实现数据删除操作。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>delete</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>delete<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     delete from tb_user 
     where id = #{ id }
@@ -630,8 +629,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>foreach</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>insert</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-批量更新"><a href="#2-批量更新" class="headerlink" title="2. 批量更新"></a>2. 批量更新</h4><ul>
-<li><h5 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h5><pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>updateBatch<span class="token punctuation">"</span></span> <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.util.List<span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>
+<h4 id="2-批量更新"><a href="#2-批量更新" class="headerlink" title="2. 批量更新"></a>2. 批量更新</h4><h5 id="1-方式一"><a href="#1-方式一" class="headerlink" title="(1) 方式一"></a>(1) 方式一</h5><pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>updateBatch<span class="token punctuation">"</span></span> <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.util.List<span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>foreach</span> <span class="token attr-name">collection</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>list<span class="token punctuation">"</span></span> <span class="token attr-name">item</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>item<span class="token punctuation">"</span></span> <span class="token attr-name">open</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token attr-name">close</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token attr-name">separator</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
         update tb_user
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>set</span><span class="token punctuation">></span></span>
@@ -646,24 +644,23 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>foreach</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>update</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h5><pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>updateBatch<span class="token punctuation">"</span></span>  <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.util.List<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<h5 id="2-方式二"><a href="#2-方式二" class="headerlink" title="(2) 方式二"></a>(2) 方式二</h5><pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>update</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>updateBatch<span class="token punctuation">"</span></span>  <span class="token attr-name">parameterType</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.util.List<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     update tb_user
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>trim</span> <span class="token attr-name">prefix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>set<span class="token punctuation">"</span></span> <span class="token attr-name">suffixOverrides</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>,<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>trim</span> <span class="token attr-name">prefix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>person_name <span class="token punctuation">=</span>case<span class="token punctuation">"</span></span> <span class="token attr-name">suffix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>end,<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>foreach</span> <span class="token attr-name">collection</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>list<span class="token punctuation">"</span></span> <span class="token attr-name">item</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span> <span class="token attr-name">index</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i.personName!<span class="token punctuation">=</span>null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-                    when id=#{i.id} 
-                    then #{i.personName}
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i.personName!<span class="token punctuation">=</span>null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                when id=#{i.id} 
+                then #{i.personName}
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>foreach</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>trim</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>trim</span> <span class="token attr-name">prefix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tel <span class="token punctuation">=</span>case<span class="token punctuation">"</span></span> <span class="token attr-name">suffix</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>end,<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>foreach</span> <span class="token attr-name">collection</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>list<span class="token punctuation">"</span></span> <span class="token attr-name">item</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span> <span class="token attr-name">index</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i.tel!<span class="token punctuation">=</span>null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-                    when id=#{i.id} 
-                    then #{i.tel}
-                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i.tel!<span class="token punctuation">=</span>null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                when id=#{i.id} 
+                then #{i.tel}
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>foreach</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>trim</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>trim</span><span class="token punctuation">></span></span>
@@ -673,8 +670,6 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>foreach</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>update</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-批量删除"><a href="#2-批量删除" class="headerlink" title="2. 批量删除"></a>2. 批量删除</h4><p>通过 <code>foreach</code> 标签拼接查询条件进行删除。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>delete</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>deleteBatch<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     delete from tb_user where id in
@@ -976,18 +971,18 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/linux/nginx/">
+                <a href="/linux/docker/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/linux/nginx/1.jpeg" class="responsive-img" alt="Nginx负载配置教程">
+                        <img src="/album/banner/linux/docker/1.png" class="responsive-img" alt="Docker基本命令">
                         
-                        <span class="card-title">Nginx负载配置教程</span>
+                        <span class="card-title">Docker基本命令</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Nginx安装与网络请求代理配置教程。
+                            Docker基本命令介绍。
                         
                     </div>
                     <div class="publish-info">
@@ -1009,8 +1004,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Nginx/">
-                        <span class="chip bg-color">Nginx</span>
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
                     </a>
                     
                     <a href="/tags/Linux/">
@@ -1288,7 +1283,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

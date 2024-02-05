@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -575,7 +575,7 @@ sudo docker cp <span class="token operator">&lt;</span>容器ID<span class="toke
 <span class="token function">find</span> /home/mysql/bak -type f -mtime +10 <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">rm</span> -f
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-数据分发"><a href="#3-数据分发" class="headerlink" title="3. 数据分发"></a>3. 数据分发</h4><p>即使通过脚本进行数据文件备份，但是一旦出现服务器宕机的情况，无法及时的访问备份的文件仍然十分让人头疼。因此除了备份工作之外，还应该将备份文件再次备份到其它服务器上。</p>
-<p>如下脚本则将本机目录下的备份文件远程传输到 <code>192.168.0.1</code> 服务器上，并使用 <code>root</code> 用户访问，账号密码为： <code>123456</code>，根据你的配置替换即可。</p>
+<p>如下脚本则将本机目录下的备份文件远程传输到 <code>192.168.0.1</code> 服务器上，并使用 <code>root</code> 用户访问，账号密码为：<code>123456</code>，根据你的配置替换即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#! /bin/sh</span>
 <span class="token function">expect</span> -c <span class="token string">"
     spawn scp -r /home/mysql/bak/test_nifi_<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y%m%d<span class="token variable">)</span></span>.sql root@192.168.0.1:/home/mysql/bak/
@@ -587,8 +587,7 @@ expect eof"</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-定时任务"><a href="#4-定时任务" class="headerlink" title="4. 定时任务"></a>4. 定时任务</h4><p>完成脚本创建之后只需创建定时即可，总不能定时由运维人员手动执行脚本吧。</p>
 <p><code>Linux</code> 中可以通过 <code>crontab</code> 创建定时任务，先简单介绍一下其相关命令。</p>
-<ul>
-<li><h5 id="命令介绍"><a href="#命令介绍" class="headerlink" title="命令介绍"></a>命令介绍</h5><p>  <code>crontab</code> 命令相应的操作与描述如下：</p>
+<h5 id="1-命令介绍"><a href="#1-命令介绍" class="headerlink" title="(1) 命令介绍"></a>(1) 命令介绍</h5><p><code>crontab</code> 命令相应的操作与描述如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 设定特定用户的定时服务</span>
 <span class="token function">crontab</span> -u 
 
@@ -601,18 +600,14 @@ expect eof"</span>
 <span class="token comment" spellcheck="true"># 删除当前用户的定时服务</span>
 <span class="token function">crontab</span> -r
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="任务介绍"><a href="#任务介绍" class="headerlink" title="任务介绍"></a>任务介绍</h5><p> 定时任务通过五个 <code>*</code> 用于控制执行频率，不同位置 <code>*</code> 代表含义如下：</p>
+<h5 id="2-任务介绍"><a href="#2-任务介绍" class="headerlink" title="(2) 任务介绍"></a>(2) 任务介绍</h5><p>定时任务通过五个 <code>*</code> 用于控制执行频率，不同位置 <code>*</code> 代表含义如下：</p>
 <ul>
-<li><p>第一个 <code>*</code> 表示分钟：取值范围 <code>0-59</code> 。</p>
-</li>
-<li><p>第二个 <code>*</code> 表示小时：取值范围 <code>0-23</code> 。</p>
-</li>
-<li><p>第三个 <code>*</code> 表示天数：取值范围 <code>1-31</code> 。</p>
-</li>
-<li><p>第四个 <code>*</code> 表示月份：取值范围 <code>1-12</code> 。</p>
-</li>
-<li><p>第五个 <code>*</code> 表示每周：取值范围 <code>0-6</code> 。</p>
+<li>第一个 <code>*</code> 表示分钟：取值范围 <code>0-59</code> 。</li>
+<li>第二个 <code>*</code> 表示小时：取值范围 <code>0-23</code> 。</li>
+<li>第三个 <code>*</code> 表示天数：取值范围 <code>1-31</code> 。</li>
+<li>第四个 <code>*</code> 表示月份：取值范围 <code>1-12</code> 。</li>
+<li>第五个 <code>*</code> 表示每周：取值范围 <code>0-6</code> 。</li>
+</ul>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 使用 - 可以划定范围</span>
 <span class="token comment" spellcheck="true"># 如下表示每天 0-3 点整执行脚本</span>
 0 0-3 * * *  sh test.sh
@@ -629,10 +624,6 @@ expect eof"</span>
 <span class="token comment" spellcheck="true"># 表示在前 20 分钟内每隔 10 分钟执行脚本</span>
 0-20/10 * * * * sh test.sh
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-</li>
-</ul>
 <p>了解了定时任务基本使用就可以创建我们自己的定时任务了，这里我设定了每天凌晨 <code>3点</code> 执行脚本。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑定时任务</span>
 <span class="token function">crontab</span> -e
@@ -1241,7 +1232,7 @@ expect eof"</span>
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

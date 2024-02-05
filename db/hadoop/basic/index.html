@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-16
+                    2024-02-05
                 </div>
                 
 
@@ -540,12 +540,8 @@
 </ul>
 <h4 id="2-存储机制"><a href="#2-存储机制" class="headerlink" title="2. 存储机制"></a>2. 存储机制</h4><p><code>HDFS</code> 中的文件在物理上是分块存储 <code>(block)</code>，块的大小可以通过配置参数 <code>(dfs.blocksize)</code> 来规定，默认大小在 <code>hadoop2.x</code> 版本中是 <code>128M</code> ，老版本中是 <code>64M</code>；</p>
 <p><code>HDFS</code> 文件系统会给客户端提供一个<strong>统一的抽象目录树</strong>，客户端通过路径来访问文件，形如：<code>hdfs://namenode:port/dir-a/dir-b/dir-c/file.data</code>；目录结构及文件分块信息(元数据)的管理由 <code>Namenode</code> 节点承担；</p>
-<h4 id="3-存储结构"><a href="#3-存储结构" class="headerlink" title="3. 存储结构"></a>3. 存储结构</h4><ul>
-<li><h5 id="块"><a href="#块" class="headerlink" title="块"></a>块</h5><p>  为了保证容错性，<code>HDFS</code> 提供了数据复制机制。<code>HDFS</code> 将每一个文件存储为一系列 <strong>块</strong>，每个块由多个副本来保证容错，块的大小和复制因子可以自行配置（默认情况下，块大小是 <code>128M</code>，默认复制因子是 <code>3</code>）。</p>
-</li>
-<li><h5 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h5><p>  在写入程序位于 <code>datanode</code> 上时，就优先将写入文件的一个副本放置在该 <code>datanode</code> 上，否则放在随机 <code>datanode</code> 上。之后在另一个远程机架上的任意一个节点上放置另一个副本，并在该机架上的另一个节点上放置最后一个副本。此策略可以减少机架间的写入流量，从而提高写入性能。</p>
-</li>
-</ul>
+<h4 id="3-存储结构"><a href="#3-存储结构" class="headerlink" title="3. 存储结构"></a>3. 存储结构</h4><h5 id="1-块"><a href="#1-块" class="headerlink" title="(1) 块"></a>(1) 块</h5><p>为了保证容错性，<code>HDFS</code> 提供了数据复制机制。<code>HDFS</code> 将每一个文件存储为一系列 <strong>块</strong>，每个块由多个副本来保证容错，块的大小和复制因子可以自行配置（默认情况下，块大小是 <code>128M</code>，默认复制因子是 <code>3</code>）。</p>
+<h5 id="2-副本"><a href="#2-副本" class="headerlink" title="(2) 副本"></a>(2) 副本</h5><p>在写入程序位于 <code>datanode</code> 上时，就优先将写入文件的一个副本放置在该 <code>datanode</code> 上，否则放在随机 <code>datanode</code> 上。之后在另一个远程机架上的任意一个节点上放置另一个副本，并在该机架上的另一个节点上放置最后一个副本。此策略可以减少机架间的写入流量，从而提高写入性能。</p>
 <h4 id="4-心跳机制"><a href="#4-心跳机制" class="headerlink" title="4. 心跳机制"></a>4. 心跳机制</h4><p>每个 <code>DataNode</code> 定期向 <code>NameNode</code> 发送心跳消息，如果超过指定时间没有收到心跳消息，则将 <code>DataNode</code> 标记为死亡。<code>NameNode</code> 不会将任何新的 <code>IO</code> 请求转发给标记为死亡的 <code>DataNode</code>，也不会再使用这些 <code>DataNode</code> 上的数据。由于数据不再可用，可能会导致某些块的复制因子小于其指定值，<code>NameNode</code> 会跟踪这些块，并在必要的时候进行重新复制。</p>
 <h4 id="5-数据验证"><a href="#5-数据验证" class="headerlink" title="5. 数据验证"></a>5. 数据验证</h4><p>由于存储设备故障等原因，存储在 <code>DataNode</code> 上的数据块也会发生损坏。为了避免读取到已经损坏的数据而导致错误，<code>HDFS</code> 提供了数据完整性校验机制来保证数据的完整性，具体操作如下：</p>
 <p>当客户端创建 <code>HDFS</code> 文件时，它会计算文件的每个块的 <code>校验和</code>，并将 <code>校验和</code> 存储在同一 <code>HDFS</code> 命名空间下的单独的隐藏文件中。当客户端检索文件内容时，它会验证从每个 <code>DataNode</code> 接收的数据是否与存储在关联校验和文件中的 <code>校验和</code> 匹配。如果匹配失败，则证明数据已经损坏，此时客户端会选择从其他 <code>DataNode</code> 获取该块的其他可用副本。</p>
@@ -1214,7 +1210,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

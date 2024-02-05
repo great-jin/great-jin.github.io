@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -586,24 +586,19 @@
 
 
 <h4 id="2-切点分类"><a href="#2-切点分类" class="headerlink" title="2. 切点分类"></a>2. 切点分类</h4><p>根据作用对象切点共分为下列几类，下面分别介绍各类定义方式</p>
-<ul>
-<li><h5 id="方法切点"><a href="#方法切点" class="headerlink" title="方法切点"></a>方法切点</h5><p>  <code>execution</code> 作用域细化到方式，也是最常用的方式，具体参数参考上一点的表格。</p>
-<p>  如下切点定义示例作用域为 <code>xyz.ibudai.controller</code> 包中所有类的方法。</p>
+<h5 id="1-方法切点"><a href="#1-方法切点" class="headerlink" title="(1) 方法切点"></a>(1) 方法切点</h5><p><code>execution</code> 作用域细化到方式，也是最常用的方式，具体参数参考上一点的表格。</p>
+<p>如下切点定义示例作用域为 <code>xyz.ibudai.controller</code> 包中所有类的方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"execution (public * xyz.ibudai.controller.*.*(..))"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="类切点"><a href="#类切点" class="headerlink" title="类切点"></a>类切点</h5><p>  <code>within</code> 作用域细化到类，即只能监听类中所有方法，无法细化到指定方法。</p>
-<p>  如下示例定义了监控 <code>StudentServiceImpl</code> 类中所有方法。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-类切点"><a href="#2-类切点" class="headerlink" title="(2) 类切点"></a>(2) 类切点</h5><p><code>within</code> 作用域细化到类，即只能监听类中所有方法，无法细化到指定方法。</p>
+<p>如下示例定义了监控 <code>StudentServiceImpl</code> 类中所有方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"within(xyz.ibudai.service.Impl.StudentServiceImpl)"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="参数切点"><a href="#参数切点" class="headerlink" title="参数切点"></a>参数切点</h5><p>  <code>args()</code> 用于定义参数切面，其参数说明如下：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-参数切点"><a href="#3-参数切点" class="headerlink" title="(3) 参数切点"></a>(3) 参数切点</h5><p><code>args()</code> 用于定义参数切面，其参数说明如下：</p>
 <ul>
 <li><code>args()</code>: 不带参数。</li>
 <li><code>args(..)</code>: 任意参数。</li>
@@ -611,38 +606,30 @@
 </ul>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"args(..)"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="注解切点"><a href="#注解切点" class="headerlink" title="注解切点"></a>注解切点</h5><p>  通过 <code>@annotation</code> 定义注解切面，提供两种如下两种方式，第二种方式可以获取注解中的值更为常用。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-注解切点"><a href="#4-注解切点" class="headerlink" title="(4) 注解切点"></a>(4) 注解切点</h5><p>通过 <code>@annotation</code> 定义注解切面，提供两种如下两种方式，第二种方式可以获取注解中的值更为常用。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
 <span class="token punctuation">}</span>
 
 <span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(methodAnn) &amp;&amp; @annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
 <span class="token punctuation">}</span>
 
 <span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut2()"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> Object <span class="token function">around2</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">,</span> MethodAnn methodAnn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"value 2: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-通知事件"><a href="#3-通知事件" class="headerlink" title="3. 通知事件"></a>3. 通知事件</h4><p>通知是切面在连接点处执行的代码，可以在连接点之前、之后或周围执行，以实现不同的行为。</p>
-<ul>
-<li><h5 id="Before"><a href="#Before" class="headerlink" title="@Before"></a>@Before</h5><p>  前置通知在连接点之前执行。</p>
+<h5 id="1-Before"><a href="#1-Before" class="headerlink" title="(1) @Before"></a>(1) @Before</h5><p>前置通知在连接点之前执行。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">before</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before advice: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Around"><a href="#Around" class="headerlink" title="@Around"></a>@Around</h5><p>  环绕通知在连接点前后都执行，可获取请求目标的详细信息并通过 <code>joinPoint.proceed()</code> 放行请求。</p>
+<h5 id="2-Around"><a href="#2-Around" class="headerlink" title="(2) @Around"></a>(2) @Around</h5><p>环绕通知在连接点前后都执行，可获取请求目标的详细信息并通过 <code>joinPoint.proceed()</code> 放行请求。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> Object <span class="token function">around</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Around advice"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -667,26 +654,21 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="AfterThrowing"><a href="#AfterThrowing" class="headerlink" title="@AfterThrowing"></a>@AfterThrowing</h5><p>  异常通知在连接点抛出异常时执行。</p>
+<h5 id="3-AfterThrowing"><a href="#3-AfterThrowing" class="headerlink" title="(3) @AfterThrowing"></a>(3) @AfterThrowing</h5><p>异常通知在连接点抛出异常时执行。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterThrowing</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> throwing <span class="token operator">=</span> <span class="token string">"throwable"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterThrowing</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Exception throwable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"切面异常, 方法: {}"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>MethodSignature<span class="token punctuation">)</span> joinPoint<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After throwing "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", throw message: "</span> <span class="token operator">+</span> throwable<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="AfterReturning"><a href="#AfterReturning" class="headerlink" title="@AfterReturning"></a>@AfterReturning</h5><p>  后置通知，在目标方法成功执行并返回结果后执行，即在方法返回之后执行。</p>
+<h5 id="4-AfterReturning"><a href="#4-AfterReturning" class="headerlink" title="(4) @AfterReturning"></a>(4) @AfterReturning</h5><p>后置通知，在目标方法成功执行并返回结果后执行，即在方法返回之后执行。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterReturning</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> returning <span class="token operator">=</span> <span class="token string">"obj"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterReturning</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After returning, "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", return: "</span> <span class="token operator">+</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="After"><a href="#After" class="headerlink" title="@After"></a>@After</h5><p>  后置通知，无论目标方法是正常返回还是抛出异常，都会在方法执行之后执行，<code>@AfterReturning</code> 可以理解为 <code>@After</code> 的真子集。</p>
-<p>  <code>@After</code> 使用方式与 <code>@AfterReturning</code> 相同，仅作用域不同，这里不再提供示例。</p>
-</li>
-</ul>
+<h5 id="5-After"><a href="#5-After" class="headerlink" title="(5) @After"></a>(5) @After</h5><p>后置通知，无论目标方法是正常返回还是抛出异常，都会在方法执行之后执行，<code>@AfterReturning</code> 可以理解为 <code>@After</code> 的真子集。</p>
+<p><code>@After</code> 使用方式与 <code>@AfterReturning</code> 相同，仅作用域不同，这里不再提供示例。</p>
 
                 
             </div>
@@ -1284,7 +1266,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    13 分
                 </div>
                 
 
@@ -535,9 +535,8 @@
             <div id="articleContent">
                 <h3 id="一、数据编码"><a href="#一、数据编码" class="headerlink" title="一、数据编码"></a>一、数据编码</h3><h4 id="1-Base64"><a href="#1-Base64" class="headerlink" title="1. Base64"></a>1. Base64</h4><p><code>Base64</code> 编码是一种将二进制数据转换为文本字符串的编码方式，它将原始的二进制数据按照一定的规则转换为一串由 <code>ASCII</code> 字符组成的字符串。</p>
 <p><code>Base64</code> 编码主要用于在网络传输或者存储数据时，因为在一些网络传输或者存储的环境中，只能够传输或存储 <code>ASCII</code> 字符，无法直接传输或存储二进制数据，因此需要将二进制数据转换后进行传输或存储，同时 <code>Base64</code> 编码也可以对数据进行简单的加密和解密。</p>
-<ul>
-<li><h5 id="sun-misc"><a href="#sun-misc" class="headerlink" title="sun.misc"></a>sun.misc</h5><p>  通过 <code>sun.misc</code> 包下的 <code>Base64</code> 类库实现快捷的 <code>Base64</code> 数据编码。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+<h5 id="1-sun-misc"><a href="#1-sun-misc" class="headerlink" title="(1) sun.misc"></a>(1) sun.misc</h5><p>通过 <code>sun.misc</code> 包下的 <code>Base64</code> 类库实现快捷的 <code>Base64</code> 数据编码。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     String msg <span class="token operator">=</span> <span class="token string">"The plain text"</span><span class="token punctuation">;</span>
     String result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span>BASE64Encoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">sun<span class="token punctuation">.</span>misc<span class="token punctuation">.</span>BASE64Decoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decodeBuffer</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -546,9 +545,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After decode: "</span> <span class="token operator">+</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="java-util-Base64"><a href="#java-util-Base64" class="headerlink" title="java.util.Base64"></a>java.util.Base64</h5><p>  通过 <code>java.util.Base64</code> 类库实现 <code>Base64</code> 数据编码。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="2-java-util-Base64"><a href="#2-java-util-Base64" class="headerlink" title="(2) java.util.Base64"></a>(2) java.util.Base64</h5><p>通过 <code>java.util.Base64</code> 类库实现 <code>Base64</code> 数据编码。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String msg <span class="token operator">=</span> <span class="token string">"The plain text"</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 基本编码</span>
     String encodeStr <span class="token operator">=</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">getEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeToString</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -572,16 +570,15 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Base64 编码(MIME): "</span> <span class="token operator">+</span> mimeEncodedString<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="apache-commons-Base64"><a href="#apache-commons-Base64" class="headerlink" title="apache.commons.Base64"></a>apache.commons.Base64</h5><p>  上面两种 <code>Base64</code> 编码都是 <code>JDK</code> 系统自带，当然也可依赖第三方框架实现，如下为通过 <code>Apache commons</code> 依赖实现。</p>
+<h5 id="3-apache-commons-Base64"><a href="#3-apache-commons-Base64" class="headerlink" title="(3) apache.commons.Base64"></a>(3) apache.commons.Base64</h5><p>上面两种 <code>Base64</code> 编码都是 <code>JDK</code> 系统自带，当然也可依赖第三方框架实现，如下为通过 <code>Apache commons</code> 依赖实现。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.15<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  引入依赖后开箱即用，相应的示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<p>引入依赖后开箱即用，相应的示例代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String msg <span class="token operator">=</span> <span class="token string">"The plain text"</span><span class="token punctuation">;</span>
     String result <span class="token operator">=</span> Base64<span class="token punctuation">.</span><span class="token function">encodeBase64String</span><span class="token punctuation">(</span>msg<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> Base64<span class="token punctuation">.</span><span class="token function">decodeBase64</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -590,8 +587,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Base64 解码: "</span> <span class="token operator">+</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="二、数据压缩"><a href="#二、数据压缩" class="headerlink" title="二、数据压缩"></a>二、数据压缩</h3><h4 id="1-GZIP"><a href="#1-GZIP" class="headerlink" title="1. GZIP"></a>1. GZIP</h4><p>通过将数据压缩为 <code>GZIP</code> 格式可在一定程度上的减小数据大小。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">compress</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>
@@ -626,9 +621,8 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Deflater"><a href="#2-Deflater" class="headerlink" title="2. Deflater"></a>2. Deflater</h4><p><code>Deflater</code> 为 <code>Java</code> 标准库提供的压缩/解压缩算法，基于 <code>DEFLATE</code> 算法实现，可以通过设置压缩级别来控制压缩率和压缩速度。</p>
-<ul>
-<li><h5 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h5><p>  <code>Deflater</code> 在初始化时可设置压缩级别，取值 <code>0~9</code>，数值越大压缩率越高效率越慢。</p>
-<p>  初始化第二个参数 <code>nowap</code> 用于指定是否使用 <code>ZLIB</code> 头和尾来解压缩数据，默认值为 <code>false</code>。</p>
+<h5 id="1-压缩"><a href="#1-压缩" class="headerlink" title="(1) 压缩"></a>(1) 压缩</h5><p><code>Deflater</code> 在初始化时可设置压缩级别，取值 <code>0~9</code>，数值越大压缩率越高效率越慢。</p>
+<p>初始化第二个参数 <code>nowap</code> 用于指定是否使用 <code>ZLIB</code> 头和尾来解压缩数据，默认值为 <code>false</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">compress</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Deflater deflater <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Deflater</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     deflater<span class="token punctuation">.</span><span class="token function">setInput</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -645,8 +639,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h5><p>  <code>Inflater</code> 初始化中的 <code>nowap</code> 参数需要与 <code>Deflater</code> 一致，否则将会抛出异常。</p>
+<h5 id="2-解压缩"><a href="#2-解压缩" class="headerlink" title="(2) 解压缩"></a>(2) 解压缩</h5><p><code>Inflater</code> 初始化中的 <code>nowap</code> 参数需要与 <code>Deflater</code> 一致，否则将会抛出异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">decompress</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> compressedData<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Inflater inflater <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Inflater</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     inflater<span class="token punctuation">.</span><span class="token function">setInput</span><span class="token punctuation">(</span>compressedData<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -662,10 +655,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="三、文件解析"><a href="#三、文件解析" class="headerlink" title="三、文件解析"></a>三、文件解析</h3><p>在 <code>java.util.jar</code> 包下提供了 <code>ZipFile</code> 与 <code>JarFile</code> 用便捷的文件读取，可实现压缩文件内的文件读取，下面分别介绍二者使用示例。</p>
-<h4 id="1-ZipFile"><a href="#1-ZipFile" class="headerlink" title="1. ZipFile"></a>1. ZipFile</h4><p><code>ZipFile</code> 可实现在不解压文件的前提下读取压缩包中的文件，其常用方法参考下表。</p>
+<h4 id="1-ZipFile"><a href="#1-ZipFile" class="headerlink" title="1. ZipFile"></a>1. ZipFile</h4><p><code>ZipFile</code> 可实现在不解压文件的前提下读取压缩包中的文件，其常用方法参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -715,7 +706,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-JarFile"><a href="#2-JarFile" class="headerlink" title="2. JarFile"></a>2. JarFile</h4><p><code>JarFile</code> 是 <code>ZipFile</code> 更细致的分类，可以用于读取 <code>JAR</code> 压缩包中的文件，其方式使用与 ZipF``ile 类似，这里不重复介绍。</p>
+<h4 id="2-JarFile"><a href="#2-JarFile" class="headerlink" title="2. JarFile"></a>2. JarFile</h4><p><code>JarFile</code> 是 <code>ZipFile</code> 更细致的分类，可以用于读取 <code>JAR</code> 压缩包中的文件，其方式使用与 <code>ZipFile</code> 类似，这里不重复介绍。</p>
 <p>下面是一个 <code>JarFile</code> 使用示例，读取 <code>JAR</code> 压缩文件中所有 <code>.class</code> 文件。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Set<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">getClassNamesFromJarFile</span><span class="token punctuation">(</span>File file<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Set<span class="token operator">&lt;</span>String<span class="token operator">></span> classNames <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -831,8 +822,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-SM4"><a href="#2-SM4" class="headerlink" title="2. SM4"></a>2. SM4</h4><p>国密四加密是中国国家密码管理局发布的一种密码算法标准，是一种对称加密算法，相较于旧的国密标准，国密四加密更加安全、高效、易于实现。</p>
-<ul>
-<li><h5 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h5><p>  新建工具类 <code>SM4Util</code> 定义加解密具体实现。</p>
+<h5 id="1-工具类"><a href="#1-工具类" class="headerlink" title="(1) 工具类"></a>(1) 工具类</h5><p>新建工具类 <code>SM4Util</code> 定义加解密具体实现。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SM4Util</span> <span class="token punctuation">{</span>
     <span class="token keyword">static</span> <span class="token punctuation">{</span>
         Security<span class="token punctuation">.</span><span class="token function">addProvider</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BouncyCastleProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -879,9 +869,8 @@
     <span class="token punctuation">}</span>  
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="加密示例"><a href="#加密示例" class="headerlink" title="加密示例"></a>加密示例</h5><p>  其中 <code>Key</code> 为密钥，是加密算法中用于对数据进行加密和解密的保密参数。在国密四标准中，其密钥长度为 <code>128</code> 位，即 <code>16</code> 字节。</p>
-<p>  <code>IV</code> 又称初始向量，是在 <code>CBC</code> 模式下使用的一个随机数，用于增加密码分组加密的强度，一般情况下为 <code>8</code> 个字节（<code>64</code>位），在每个分组加密前与上一个分组的密文进行异或运算。</p>
+<h5 id="2-加密示例"><a href="#2-加密示例" class="headerlink" title="(2) 加密示例"></a>(2) 加密示例</h5><p>其中 <code>Key</code> 为密钥，是加密算法中用于对数据进行加密和解密的保密参数。在国密四标准中，其密钥长度为 <code>128</code> 位，即 <code>16</code> 字节。</p>
+<p><code>IV</code> 又称初始向量，是在 <code>CBC</code> 模式下使用的一个随机数，用于增加密码分组加密的强度，一般情况下为 <code>8</code> 个字节 <code>(64位)</code>，在每个分组加密前与上一个分组的密文进行异或运算。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SM4Demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     String plainText <span class="token operator">=</span> <span class="token string">"I am original information."</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 初始向量</span>
@@ -902,8 +891,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>result2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="算法选择"><a href="#算法选择" class="headerlink" title="算法选择"></a>算法选择</h5><p>  国密四算法提供一系列可选参数，如上述的 <code>SM4/ECB/PKCS5PADDING</code> ，其余可选参数如下：</p>
+<h5 id="3-算法选择"><a href="#3-算法选择" class="headerlink" title="(3) 算法选择"></a>(3) 算法选择</h5><p>国密四算法提供一系列可选参数，如上述的 <code>SM4/ECB/PKCS5PADDING</code> ，其余可选参数如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">enum</span> SM4Algorithm <span class="token punctuation">{</span>
     <span class="token function">ECB_NOPADDING</span><span class="token punctuation">(</span><span class="token string">"SM4/ECB/NOPADDING"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token function">ECB_PKCS5PADDING</span><span class="token punctuation">(</span><span class="token string">"SM4/ECB/PKCS5PADDING"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -928,18 +916,14 @@
     <span class="token keyword">private</span> String type<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-AES"><a href="#3-AES" class="headerlink" title="3. AES"></a>3. AES</h4><ul>
-<li><h5 id="依赖引入"><a href="#依赖引入" class="headerlink" title="依赖引入"></a>依赖引入</h5><p>  在 <code>maven</code> 工程中引入下列依赖：</p>
+<h4 id="3-AES"><a href="#3-AES" class="headerlink" title="3. AES"></a>3. AES</h4><h5 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="(1) 依赖引入"></a>(1) 依赖引入</h5><p>在 <code>maven</code> 工程中引入下列依赖：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.11<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="工具类-1"><a href="#工具类-1" class="headerlink" title="工具类"></a>工具类</h5><p>  新建 <code>AESUtil</code> 工具类简单封装一下加解密方法。</p>
+<h5 id="2-工具类"><a href="#2-工具类" class="headerlink" title="(2) 工具类"></a>(2) 工具类</h5><p>新建 <code>AESUtil</code> 工具类简单封装一下加解密方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AESUtil</span> <span class="token punctuation">{</span>
 
     <span class="token comment" spellcheck="true">/**
@@ -976,8 +960,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="加密示例-1"><a href="#加密示例-1" class="headerlink" title="加密示例"></a>加密示例</h5><p>  注意 <code>iv</code> 和 <code>key</code> 的长度都必须为 <code>16</code> 位。</p>
+<h5 id="3-加密示例"><a href="#3-加密示例" class="headerlink" title="(3) 加密示例"></a>(3) 加密示例</h5><p>注意 <code>iv</code> 和 <code>key</code> 的长度都必须为 <code>16</code> 位。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String data <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">;</span>
     String iv <span class="token operator">=</span> <span class="token string">"1234567890123456"</span><span class="token punctuation">;</span>
@@ -995,8 +978,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -1598,7 +1579,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

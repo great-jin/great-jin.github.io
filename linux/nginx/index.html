@@ -467,12 +467,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Nginx/">
-                                <span class="chip bg-color">Nginx</span>
-                            </a>
-                        
                             <a href="/tags/Linux/">
                                 <span class="chip bg-color">Linux</span>
+                            </a>
+                        
+                            <a href="/tags/Nginx/">
+                                <span class="chip bg-color">Nginx</span>
                             </a>
                         
                     </div>
@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -540,7 +540,7 @@
                 <blockquote>
 <p>Nginx 是一个高性能的 HTTP 和反向代理 web 服务器，同时也提供了 IMAP/POP3/SMTP 服务。Nginx 是由伊戈尔·赛索耶夫所开发的，第一个公开版本 0.1.0 发布于 2004 年 10 月 4 日。因它的稳定性、丰富的功能集、简单的配置文件和低系统资源的消耗而闻名。</p>
 </blockquote>
-<p>本文将简单介绍 Nginx 的安装与实现反向代理步骤。</p>
+<p>本文将简单介绍 <code>Nginx</code> 的安装与实现反向代理步骤。</p>
 <h3 id="一、安装部署"><a href="#一、安装部署" class="headerlink" title="一、安装部署"></a>一、安装部署</h3><h4 id="1-YUM安装"><a href="#1-YUM安装" class="headerlink" title="1. YUM安装"></a>1. YUM安装</h4><p>通过 <code>yum</code> 安装虽然方便但无法自定义存放目录，如果只是虚拟机测试使用则无伤大雅。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 添加 Nginx 源</span>
 rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
@@ -551,34 +551,22 @@ yum <span class="token function">install</span> -y nginx
 <span class="token comment" spellcheck="true"># 启动服务</span>
 systemctl start nginx.service
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="文件目录"><a href="#文件目录" class="headerlink" title="文件目录"></a>文件目录</h5><ul>
-<li><p>安装目录： <code>/etc/nginx</code>。</p>
-</li>
-<li><p>配置文件： <code>/etc/nginx/nginx.conf</code>。</p>
-</li>
-<li><p>日志目录： <code>/var/log/nginx/access.log</code>。</p>
-</li>
-<li><p>异常日志： <code>/var/log/nginx/error.log</code>。</p>
-</li>
-<li><p>网站默认站点配置: <code>/etc/nginx/conf.d/default.conf</code>。</p>
-</li>
-<li><p>网站文件存放默认目录: <code>/usr/share/nginx/html</code>。</p>
-</li>
-<li><p>自定义 Nginx 站点配置文件存放目录: <code>/etc/nginx/conf.d</code>。</p>
-</li>
+<h5 id="1-文件目录"><a href="#1-文件目录" class="headerlink" title="(1) 文件目录"></a>(1) 文件目录</h5><ul>
+<li>安装目录： <code>/etc/nginx</code>。      </li>
+<li>配置文件： <code>/etc/nginx/nginx.conf</code>。</li>
+<li>日志目录： <code>/var/log/nginx/access.log</code>。     </li>
+<li>异常日志： <code>/var/log/nginx/error.log</code>。              </li>
+<li>网站默认站点配置: <code>/etc/nginx/conf.d/default.conf</code>。</li>
+<li>网站文件存放默认目录: <code> usr/share/nginx/html</code>。</li>
+<li>自定义 Nginx 站点配置文件存放目录: <code>/etc/nginx/conf.d</code>。</li>
 </ul>
-</li>
-</ul>
-<ul>
-<li><h5 id="服务启动"><a href="#服务启动" class="headerlink" title="服务启动"></a>服务启动</h5>  服务相关的启停命令如下：<pre class="line-numbers language-bash"><code class="language-bash">systemctl start nginx.service              <span class="token comment" spellcheck="true"># 启动</span>
-        
+<h5 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="(2) 服务启动"></a>(2) 服务启动</h5><p>服务相关的启停命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">systemctl start nginx.service              <span class="token comment" spellcheck="true"># 启动</span>
+            
 systemctl stop nginx.service               <span class="token comment" spellcheck="true"># 关闭</span>
-        
+            
 systemctl restart nginx.service            <span class="token comment" spellcheck="true"># 重启</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-编译安装"><a href="#2-编译安装" class="headerlink" title="2. 编译安装"></a>2. 编译安装</h4><p>除了通过 <code>yum</code> 安装外更推荐自定义编译安装，这里通过 <code>wget</code> 下载为例，当然也可以官网手动下载上传。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入安装目录</span>
 <span class="token function">cd</span> /usr/local/  
@@ -589,15 +577,14 @@ systemctl restart nginx.service            <span class="token comment" spellchec
 <span class="token comment" spellcheck="true"># 解压</span>
 <span class="token function">tar</span> -zxf nginx-1.21.2.tar.gz
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="文件编译"><a href="#文件编译" class="headerlink" title="文件编译"></a>文件编译</h5><p>  进入解压后的文件执行 <code>configure</code> 文件验证当前系统环境。</p>
+<h5 id="1-文件编译"><a href="#1-文件编译" class="headerlink" title="(1) 文件编译"></a>(1) 文件编译</h5><p>进入解压后的文件执行 <code>configure</code> 文件验证当前系统环境。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入解压目录</span>
 <span class="token function">cd</span> ./nginx-1.21.2
 
 <span class="token comment" spellcheck="true"># 验证环境</span>
 ./configure
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  如果在执行 <code>./configure</code> 报错根据下面提示执行不同操作即可。</p>
+<p>如果在执行 <code>./configure</code> 报错根据下面提示执行不同操作即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 提示 ./configure: error: C compiler cc is not found</span>
 yum <span class="token function">install</span> -y gcc-c++
 
@@ -610,52 +597,47 @@ yum <span class="token function">install</span> -y gcc gcc-c++
 <span class="token comment" spellcheck="true"># 提示 error: the HTTP gzip module requires the zlib library.</span>
 yum <span class="token function">install</span> -y zlib-devel
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  如果没有提示异常说明环境没有问题继续执行编译即可。</p>
+<p>如果没有提示异常说明环境没有问题继续执行编译即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 执行编译</span>
 <span class="token function">make</span>
 
 <span class="token comment" spellcheck="true"># 执行安装</span>
 <span class="token function">make</span> <span class="token function">install</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="服务启动-1"><a href="#服务启动-1" class="headerlink" title="服务启动"></a>服务启动</h5><p>  编译完成后会在 <code>/usr/local/</code> 下生成 <code>nginx</code> 目录，其中 <code>nginx/sbin</code> 中为可执行文件，配置文件在 <code>nginx/conf</code> 目录下。。</p>
+<h5 id="2-服务启动-1"><a href="#2-服务启动-1" class="headerlink" title="(2) 服务启动"></a>(2) 服务启动</h5><p>编译完成后会在 <code>/usr/local/</code> 下生成 <code>nginx</code> 目录，其中 <code>nginx/sbin</code> 中为可执行文件，配置文件在 <code>nginx/conf</code> 目录下。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/nginx/sbin          <span class="token comment" spellcheck="true"># 打开脚本目录</span>
 
 ./nginx                           <span class="token comment" spellcheck="true"># 运行</span>
 
 ./nginx -s stop                   <span class="token comment" spellcheck="true"># 停止</span>
-
+    
 nginx -s reload                   <span class="token comment" spellcheck="true"># 重载配置</span>
-        
+            
 nginx -t                          <span class="token comment" spellcheck="true"># 检查配置是否正确</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-Windows"><a href="#3-Windows" class="headerlink" title="3. Windows"></a>3. Windows</h4><p>上述两种方式都是在 <code>Linux</code> 环境下部署 <code>Nginx</code> 服务，如果是初学者可以先在 <code>Windows</code> 上先熟悉基本配置，下面介绍 <code>Windows</code> 平台部署步骤。</p>
 <p>先进入官网下载对应的部署包：<a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">Nginx官网</a><br><img src="/album/loading.gif" data-original="/album/article/tool/nginx/1.png"></p>
 <p>解压下载的文件，其中包含如下文件，启动服务双击 <code>nginx.exe</code> 文件即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/nginx/2.png"></p>
-<ul>
-<li><h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h5><p>  <code>Windwos</code> 环境下 <code>nginx</code> 涉及的常用命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true">#查看版本信息</span>
+<h5 id="1-常用命令"><a href="#1-常用命令" class="headerlink" title="(1) 常用命令"></a>(1) 常用命令</h5><p><code>Windwos</code> 环境下 <code>nginx</code> 涉及的常用命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看版本信息</span>
 nginx -V
 
-<span class="token comment" spellcheck="true"># 启动服务</span>
+<span class="token comment" spellcheck="true"># 测试配置文件合法性</span>
+nginx -t
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-服务启停"><a href="#2-服务启停" class="headerlink" title="(2) 服务启停"></a>(2) 服务启停</h5><p><code>Windwos</code> 环境下 <code>nginx</code> 服务启停命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 启动服务</span>
 nginx.exe -c conf/nginx.conf
 
 <span class="token comment" spellcheck="true"># 重载配置</span>
 nginx -s reload
-
-<span class="token comment" spellcheck="true"># 测试配置文件合法性</span>
-nginx -t
 
 <span class="token comment" spellcheck="true"># 快速关闭，可能不保存相关信息，并迅速终止服务</span>
 nginx -s stop
 
 <span class="token comment" spellcheck="true"># 平稳关闭，保存相关信息，有安排的结束服务</span>
 nginx -s quit
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、请求代理"><a href="#二、请求代理" class="headerlink" title="二、请求代理"></a>二、请求代理</h3><h4 id="1-正向代理"><a href="#1-正向代理" class="headerlink" title="1. 正向代理"></a>1. 正向代理</h4><p>在正向代理模式下， <code>代理服务器</code> 代表 <code>客户端</code> 请求 <code>目标服务器</code> 上的内容。客户端通过向代理服务器发送请求来访问目标服务器上的资源，而目标服务器并不知道客户端的存在，只知道代理服务器的存在。</p>
 <p>正向代理常用于需要访问外部网络资源的网络环境中，例如访问 <code>Google</code> 等被屏蔽的网站，其典型示意图如下：</p>
 <pre class="line-numbers language-rust"><code class="language-rust">客户端  <span class="token operator">-</span><span class="token punctuation">-></span>  正向代理服务器  <span class="token operator">-</span><span class="token punctuation">-></span>  目标服务器
@@ -713,11 +695,13 @@ nginx -s quit
 <li>到阿里云申请免费 <code>SSL</code> 证书，并解析绑定你的域名。</li>
 <li>然后下载 <code>nginx</code> 对应的 <code>.key</code> 和 <code>.pem</code> 文件。</li>
 <li>在 <code>nginx</code> 安装路径下新建文件夹用于存放上一步下载的两个文件，这里我创建了 <code>cert</code> 目录。</li>
-<li>在 <code>nginx.conf</code> 文件添加如下配置:<pre class="line-numbers language-conf"><code class="language-conf">server {
+<li>在 <code>nginx.conf</code> 文件添加如下配置:</li>
+</ul>
+<pre class="line-numbers language-conf"><code class="language-conf">server {
     listen 443 ssl;
     server_name www.ibudai.xyz;
     root /home/hexo;
-      
+        
     index index.html index.htm;
     ssl_certificate cert/xxx.pem;         # .pem 证书存放目录
     ssl_certificate_key cert/xxx.key;     # .key 证书存放目录
@@ -727,8 +711,6 @@ nginx -s quit
     ssl_prefer_server_ciphers on;
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="四、常用配置"><a href="#四、常用配置" class="headerlink" title="四、常用配置"></a>四、常用配置</h3><h4 id="1-重定向"><a href="#1-重定向" class="headerlink" title="1. 重定向"></a>1. 重定向</h4><p>通过 <code>rewrite</code> 可实现请求的重定向，如下述中将所有 <code>HTTP</code> 请求通过 <code>rewrite</code> 指令重定向到 <code>HTTPS</code> 。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">server <span class="token punctuation">{</span>
     listen 80<span class="token punctuation">;</span>
@@ -743,7 +725,7 @@ nginx -s quit
 <h4 id="2-超时配置"><a href="#2-超时配置" class="headerlink" title="2. 超时配置"></a>2. 超时配置</h4><p>其中 <code>keepalive_timeout</code> 是 <code>Nginx</code> 中用来设置连接保持时间的参数，它决定了一个客户端和后端服务器之间的连接在空闲状态下保持打开的时间，以便复用该连接减少连接建立的开销。</p>
 <p>当一个客户端与 <code>Nginx</code> 建立连接后，在超过 <code>keepalive_timeout</code> 设置的时间内没有再次请求，该连接将被关闭。</p>
 <blockquote>
-<p><strong>(1) 请求配置（作用于客户端与代理服务器之间）</strong></p>
+<p><strong>(Ⅰ) 请求配置（作用于客户端与代理服务器之间）</strong></p>
 </blockquote>
 <ul>
 <li><strong>send_timeout</strong>：设置服务器向客户端发送响应的超时时间，单位为秒。</li>
@@ -752,7 +734,7 @@ nginx -s quit
 <li><strong>client_header_timeout</strong>：设置客户端向服务器发送请求头的超时时间，单位为秒。</li>
 </ul>
 <blockquote>
-<p><strong>(2) 代理配置（作用于代理服务器与后端服务之间）</strong></p>
+<p><strong>(Ⅱ) 代理配置（作用于代理服务器与后端服务之间）</strong></p>
 </blockquote>
 <ul>
 <li><strong>proxy_connect_timeout</strong>：设置代理服务器与后端服务器建立连接的超时时间，单位为秒。</li>
@@ -760,7 +742,7 @@ nginx -s quit
 <li><strong>proxy_read_timeout</strong>：设置代理服务器从后端服务器读取数据的超时时间，单位为秒。</li>
 </ul>
 <blockquote>
-<p><strong>(3) 其它配置</strong></p>
+<p><strong>(Ⅲ) 其它配置</strong></p>
 </blockquote>
 <ul>
 <li><strong>fastcgi_connect_timeout：</strong> 设置与 <code>FastCGI</code> 后端服务器的连接超时时间。</li>
@@ -785,7 +767,7 @@ nginx -s quit
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-缓存配置"><a href="#3-缓存配置" class="headerlink" title="3. 缓存配置"></a>3. 缓存配置</h4><blockquote>
-<p><strong>(1) 请求配置参数（作用于客户端与代理服务器之间）</strong></p>
+<p><strong>(Ⅰ) 请求配置参数（作用于客户端与代理服务器之间）</strong></p>
 </blockquote>
 <ul>
 <li><strong>client_max_body_size</strong>：用于限制客户端向 <code>nginx</code> 发送请求的 <code>body</code> 大小(即 <code>POST</code> 的请求体大小)，默认值为 <code>1MB</code>。</li>
@@ -794,7 +776,7 @@ nginx -s quit
 <li><strong>large_client_header_buffers</strong>：用于设置用于存储客户端请求头的缓冲区大小，默认值为 <code>4 8k</code>，即使用 <code>4</code> 个 <code>8KB</code> 的缓冲区来存储请求头。</li>
 </ul>
 <blockquote>
-<p><strong>(2) 代理配置参数（作用于代理服务器与后端服务之间）</strong></p>
+<p><strong>(Ⅱ) 代理配置参数（作用于代理服务器与后端服务之间）</strong></p>
 </blockquote>
 <ul>
 <li><strong>proxy_buffers</strong>：用于设置代理响应的缓冲区数量和大小，默认情况下 <code>nginx</code> 使用 <code>4</code> 个 <code>8 KB</code> 的缓冲区来存储代理响应。</li>
@@ -837,24 +819,21 @@ nginx -s quit
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、负载均衡"><a href="#六、负载均衡" class="headerlink" title="六、负载均衡"></a>六、负载均衡</h3><p>负载均衡即通过一定的算法机制，将接收请求的分发至集群中不同服务节点，从而降低单台服务器的压力，而通过 <code>Nginx</code> 即可实现便捷的负载均衡配置。</p>
 <h4 id="1-负载类型"><a href="#1-负载类型" class="headerlink" title="1. 负载类型"></a>1. 负载类型</h4><p><code>Nginx</code> 代理中针对不同的应用场景提供了一系列负载均衡配置算法，常用的类型包含下述六类。</p>
-<ul>
-<li><h5 id="基础轮询"><a href="#基础轮询" class="headerlink" title="基础轮询"></a>基础轮询</h5><p>  基础轮询默认所有服务器权重为 <code>1</code>。</p>
+<h5 id="1-基础轮询"><a href="#1-基础轮询" class="headerlink" title="(1) 基础轮询"></a>(1) 基础轮询</h5><p>基础轮询默认所有服务器权重为 <code>1</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     server 192.168.0.20:8080
     server 192.168.0.21:8080
     server 192.168.0.22:8080
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="加权轮询"><a href="#加权轮询" class="headerlink" title="加权轮询"></a>加权轮询</h5><p>  加权轮询可以为每个节点单独指定权重，权重越高服务负载越高，未指定权重时默认为 <code>1</code>。</p>
+<h5 id="2-加权轮询"><a href="#2-加权轮询" class="headerlink" title="(2) 加权轮询"></a>(2) 加权轮询</h5><p>加权轮询可以为每个节点单独指定权重，权重越高服务负载越高，未指定权重时默认为 <code>1</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     server 192.168.0.20:8080     weight<span class="token operator">=</span>3
     server 192.168.0.21:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
     server 192.168.0.22:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="最少连接"><a href="#最少连接" class="headerlink" title="最少连接"></a>最少连接</h5><p>  根据当前活跃连接数选择负载更少的后端服务器来分配请求，从而实现负载均衡。</p>
+<h5 id="3-最少连接"><a href="#3-最少连接" class="headerlink" title="(3) 最少连接"></a>(3) 最少连接</h5><p>根据当前活跃连接数选择负载更少的后端服务器来分配请求，从而实现负载均衡。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     least_conn<span class="token punctuation">;</span>
 
@@ -864,40 +843,35 @@ nginx -s quit
     server 192.168.0.22:8080
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="加权最少连接"><a href="#加权最少连接" class="headerlink" title="加权最少连接"></a>加权最少连接</h5><p>  在最少连接的负载前提下同时指定节点的权重。</p>
+<h5 id="4-加权最少连接"><a href="#4-加权最少连接" class="headerlink" title="(4) 加权最少连接"></a>(4) 加权最少连接</h5><p>在最少连接的负载前提下同时指定节点的权重。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     least_conn<span class="token punctuation">;</span>
-    
+        
     server 192.168.0.20:8080     weight<span class="token operator">=</span>3
     server 192.168.0.21:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
     server 192.168.0.22:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="普通-Hash"><a href="#普通-Hash" class="headerlink" title="普通 Hash"></a>普通 Hash</h5><p>  <code>普通Hash</code> 是将每个请求按照其某个固定的属性（如 <code>URL</code> 等）计算出一个哈希值，并将其分配给相应的服务器进行处理。这种方式可以确保相同的请求总是被分配给同一个服务器，避免了因服务器动态上下线而导致的请求重复路由的问题。</p>
+<h5 id="5-普通-Hash"><a href="#5-普通-Hash" class="headerlink" title="(5) 普通 Hash"></a>(5) 普通 Hash</h5><p><code>普通Hash</code> 是将每个请求按照其某个固定的属性（如 <code>URL</code> 等）计算出一个哈希值，并将其分配给相应的服务器进行处理。这种方式可以确保相同的请求总是被分配给同一个服务器，避免了因服务器动态上下线而导致的请求重复路由的问题。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     <span class="token function">hash</span> <span class="token variable">$request_uri</span><span class="token punctuation">;</span>
-    
+        
     <span class="token comment" spellcheck="true"># with default weight for all (weight=1)</span>
     server 192.168.0.20:8080
     server 192.168.0.21:8080
     server 192.168.0.22:8080
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="IP-Hash"><a href="#IP-Hash" class="headerlink" title="IP Hash"></a>IP Hash</h5><p>  <code>IP Hash</code> 则是在 <code>普通Hash</code> 的基础上，加入了客户端 <code>IP</code> 地址的因素。它会根据客户端 <code>IP</code> 地址进行哈希计算，从而保证来自同一个 <code>IP</code> 地址的请求总是被分配给同一个服务器进行处理。</p>
+<h5 id="6-IP-Hash"><a href="#6-IP-Hash" class="headerlink" title="(6) IP Hash"></a>(6) IP Hash</h5><p><code>IP Hash</code> 则是在 <code>普通Hash</code> 的基础上，加入了客户端 <code>IP</code> 地址的因素。它会根据客户端 <code>IP</code> 地址进行哈希计算，从而保证来自同一个 <code>IP</code> 地址的请求总是被分配给同一个服务器进行处理。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
     ip_hash<span class="token punctuation">;</span>
-    
+        
     <span class="token comment" spellcheck="true"># with default weight for all (weight=1)</span>
     server 192.168.0.20:8080
     server 192.168.0.21:8080
     server 192.168.0.22:8080
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-参数配置"><a href="#2-参数配置" class="headerlink" title="2. 参数配置"></a>2. 参数配置</h4><p>在配置服务均衡时除了可以指定节点权重外 <code>nginx</code> 还提供了其它参数，详细介绍参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1019,12 +993,12 @@ nginx -s quit
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Nginx/">
-                                    <span class="chip bg-color">Nginx</span>
-                                </a>
-                            
                                 <a href="/tags/Linux/">
                                     <span class="chip bg-color">Linux</span>
+                                </a>
+                            
+                                <a href="/tags/Nginx/">
+                                    <span class="chip bg-color">Nginx</span>
                                 </a>
                             
                         </div>
@@ -1200,54 +1174,6 @@ nginx -s quit
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/web/mybatis/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/util/mybatis.jpg" class="responsive-img" alt="MyBatis基础教程">
-                        
-                        <span class="card-title">MyBatis基础教程</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            MyBatis基本操作示例。
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-06
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
-                                    后端
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/MyBatis/">
-                        <span class="chip bg-color">MyBatis</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/linux/docker/">
                     <div class="card-image">
                         
@@ -1263,9 +1189,9 @@ nginx -s quit
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-01
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-01
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1287,6 +1213,58 @@ nginx -s quit
                     
                     <a href="/tags/Linux/">
                         <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/windows/exception/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/win/2.jpg" class="responsive-img" alt="Windows异常解决方案">
+                        
+                        <span class="card-title">Windows异常解决方案</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            记录Windows使用中遇到的异常及解决方案。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Windows/" class="post-category">
+                                    Windows
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BC%82%E5%B8%B8%E8%AE%B0%E5%BD%95/">
+                        <span class="chip bg-color">异常记录</span>
+                    </a>
+                    
+                    <a href="/tags/Windows/">
+                        <span class="chip bg-color">Windows</span>
                     </a>
                     
                 </div>
@@ -1560,7 +1538,7 @@ nginx -s quit
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

@@ -503,21 +503,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    949
+                    825
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    3 分
                 </div>
                 
 
@@ -538,94 +538,58 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、环境异常"><a href="#一、环境异常" class="headerlink" title="一、环境异常"></a>一、环境异常</h3><h4 id="1-Hosts配置"><a href="#1-Hosts配置" class="headerlink" title="1. Hosts配置"></a>1. Hosts配置</h4><p>本地文件路径：<code>C:\Windows\System32\drivers\etc</code>。</p>
-<h4 id="2-进程关闭"><a href="#2-进程关闭" class="headerlink" title="2. 进程关闭"></a>2. 进程关闭</h4><p>现在许多服务都是基于BS模式开发，在本地开发设计中通常不知开启单个项目，而多个又经常引起端口冲突问题，下面即介绍 Windows 环境下查看端口占用进程并关闭。</p>
+<h4 id="2-进程关闭"><a href="#2-进程关闭" class="headerlink" title="2. 进程关闭"></a>2. 进程关闭</h4><p>现在许多服务都是基于BS模式开发，在本地开发设计中通常不知开启单个项目，而多个又经常引起端口冲突问题。</p>
+<p><code>Windows</code> 环境下查看端口占用进程与关闭命令如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">netstat</span> -ano <span class="token operator">|</span> findstr 8080      <span class="token comment" spellcheck="true"># 8080 占用查看</span>
 
 taskkill -PID 17820 -F           <span class="token comment" spellcheck="true"># 关闭进程：17820</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、IDEA异常"><a href="#二、IDEA异常" class="headerlink" title="二、IDEA异常"></a>二、IDEA异常</h3><h4 id="1-Spring创建"><a href="#1-Spring创建" class="headerlink" title="1. Spring创建"></a>1. Spring创建</h4><p>若在 <code>IDEA</code> 中使用 <code>Spring Initializr</code> 创建项目时显示连接异常，在设置里搜索 <code>http</code> ，修改网络代理设置，提供以下两种方案，根据需求挑选。</p>
-<ul>
-<li><p><strong>在路径后加<code>/</code></strong></p>
-<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//start.spring.io/
+<h5 id="1-在路径后加"><a href="#1-在路径后加" class="headerlink" title="(1) 在路径后加 /"></a>(1) 在路径后加 /</h5><pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//start.spring.io/
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p><strong>替换为阿里云镜像</strong></p>
-<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//start.aliyun.com/
+<h5 id="2-替换为阿里云镜像"><a href="#2-替换为阿里云镜像" class="headerlink" title="(2) 替换为阿里云镜像"></a>(2) 替换为阿里云镜像</h5><pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//start.aliyun.com/
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-启动失败"><a href="#2-启动失败" class="headerlink" title="2. 启动失败"></a>2. 启动失败</h4><p>在启动项目时提示 <code>Command line is too long</code> 可通过以下两种方式解决。</p>
-<ul>
-<li><p><strong>添加工程配置</strong><br> 在文件 <code>.idea\workspace.xml</code> 下找到标签  <code>&lt;component name=&quot;PropertiesComponent&quot;&gt;</code> ，在标签里下行内容。</p>
+<h5 id="1-工程配置"><a href="#1-工程配置" class="headerlink" title="(1) 工程配置"></a>(1) 工程配置</h5><p>在文件 <code>.idea\workspace.xml</code> 下找到标签  <code>&lt;component name=&quot;PropertiesComponent&quot;&gt;</code> ，在标签里下行内容。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dynamic.classpath<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p><strong>修改启动配置</strong><br> 点击项目启动标识选择修改启动参数，在 <code>Environment</code> 中的 <code>Shorten command line</code> 进行手动配置。<br>  <img src="/album/loading.gif" data-original="/album/article/java/record/1.png"></p>
-</li>
-</ul>
-<h4 id="3-注释模板"><a href="#3-注释模板" class="headerlink" title="3. 注释模板"></a>3. 注释模板</h4><p>在写代码的时候若经常使用自动生成注释，则可以在 <code>IDEA</code> 设置中自定义注释模板。</p>
-<ul>
-<li><p><strong>注释模板</strong></p>
+<h5 id="2-启动配置"><a href="#2-启动配置" class="headerlink" title="(2) 启动配置"></a>(2) 启动配置</h5><p>点击项目启动标识选择修改启动参数，在 <code>Environment</code> 中的 <code>Shorten command line</code> 进行手动配置。<br><img src="/album/loading.gif" data-original="/album/article/java/record/1.png"></p>
+<h4 id="3-注释模板"><a href="#3-注释模板" class="headerlink" title="3. 注释模板"></a>3. 注释模板</h4><h5 id="1-注释模板"><a href="#1-注释模板" class="headerlink" title="(1) 注释模板"></a>(1) 注释模板</h5><p>在写代码的时候若经常使用自动生成注释，则可以在 <code>IDEA</code> 设置中自定义注释模板。</p>
 <pre class="line-numbers language-java"><code class="language-java">$params$
 <span class="token operator">*</span>        
 $<span class="token keyword">return</span>$
 <span class="token operator">*</span><span class="token operator">/</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>params</strong></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token function">groovyScript</span><span class="token punctuation">(</span><span class="token string">"def result = '';def params = \"${_1}\".replaceAll('[\\\\[|\\\\]|\\\\s]', '').split(',').toList(); for(i = 0; i &lt; params.size(); i++) {if(params[i] != '')result+='* @param ' + params[i] + ' ' +((i &lt; params.size() - 1) ? '\\r\\n ' : '')}; return result == '' ? null : result"</span><span class="token punctuation">,</span> <span class="token function">methodParameters</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+<h5 id="2-params"><a href="#2-params" class="headerlink" title="(2) params"></a>(2) params</h5><pre class="line-numbers language-java"><code class="language-java"><span class="token function">groovyScript</span><span class="token punctuation">(</span><span class="token string">"def result = '';def params = \"${_1}\".replaceAll('[\\\\[|\\\\]|\\\\s]', '').split(',').toList(); for(i = 0; i &lt; params.size(); i++) {if(params[i] != '')result+='* @param ' + params[i] + ' ' +((i &lt; params.size() - 1) ? '\\r\\n ' : '')}; return result == '' ? null : result"</span><span class="token punctuation">,</span> <span class="token function">methodParameters</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p><strong>return</strong></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token function">groovyScript</span><span class="token punctuation">(</span><span class="token string">"def returnType = \"${_1}\"; def result ='';if(returnType=='null'||returnType=='void'){return;}else{result += '* @return ';cls = returnType.split('&lt;');for(i = 0; i &lt; cls.size(); i++){temp = cls[i].tokenize('.');result += temp[temp.size() - 1] + ((i &lt; cls.size() - 1) ? '&lt;' : '');};return result + ' ';}"</span><span class="token punctuation">,</span> <span class="token function">methodReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<h5 id="3-return"><a href="#3-return" class="headerlink" title="(3) return"></a>(3) return</h5><pre class="line-numbers language-java"><code class="language-java"><span class="token function">groovyScript</span><span class="token punctuation">(</span><span class="token string">"def returnType = \"${_1}\"; def result ='';if(returnType=='null'||returnType=='void'){return;}else{result += '* @return ';cls = returnType.split('&lt;');for(i = 0; i &lt; cls.size(); i++){temp = cls[i].tokenize('.');result += temp[temp.size() - 1] + ((i &lt; cls.size() - 1) ? '&lt;' : '');};return result + ' ';}"</span><span class="token punctuation">,</span> <span class="token function">methodReturnType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="三、Java异常"><a href="#三、Java异常" class="headerlink" title="三、Java异常"></a>三、Java异常</h3><h4 id="1-加密排除"><a href="#1-加密排除" class="headerlink" title="1. 加密排除"></a>1. 加密排除</h4><p><code>Spring Boot</code> 工程如果在 <code>pom</code> 依赖中加入了 <code>security</code> ，那默认启动页将会跳转到自带登录页，想要去除需要在启动类进行手动排除。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span><span class="token punctuation">(</span>exclude <span class="token operator">=</span> <span class="token punctuation">{</span>SecurityAutoConfiguration<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoApplication</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        SpringApplication<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span>DemoApplication<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-序列化"><a href="#2-序列化" class="headerlink" title="2. 序列化"></a>2. 序列化</h4><p>报错信息：<code>DefaultSerializer requires a Serializable payload but received an object of type</code>，我们需要让实体类实现 <code>Serializable</code> 从而实现序列化，</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
-      <span class="token keyword">private</span> String ID<span class="token punctuation">;</span>
-      <span class="token keyword">private</span> String userName<span class="token punctuation">;</span>
-      <span class="token keyword">private</span> String password<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、Maven异常"><a href="#四、Maven异常" class="headerlink" title="四、Maven异常"></a>四、Maven异常</h3><h4 id="1-Maven失效"><a href="#1-Maven失效" class="headerlink" title="1. Maven失效"></a>1. Maven失效</h4><p>删除项目<code>.mvn/wrapper/maven-wrapper.properties</code>文件。 </p>
-<h4 id="2-模块JDK设置"><a href="#2-模块JDK设置" class="headerlink" title="2. 模块JDK设置"></a>2. 模块JDK设置</h4><ul>
-<li><p><strong>配置修改</strong><br> 若需要指定项目模块的 <code>JDK</code> ，版本，除了在模块的 <code>pom.xml</code> 文件中配置，也可以直接修改 <code>Maven</code> 安装路径下 <code>setting.xml</code> 文件实现全局指定 <code>JDK</code> 版本。</p>
-<p> 这里演示我将默认 <code>JDK</code> 设置为 <code>8</code> ，打开 <code>Maven</code> 安装路径下的 <code>setting.xml</code> 文件，找到 <code>profiles</code> 标签，在其中添加如下内容：</p>
+<h3 id="三、Maven异常"><a href="#三、Maven异常" class="headerlink" title="三、Maven异常"></a>三、Maven异常</h3><h4 id="1-Maven失效"><a href="#1-Maven失效" class="headerlink" title="1. Maven失效"></a>1. Maven失效</h4><p>删除项目<code>.mvn/wrapper/maven-wrapper.properties</code>文件。 </p>
+<h4 id="2-模块JDK"><a href="#2-模块JDK" class="headerlink" title="2. 模块JDK"></a>2. 模块JDK</h4><h5 id="1-配置修改"><a href="#1-配置修改" class="headerlink" title="(1) 配置修改"></a>(1) 配置修改</h5><p>若需要指定项目模块的 <code>JDK</code> ，版本，除了在模块的 <code>pom.xml</code> 文件中配置，也可以直接修改 <code>Maven</code> 安装路径下 <code>setting.xml</code> 文件实现全局指定 <code>JDK</code> 版本。</p>
+<p>这里演示我将默认 <code>JDK</code> 设置为 <code>8</code> ，打开 <code>Maven</code> 安装路径下的 <code>setting.xml</code> 文件，找到 <code>profiles</code> 标签，在其中添加如下内容：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>profiles</span><span class="token punctuation">></span></span>
-   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>profile</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>jdk-1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activation</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activeByDefault</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activeByDefault</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jdk</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jdk</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activation</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.source</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.source</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.target</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.target</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.compilerVersion</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.compilerVersion</span><span class="token punctuation">></span></span> 
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
-   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>profile</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>profile</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>jdk-1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activation</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activeByDefault</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activeByDefault</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jdk</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jdk</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activation</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.source</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.source</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.target</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.target</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.compilerVersion</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.compilerVersion</span><span class="token punctuation">></span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>profile</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>profiles</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>JDK设置</strong><br> 通过上面的方法可以指定 maven 的默认 <code>JDK</code> 版本，对于已加载的项目则需要手动切换版本。</p>
+<h5 id="2-JDK设置"><a href="#2-JDK设置" class="headerlink" title="(2) JDK设置"></a>(2) JDK设置</h5><p>通过上面的方法可以指定 maven 的默认 <code>JDK</code> 版本，对于已加载的项目则需要手动切换版本。</p>
 <ul>
-<li><p>在 <code>Project structure</code> 中设置各个模块的 <code>JDK</code> 版本<br> <img src="/album/loading.gif" data-original="/album/article/java/record/2.png"></p>
+<li><p>在 <code>Project structure</code> 中设置各个模块的 <code>JDK</code> 版本<br>  <img src="/album/loading.gif" data-original="/album/article/java/record/2.png"></p>
 </li>
-<li><p>在 <code>Setting</code> 中修改编译时的 <code>JDK</code> 版本<br> <img src="/album/loading.gif" data-original="/album/article/java/record/3.png"></p>
-</li>
-</ul>
+<li><p>在 <code>Setting</code> 中修改编译时的 <code>JDK</code> 版本<br>  <img src="/album/loading.gif" data-original="/album/article/java/record/3.png"></p>
 </li>
 </ul>
-<h3 id="五、Git异常"><a href="#五、Git异常" class="headerlink" title="五、Git异常"></a>五、Git异常</h3><h4 id="1-连接重置"><a href="#1-连接重置" class="headerlink" title="1. 连接重置"></a>1. 连接重置</h4><p>提示<code>OpenSSL SSL_read: Connection was reset, errno 10054</code>。</p>
+<h3 id="四、Git异常"><a href="#四、Git异常" class="headerlink" title="四、Git异常"></a>四、Git异常</h3><h4 id="1-连接重置"><a href="#1-连接重置" class="headerlink" title="1. 连接重置"></a>1. 连接重置</h4><p>提示 <code>OpenSSL SSL_read: Connection was reset, errno 10054</code>。</p>
 <pre class="line-numbers language-git"><code class="language-git">git config --global http.sslVerify <span class="token string">"false"</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-文件名过长"><a href="#2-文件名过长" class="headerlink" title="2. 文件名过长"></a>2. 文件名过长</h4><p>提示 <code>Filename too long</code> 说明提交的文件名称过长，需要设置放行长文件。</p>
@@ -1246,7 +1210,7 @@ $<span class="token keyword">return</span>$
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

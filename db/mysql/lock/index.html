@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-16
+                    2024-02-05
                 </div>
                 
 
@@ -576,22 +576,26 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-实现算法"><a href="#2-实现算法" class="headerlink" title="2. 实现算法"></a>2. 实现算法</h4><p><code>MySQL</code> 中 <code>InnoDB</code> 存储引擎支持三种行锁的算法，默认行锁模式为 <code>Next-Key Lock</code>，各自的作用效果如下：</p>
 <blockquote>
-<p><strong>(1) Record Lock</strong></p>
+<p><strong>(Ⅰ) Record Lock</strong></p>
+</blockquote>
 <ul>
 <li>记录锁，仅针对单个记录上的锁。</li>
 <li>如一个索引有 <code>2、4、5</code> 则锁的范围即为：<code>&#123;2, 4, 5&#125;</code>。</li>
 </ul>
-<p><strong>(2) Gap Lock</strong></p>
+<blockquote>
+<p><strong>(Ⅱ) Gap Lock</strong></p>
+</blockquote>
 <ul>
 <li>间隙锁，锁定一个范围，但不包含记录本身。</li>
 <li>如一个索引有 <code>2、4、5</code> ，那该索引可能被间隙锁锁的范围为 <code>(-∞, 2), (2, 4), (4, 5), (5, +∞)</code>。</li>
 </ul>
-<p><strong>(3) Next-Key Lock</strong></p>
+<blockquote>
+<p><strong>(Ⅲ) Next-Key Lock</strong></p>
+</blockquote>
 <ul>
 <li>作用效果等价于 <code>Record Lock</code> + <code>Gap Lock</code>，锁定范围以及记录本身。</li>
 <li>如一个索引有 <code>2、4、5</code> ，那该索引可能被邻键锁锁的范围为 <code>(-∞, 2], (2, 4], (4, 5], (5, +∞)</code> 。</li>
 </ul>
-</blockquote>
 <h3 id="三、意向锁"><a href="#三、意向锁" class="headerlink" title="三、意向锁"></a>三、意向锁</h3><h4 id="1-介绍描述"><a href="#1-介绍描述" class="headerlink" title="1. 介绍描述"></a>1. 介绍描述</h4><p><code>MySQL</code> 数据库中的意向锁是一种辅助锁定机制，用于协助 <code>InnoDB</code> 引擎在表级别和行级别之间进行切换，可以帮助提高事务的并发性能和效率，特别是在处理表级锁时，避免了不必要的等待和锁冲突。</p>
 <p>意向锁并不真正锁定任何数据，它们只是向其他事务提供了一个有关当前事务在将表或行锁定时的意向。如果事务已经持有了一个适当的意向锁，它可以请求一个与其兼容的锁，否则它必须等待直到适当类型的意向锁可用。</p>
 <h4 id="2-基本分类"><a href="#2-基本分类" class="headerlink" title="2. 基本分类"></a>2. 基本分类</h4><p>意向锁分为 <code>意向共享锁(IS)</code> 和 <code>意向排它锁(IX)</code> ，它们的作用是向其他事务表明当前事务在将表或行锁定时的意向，当一个事务请求表或行级锁时，它必须先获得适当类型的意向锁。</p>
@@ -1199,7 +1203,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -558,15 +558,13 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-数据编码"><a href="#2-数据编码" class="headerlink" title="2. 数据编码"></a>2. 数据编码</h4><p><code>Kafka</code> 提供默认字符串编解码，但如果需要发送复杂的对象数据，则需要自定义编解码方式。</p>
 <p>在实际开发中最常见的方式即通过序列化将 <code>Java</code> 对象转化为 <code>Json</code> 字符串传输，可以选择 <code>Jackson</code> 等框架实现数据的序列化，这里以自定义序列化实现为例。</p>
-<ul>
-<li><p><strong>实体类</strong><br>  创建一个实体类，用于模拟后续数据传输。</p>
+<h5 id="1-实体类"><a href="#1-实体类" class="headerlink" title="(1) 实体类"></a>(1) 实体类</h5><p>创建一个实体类，用于模拟后续数据传输。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
     <span class="token keyword">private</span> String password<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>自定义编码</strong><br>  通过实现 <code>Serializer</code> 类并重写 <code>serialize()</code> 重写数据对象编码方式。</p>
+<h5 id="2-自定义编码"><a href="#2-自定义编码" class="headerlink" title="(2) 自定义编码"></a>(2) 自定义编码</h5><p>通过实现 <code>Serializer</code> 类并重写 <code>serialize()</code> 重写数据对象编码方式。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EncodeKafka</span> <span class="token keyword">implements</span> <span class="token class-name">Serializer</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -597,8 +595,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>自定义解码</strong><br>  通过实现 <code>Serializer</code> 类并重写 <code>Deserializer()</code> 重写数据对象编码方式。</p>
+<h5 id="3-自定义解码"><a href="#3-自定义解码" class="headerlink" title="(3) 自定义解码"></a>(3) 自定义解码</h5><p>通过实现 <code>Serializer</code> 类并重写 <code>Deserializer()</code> 重写数据对象编码方式。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DecodeKafka</span> <span class="token keyword">implements</span> <span class="token class-name">Deserializer</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -625,8 +622,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-生产者"><a href="#3-生产者" class="headerlink" title="3. 生产者"></a>3. 生产者</h4><p>创建消息生产者 <code>KafkaProducer</code> 用于发送消息，相应的配置如下：</p>
 <blockquote>
 <p>其中参数 <code>acks</code> 的取值范围如下：</p>
@@ -1458,7 +1453,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

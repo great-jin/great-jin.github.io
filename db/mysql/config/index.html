@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    560
+                    562
                 </div>
                 
 
@@ -566,21 +566,17 @@ vim /etc/mysql/my.cnf       <span class="token comment" spellcheck="true"># 编�
 <span class="token comment" spellcheck="true">-- 刷洗生效</span>
 flush <span class="token keyword">privileges</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、权限管理"><a href="#二、权限管理" class="headerlink" title="二、权限管理"></a>二、权限管理</h3><h4 id="1-用户创建"><a href="#1-用户创建" class="headerlink" title="1. 用户创建"></a>1. 用户创建</h4><ul>
-<li><h5 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h5><p> 其中 <code>host</code> 表示该用户允许通过哪个 <code>IP</code> 地址进行连接，如果需设置放行所有 <code>IP</code> 则替换为 <code>%</code> ，生产环境中应针对具体情况设置指定 <code>IP</code> 。</p>
+<h3 id="二、权限管理"><a href="#二、权限管理" class="headerlink" title="二、权限管理"></a>二、权限管理</h3><h4 id="1-用户创建"><a href="#1-用户创建" class="headerlink" title="1. 用户创建"></a>1. 用户创建</h4><h5 id="1-新建用户"><a href="#1-新建用户" class="headerlink" title="(1) 新建用户"></a>(1) 新建用户</h5><p>其中 <code>host</code> 表示该用户允许通过哪个 <code>IP</code> 地址进行连接，如果需设置放行所有 <code>IP</code> 则替换为 <code>%</code>，生产环境中应针对具体情况设置指定 <code>IP</code>。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建用户，指定 IP 允许访问</span>
 <span class="token keyword">create</span> <span class="token keyword">user</span> <span class="token string">'&lt;username>'</span>@'<span class="token operator">&lt;</span>host<span class="token operator">></span><span class="token string">' identified by '</span><span class="token operator">&lt;</span>password<span class="token operator">></span>'<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">-- 修改密码</span>
 <span class="token keyword">set</span> password <span class="token keyword">for</span> <span class="token string">'&lt;username>'</span>@'<span class="token operator">&lt;</span>host<span class="token operator">></span><span class="token string">' = password('</span><span class="token operator">&lt;</span>newpassword<span class="token operator">></span>'<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">UPDATE</span> mysql<span class="token punctuation">.</span><span class="token keyword">user</span> 
+<h5 id="2-修改密码"><a href="#2-修改密码" class="headerlink" title="(2) 修改密码"></a>(2) 修改密码</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">UPDATE</span> mysql<span class="token punctuation">.</span><span class="token keyword">user</span> 
 <span class="token keyword">SET</span> authentication_string <span class="token operator">=</span> PASSWORD <span class="token punctuation">(</span><span class="token string">"&lt;newpassword>"</span><span class="token punctuation">)</span> 
 <span class="token keyword">WHERE</span> <span class="token keyword">User</span> <span class="token operator">=</span> <span class="token string">"&lt;username>"</span> <span class="token operator">AND</span> Host <span class="token operator">=</span> <span class="token string">"&lt;host>"</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-用户授权"><a href="#2-用户授权" class="headerlink" title="2. 用户授权"></a>2. 用户授权</h4><p>新创建的用户默认并没有任何权限，因此还需要根据需要对用户进行授权。</p>
 <p>其中 <code>privilege</code> 可选项如下：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -864,54 +860,6 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/windows/config/link/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/win/5.png" class="responsive-img" alt="鼠标右击快速打开项目">
-                        
-                        <span class="card-title">鼠标右击快速打开项目</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Windows 鼠标右击快速打开项目。
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Windows/" class="post-category">
-                                    Windows
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Windows/">
-                        <span class="chip bg-color">Windows</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/db/oracle/config/">
                     <div class="card-image">
                         
@@ -927,9 +875,9 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -947,6 +895,54 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
                     
                     <a href="/tags/Oracle/">
                         <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/basis/nio/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/28.png" class="responsive-img" alt="Java NIO介绍">
+                        
+                        <span class="card-title">Java NIO介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Java NIO基础知识介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1220,7 +1216,7 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

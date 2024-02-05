@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -598,7 +598,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、定时任务"><a href="#三、定时任务" class="headerlink" title="三、定时任务"></a>三、定时任务</h3><h4 id="1-Scheduled"><a href="#1-Scheduled" class="headerlink" title="1. @Scheduled"></a>1. @Scheduled</h4><p>通过 <code>@Scheduled</code> 注解即可实现定时任务开启，其作用于方法上，将会根据配置的周期定时执行方法体中的内容。</p>
+<h3 id="三、定时任务"><a href="#三、定时任务" class="headerlink" title="三、定时任务"></a>三、定时任务</h3><h4 id="1-注解介绍"><a href="#1-注解介绍" class="headerlink" title="1. 注解介绍"></a>1. 注解介绍</h4><p>通过 <code>@Scheduled</code> 注解即可实现定时任务开启，其作用于方法上，将会根据配置的周期定时执行方法体中的内容。</p>
 <p>注意需要在项目启动类上添加 <code>@EnableScheduling</code> 注解表示开始定时任务才能生效。</p>
 <p>如下示例中开始了一个定时任务每间隔 <code>10</code> 分钟则打印当前系统时间。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
@@ -616,21 +616,16 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-注解参数"><a href="#2-注解参数" class="headerlink" title="2. 注解参数"></a>2. 注解参数</h4><p>在上述的示例中在注解中通过参数 <code>fixedRate</code> 设置了任务间隔周期，下面介绍一下其它常用参数。 </p>
-<ul>
-<li><h5 id="fixedRate"><a href="#fixedRate" class="headerlink" title="fixedRate"></a>fixedRate</h5><p>  <code>fixedRate</code> 用于指定定时任务的间隔时间，如之前的示例中每间隔 <code>10</code> 秒打印一次时间。</p>
-</li>
-<li><h5 id="fixedDelay"><a href="#fixedDelay" class="headerlink" title="fixedDelay"></a>fixedDelay</h5><p>  <code>fixedDelay</code> 的类似于 <code>fixedRate</code>，但其计时方式是从上次任务结束后开始。</p>
-<p>  举个简单的例子，我们创建了一个任务执行完毕需要耗时五分钟，分别使用 <code>fixedRate</code> 和 <code>fixedDelay</code> 创建了两个定时设置每两分钟执行一次。在第一次定时任务触发之后，当过去两分钟后使用 <code>fixedRate</code> 创建的任务将会再次触发，而使用 <code>fixedDelay</code> 创建的任务则需要等待上一次任务执行即三分钟后，然后再等待两分钟后才会触发下一轮。</p>
-</li>
-<li><h5 id="timeUnit"><a href="#timeUnit" class="headerlink" title="timeUnit"></a>timeUnit</h5><p>  <code>fixedRate</code> 与 <code>fixedDelay</code> 默认的时间单位都是毫秒，通过 <code>timeUnit</code> 可以指定二者的时间单位，提高代码的可读性。</p>
-<p>  如下面的示例中通过 <code>fixedRate</code> 搭配 <code>timeUnit</code> 设置每隔十分钟打印一次时间。</p>
+<h5 id="1-fixedRate"><a href="#1-fixedRate" class="headerlink" title="(1) fixedRate"></a>(1) fixedRate</h5><p><code>fixedRate</code> 用于指定定时任务的间隔时间，如之前的示例中每间隔 <code>10</code> 秒打印一次时间。</p>
+<h5 id="2-fixedDelay"><a href="#2-fixedDelay" class="headerlink" title="(2) fixedDelay"></a>(2) fixedDelay</h5><p><code>fixedDelay</code> 的类似于 <code>fixedRate</code>，但其计时方式是从上次任务结束后开始。</p>
+<p>举个简单的例子，我们创建了一个任务执行完毕需要耗时五分钟，分别使用 <code>fixedRate</code> 和 <code>fixedDelay</code> 创建了两个定时设置每两分钟执行一次。在第一次定时任务触发之后，当过去两分钟后使用 <code>fixedRate</code> 创建的任务将会再次触发，而使用 <code>fixedDelay</code> 创建的任务则需要等待上一次任务执行即三分钟后，然后再等待两分钟后才会触发下一轮。</p>
+<h5 id="3-timeUnit"><a href="#3-timeUnit" class="headerlink" title="(3) timeUnit"></a>(3) timeUnit</h5><p><code>fixedRate</code> 与 <code>fixedDelay</code> 默认的时间单位都是毫秒，通过 <code>timeUnit</code> 可以指定二者的时间单位，提高代码的可读性。</p>
+<p>如下面的示例中通过 <code>fixedRate</code> 搭配 <code>timeUnit</code> 设置每隔十分钟打印一次时间。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span> timeUnit <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>MINUTES<span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">reportTime1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-cron表达式"><a href="#3-cron表达式" class="headerlink" title="3. cron表达式"></a>3. cron表达式</h4><p><code>cron</code> 参数是最常用的参数，通过配置 <code>cron</code> 表达式可实现灵活的周期配置，其通过七个 <code>*</code> 用于控制执行频率。</p>
 <blockquote>
 <p>不同位置 <code>*</code> 代表含义如下：</p>
@@ -1259,7 +1254,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

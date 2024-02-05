@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    316
+                    322
                 </div>
                 
 
@@ -536,7 +536,7 @@
                 <h3 id="一、服务下载"><a href="#一、服务下载" class="headerlink" title="一、服务下载"></a>一、服务下载</h3><h4 id="1-Docker安装"><a href="#1-Docker安装" class="headerlink" title="1. Docker安装"></a>1. Docker安装</h4><p>部署 <code>Jenkins</code> 这里我选择的是 <code>Docker</code> 容器，如果没有安装 <code>Docker</code> 可以参考之前的文章：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Server-Docker/">Docker安装</a>。</p>
 <h4 id="2-容器拉取"><a href="#2-容器拉取" class="headerlink" title="2. 容器拉取"></a>2. 容器拉取</h4><pre class="line-numbers language-bash"><code class="language-bash">docker pull jenkinsci/blueocean
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="二、启动服务"><a href="#二、启动服务" class="headerlink" title="二、启动服务"></a>二、启动服务</h3><p>其中将容器数据目录映射外部 <code>/home/docker/jenkins</code> 下，将容器 <code>8080</code> 端口映射到服务器 <code>8080</code> 端口，<code>50000 </code> 为 <code>API</code> 访问端口，同样根据需要更改。</p>
+<h4 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="3. 服务启动"></a>3. 服务启动</h4><p>其中将容器数据目录映射外部 <code>/home/docker/jenkins</code> 下，将容器 <code>8080</code> 端口映射到服务器 <code>8080</code> 端口，<code>50000</code> 为 <code>API</code> 访问端口，同样根据需要更改。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
 --name jenkins \
 -p 8080:8080 \
@@ -544,31 +544,23 @@
 -v /home/docker/jenkins:/usr/local/jenkins \
 jenkinsci/blueocean
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、访问服务"><a href="#三、访问服务" class="headerlink" title="三、访问服务"></a>三、访问服务</h3><ul>
-<li><h5 id="服务访问"><a href="#服务访问" class="headerlink" title="服务访问"></a>服务访问</h5><p>  浏览器访问 <code>http://&lt;IP&gt;:8080</code> 即可访问，<br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/1.png"></p>
-</li>
-<li><h5 id="解锁服务"><a href="#解锁服务" class="headerlink" title="解锁服务"></a>解锁服务</h5><p>  首次访问需要你提供解锁密码，获取密码步骤如下：</p>
+<h3 id="二、应用配置"><a href="#二、应用配置" class="headerlink" title="二、应用配置"></a>二、应用配置</h3><h4 id="1-服务访问"><a href="#1-服务访问" class="headerlink" title="1. 服务访问"></a>1. 服务访问</h4><p>浏览器访问 <code>http://&lt;IP&gt;:8080</code> 即可访问，<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/1.png"></p>
+<h4 id="2-解锁服务"><a href="#2-解锁服务" class="headerlink" title="2. 解锁服务"></a>2. 解锁服务</h4><p>首次访问需要你提供解锁密码，获取密码步骤如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
 docker <span class="token function">exec</span> -it jenkins /bin/bash
 
 <span class="token comment" spellcheck="true"># 查看密钥</span>
 <span class="token function">cat</span> /var/jenkins_home/secrets/initialAdminPassword
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  如下图，将得到的密码复制到浏览器即可。<br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/2.png"></p>
-</li>
-<li><h5 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h5><p>  选择默认安装推荐的插件，等待安装完成即可。<br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/3.png"><br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/4.png"></p>
-</li>
-<li><h5 id="用户创建"><a href="#用户创建" class="headerlink" title="用户创建"></a>用户创建</h5><p>  创建一个用户用户后续登录等操作。<br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/5.png"></p>
-</li>
-<li><h5 id="实例配置"><a href="#实例配置" class="headerlink" title="实例配置"></a>实例配置</h5><p>  配置 jenkins 服务访问路径，选择默认下一步即可。<br>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/6.png"></p>
-</li>
-<li><h5 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h5><p>  完成上述配置之后需要重新启动服务才能生效，在服务器中重启之后即可正常访问。</p>
+<p>如下图，将得到的密码复制到浏览器即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/2.png"></p>
+<h4 id="3-插件安装"><a href="#3-插件安装" class="headerlink" title="3. 插件安装"></a>3. 插件安装</h4><p>选择默认安装推荐的插件，等待安装完成即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/3.png"><br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/4.png"></p>
+<h4 id="4-用户创建"><a href="#4-用户创建" class="headerlink" title="4. 用户创建"></a>4. 用户创建</h4><p>创建一个用户用户后续登录等操作。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/5.png"></p>
+<h4 id="5-实例配置"><a href="#5-实例配置" class="headerlink" title="5. 实例配置"></a>5. 实例配置</h4><p>配置 <code>jenkins</code> 服务访问路径，选择默认下一步即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/6.png"></p>
+<h4 id="6-重启服务"><a href="#6-重启服务" class="headerlink" title="6. 重启服务"></a>6. 重启服务</h4><p>完成上述配置之后需要重新启动服务才能生效，在服务器中重启之后即可正常访问。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 重启服务</span>
 docker restart jenkins
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>  <img src="/album/loading.gif" data-original="/album/article/tool/jenkins/7.png"></p>
-</li>
-</ul>
+<p><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/7.png"></p>
 
                 
             </div>
@@ -1170,7 +1162,7 @@ docker restart jenkins
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

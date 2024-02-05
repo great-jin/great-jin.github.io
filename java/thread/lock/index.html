@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-29
+                    2024-02-05
                 </div>
                 
 
@@ -815,7 +815,7 @@ receive change: 3
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但执行上述程序却发现每次输出得到的结果却并非为 <code>0</code> 且每次结果都不相同，这其实是因为 <code>Java</code> 中的一个加减乘除在底层编译时其对应的步骤不止一步。</p>
 <p>如最常用的自增 <code>i = i + 1</code> ，在底层编译实现时其对应着三个步骤： <code>读取</code> -&gt; <code>增加</code> -&gt; <code>写入</code> ，而这三步中的任意一步出现问题都会导致最终的结果异常。回到上面的代码中，当 <code>线程 1</code> 进行自增操作时，实际上可能只做了 <code>读取 增加</code> ，在完成写入之前 <code>线程 2</code> 却获取变量实例完成自减导致自增 <code>写入</code> 失败，结果就是经过一次自增自减结果却为 <code>-1</code> 。</p>
-<h4 id="3-分级锁"><a href="#3-分级锁" class="headerlink" title="3. 分级锁"></a>3. 分级锁</h4><p>在 <code>JDK1.8</code> 中 <code>JVM</code> 会根据使用情况对 <code>synchronized</code> 的锁进行升级，它大体可以按照下面的路径：``偏向锁<code>-&gt;</code>轻量级锁<code>-&gt;</code>重量级锁`。锁只能升级不能降级，所以一旦升级为重量级锁就只能依靠操作系统进行调度。</p>
+<h4 id="3-分级锁"><a href="#3-分级锁" class="headerlink" title="3. 分级锁"></a>3. 分级锁</h4><p>在 <code>JDK1.8</code> 中 <code>JVM</code> 会根据使用情况对 <code>synchronized</code> 的锁进行升级，它大体可以按照下面的路径：<code>偏向锁</code> -&gt; <code>轻量级锁</code> -&gt; <code>重量级锁</code>。锁只能升级不能降级，所以一旦升级为重量级锁就只能依靠操作系统进行调度。</p>
 <p>锁升级过程中关系最大的就是对象头里的 <code>MarkWord</code> ，它包含 <code>Thread ID</code>、 <code>Age</code>、 <code>Biased</code>、 <code>Tag</code> 四个部分。其中 <code>Biased</code> 有 <code>1bit</code> 大小，<code>Tag</code> 有 <code>2bit</code> ，锁升级即依据 <code>Thread Id</code>、 <code>Biased</code>、 <code>Tag</code> 三个变量值进行。</p>
 <ul>
 <li><h5 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h5><p>  在只有一个线程使用了锁的情况下，偏向锁能够保证更高的效率。</p>
@@ -2070,7 +2070,7 @@ Writer-2 sleep over.
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

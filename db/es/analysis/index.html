@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-16
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    849
+                    855
                 </div>
                 
 
@@ -612,64 +612,52 @@
 
 <p>根据最后拆分得到的词典表，当用户搜索关键字 <code>电影</code> 时，即返回 <code>2, 3</code> 两篇文章。</p>
 <h4 id="2-使用说明"><a href="#2-使用说明" class="headerlink" title="2. 使用说明"></a>2. 使用说明</h4><p>了解了分词器的作用，下面就介绍一下在 <code>ES</code> 中如何使用分词器进行分词。</p>
-<ul>
-<li><h5 id="请求发送"><a href="#请求发送" class="headerlink" title="请求发送"></a>请求发送</h5><p>通过工具 <code>POST</code> 方法请求 <code>192.168.0.20:9200/_analyze</code> 接口，请求体参数内容如下：</p>
+<h5 id="1-请求发送"><a href="#1-请求发送" class="headerlink" title="(1) 请求发送"></a>(1) 请求发送</h5><p>通过工具 <code>POST</code> 方法请求 <code>192.168.0.20:9200/_analyze</code> 接口，请求体参数内容如下：</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"standard"</span><span class="token punctuation">,</span>
     <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"I am iron man!"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="结果详解"><a href="#结果详解" class="headerlink" title="结果详解"></a>结果详解</h5><p>请求返回的参数如下所示，可以看到请求参数中的 <code>text</code> 内容被分割成一个个单词。<br><img src="/album/loading.gif" data-original="/album/article/db/es/3.png"></p>
-</li>
-</ul>
+<h5 id="2-结果详解"><a href="#2-结果详解" class="headerlink" title="(2) 结果详解"></a>(2) 结果详解</h5><p>请求返回的参数如下所示，可以看到请求参数中的 <code>text</code> 内容被分割成一个个单词。<br><img src="/album/loading.gif" data-original="/album/article/db/es/3.png"></p>
 <h3 id="二、ik分词器"><a href="#二、ik分词器" class="headerlink" title="二、ik分词器"></a>二、ik分词器</h3><p>在上面介绍了分词器的作用和基本使用，但默认的分词器并不支持中文分词，若使用默认分词器对中文句子进行分词，则会默认将一个字当成一个词，无法达到分词的效果。</p>
 <p>因此想要给中文分词需要额外安装分词器，<code>IK分词器</code> 则是专为中文分词量身定做，下面分享如何安装与使用。</p>
 <h4 id="1-安装教程"><a href="#1-安装教程" class="headerlink" title="1. 安装教程"></a>1. 安装教程</h4><p><code>IK分词器</code> 安装相对简单，进入 <code>IK</code> 的 <code>GitHub</code> 仓库中，作者针对为不同的 <code>ES</code> 版本分别提供了对应的插件包。根据你的 <code>ES</code> 版本选择对应版本的插件包即可，<a target="_blank" rel="noopener" href="https://github.com/medcl/elasticsearch-analysis-ik">官网直达</a>。<br><img src="/album/loading.gif" data-original="/album/article/db/es/1.png"></p>
 <p>在 <code>ES</code> 安装目录下的 <code>Plugins</code> 中新建 <code>ik</code> 目录，将下载的 <code>Ik分词器</code> 文件上传并解压，完成后重启 <code>ES</code> 即可生效。</p>
 <h4 id="2-使用说明-1"><a href="#2-使用说明-1" class="headerlink" title="2. 使用说明"></a>2. 使用说明</h4><p><code>IK分词器</code> 分词器使用方式与默认的分词器相同，但 <code>IK分词器</code> 提供了两种分词方式，下面分别进行介绍。</p>
-<ul>
-<li><h5 id="ik-smart"><a href="#ik-smart" class="headerlink" title="ik_smart"></a>ik_smart</h5><p><code>ik_smart</code> 分词方式会将句子拆分为单个词语。</p>
+<h5 id="1-ik-smart"><a href="#1-ik-smart" class="headerlink" title="(1) ik_smart"></a>(1) ik_smart</h5><p><code>ik_smart</code> 分词方式会将句子拆分为单个词语。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_smart"</span><span class="token punctuation">,</span>
     <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/4.png"></p>
-</li>
-<li><h5 id="ik-max-word"><a href="#ik-max-word" class="headerlink" title="ik_max_word"></a>ik_max_word</h5><p><code>ik_max_word</code> 分词方式会则拆分句子的所有的组合方式。</p>
+<h5 id="2-ik-max-word"><a href="#2-ik-max-word" class="headerlink" title="(2) ik_max_word"></a>(2) ik_max_word</h5><p><code>ik_max_word</code> 分词方式会则拆分句子的所有的组合方式。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_max_word"</span><span class="token punctuation">,</span>
     <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/5.png"></p>
-</li>
-</ul>
 <h4 id="3-自定义词典"><a href="#3-自定义词典" class="headerlink" title="3. 自定义词典"></a>3. 自定义词典</h4><p>在 <code>IK分词器</code> 的基础之上，你也可以根据的自身业务需求额外自定义分词词组。</p>
-<ul>
-<li><h5 id="词典配置"><a href="#词典配置" class="headerlink" title="词典配置"></a>词典配置</h5><p>  在 <code>plugins/ik/config</code> 目录下新建 <code>budai.dic</code> 词典文件，并添加自定义词组。</p>
+<h5 id="1-词典配置"><a href="#1-词典配置" class="headerlink" title="(1) 词典配置"></a>(1) 词典配置</h5><p>在 <code>plugins/ik/config</code> 目录下新建 <code>budai.dic</code> 词典文件，并添加自定义词组。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> budai.dic 
 
 <span class="token comment" spellcheck="true"># 文件内容</span>
 如何学习
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  将自定义词典文件添加到配置中：</p>
+<p>将自定义词典文件添加到配置中：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> plugins/ik/config                  <span class="token comment" spellcheck="true"># 进入目录</span>
 
 <span class="token function">vi</span> IKAnalyzer.cfg.xml                 <span class="token comment" spellcheck="true"># 修改配置</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>  <img src="/album/loading.gif" data-original="/album/article/db/es/7.png"></p>
-</li>
-<li><h5 id="效果测试"><a href="#效果测试" class="headerlink" title="效果测试"></a>效果测试</h5><p>  还是通过 <code>ik_smart</code> 方式进行分词，与之前相对比可以看到结果中 <code>如何学习</code> 此时已经被当成一个词组了。</p>
+<p><img src="/album/loading.gif" data-original="/album/article/db/es/7.png"></p>
+<h5 id="2-效果测试"><a href="#2-效果测试" class="headerlink" title="(2) 效果测试"></a>(2) 效果测试</h5><p>还是通过 <code>ik_smart</code> 方式进行分词，与之前相对比可以看到结果中 <code>如何学习</code> 此时已经被当成一个词组了。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_smart"</span><span class="token punctuation">,</span>
     <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  <img src="/album/loading.gif" data-original="/album/article/db/es/6.png"></p>
-</li>
-</ul>
+<p><img src="/album/loading.gif" data-original="/album/article/db/es/6.png"></p>
 
                 
             </div>
@@ -1267,7 +1255,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

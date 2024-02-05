@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
@@ -513,7 +513,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    37 分
+                    38 分
                 </div>
                 
 
@@ -564,28 +564,16 @@
 </ul>
 <p>在 <code>JDK 8</code> 之前方法区中数据存储于 <code>JVM</code> 的堆内存中，因此其内存空间局限于 <code>JVM</code> 堆的内存空间，而元空间改为使用本地内存 <code>(Native memory)</code>，即物理内存，意味着只要本地内存足够就不会出现 <code>OOM</code> 错误。</p>
 <h3 id="二、对象管理"><a href="#二、对象管理" class="headerlink" title="二、对象管理"></a>二、对象管理</h3><h4 id="1-对象创建"><a href="#1-对象创建" class="headerlink" title="1. 对象创建"></a>1. 对象创建</h4><p>当 <code>JVM</code> 加载至一条 <code>new</code> 指令时将会为对象分配相应内存空间，常见的分配方式有以下两类。</p>
-<ul>
-<li><h5 id="指针碰撞"><a href="#指针碰撞" class="headerlink" title="指针碰撞"></a>指针碰撞</h5><p>  假设 <code>Java</code> 堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞“（<code>Bump The Pointer</code>）。</p>
-</li>
-<li><h5 id="空闲列表"><a href="#空闲列表" class="headerlink" title="空闲列表"></a>空闲列表</h5><p>  如果 <code>Java</code> 堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为空闲列表<code>（Free List）</code>。</p>
-</li>
-</ul>
+<h5 id="1-指针碰撞"><a href="#1-指针碰撞" class="headerlink" title="(1) 指针碰撞"></a>(1) 指针碰撞</h5><p>假设 <code>Java</code> 堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞“（<code>Bump The Pointer</code>）。</p>
+<h5 id="2-空闲列表"><a href="#2-空闲列表" class="headerlink" title="(2) 空闲列表"></a>(2) 空闲列表</h5><p>如果 <code>Java</code> 堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为空闲列表<code>（Free List）</code>。</p>
 <h4 id="2-分配方式"><a href="#2-分配方式" class="headerlink" title="2. 分配方式"></a>2. 分配方式</h4><p>在为 <code>Java</code> 对象分配内存时存在指针碰撞和空闲列表两种方式，而具体的划分实现上存在下述两种方式。</p>
-<ul>
-<li><h5 id="同步处理"><a href="#同步处理" class="headerlink" title="同步处理"></a>同步处理</h5><p>  在为对象分配内存空间时采用 <code>CAS</code> 配置，通过失败重试的方式保证更新操作的原子性。</p>
-</li>
-<li><h5 id="本地线程分配缓冲"><a href="#本地线程分配缓冲" class="headerlink" title="本地线程分配缓冲"></a>本地线程分配缓冲</h5><p>  将内存分配的动作按照线程划分在不同的空间之中，即每个线程在 <code>Java</code> 堆中预先分配一小块内存，称为本地线程分配缓冲 <code>(Thread Local Allocation Buffer，TLAB)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定本地线程分配缓冲。</p>
-</li>
-</ul>
+<h5 id="1-同步处理"><a href="#1-同步处理" class="headerlink" title="(1) 同步处理"></a>(1) 同步处理</h5><p>在为对象分配内存空间时采用 <code>CAS</code> 配置，通过失败重试的方式保证更新操作的原子性。</p>
+<h5 id="2-本地线程分配缓冲"><a href="#2-本地线程分配缓冲" class="headerlink" title="(2) 本地线程分配缓冲"></a>(2) 本地线程分配缓冲</h5><p>将内存分配的动作按照线程划分在不同的空间之中，即每个线程在 <code>Java</code> 堆中预先分配一小块内存，称为本地线程分配缓冲 <code>(Thread Local Allocation Buffer，TLAB)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定本地线程分配缓冲。</p>
 <h4 id="3-对象头"><a href="#3-对象头" class="headerlink" title="3. 对象头"></a>3. 对象头</h4><p><code>Java</code> 的对象头中定义了两个重要字段：运行时数据 <code>(Mark Word)</code> 与类型指针 <code>(Klass)</code>，若为数组对象则还会额外包含一个字段存储数组大小。</p>
-<ul>
-<li><h5 id="Mark-Word"><a href="#Mark-Word" class="headerlink" title="Mark Word"></a>Mark Word</h5><p>  <code>Mark Word</code> 字段存储了如哈希码 <code>(HashCode)</code> 、<code>GC</code> 分代年龄、锁状态标志、线程持有的锁、偏向线程 <code>ID</code>、偏向时间戳等信息，官方称它为 <code>Mark Word</code>。</p>
-<p>  <code>Mark Word</code> 占用大小为 <code>32bit</code>，其中 <code>25bit</code> 用于存储对象哈希码，<code>4bit</code> 用于存储对象分代年龄，<code>2bit</code> 用于存储锁标志位，<code>1bit</code> 固定为 <code>0</code>，这部分的数据在 <code>32</code> 位和 <code>64</code> 位的虚拟机（未开启压缩指针）中分别为 <code>32bit</code> 和 <code>64bit</code>。</p>
-</li>
-<li><h5 id="Klass"><a href="#Klass" class="headerlink" title="Klass"></a>Klass</h5><p>  <code>Klass</code> 字段存储了指向对象所属类的元数据的指针，也称为类的元数据指针（通过这个指针来确定该对象是哪个类的实例），允许 <code>Java</code> 虚拟机在运行时获取对象的类信息，并进行相应的操作。</p>
-<p>  在 <code>HotSpot</code> 虚拟机中的 <code>Java</code> 对象头中 <code>Klass</code> 字段是指对象的元数据信息，用于管理对象的信息，存储指向该对象类的元数据指针。对象的元数据指针大小同载体的机器指针大小，如 <code>32</code> 位虚拟机指针大小即为 <code>32bit</code>，<code>64</code> 位虚拟机对应大小为 <code>64bit</code>，可通过指针压缩实现 <code>64bit</code> 对象的指针压缩。</p>
-</li>
-</ul>
+<h5 id="1-Mark-Word"><a href="#1-Mark-Word" class="headerlink" title="(1) Mark Word"></a>(1) Mark Word</h5><p><code>Mark Word</code> 字段存储了如哈希码 <code>(HashCode)</code> 、<code>GC</code> 分代年龄、锁状态标志、线程持有的锁、偏向线程 <code>ID</code>、偏向时间戳等信息，官方称它为 <code>Mark Word</code>。</p>
+<p><code>Mark Word</code> 占用大小为 <code>32bit</code>，其中 <code>25bit</code> 用于存储对象哈希码，<code>4bit</code> 用于存储对象分代年龄，<code>2bit</code> 用于存储锁标志位，<code>1bit</code> 固定为 <code>0</code>，这部分的数据在 <code>32</code> 位和 <code>64</code> 位的虚拟机（未开启压缩指针）中分别为 <code>32bit</code> 和 <code>64bit</code>。</p>
+<h5 id="2-Klass"><a href="#2-Klass" class="headerlink" title="(2) Klass"></a>(2) Klass</h5><p><code>Klass</code> 字段存储了指向对象所属类的元数据的指针，也称为类的元数据指针（通过这个指针来确定该对象是哪个类的实例），允许 <code>Java</code> 虚拟机在运行时获取对象的类信息，并进行相应的操作。</p>
+<p>在 <code>HotSpot</code> 虚拟机中的 <code>Java</code> 对象头中 <code>Klass</code> 字段是指对象的元数据信息，用于管理对象的信息，存储指向该对象类的元数据指针。对象的元数据指针大小同载体的机器指针大小，如 <code>32</code> 位虚拟机指针大小即为 <code>32bit</code>，<code>64</code> 位虚拟机对应大小为 <code>64bit</code>，可通过指针压缩实现 <code>64bit</code> 对象的指针压缩。</p>
 <h4 id="4-对象布局"><a href="#4-对象布局" class="headerlink" title="4. 对象布局"></a>4. 对象布局</h4><p>一个 <code>Java</code> 对象除了对象头之外还包括 <code>实例数据</code> 与 <code>对齐填充</code> 两个部分。</p>
 <ul>
 <li><h5 id="实例数据"><a href="#实例数据" class="headerlink" title="实例数据"></a>实例数据</h5><p>  存储在程序代码里面所定义的各种类型的字段内容，无论是从父类继承下来的，还是在子类中定义的字段都必须记录起来。</p>
@@ -614,51 +602,42 @@
 </blockquote>
 <p>若程序加载引用对象过多并未能通过 <code>GC</code> 释放可能会抛出：<code>java.lang.OutOfMemoryError: Compressed class space</code> 异常。</p>
 <h3 id="三、对象引用"><a href="#三、对象引用" class="headerlink" title="三、对象引用"></a>三、对象引用</h3><h4 id="1-引用算法"><a href="#1-引用算法" class="headerlink" title="1. 引用算法"></a>1. 引用算法</h4><p>在执行垃圾回收通俗的讲就是判断哪些对象已经没用应该进行资源释放，而判断一个对象是否可用存在两种算法实现：<code>引用计数法</code> 与 <code>可达性分析法</code>。</p>
-<ul>
-<li><h5 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h5><p>  在对象中添加一个引用计数器，每当有一个地方引用它时计数器值就加一，当引用失效时计数器值就减一，任何时刻计数器为零的对象就是不可能再被使用的。</p>
-<p>  但是引用计数法存在一个问题即当对象之间相互循环引用时将无法及时回收。</p>
-</li>
-<li><h5 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h5><p>  通过一系列称为 <code>GC Roots</code> 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走过的路径称为“引用链”（<code>Reference Chain</code>），如果某个对象到 <code>GC Roots</code> 间没有任何引用链相连，或者用图论的话来说就是从 <code>GC Roots</code> 到这个对象不可达时，则证明此对象是不可能再被使用的。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jvm/2.png"></p>
-</li>
-</ul>
+<h5 id="2-引用计数法"><a href="#2-引用计数法" class="headerlink" title="(2) 引用计数法"></a>(2) 引用计数法</h5><p>在对象中添加一个引用计数器，每当有一个地方引用它时计数器值就加一，当引用失效时计数器值就减一，任何时刻计数器为零的对象就是不可能再被使用的。</p>
+<p>但是引用计数法存在一个问题即当对象之间相互循环引用时将无法及时回收。</p>
+<h5 id="2-可达性分析法"><a href="#2-可达性分析法" class="headerlink" title="(2) 可达性分析法"></a>(2) 可达性分析法</h5><p>通过一系列称为 <code>GC Roots</code> 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走过的路径称为“引用链” <code>(Reference Chain)</code>，如果某个对象到 <code>GC Roots</code> 间没有任何引用链相连，或者用图论的话来说就是从 <code>GC Roots</code> 到这个对象不可达时，则证明此对象是不可能再被使用的。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/2.png"></p>
 <blockquote>
 <p>可作为 <code>GC Roots</code> 的对象包括以下几种：</p>
 <ul>
 <li>在虚拟机栈（栈帧中的本地变量表）中引用的对象，譬如各个线程被调用的方法堆栈中使用到的参数、局部变量、临时变量等。</li>
 <li>在方法区中类静态属性引用的对象，譬如 <code>Java</code> 类的引用类型静态变量。</li>
-<li>在方法区中常量引用的对象，譬如字符串常量池（<code>String Table</code>）里的引用。</li>
+<li>在方法区中常量引用的对象，譬如字符串常量池 <code>(String Table)</code> 里的引用。</li>
 <li>在本地方法栈中 <code>JNI</code> （即通常所说的 <code>Native</code> 方法）引用的对象。</li>
 <li><code>JVM</code> 内部的引用，如基本数据类型对应的 <code>Class</code> 对象，一些常驻的异常对象（比如 <code>NullPointExcepiton</code> 、 <code>OutOfMemoryError</code> ）等，还有系统类加载器。</li>
-<li>所有被同步锁（ <code>synchronized</code> 关键字）持有的对象。</li>
+<li>所有被同步锁 <code>synchronized</code> 关键字持有的对象。</li>
 <li>反映 <code>JVM</code> 内部情况的 <code>JMXBean</code> 、 <code>JVMTI</code> 中注册的回调、本地代码缓存等。</li>
 </ul>
 </blockquote>
-<h4 id="2-引用类型"><a href="#2-引用类型" class="headerlink" title="2. 引用类型"></a>2. 引用类型</h4><p>在 <code>Java</code> 中一个对象的引用情况分为三类：强引用（<code>Strong Reference</code>）、软引用（<code>Soft Reference</code>）和弱应用（<code>Weak Reference</code>）。</p>
-<ul>
-<li><h5 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h5><p>  强引用是日常使用中最常见的引用方式，当通过 <code>new</code> 关键字或基础类型赋值时即创建一个强引用。</p>
-<p>  如下示例中即创建了两个强引用对象，在执行 <code>GC</code> 垃圾回收时强引用对象资源不会被系统回收。</p>
+<h4 id="2-引用类型"><a href="#2-引用类型" class="headerlink" title="2. 引用类型"></a>2. 引用类型</h4><p>在 <code>Java</code> 中一个对象的引用情况分为三类：强引用 <code>(Strong Reference)</code>、软引用 <code>(Soft Reference)</code> 和弱应用 <code>(Weak Reference)</code>。</p>
+<h5 id="1-强引用"><a href="#1-强引用" class="headerlink" title="(1) 强引用"></a>(1) 强引用</h5><p>强引用是日常使用中最常见的引用方式，当通过 <code>new</code> 关键字或基础类型赋值时即创建一个强引用。</p>
+<p>如下示例中即创建了两个强引用对象，在执行 <code>GC</code> 垃圾回收时强引用对象资源不会被系统回收。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
 Object obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h5><p>  通过 <code>SoftReference</code> 泛型类即可创建一个软引用对象，如下示例中将强引用对象 <code>prime</code> 转化为软引用对象。</p>
-<p>  软引用对象在不存在任何实例或引用时即可被 <code>GC</code> 识别，但其所占内存空间不会被立即回收，只有在 <code>JVM</code> 内存空间不足时才会被真正 <code>GC</code> 回收。</p>
+<h5 id="1-软引用"><a href="#1-软引用" class="headerlink" title="(1) 软引用"></a>(1) 软引用</h5><p>通过 <code>SoftReference</code> 泛型类即可创建一个软引用对象，如下示例中将强引用对象 <code>prime</code> 转化为软引用对象。</p>
+<p>软引用对象在不存在任何实例或引用时即可被 <code>GC</code> 识别，但其所占内存空间不会被立即回收，只有在 <code>JVM</code> 内存空间不足时才会被真正 <code>GC</code> 回收。</p>
 <pre class="line-numbers language-java"><code class="language-java">Integer prime <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
 SoftReference<span class="token operator">&lt;</span>Integer<span class="token operator">></span> soft <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span>prime<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">// 赋空，此时可被 GC 识别但只在 JVM 内存不足时执行 GC</span>
 prime <span class="token operator">=</span> null<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h5><p>  通过 <code>WeakReference</code> 可创建一个弱应用对象，如下示例中将强引用对象 <code>prime</code> 转化为弱引用对象。</p>
-<p>  当一个对象被声明为弱引用时，在下一次 <code>GC</code> 生命周期即会被系统回收。</p>
+<h5 id="2-弱引用"><a href="#2-弱引用" class="headerlink" title="(2) 弱引用"></a>(2) 弱引用</h5><p>通过 <code>WeakReference</code> 可创建一个弱应用对象，如下示例中将强引用对象 <code>prime</code> 转化为弱引用对象。</p>
+<p>当一个对象被声明为弱引用时，在下一次 <code>GC</code> 生命周期即会被系统回收。</p>
 <pre class="line-numbers language-java"><code class="language-java">Integer prime <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
 WeakReference<span class="token operator">&lt;</span>Integer<span class="token operator">></span> soft <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakReference</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span>prime<span class="token punctuation">)</span><span class="token punctuation">;</span> 
 <span class="token comment" spellcheck="true">// 赋空，下一次 GC 即被回收</span>
 prime <span class="token operator">=</span> null<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="四、安全点"><a href="#四、安全点" class="headerlink" title="四、安全点"></a>四、安全点</h3><h4 id="1-OopMap"><a href="#1-OopMap" class="headerlink" title="1. OopMap"></a>1. OopMap</h4><p>迄今为止，所有收集器在根节点枚举 (<code>GC Roots</code>) 这一步骤时都是必须暂停用户线程的，从而防止在执行标记的过程中产生新的引用，而虽然可达性分析算法耗时最长的查找引用链的过程已经可以做到与用户线程一起并发，但根节点枚举始终还是必须在一个能保障一致性的快照中才得以进行。</p>
 <p>目前主流 <code>Java</code> 虚拟机使用的都是准确式垃圾收集，所以当用户线程停顿下来之后，其实并不需要一个不漏地检查完所有执行上下文和全局的引用位置，虚拟机应当是有办法直接得到哪些地方存放着对象引用的，在 <code>HotSpot</code> 的解决方案里，是使用一组称为 <code>OopMap</code> 的数据结构来达到这个目的。</p>
 <p>一旦类加载动作完成的时候，<code>HotSpot</code> 就会把对象内什么偏移量上是什么类型的数据计算出来，在即时编译过程中也会在特定的位置记录下栈里和寄存器里哪些位置是引用，这样收集器在扫描时就可以直接得知这些信息了，并不需要真正一个不漏地从方法区等 <code>GC Roots</code> 开始查找，从而省去大量时间。</p>
@@ -714,14 +693,14 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 <h4 id="4-执行方案"><a href="#4-执行方案" class="headerlink" title="4. 执行方案"></a>4. 执行方案</h4><p>针对如何在垃圾收集发生时让所有线程都跑到最近的安全点然后停顿下来，有两种方案可供选择：抢先式中断（<code>Preemptive Suspension</code>）和主动式中断（<code>Voluntary Suspension</code>）。</p>
 <p>当下较为流行并被广泛使用的为主动式中断，二者相对应的定义如下：</p>
 <blockquote>
-<p><strong>(1) 抢先式中断（<code>Preemptive Suspension</code>）</strong></p>
+<p><strong>(1) 抢先式中断</strong></p>
 </blockquote>
-<p>抢先式中断不需要线程的执行代码主动去配合，在垃圾收集发生时，系统首先把所有用户线程全部中断，如果发现有用户线程中断的地方不在安全点上，就恢复这条线程执行，让它一会再重新中断，直到跑到安全点上。</p>
+<p>抢先式中断 <code>(Preemptive Suspension)</code> 不需要线程的执行代码主动去配合，在垃圾收集发生时，系统首先把所有用户线程全部中断，如果发现有用户线程中断的地方不在安全点上，就恢复这条线程执行，让它一会再重新中断，直到跑到安全点上。</p>
 <p>但现在几乎没有虚拟机实现采用抢先式中断来暂停线程响应 <code>GC</code> 事件。</p>
 <blockquote>
-<p><strong>(2) 主动式中断（<code>Voluntary Suspension</code>）</strong></p>
+<p><strong>(2) 主动式中断</strong></p>
 </blockquote>
-<p>主动式中断即当垃圾收集需要中断线程的时候，不直接对线程操作，仅仅简单地设置一个标志位，各个线程执行过程时会不停地主动去轮询这个标志，一旦发现中断标志为真时就自己在最近的安全点上主动中断挂起。</p>
+<p>主动式中断 <code>(Voluntary Suspension)</code> 即当垃圾收集需要中断线程的时候，不直接对线程操作，仅仅简单地设置一个标志位，各个线程执行过程时会不停地主动去轮询这个标志，一旦发现中断标志为真时就自己在最近的安全点上主动中断挂起。</p>
 <p>轮询标志的地方和安全点是重合的，另外还要加上所有创建对象和其他需要在 <code>Java</code> 堆上分配内存的地方，这是为了检查是否即将要发生垃圾收集，避免没有足够内存分配新对象。</p>
 <h4 id="5-安全区域"><a href="#5-安全区域" class="headerlink" title="5. 安全区域"></a>5. 安全区域</h4><p>安全区域是指能够确保在某一段代码片段之中，引用关系不会发生变化，因此，在这个区域中任意地方开始垃圾收集都是安全的。</p>
 <p>典型的场景便是用户线程处于 <code>Sleep</code> 状态或者 <code>Blocked</code> 状态，这时候线程无法响应虚拟机的中断请求，不能再走到安全的地方去中断挂起自己，虚拟机也显然不可能持续等待线程重新被激活分配处理器时间。</p>
@@ -754,8 +733,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 </ul>
 </blockquote>
 <p>当新生代中标识完成后存活的对象大于另一半内存空间，即另一半空间无法存储时，则移至老年代。</p>
-<ul>
-<li><h5 id="Appel式回收"><a href="#Appel式回收" class="headerlink" title="Appel式回收"></a>Appel式回收</h5><p>  <code>Appel</code> 式回收将新生代内存空间分为一块较大的 <code>Eden</code> 空间和两块较小的 <code>Survivor</code> 空间，每次分配内存只使用 <code>Eden</code> 和其中一块 <code>Survivor</code> ，默认的 <code>Eden</code>  与 <code>Survivor</code> 二者比例为 <code>8 : 2</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jvm/appel.png"></p>
+<h5 id="1-Appel式回收"><a href="#1-Appel式回收" class="headerlink" title="(1) Appel式回收"></a>(1) Appel式回收</h5><p><code>Appel</code> 式回收将新生代内存空间分为一块较大的 <code>Eden</code> 空间和两块较小的 <code>Survivor</code> 空间，每次分配内存只使用 <code>Eden</code> 和其中一块 <code>Survivor</code> ，默认的 <code>Eden</code>  与 <code>Survivor</code> 二者比例为 <code>8 : 2</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/appel.png"></p>
 <blockquote>
 <p><code>Appel</code> 式回收执行步骤如下：</p>
 <ul>
@@ -766,9 +744,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 <li>当老年代中的空间不足以存放新生代中晋升的对象时即触发 <code>Full GC</code>，应降低 <code>Full GC</code> 发生频次。</li>
 </ul>
 </blockquote>
-<p>  <code>HotSpot</code> 虚拟机的 <code>Serial、ParNew</code> 等新生代收集器均采用了这种策略来设计新生代的内存布局。</p>
-</li>
-</ul>
+<p><code>HotSpot</code> 虚拟机的 <code>Serial、ParNew</code> 等新生代收集器均采用了这种策略来设计新生代的内存布局。</p>
 <h4 id="4-标记-整理"><a href="#4-标记-整理" class="headerlink" title="4. 标记-整理"></a>4. 标记-整理</h4><p>标记-整理其标记过程仍然与 <code>标记-清除</code> 算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向内存空间一端移动，然后直接清理掉边界以外的内存。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/5.png"></p>
 <p>但是在老年代这种每次回收都有大量对象存活区域，移动存活对象并更新所有引用这些对象的地方将会是一种极为负重的操作，而且这种对象移动操作必须全程暂停用户应用程序才能进行。</p>
 <h3 id="六、经典收集器"><a href="#六、经典收集器" class="headerlink" title="六、经典收集器"></a>六、经典收集器</h3><h4 id="1-Serial"><a href="#1-Serial" class="headerlink" title="1. Serial"></a>1. Serial</h4><p><code>Serial</code> 收集器是最基础、历史最悠久的收集器，基于 <code>标记清除</code> 模式实现，在垃圾收集过程中需要停止所有用户工程进程。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/6.png"></p>
@@ -881,8 +857,7 @@ java -jar myapp.jar -Xmx1024m
 </li>
 </ul>
 <p>总结： <code>-X</code> 参数用于指定 <code>JVM</code> 的非标准参数，而 <code>-D</code> 参数用于设置系统属性。<code>-X</code> 参数通常影响 <code>JVM</code> 的行为和性能，而 <code>-D</code> 参数提供了一种在应用程序中传递配置信息的机制。</p>
-<ul>
-<li><h5 id="基本格式"><a href="#基本格式" class="headerlink" title="基本格式"></a>基本格式</h5><p>  <code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
+<h5 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="(1) 基本格式"></a>(1) 基本格式</h5><p><code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
 <blockquote>
 <ul>
 <li>若用于配置是否启用，由 <code>+ -</code> 分别控制开启与关闭。</li>
@@ -898,10 +873,7 @@ java -jar myapp.jar -Xmx1024m
 <span class="token comment" spellcheck="true"># 表示将 option 值赋为 value</span>
 -XX:<span class="token operator">&lt;</span>option<span class="token operator">>=</span><span class="token operator">&lt;</span>value<span class="token operator">></span>    
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-常用配置"><a href="#3-常用配置" class="headerlink" title="3. 常用配置"></a>3. 常用配置</h4><ul>
-<li><h5 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h5><p>  常见的 <code>JVM</code> 配置参数如下：</p>
+<h4 id="3-常用配置"><a href="#3-常用配置" class="headerlink" title="3. 常用配置"></a>3. 常用配置</h4><h5 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="(1) 内存参数"></a>(1) 内存参数</h5><p>常见的 <code>JVM</code> 内存参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 堆内存初始值</span>
 -Xms2G 
 
@@ -915,8 +887,9 @@ java -jar myapp.jar -Xmx1024m
 <span class="token comment" spellcheck="true"># 设置年轻代大小，增大年轻代后，将会减小年老代大小。</span>
 <span class="token comment" spellcheck="true"># 此值对系统性能影响较大，Sun 官方推荐配置为整个堆的 3/8。</span>
 -Xmn1024m
-
-<span class="token comment" spellcheck="true"># CMS垃圾回收器并行线程线，推荐值为CPU核心数。</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-JVM参数"><a href="#2-JVM参数" class="headerlink" title="(2) JVM参数"></a>(2) JVM参数</h5><p>常见的 <code>JVM</code> 配置参数如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># CMS垃圾回收器并行线程线，推荐值为CPU核心数。</span>
 -XX:ConcGCThreads<span class="token operator">=</span>4
 
 <span class="token comment" spellcheck="true"># 新生代并行收集器的线程数。</span>
@@ -931,14 +904,12 @@ java -jar myapp.jar -Xmx1024m
 
 <span class="token comment" spellcheck="true"># 设置垃圾最大年龄，取值 0~15，默认为 15</span>
 -XX:MaxTenuringThreshold<span class="token operator">=</span>10
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="系统参数"><a href="#系统参数" class="headerlink" title="系统参数"></a>系统参数</h5><p>  常见的系统参数配置参数如下：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-系统参数"><a href="#3-系统参数" class="headerlink" title="(3) 系统参数"></a>(3) 系统参数</h5><p>常见的系统参数配置参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 防止虚拟机阻塞</span>
 -Djava.security.egd<span class="token operator">=</span>file:/dev/./urandom
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="GC参数"><a href="#GC参数" class="headerlink" title="GC参数"></a>GC参数</h5><p>  常见的虚拟机垃圾回收（<code>GC</code>）参数配置参数如下：</p>
+<h5 id="4-GC参数"><a href="#4-GC参数" class="headerlink" title="(4) GC参数"></a>(4) GC参数</h5><p>常见的虚拟机垃圾回收（<code>GC</code>）参数配置参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 打印 gc 发生的时间戳</span>
 -XX:+PrintGCDateStamps
 
@@ -957,8 +928,6 @@ java -jar myapp.jar -Xmx1024m
 <span class="token comment" spellcheck="true"># 指定 gc log 的路径，存放于当前 gclogs 目录下的 gc.log.date 文件</span>
 -Xloggc:./gclogs/gc.log.date
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <hr>
 <p><strong>参考链接</strong>：</p>
 <ol>
@@ -1562,7 +1531,7 @@ java -jar myapp.jar -Xmx1024m
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             

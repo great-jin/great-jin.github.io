@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    986
+                    992
                 </div>
                 
 
@@ -533,53 +533,38 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-库和工具"><a href="#1-库和工具" class="headerlink" title="1. 库和工具"></a>1. 库和工具</h4><ul>
-<li><h5 id="依赖库"><a href="#依赖库" class="headerlink" title="依赖库"></a>依赖库</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+                <h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-库和工具"><a href="#1-库和工具" class="headerlink" title="1. 库和工具"></a>1. 库和工具</h4><h5 id="1-依赖库"><a href="#1-依赖库" class="headerlink" title="(1) 依赖库"></a>(1) 依赖库</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> curl-devel expat-devel gettext-devel openssl-devel zlib-devel
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="编译工具"><a href="#编译工具" class="headerlink" title="编译工具"></a>编译工具</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> gcc perl-ExtUtils-MakeMaker package
+<h5 id="2-编译工具"><a href="#2-编译工具" class="headerlink" title="(2) 编译工具"></a>(2) 编译工具</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> gcc perl-ExtUtils-MakeMaker package
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-Git安装"><a href="#2-Git安装" class="headerlink" title="2. Git安装"></a>2. Git安装</h4><ul>
-<li><h5 id="移除旧版本"><a href="#移除旧版本" class="headerlink" title="移除旧版本"></a>移除旧版本</h5><p> 系统自带的版本过低，我们删除重装。</p>
+<h4 id="2-Git安装"><a href="#2-Git安装" class="headerlink" title="2. Git安装"></a>2. Git安装</h4><h5 id="1-移除旧版本"><a href="#1-移除旧版本" class="headerlink" title="(1) 移除旧版本"></a>(1) 移除旧版本</h5><p>系统自带的版本过低，我们删除重装。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">yum remove <span class="token function">git</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/src
+<h5 id="2-下载"><a href="#2-下载" class="headerlink" title="(2) 下载"></a>(2) 下载</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/src
 
 <span class="token function">wget</span> http://ftp.ntu.edu.tw/software/scm/git/git-2.26.0.tar.gz
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">tar</span> -zvxf git-2.26.0.tar.gz         <span class="token comment" spellcheck="true"># 解压</span>
-      
+<h5 id="3-编译"><a href="#3-编译" class="headerlink" title="(3) 编译"></a>(3) 编译</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">tar</span> -zvxf git-2.26.0.tar.gz         <span class="token comment" spellcheck="true"># 解压</span>
+         
 <span class="token function">cd</span> git-2.26.0
 
 <span class="token function">make</span> prefix<span class="token operator">=</span>/usr/local/git all      <span class="token comment" spellcheck="true"># 编译</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">make</span> prefix<span class="token operator">=</span>/usr/local/git <span class="token function">install</span>
+<h5 id="4-安装"><a href="#4-安装" class="headerlink" title="(4) 安装"></a>(4) 安装</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">make</span> prefix<span class="token operator">=</span>/usr/local/git <span class="token function">install</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-环境变量"><a href="#3-环境变量" class="headerlink" title="3. 环境变量"></a>3. 环境变量</h4><ul>
-<li><p>进入环境变量配置文件</p>
+<h4 id="3-环境变量"><a href="#3-环境变量" class="headerlink" title="3. 环境变量"></a>3. 环境变量</h4><p>进入环境变量配置文件</p>
 <pre class="line-numbers language-bash"><code class="language-bash">vim /etc/profile
-
+   
 <span class="token comment" spellcheck="true"># 添加如下内容</span>
 PATH<span class="token operator">=</span><span class="token variable">$PATH</span>:/usr/local/git/bin   <span class="token comment" spellcheck="true"># git 的目录</span>
 <span class="token function">export</span> PATH
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>刷新配置让其生效</p>
+<p>刷新配置让其生效</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">source</span> /etc/profile
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><p>验证安装完成，查看 <code>git</code> 的版本号是否安装成功。</p>
+<p>验证安装完成，查看 <code>git</code> 的版本号是否安装成功。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> --version
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="二、创建用户"><a href="#二、创建用户" class="headerlink" title="二、创建用户"></a>二、创建用户</h3><h4 id="1-添加用户"><a href="#1-添加用户" class="headerlink" title="1. 添加用户"></a>1. 添加用户</h4><p>这里我创建的用户为：<code>great</code>，下文不再具体说明。创建完用户会对应在<code>/home</code>目录下生成同名文件夹，之后我们就会将Git仓库设置在该目录下。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">adduser great           <span class="token comment" spellcheck="true"># 创建用户</span>
 
@@ -1280,7 +1265,7 @@ nginx -t                   <span class="token comment" spellcheck="true"># 查�
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">221.6k</span>
+                <span class="white-color">222.1k</span>
             
             
             
