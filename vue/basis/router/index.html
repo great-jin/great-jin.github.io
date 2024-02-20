@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
@@ -517,7 +517,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    11 分
                 </div>
                 
 
@@ -641,55 +641,47 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-页面刷新"><a href="#4-页面刷新" class="headerlink" title="4. 页面刷新"></a>4. 页面刷新</h4><ul>
-<li><h5 id="添加判断"><a href="#添加判断" class="headerlink" title="添加判断"></a>添加判断</h5><p>  若使用路由跳转则可以通过配置路由出口组件实现页面刷新，在路由父页面的 <code>router-view</code> 标签内添加判断。</p>
+<h4 id="4-页面刷新"><a href="#4-页面刷新" class="headerlink" title="4. 页面刷新"></a>4. 页面刷新</h4><h5 id="1-添加判断"><a href="#1-添加判断" class="headerlink" title="(1) 添加判断"></a>(1) 添加判断</h5><p>若使用路由跳转则可以通过配置路由出口组件实现页面刷新，在路由父页面的 <code>router-view</code> 标签内添加判断。</p>
 <pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isRouterAlive<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span> <span class="token attr-name">v-if</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isRouterAlive<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="刷新方法"><a href="#刷新方法" class="headerlink" title="刷新方法"></a>刷新方法</h5><p>  在该页面中编写相应的刷新方法。</p>
+<h5 id="2-刷新方法"><a href="#2-刷新方法" class="headerlink" title="(2) 刷新方法"></a>(2) 刷新方法</h5><p>在该页面中编写相应的刷新方法。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    isRouterAlive<span class="token punctuation">:</span> <span class="token boolean">true</span>
-  <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        isRouterAlive<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token function">provide</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    reload<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>reload
-  <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        reload<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>reload
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">,</span>
 methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-  <span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>isRouterAlive <span class="token operator">=</span> <span class="token boolean">false</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>isRouterAlive <span class="token operator">=</span> <span class="token boolean">true</span>
+    <span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>isRouterAlive <span class="token operator">=</span> <span class="token boolean">false</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>isRouterAlive <span class="token operator">=</span> <span class="token boolean">true</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="调用刷新"><a href="#调用刷新" class="headerlink" title="调用刷新"></a>调用刷新</h5><p>  在需要刷新的子页面引入 <code>reload</code> ，并通过调用 <code>this.reload()</code> 实现页面刷新。</p>
+<h5 id="3-调用刷新"><a href="#3-调用刷新" class="headerlink" title="(3) 调用刷新"></a>(3) 调用刷新</h5><p>在需要刷新的子页面引入 <code>reload</code> ，并通过调用 <code>this.reload()</code> 实现页面刷新。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span>
-  inject<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'reload'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  methods<span class="token punctuation">:</span><span class="token punctuation">{</span>
+    inject<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'reload'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    methods<span class="token punctuation">:</span><span class="token punctuation">{</span>
     <span class="token function">refresh</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">reload</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 <span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="四、路由传参"><a href="#四、路由传参" class="headerlink" title="四、路由传参"></a>四、路由传参</h3><p>在实现不同页面间的跳转时往往需要进行参数的传递，路由传参的方式主要也有两大类，一种是将参数拼接的地址后，类似 <code>Get</code> 请求，另一种则类似 <code>Post</code> 进行隐式传参。</p>
 <p>下面同样对两种方式进行分别介绍。</p>
 <h4 id="1-路径无参"><a href="#1-路径无参" class="headerlink" title="1. 路径无参"></a>1. 路径无参</h4><p>此方式类似 <code>Post</code> 请求地址栏将不会拼接显示参数值。</p>
-<blockquote>
-<p><strong>(1) 参数传递</strong></p>
-</blockquote>
-<p>可以通过上面介绍的第一种跳转方式，利用组件进行跳转传参。</p>
+<h5 id="1-参数传递"><a href="#1-参数传递" class="headerlink" title="(1) 参数传递"></a>(1) 参数传递</h5><p>可以通过上面介绍的第一种跳转方式，利用组件进行跳转传参。</p>
 <pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-link</span> 
     <span class="token attr-name">:to</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{
         path:<span class="token punctuation">'</span>/login<span class="token punctuation">'</span>, 
@@ -709,20 +701,14 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(2) 参数获取</strong></p>
-</blockquote>
-<p>通过 <code>$route.params</code> 获取传递的参数，通过写在路由目标的声明周期中如 <code>mounted</code> 中，在页面加载时即获取参数。</p>
+<h5 id="2-参数获取"><a href="#2-参数获取" class="headerlink" title="(2) 参数获取"></a>(2) 参数获取</h5><p>通过 <code>$route.params</code> 获取传递的参数，通过写在路由目标的声明周期中如 <code>mounted</code> 中，在页面加载时即获取参数。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">const</span> _id <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$route<span class="token punctuation">.</span>params<span class="token punctuation">.</span>id
     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>_id<span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-路径带参"><a href="#2-路径带参" class="headerlink" title="2. 路径带参"></a>2. 路径带参</h4><p>此方式类似 <code>Get</code> 请求将参数拼接的地址后，如 <code>localhost:8080/table?id=1 </code>。</p>
-<blockquote>
-<p><strong>(1) 参数传递</strong></p>
-</blockquote>
-<p>和之前的一样带参跳转同样提供两种方式。</p>
+<h5 id="1-参数传递-1"><a href="#1-参数传递-1" class="headerlink" title="(1) 参数传递"></a>(1) 参数传递</h5><p>和之前的一样带参跳转同样提供两种方式。</p>
 <pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-link</span> 
     <span class="token attr-name">:to</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{
         path:<span class="token punctuation">'</span>/table<span class="token punctuation">'</span>, 
@@ -741,10 +727,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(2) 页面取值</strong></p>
-</blockquote>
-<p>通过 <code>$route.query</code> 获取传递的参数，</p>
+<h5 id="2-页面取值"><a href="#2-页面取值" class="headerlink" title="(2) 页面取值"></a>(2) 页面取值</h5><p>通过 <code>$route.query</code> 获取传递的参数，</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">const</span> _id <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$route<span class="token punctuation">.</span>query<span class="token punctuation">.</span>id
     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>_id<span class="token punctuation">)</span>
@@ -781,43 +764,39 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
 <span class="token keyword">export</span> <span class="token keyword">default</span> router
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-嵌套页面"><a href="#2-嵌套页面" class="headerlink" title="2. 嵌套页面"></a>2. 嵌套页面</h4><p>这里我结合了 <code>Antd</code> 的布局组件更美观的展示内容，当然也可以使用其他框架。</p>
-<ul>
-<li><h5 id="页面实现"><a href="#页面实现" class="headerlink" title="页面实现"></a>页面实现</h5><p>  具体代码如下：</p>
+<h5 id="1-页面实现"><a href="#1-页面实现" class="headerlink" title="(1) 页面实现"></a>(1) 页面实现</h5><p>具体代码如下：</p>
 <pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-layout</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-layout-sider</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu</span> <span class="token attr-name">theme</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dark<span class="token punctuation">"</span></span> <span class="token attr-name">mode</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>inline<span class="token punctuation">"</span></span> <span class="token attr-name">:default-selected-keys</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>[<span class="token punctuation">'</span>1<span class="token punctuation">'</span>]<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu-item</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>routePage(<span class="token punctuation">'</span>monitor<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>数据监控<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu-item</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu-item</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>routePage(<span class="token punctuation">'</span>staff<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>员工管理<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu-item</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-layout-sider</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-layout-sider</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu</span> <span class="token attr-name">theme</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dark<span class="token punctuation">"</span></span> <span class="token attr-name">mode</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>inline<span class="token punctuation">"</span></span> <span class="token attr-name">:default-selected-keys</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>[<span class="token punctuation">'</span>1<span class="token punctuation">'</span>]<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu-item</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>routePage(<span class="token punctuation">'</span>monitor<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>数据监控<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu-item</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-menu-item</span> <span class="token attr-name">key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>routePage(<span class="token punctuation">'</span>staff<span class="token punctuation">'</span>)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>员工管理<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu-item</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-menu</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-layout-sider</span><span class="token punctuation">></span></span>
 
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-layout-content</span><span class="token punctuation">></span></span>
-    <span class="token comment" spellcheck="true">&lt;!-- 路由出口，页面展示区域 --></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span> <span class="token punctuation">/></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-layout-content</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-layout-content</span><span class="token punctuation">></span></span>
+        <span class="token comment" spellcheck="true">&lt;!-- 路由出口，页面展示区域 --></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-layout-content</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a-layout</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h5><p>  为菜单按钮绑定点击事件，当用户点击时进行路由跳转。</p>
+<h5 id="2-事件绑定"><a href="#2-事件绑定" class="headerlink" title="(2) 事件绑定"></a>(2) 事件绑定</h5><p>为菜单按钮绑定点击事件，当用户点击时进行路由跳转。</p>
 <pre class="line-numbers language-js"><code class="language-js">methods<span class="token punctuation">:</span><span class="token punctuation">{</span>
-  <span class="token function">routePage</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">switch</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">{</span>
-      <span class="token keyword">case</span> <span class="token string">'monitor'</span><span class="token punctuation">:</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>$router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/home/monitor'</span><span class="token punctuation">)</span>
-        <span class="token keyword">break</span>
-      <span class="token keyword">case</span> <span class="token string">'staff'</span><span class="token punctuation">:</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>$router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/home/staff'</span><span class="token punctuation">)</span>
-        <span class="token keyword">break</span>
+    <span class="token function">routePage</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'monitor'</span><span class="token punctuation">:</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>$router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/home/monitor'</span><span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'staff'</span><span class="token punctuation">:</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>$router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/home/staff'</span><span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-循环异常"><a href="#3-循环异常" class="headerlink" title="3. 循环异常"></a>3. 循环异常</h4><p>按照上面的配置当你重复点击跳转同一个页面时控制台将会报错，提示 <code>Avoided redundant navigation to current location</code> 表明在进行重复的路由。</p>
 <p>因此我们需要对此进行额外处理，在 <code>router/index.js</code> 文件末尾添加以下代码，需要注意这里 <code>Router.prototype</code> 的 <code>Router</code> 要和 <code>Vue.use(Router)</code> 中名称一致。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> originalPush <span class="token operator">=</span> Router<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>push
@@ -864,7 +843,7 @@ Router<span class="token punctuation">.</span>prototype<span class="token punctu
 <h4 id="4-过期时间"><a href="#4-过期时间" class="headerlink" title="4. 过期时间"></a>4. 过期时间</h4><p>在现实的开发需求中，我们往往需要设置登录过期时间，类似于传统 <code>cookies </code>过期时间。而 <code>localStorage </code>默认是没有时间属性的，所有需要我们进行自定义。</p>
 <p>因为 <code>localStorage </code>存入的键值对默认都为字符串，这里用到 <code>JSON </code>格式的对象转化实现存入对象数据。</p>
 <blockquote>
-<p><code>Vue </code>页面存入数据代码如下：</p>
+<p>(Ⅰ) <code>Vue</code> 页面存入数据代码如下：</p>
 </blockquote>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">let</span> items <span class="token operator">=</span> <span class="token punctuation">{</span>
     flag<span class="token punctuation">:</span> <span class="token string">'123'</span><span class="token punctuation">,</span>
@@ -873,7 +852,7 @@ Router<span class="token punctuation">.</span>prototype<span class="token punctu
 localStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'token'</span><span class="token punctuation">,</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>items<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p><code>router/index.js </code>文件判断代码如下：</p>
+<p>(Ⅱ) <code>router/index.js</code> 文件判断代码如下：</p>
 </blockquote>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 过期时间为一天，时间戳形式</span>
 <span class="token keyword">let</span> ExpiresTime <span class="token operator">=</span> <span class="token number">86400000</span>
@@ -1189,12 +1168,12 @@ router<span class="token punctuation">.</span><span class="token function">befor
                         <span class="chip bg-color">Vue</span>
                     </a>
                     
-                    <a href="/tags/Ant-Design/">
-                        <span class="chip bg-color">Ant Design</span>
-                    </a>
-                    
                     <a href="/tags/Axios/">
                         <span class="chip bg-color">Axios</span>
+                    </a>
+                    
+                    <a href="/tags/Ant-Design/">
+                        <span class="chip bg-color">Ant Design</span>
                     </a>
                     
                 </div>
@@ -1208,7 +1187,7 @@ router<span class="token punctuation">.</span><span class="token function">befor
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/app/jenkins/deploy/">
+                <a href="/install/jenkins/deploy/">
                     <div class="card-image">
                         
                         <img src="/album/banner/software/jenkins.png" class="responsive-img" alt="Jenkins部署教程">
@@ -1516,7 +1495,7 @@ router<span class="token punctuation">.</span><span class="token function">befor
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

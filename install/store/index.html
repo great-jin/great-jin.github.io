@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Docker基本命令, 布袋青年">
+    <meta name="keywords" content="图床与网盘搭建教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Docker基本命令 | 布袋青年</title>
+    <title>图床与网盘搭建教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -327,12 +327,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/linux/docker/1.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/linux/cloud.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Docker基本命令</h1>
+                    <h1 class="description center-align post-title">图床与网盘搭建教程</h1>
                 </div>
             </div>
         </div>
@@ -483,8 +483,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-category">
-                                服务器
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                服务部署
                             </a>
                         
                     </div>
@@ -496,28 +496,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-01
+                    2022-11-27
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    919
+                    576
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    2 分
                 </div>
                 
 
@@ -537,109 +537,37 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>Docker 是近些年来被广泛使用的一项技术，是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux 或 Windows 操作系统的机器上，也可以实现虚拟化。</p>
-</blockquote>
-<p>对于编程工作者而言，当临时需要用到某个环境即可快速通过容器构建服务，简单且又高效。下面将简单介绍 <code>Docker</code> 的基本操作。</p>
-<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>默认安装路径：<code>/var/lib/docker</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">yum -y <span class="token function">install</span> docker                   <span class="token comment" spellcheck="true"># 通过 yum 源安装</span>
-
-systemctl start docker                  <span class="token comment" spellcheck="true"># 启动服务</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务更新"><a href="#2-服务更新" class="headerlink" title="2. 服务更新"></a>2. 服务更新</h4><p>在执行 <code>curl -fsSL https://get.docker.com/ | sh</code> 可能会提示超时，多试几次就可以了。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                          <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
-
-yum -y remove <span class="token operator">&lt;</span>xxx<span class="token operator">></span>                          <span class="token comment" spellcheck="true"># 删除上一步查询的文件包</span>
-
-curl -fsSL https://get.docker.com/ <span class="token operator">|</span> sh      <span class="token comment" spellcheck="true"># 安装最新版本</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务卸载"><a href="#3-服务卸载" class="headerlink" title="3. 服务卸载"></a>3. 服务卸载</h4><pre class="line-numbers language-bash"><code class="language-bash">
-yum list installed<span class="token operator">|</span><span class="token function">grep</span> docker      <span class="token comment" spellcheck="true"># 查看安装的 docker 文件包</span>
-
-rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                 <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
-
-yum -y remove <span class="token operator">&lt;</span>xxx<span class="token operator">></span>                 <span class="token comment" spellcheck="true"># 删除上一步查询的文件包</span>
-
-rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                 <span class="token comment" spellcheck="true"># 检查是否已删除</span>
-
-<span class="token function">rm</span> -rf /var/lib/docker              <span class="token comment" spellcheck="true"># 删除 docker 镜像文件</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-Docker-compose"><a href="#4-Docker-compose" class="headerlink" title="4. Docker compose"></a>4. Docker compose</h4><p><code>Docker</code> 容器基于 <code>CLI</code> 运行，而 <code>Docker compose</code> 则基于 <code>yaml</code> 配置文件，后者相对自动化程度更高。</p>
-<p>其安装步骤如下，若使用 <code>curl</code> 命令下载失败可直接进入 <code>Docker GitHub</code> 发布页手动下载文件再上传至服务器，<a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">官网直达</a>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件下载</span>
-curl -L <span class="token string">"https://mirrors.tuna.tsinghua.edu.cn/docker-compose/latest/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -s<span class="token variable">)</span></span>/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -m<span class="token variable">)</span></span>/docker-compose"</span> -o /usr/local/bin/docker-compose
-
-<span class="token comment" spellcheck="true"># 文件授权</span>
-<span class="token function">chmod</span> +x /usr/local/bin/docker-compose
-
-<span class="token comment" spellcheck="true"># 文件链接</span>
-<span class="token function">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-
-<span class="token comment" spellcheck="true"># 安装验证</span>
-docker-compose version
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、服务管理"><a href="#二、服务管理" class="headerlink" title="二、服务管理"></a>二、服务管理</h3><h4 id="1-服务启停"><a href="#1-服务启停" class="headerlink" title="1. 服务启停"></a>1. 服务启停</h4><p><code>Docker</code> 服务启停命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">systemctl status docker             <span class="token comment" spellcheck="true"># 查看状态</span>
-
-systemctl start docker              <span class="token comment" spellcheck="true"># 启动服务</span>
-
-systemctl stop docker               <span class="token comment" spellcheck="true"># 停止服务</span>
-
-systemctl restart docker            <span class="token comment" spellcheck="true"># 重启服务</span>
-
-systemctl <span class="token function">enable</span> docker             <span class="token comment" spellcheck="true"># 设置开机自启</span>
-
-systemctl disable docker            <span class="token comment" spellcheck="true"># 关闭开机启动</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-镜像配置"><a href="#2-镜像配置" class="headerlink" title="2. 镜像配置"></a>2. 镜像配置</h4><p>默认 <code>Docker</code> 下载容器从其官网进行拉取，可通过修改配置文件手动指定镜像地址。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑配置文件</span>
-<span class="token function">vi</span> /etc/docker/daemon.json
-
-<span class="token comment" spellcheck="true"># 设置镜像为网易源</span>
-<span class="token punctuation">{</span>
-    <span class="token string">"registry-mirrors"</span><span class="token keyword">:</span> <span class="token punctuation">[</span><span class="token string">"http://hub-mirror.c.163.com"</span><span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment" spellcheck="true"># 修改文件后需重启服务</span>
-systemctl restart docker
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-容器创建"><a href="#3-容器创建" class="headerlink" title="3. 容器创建"></a>3. 容器创建</h4><h5 id="1-基本命令"><a href="#1-基本命令" class="headerlink" title="(1) 基本命令"></a>(1) 基本命令</h5><pre class="line-numbers language-bash"><code class="language-bash">--restart<span class="token operator">=</span>always                                <span class="token comment" spellcheck="true"># 自启服务</span>
-
---privileged<span class="token operator">=</span>true                               <span class="token comment" spellcheck="true"># 赋予权限</span>
-     
-docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>no       <span class="token comment" spellcheck="true"># 关闭容器自启  </span>
-     
-docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>always   <span class="token comment" spellcheck="true"># 开启容器自启  </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-端口映射"><a href="#2-端口映射" class="headerlink" title="(2) 端口映射"></a>(2) 端口映射</h5><p>通过 <code>-p</code> 实现容器端口与外部服务端口映射通讯，如下行命令中即将容器 <code>3306</code> 端口映射到外部的 <code>4306</code> ，因此访问对应服务时应设置端口为 <code>4306</code> 。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run -d -p 4306:3306 mysql:5.7
+                <p>随着网站服务的需求增长，直接将图片等资源直接上传到站点根目录显然大大消耗了服务器资源。因此，越来越多的站长选择通过将图片等资源通过图传服务进行管理，不仅加快访问速度，更能降低服务器占用。</p>
+<p>现在市面上有许多的免费图传，且稳定性也还不错，但既然自己都有服务器了，当然是选择自建图床了。</p>
+<h3 id="一、兰空图床"><a href="#一、兰空图床" class="headerlink" title="一、兰空图床"></a>一、兰空图床</h3><p>图床这里我选择的是兰空图床，并通过 <code>Docker</code> 容器进行构建，步骤如下。</p>
+<h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>首先创建容器数据映射目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /home/budai/dockerdata/lsky
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="3-文件映射"><a href="#3-文件映射" class="headerlink" title="(3) 文件映射"></a>(3) 文件映射</h5><p>通过 <code>-v</code> 实现容器内外的文件映射，当我们构建的服务需要修改配置文件时只需修改映射出来的文件即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
--p 4306:3306 \
--v /home/dockerdata/mysql/conf:/etc/mysql/conf.d \ 
-mysql:5.7
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、容器管理"><a href="#三、容器管理" class="headerlink" title="三、容器管理"></a>三、容器管理</h3><h4 id="1-镜像操作"><a href="#1-镜像操作" class="headerlink" title="1. 镜像操作"></a>1. 镜像操作</h4><h5 id="1-删除镜像"><a href="#1-删除镜像" class="headerlink" title="(1) 删除镜像"></a>(1) 删除镜像</h5><pre class="line-numbers language-bash"><code class="language-bash">docker images                      <span class="token comment" spellcheck="true"># 查看所有镜像</span>
-
-docker rmi <span class="token operator">&lt;</span>Images ID<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 删除对应镜像</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-容器操作"><a href="#2-容器操作" class="headerlink" title="2. 容器操作"></a>2. 容器操作</h4><h5 id="1-进入容器"><a href="#1-进入容器" class="headerlink" title="(1) 进入容器"></a>(1) 进入容器</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token function">bash</span>         <span class="token comment" spellcheck="true"># 进入容器</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-容器查看"><a href="#2-容器查看" class="headerlink" title="(2) 容器查看"></a>(2) 容器查看</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">ps</span>               <span class="token comment" spellcheck="true"># 查看运行中容器</span>
-
-docker <span class="token function">ps</span> -a            <span class="token comment" spellcheck="true"># 查看所有容器</span>
-
-docker <span class="token function">rename</span> <span class="token operator">&lt;</span>oldname<span class="token operator">></span> <span class="token operator">&lt;</span>newname<span class="token operator">></span>      <span class="token comment" spellcheck="true"># 重命名</span>
+<h4 id="2-容器启动"><a href="#2-容器启动" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>目录创建完成之后即可拉取镜像启动容器，这里将容器 <code>80</code> 端口映射到服务器的 <code>9200</code> 端口，注意配置防火墙规则。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run --privileged<span class="token operator">=</span>true -d \
+--name lsky \
+-p 9200:80 \
+-v /home/budai/dockerdata/lsky:/var/www/html \
+halcyonazure/lsky-pro-docker:latest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-删除容器"><a href="#3-删除容器" class="headerlink" title="(3) 删除容器"></a>(3) 删除容器</h5><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">rm</span> <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 删除对应容器</span>
-
-docker <span class="token function">rm</span> -f <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>         <span class="token comment" spellcheck="true"># 删除运行中容器</span>
-
-docker <span class="token function">rm</span> <span class="token variable"><span class="token variable">$(</span>docker <span class="token function">ps</span> -a -q<span class="token variable">)</span></span>        <span class="token comment" spellcheck="true"># 删除所有容器(慎用)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-日志查看"><a href="#4-日志查看" class="headerlink" title="(4) 日志查看"></a>(4) 日志查看</h5><pre class="line-numbers language-bash"><code class="language-bash">docker logs <span class="token operator">&lt;</span>CONTAINER ID<span class="token operator">></span>          <span class="token comment" spellcheck="true"># 查看运行日志</span>
+<h4 id="3-服务配置"><a href="#3-服务配置" class="headerlink" title="3. 服务配置"></a>3. 服务配置</h4><p>访问 <code>ip:9200</code> 即可出现下图页面，选择下一步。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/1.png"></p>
+<h5 id="1-数据库配置"><a href="#1-数据库配置" class="headerlink" title="(1) 数据库配置"></a>(1) 数据库配置</h5><p>在 <code>MySQL</code> 中提前创建好数据库，在此填写相应的数据库信息，其中邮箱和密码为后续图床登录账号信息。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/2.png"></p>
+<h5 id="2-完成安装"><a href="#2-完成安装" class="headerlink" title="(2) 完成安装"></a>(2) 完成安装</h5><p>完成配置后确定，出现下图说明安装成功。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/3.png"></p>
+<h4 id="4-访问测试"><a href="#4-访问测试" class="headerlink" title="4. 访问测试"></a>4. 访问测试</h4><h5 id="1-登录图床"><a href="#1-登录图床" class="headerlink" title="(1) 登录图床"></a>(1) 登录图床</h5><p>根据上面设置的邮箱和密码登录图床，即可出现下图内容：<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/5.png"></p>
+<h5 id="2-图片上传"><a href="#2-图片上传" class="headerlink" title="(2) 图片上传"></a>(2) 图片上传</h5><p>点击右侧上传图片，完成上传之后将自动生成图片链接，根据你的需求选择不同形式的链接即可。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/6.png"></p>
+<h3 id="二、网盘搭建"><a href="#二、网盘搭建" class="headerlink" title="二、网盘搭建"></a>二、网盘搭建</h3><h4 id="1-目录创建-1"><a href="#1-目录创建-1" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>同样需要先创建容器数据映射目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /home/budai/dockerdata/nextcloud
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-容器启动-1"><a href="#2-容器启动-1" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>目录创建完成之后拉取镜像启动即可。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run --privileged<span class="token operator">=</span>true -d \
+-p 9300:80 \
+--name nextcloud \
+-v /home/budai/dockerdata/nextcloud:/var/www/html \
+nextcloud
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-服务配置-1"><a href="#3-服务配置-1" class="headerlink" title="3. 服务配置"></a>3. 服务配置</h4><p>我们需要对网盘服务的数据选择存储介质，这里我选择 <code>MySQL</code> 数据库，同样需要提前创建好数据库。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/1.png"></p>
+<h4 id="4-访问测试-1"><a href="#4-访问测试-1" class="headerlink" title="4. 访问测试"></a>4. 访问测试</h4><p>完成之后通过上一步配置的密码登录服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/2.png"></p>
+<p>出现下图则说明安装成功。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/3.png"></p>
 
                 
             </div>
@@ -666,7 +594,7 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/linux/docker/">https://great-jin.github.io/linux/docker/</a>
+                    <a href="https://great-jin.github.io/install/store/">https://great-jin.github.io/install/store/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -885,30 +813,30 @@ docker <span class="token function">rm</span> <span class="token variable"><span
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/web/mybatis/">
+                <a href="/vue/tool/npm/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/util/mybatis.jpg" class="responsive-img" alt="MyBatis基础教程">
+                        <img src="/album/banner/front/nodejs.png" class="responsive-img" alt="NPM使用教程">
                         
-                        <span class="card-title">MyBatis基础教程</span>
+                        <span class="card-title">NPM使用教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MyBatis基本操作示例。
+                            NPM基本命令使用教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-06
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-03
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
-                                    后端
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    开发工具
                                 </a>
                             
                             
@@ -918,8 +846,8 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MyBatis/">
-                        <span class="chip bg-color">MyBatis</span>
+                    <a href="/tags/Node-js/">
+                        <span class="chip bg-color">Node.js</span>
                     </a>
                     
                 </div>
@@ -933,30 +861,30 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/linux/nginx/">
+                <a href="/hexo/domain/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/linux/nginx/1.jpeg" class="responsive-img" alt="Nginx负载配置教程">
+                        <img src="/album/banner/hexo/8.png" class="responsive-img" alt="GitHub Page域名绑定">
                         
-                        <span class="card-title">Nginx负载配置教程</span>
+                        <span class="card-title">GitHub Page域名绑定</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Nginx安装与网络请求代理配置教程。
+                            GitHub Page域名绑定教程。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-26
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-category">
-                                    服务器
+                            <a href="/categories/HEXO/" class="post-category">
+                                    HEXO
                                 </a>
                             
                             
@@ -966,12 +894,8 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Linux/">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                    <a href="/tags/Nginx/">
-                        <span class="chip bg-color">Nginx</span>
+                    <a href="/tags/HEXO%E6%9C%8D%E5%8A%A1/">
+                        <span class="chip bg-color">HEXO服务</span>
                     </a>
                     
                 </div>
@@ -1245,7 +1169,7 @@ docker <span class="token function">rm</span> <span class="token variable"><span
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

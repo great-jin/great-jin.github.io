@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java Build对象构建教程, 布袋青年">
+    <meta name="keywords" content="JVM参数调优教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java Build对象构建教程 | 布袋青年</title>
+    <title>JVM参数调优教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -327,12 +327,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/36.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/44.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java Build对象构建教程</h1>
+                    <h1 class="description center-align post-title">JVM参数调优教程</h1>
                 </div>
             </div>
         </div>
@@ -492,28 +492,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-05-27
+                    2024-02-07
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    682
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    8 分
                 </div>
                 
 
@@ -533,87 +533,251 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>如果你足够细心的话，可以发现越来越多的类库其对象初始化方式都不再是传统的构造器方式创建，而是通过 <code>build</code> 方式创建。那 <code>build</code> 方式构造对象和基础的构建器初始化对象又有什么区别？在代码中又该如何使用 <code>build</code> 构造器？又应当在什么应用场景下使用呢？</p>
+                <h3 id="一、参数配置"><a href="#一、参数配置" class="headerlink" title="一、参数配置"></a>一、参数配置</h3><h4 id="1-配置方式"><a href="#1-配置方式" class="headerlink" title="1. 配置方式"></a>1. 配置方式</h4><p>在虚拟机中 <code>-X</code> 和 <code>-D</code> 都可用于指定 <code>JVM</code> 参数，但它们在使用方式和作用范围上有一些区别。</p>
+<ul>
+<li><p><code>-X</code> 用于指定非标准的 <code>JVM</code> 参数，这些参数通常是供具体的 <code>JVM</code> 实现或特定的虚拟机选项使用的。它的使用方式是 <code>-X&lt;parameter&gt;</code> ，其中 <code>&lt;parameter&gt;</code> 是具体的 <code>JVM</code> 参数名称。</p>
+</li>
+<li><p><code>-D</code> 用于设置系统属性，可以在应用程序中通过 <code>System.getProperty()</code> 方法获取。它的使用方式是 <code>-D&lt;property&gt;=&lt;value&gt;</code>，其中 <code>&lt;property&gt;</code> 是属性名称，<code>&lt;value&gt;</code> 是属性值。</p>
+</li>
+</ul>
+<p>总结： <code>-X</code> 参数用于指定 <code>JVM</code> 的非标准参数，而 <code>-D</code> 参数用于设置系统属性。<code>-X</code> 参数通常影响 <code>JVM</code> 的行为和性能，而 <code>-D</code> 参数提供了一种在应用程序中传递配置信息的机制。</p>
+<h5 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="(1) 基本格式"></a>(1) 基本格式</h5><p><code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
 <blockquote>
-<p>下面就逐一解答上述几个疑问，让我们进入正文吧。</p>
+<ul>
+<li>若用于配置是否启用，由 <code>+ -</code> 分别控制开启与关闭。</li>
+<li>若用于配置大小或数值变量，遵循 <code>&lt;option&gt;=&lt;value&gt;</code> 格式。</li>
+</ul>
 </blockquote>
-<h3 id="一、示例介绍"><a href="#一、示例介绍" class="headerlink" title="一、示例介绍"></a>一、示例介绍</h3><p>下面以常用的网络请求类库 <code>OkHttp</code> 为例，其 <code>Request</code> 对象创建正是通过 <code>build</code> 方式实现。</p>
-<p>如下示例中通过 build 方式创建了一个基本的 <code>post</code> 类型请求对象。</p>
-<pre class="line-numbers language-java"><code class="language-java">Request request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Request<span class="token punctuation">.</span>Builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、配置教程"><a href="#二、配置教程" class="headerlink" title="二、配置教程"></a>二、配置教程</h3><h4 id="1-实现原理"><a href="#1-实现原理" class="headerlink" title="1. 实现原理"></a>1. 实现原理</h4><p><code>build</code> 方式构建的对象的原理十分简单，就是通过内部类实现数据赋值的一个过程。</p>
-<h4 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2. 代码实现"></a>2. 代码实现</h4><p>新建 <code>TestProperty</code> 类用于后续初始化创建，其中 <code>Builder</code> 内部类正是实现 <code>build</code> 方式初始化关键。</p>
-<p><code>TestProperty</code> 类的完整代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestProperty</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 表示开启 option 选项</span>
+-XX:+<span class="token operator">&lt;</span>option<span class="token operator">></span>
 
-    <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 表示关闭 option 选项</span>
+-XX:-<span class="token operator">&lt;</span>option<span class="token operator">></span>    
 
-    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 表示将 option 值赋为 value</span>
+-XX:<span class="token operator">&lt;</span>option<span class="token operator">>=</span><span class="token operator">&lt;</span>value<span class="token operator">></span>    
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-优先级"><a href="#2-优先级" class="headerlink" title="2. 优先级"></a>2. 优先级</h4><p>在 <code>Java</code> 命令行运行 <code>JAR</code> 包时，<code>JVM</code> 参数可以在 <code>-jar</code> 选项之前或之后指定，这两种方式会影响参数的解析和执行顺序。</p>
+<blockquote>
+<ul>
+<li>参数在 <code>-jar</code> 之前，则会在 <code>JVM</code> 启动前解析和应用。</li>
+<li>参数在 <code>-jar</code> 之后，则会在解析 <code>JAR</code> 包时被应用。</li>
+<li>若 <code>JVM</code> 参数与 <code>JAR</code> 包的命令行参数存在冲突，<code>JVM</code> 参数的优先级更高。</li>
+</ul>
+</blockquote>
+<p>如下示例中方式一的 <code>-Xmx512m</code> 优先级高于方式二中的 <code>-Xmx1024m</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 方式一</span>
+java -Xmx512m -jar myapp.jar
 
-    <span class="token keyword">private</span> String describer<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 方式二</span>
+java -jar myapp.jar -Xmx1024m
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、常用配置"><a href="#二、常用配置" class="headerlink" title="二、常用配置"></a>二、常用配置</h3><h4 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="1. 内存参数"></a>1. 内存参数</h4><p>常见的 <code>JVM</code> 内存参数如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 堆内存初始值</span>
+-Xms2G 
 
-    <span class="token keyword">private</span> <span class="token function">TestProperty</span><span class="token punctuation">(</span>Builder builder<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> builder<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> builder<span class="token punctuation">.</span>name<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>describer <span class="token operator">=</span> builder<span class="token punctuation">.</span>describer<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true"># 堆内存最大值</span>
+-Xmx2G
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Builder <span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true"># 每个线程的堆栈大小，默认 1MB，在相同物理内存下，减小这个值能生成更多的线程</span>
+<span class="token comment" spellcheck="true"># 但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在 3000~5000 左右。</span>
+-Xss512k
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Builder</span> <span class="token punctuation">{</span>
+<span class="token comment" spellcheck="true"># 设置年轻代大小，增大年轻代后，将会减小年老代大小。</span>
+<span class="token comment" spellcheck="true"># 此值对系统性能影响较大，Sun 官方推荐配置为整个堆的 3/8。</span>
+-Xmn1024m
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-JVM参数"><a href="#2-JVM参数" class="headerlink" title="2. JVM参数"></a>2. JVM参数</h4><p>常见的 <code>JVM</code> 配置参数如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># CMS垃圾回收器并行线程线，推荐值为CPU核心数。</span>
+-XX:ConcGCThreads<span class="token operator">=</span>4
 
-        <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 新生代并行收集器的线程数。</span>
+-XX:ParallelGCThreads<span class="token operator">=</span>8
 
-        <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 设置新生代中 Eden 与 Survivor 的比例，默认为 8，即 8:1:1</span>
+-XX:SurvivorRatio<span class="token operator">=</span>8
 
-        <span class="token keyword">private</span> String describer<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 直接晋升到老年代的对象大小</span>
+<span class="token comment" spellcheck="true"># 设置该值后将忽略 MaxTenuringThreshold 设置，当对象大小达到设置值后直接晋升老年代</span>
+-XX:PretenureSizeThreshold<span class="token operator">=</span>1m
 
-        <span class="token keyword">public</span> Builder <span class="token function">id</span><span class="token punctuation">(</span>String val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> val<span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true"># 设置垃圾最大年龄，取值 0~15，默认为 15</span>
+-XX:MaxTenuringThreshold<span class="token operator">=</span>10
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-系统参数"><a href="#3-系统参数" class="headerlink" title="3. 系统参数"></a>3. 系统参数</h4><p>常见的系统参数配置参数如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 防止虚拟机阻塞</span>
+-Djava.security.egd<span class="token operator">=</span>file:/dev/./urandom
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="4-GC参数"><a href="#4-GC参数" class="headerlink" title="4. GC参数"></a>4. GC参数</h4><p>常见的虚拟机垃圾回收（<code>GC</code>）参数配置参数如下：</p>
+<p>开启日志后生成的 <code>GC</code> 信息文件可通过工具进行分析，推荐在线分析网站：<code>https://gceasy.io</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 打印 gc 发生的时间戳</span>
+-XX:+PrintGCDateStamps
 
-        <span class="token keyword">public</span> Builder <span class="token function">name</span><span class="token punctuation">(</span>String val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> val<span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true"># 打印 gc 发生时的分代信息</span>
+-XX:+PrintTenuringDistribution
 
-        <span class="token keyword">public</span> Builder <span class="token function">describer</span><span class="token punctuation">(</span>String val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">this</span><span class="token punctuation">.</span>describer <span class="token operator">=</span> val<span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true"># 打印 gc 停顿时长</span>
+-XX:+PrintGCApplicationStoppedTime
 
-        <span class="token keyword">public</span> TestProperty <span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TestProperty</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-效果展示"><a href="#3-效果展示" class="headerlink" title="3. 效果展示"></a>3. 效果展示</h4><p>完成上述 <code>TestProperty</code> 类的创建之后，下面就使用其并通过 <code>build</code> 方式创建对象。</p>
-<p>通过下述的示例代码可以看到 <code>build</code> 方式创建的两个测试对象我们可以清晰的明白对象每个属性字段赋予的值，并且提供可以随意打乱赋值顺序而无需创建对应的构造器。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    TestProperty property1 <span class="token operator">=</span> TestProperty<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token string">"123456"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">"I am Alex"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>property1<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true"># 打印 gc 间隔的服务运行时长</span>
+-XX:+PrintGCApplicationConcurrentTime
 
-    TestProperty property2 <span class="token operator">=</span> TestProperty<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">"I am Beth"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>property2<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、总结归纳"><a href="#三、总结归纳" class="headerlink" title="三、总结归纳"></a>三、总结归纳</h3><p>下面就对 <code>build</code> 方式创建对象进行简单的归纳，总结一下其优点与适用场景。</p>
-<p>当一个类包含多个属性字段时，通过 <code>build</code> 方式初始化对象则无需在定义时声明多个构造器，从而大大降低代码复杂度。同时传统的构造器方式在面对大量字段时初始化时很难核对每个字段赋予的属性值，<code>build</code> 同样可以解决这一痛点。</p>
-<p>总而言之，当一个实体类的属性字段超过一定数量时，即可考虑使用 <code>build</code> 从而降低代码复杂度并提高可读性。</p>
+<span class="token comment" spellcheck="true"># 打印 gc 详情，包括 gc 前/内存等</span>
+-XX:+PrintGCDetails
+
+<span class="token comment" spellcheck="true"># 指定 gc log 的路径，存放于当前 gclogs 目录下的 gc.log.date 文件</span>
+-Xloggc:./gclogs/gc.log.date
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、JDK工具"><a href="#三、JDK工具" class="headerlink" title="三、JDK工具"></a>三、JDK工具</h3><h4 id="1-Jinfo"><a href="#1-Jinfo" class="headerlink" title="1. Jinfo"></a>1. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>Java</code> 虚拟机（<code>JVM</code>）的配置信息。</p>
+<p>通过 <code>jinfo</code> 可以获取和修改正在运行的 <code>Java</code> 进程的虚拟机配置参数，对于调优和诊断 <code>Java</code> 应用程序是很有帮助的。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看进程的虚拟机参数信息</span>
+jinfo <span class="token operator">&lt;</span>options<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="1-flags"><a href="#1-flags" class="headerlink" title="(1) flags"></a>(1) flags</h5><p>显示所有可用的虚拟机参数及其当前值。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jinfo -flags <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-flag"><a href="#2-flag" class="headerlink" title="(2) flag"></a>(2) flag</h5><p>显示指定标志的值。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jinfo -flag <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+<span class="token comment" spellcheck="true"># 查看 pid 为 123 的 ThreadStackSize 参数信息</span>
+<span class="token comment" spellcheck="true"># 输出: -XX:ThreadStackSize=1024</span>
+jinfo -flag ThreadStackSize 123
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-flag"><a href="#3-flag" class="headerlink" title="(3) -flag [+|-]"></a>(3) -flag [+|-]</h5><p>启用或禁用指定的标志。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启配置</span>
+jinfo -flag +<span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+<span class="token comment" spellcheck="true"># 关闭配置</span>
+jinfo -flag -<span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-sysprops"><a href="#4-sysprops" class="headerlink" title="(4) sysprops"></a>(4) sysprops</h5><p>显示 <code>Java</code> 系统属性的值。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jinfo -sysprops <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-Jstat"><a href="#2-Jstat" class="headerlink" title="2. Jstat"></a>2. Jstat</h4><p><code>jstat</code> 是 <code>JDK</code> 中的一个命令行工具，用于监视 <code>Java</code> 虚拟机 <code>(JVM)</code> 的各种统计信息。</p>
+<p>它提供了对堆内存、垃圾回收、类装载、<code>JIT</code> 编译等方面的实时性能数据，帮助开发人员和系统管理员诊断和分析 <code>Java</code> 应用程序的性能问题。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># &lt;pid>: jps process id</span>
+<span class="token comment" spellcheck="true"># &lt;interval>: time interval, ms</span>
+jstat -gc <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">&lt;</span>interval<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># Simple info</span>
+jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">&lt;</span>interval<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/31.png"><br><img src="/album/loading.gif" data-original="/album/article/java/jvm/32.png"></p>
+<hr>
+<ul>
+<li><strong>S0C</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）的容量 (KB) 。</li>
+<li><strong>S1C</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）的容量 (KB)。</li>
+<li><strong>S0U</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）目前已使用空间 (KB) 。</li>
+<li><strong>S1U</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）目前已使用空间 (KB) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>EC</strong>：年轻代中 <code>Eden</code>（伊甸园）的容量 (KB) 。</li>
+<li><strong>EU</strong>：年轻代中 <code>Eden</code>（伊甸园）目前已使用空间 (KB)。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>OC</strong>：<code>Old</code> 代的容量 (KB) 。</li>
+<li><strong>OU</strong>：<code>Old</code> 代目前已使用空间 (KB) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>MC</strong>：元数据区的容量 (KB) 。</li>
+<li><strong>MU</strong>：元数据区目前已使用空间 (KB) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>YGC</strong>：从应用程序启动到采样时年轻代中 <code>GC</code> 次数 。</li>
+<li><strong>YGCT</strong>：从应用程序启动到采样时年轻代中 <code>GC</code> 所用时间(秒) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>FGC</strong>：从应用程序启动到采样时 <code>Old</code> 代 <code>Full GC</code> 次数 。</li>
+<li><strong>FGCT</strong>：从应用程序启动到采样时 <code>Old</code> 代 <code>Full GC</code> 所用时间(秒) 。</li>
+<li><strong>GCT</strong>：从应用程序启动到采样时 <code>GC</code> 用的总时间(s) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>NGCMN</strong>：年轻代 (<code>Young</code>) 中初始化(最小)的大小 (字节) 。</li>
+<li><strong>NGCMX</strong>：年轻代 (<code>Young</code>) 的最大容量 (字节) 。</li>
+<li><strong>NGC</strong>：年轻代 (<code>Young</code>) 中当前的容量 (字节) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>OGCMN</strong>：<code>Old</code> 代中初始化(最小)的大小 (字节) 。</li>
+<li><strong>OGCMX</strong>：<code>Old</code> 代的最大容量 (字节) 。</li>
+<li><strong>OGC</strong>：<code>Old</code> 代当前新生成的容量 (字节) 。</li>
+<li><strong>O</strong>：<code>Old</code> 代已使用的占当前容量百分比。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>S0</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）已使用的占当前容量百分比。</li>
+<li><strong>S1</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）已使用的占当前容量百分比 。</li>
+<li><strong>S0CMX</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）的最大容量 (字节) 。</li>
+<li><strong>S1CMX</strong> ：年轻代中第二个 <code>Survivor</code>（幸存区）的最大容量 (字节) 。</li>
+<li><strong>E</strong>：年轻代中 <code>Eden</code>（伊甸园）已使用的占当前容量百分比 。</li>
+<li><strong>ECMX</strong>：年轻代中 <code>Eden</code>（伊甸园）的最大容量 (字节) 。</li>
+</ul>
+<hr>
+<ul>
+<li><strong>DSS</strong>：当前需要 <code>Survivor</code>（幸存区）的容量 (字节)（ <code>Eden</code> 区已满）。</li>
+<li><strong>TT</strong>： 持有次数限制。</li>
+<li><strong>MTT</strong> ： 最大持有次数限制。</li>
+</ul>
+<h4 id="3-Jstack"><a href="#3-Jstack" class="headerlink" title="3. Jstack"></a>3. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
+<p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查询进程堆栈信息</span>
+jstack <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># &lt;line num>: 限制显示行数</span>
+<span class="token comment" spellcheck="true"># &lt;pid_16>: 进程转十六进制</span>
+jstack <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">|</span> <span class="token function">grep</span> -A <span class="token operator">&lt;</span>line num<span class="token operator">></span> <span class="token operator">&lt;</span>pid_16_hex<span class="token operator">></span>
+
+<span class="token comment" spellcheck="true"># 转十六进制</span>
+<span class="token function">printf</span> <span class="token string">'%x\n'</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="1-l"><a href="#1-l" class="headerlink" title="(1) -l"></a>(1) -l</h5><p>除了线程堆栈外，还显示关于锁的附加信息，这将显示每个锁的拥有者和等待者。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jstack -l <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-F"><a href="#2-F" class="headerlink" title="(2) -F"></a>(2) -F</h5><p>当进程无响应时，强制生成线程转储，在进程卡死或无响应时非常有用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jstack -F <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="3-m"><a href="#3-m" class="headerlink" title="(3) -m"></a>(3) -m</h5><p>打印 <code>Java</code> 和本地 <code>C/C++</code> 帧的混合堆栈。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jstack -m <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="4-e"><a href="#4-e" class="headerlink" title="(4) -e"></a>(4) -e</h5><p>打印线程的锁信息。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jstack -e <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="4-JMap"><a href="#4-JMap" class="headerlink" title="4. JMap"></a>4. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
+<p>这个快照通常称为 <code>heap dump</code>，它是 <code>Java</code> 堆内存的详细信息，包括对象的数量、类型、分布等，对于分析内存泄漏和性能问题非常有用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="1-heap"><a href="#1-heap" class="headerlink" title="(1) -heap"></a>(1) -heap</h5><p>打印 <code>Java</code> 堆内存的概要信息，包括堆的使用情况和配置。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap -heap <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-heap"><a href="#2-heap" class="headerlink" title="(2) -heap"></a>(2) -heap</h5><p>打印 <code>Java</code> 堆内存中对象的直方图，显示每个类的实例数量和占用的内存大小。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap -histo <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="3-dump"><a href="#3-dump" class="headerlink" title="(3) -dump"></a>(3) -dump</h5><p>生成堆转储文件，将 <code>Java</code> 堆内存的详细信息保存到指定的文件中。</p>
+<p>在线 <code>dump</code> 文件分析工具：<code>https://heaphero.io/index.jsp</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>export_path<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># 生成堆栈信息日志</span>
+jmap -dump:format<span class="token operator">=</span>b,file<span class="token operator">=</span>./dump.bin 123
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-F"><a href="#4-F" class="headerlink" title="(4) -F"></a>(4) -F</h5><p>当进程无响应时，强制生成堆转储，在处理无响应或死锁的情况下很有用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap -F -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>dumpfile<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<p><strong>参考文档</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46316970/article/details/123585951">JVM常用调优参数 ——JVM篇</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7184047757869449273#heading-1">一次简单的 JVM 调优，拿去写到简历里</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37298500/article/details/130400099">jstat命令查看jvm内存情况及GC内存变化</a></li>
+</ol>
 
                 
             </div>
@@ -640,7 +804,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/advance/builder/">https://great-jin.github.io/java/advance/builder/</a>
+                    <a href="https://great-jin.github.io/java/advance/optimize/">https://great-jin.github.io/java/advance/optimize/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -855,30 +1019,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/spring/cloud/eureka/">
+                <a href="/java/design/enum/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/spring/22.png" class="responsive-img" alt="Spring Cloud入门教程">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="枚举实现优雅的验证">
                         
-                        <span class="card-title">Spring Cloud入门教程</span>
+                        <span class="card-title">枚举实现优雅的验证</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Cloud 微服务入门教程。
+                            Java枚举实现优雅的验证模式。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-06-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-02-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
-                                    微服务
+                            <a href="/categories/%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    模式设计
                                 </a>
                             
                             
@@ -888,12 +1052,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">
-                        <span class="chip bg-color">微服务</span>
-                    </a>
-                    
-                    <a href="/tags/Spring-Cloud/">
-                        <span class="chip bg-color">Spring Cloud</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -907,30 +1067,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/spring/aop/">
+                <a href="/java/basis/annotation/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/spring/20.jpg" class="responsive-img" alt="Spring Boot AOP详解">
+                        <img src="/album/banner/java/43.png" class="responsive-img" alt="Java注解介绍与应用">
                         
-                        <span class="card-title">Spring Boot AOP详解</span>
+                        <span class="card-title">Java注解介绍与应用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Boot AOP 切面详解。
+                            Java注解定义使用详解。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-07
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    Spring框架
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
                                 </a>
                             
                             
@@ -940,8 +1100,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1215,7 +1375,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

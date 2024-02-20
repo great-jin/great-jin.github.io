@@ -503,14 +503,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    763
+                    765
                 </div>
                 
 
@@ -581,10 +581,7 @@
     <span class="token comment" spellcheck="true">// do something</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-前端请求"><a href="#2-前端请求" class="headerlink" title="2. 前端请求"></a>2. 前端请求</h4><blockquote>
-<p><strong>方式一</strong></p>
-</blockquote>
-<p>需要注意拼接变量名必须和后端接口中 <code>@RequestParam</code> 定义的变量名一致，否则无法接收到参数。</p>
+<h4 id="2-前端请求"><a href="#2-前端请求" class="headerlink" title="2. 前端请求"></a>2. 前端请求</h4><h5 id="1-方式一"><a href="#1-方式一" class="headerlink" title="(1) 方式一"></a>(1) 方式一</h5><p>需要注意拼接变量名必须和后端接口中 <code>@RequestParam</code> 定义的变量名一致，否则无法接收到参数。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token keyword">get</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
         url<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`/users/get?id=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>params<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">,</span>
@@ -601,10 +598,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>方式二</strong></p>
-</blockquote>
-<p>通过拼接参数虽能达到预期结果但如果需要传入多个参数时显然一一手动拼接并不合适，因此 <code>Axios</code> 通过指定 <code>params</code> 方式实现自动拼接，接口参数只需传入一个对象即可。</p>
+<h5 id="2-方式二"><a href="#2-方式二" class="headerlink" title="(2) 方式二"></a>(2) 方式二</h5><p>通过拼接参数虽能达到预期结果但如果需要传入多个参数时显然一一手动拼接并不合适，因此 <code>Axios</code> 通过指定 <code>params</code> 方式实现自动拼接，接口参数只需传入一个对象即可。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token keyword">get</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
         url<span class="token punctuation">:</span> <span class="token string">'/users/get'</span><span class="token punctuation">,</span>
@@ -634,12 +628,12 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-前端请求-1"><a href="#2-前端请求-1" class="headerlink" title="2. 前端请求"></a>2. 前端请求</h5><p>封装的请求如下，需要注意传输方式指定为 <code>data</code> 。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-          url<span class="token punctuation">:</span> <span class="token string">'/users/add'</span><span class="token punctuation">,</span>
-          method<span class="token punctuation">:</span> <span class="token string">'post'</span><span class="token punctuation">,</span>
-          data<span class="token punctuation">:</span> params
-        <span class="token punctuation">}</span><span class="token punctuation">)</span>
-      <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        url<span class="token punctuation">:</span> <span class="token string">'/users/add'</span><span class="token punctuation">,</span>
+        method<span class="token punctuation">:</span> <span class="token string">'post'</span><span class="token punctuation">,</span>
+        data<span class="token punctuation">:</span> params
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>方法调用如下：</p>
 <pre class="line-numbers language-js"><code class="language-js">methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
@@ -1263,7 +1257,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

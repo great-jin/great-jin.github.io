@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
@@ -651,10 +651,9 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>下面重点解析一下节点注册和节点下线的核心代码和逻辑。</p>
-<ul>
-<li><h5 id="节点注册"><a href="#节点注册" class="headerlink" title="节点注册"></a>节点注册</h5><p>  在注册业务模块中需要根据 <code>yml</code> 配置文件中的路径和节点名称在 <code>Zookeeper</code> 中注册自身，同时监控节点的状态变化，节点监控在下一点介绍。</p>
-<p>  通过 <code>create().forPath(var1, var1)</code> 在 <code>Zookeeper</code> 中新建节点并存入数据，创建每个节点都可以存储一定的数据，若无需存储数据则使用 <code>.forPath(var1)</code> 即可。</p>
-<p>  其中 <code>var1</code> 为节点的完整路径，即上述的 <code>nodePath + nodeName</code>；<code>var2</code> 为创建节点时所存入的数据，这里通过 <code>InetAddress</code> 获取当前服务的 <code>IP</code> 与端口然后存入。</p>
+<h5 id="1-节点注册"><a href="#1-节点注册" class="headerlink" title="(1) 节点注册"></a>(1) 节点注册</h5><p>在注册业务模块中需要根据 <code>yml</code> 配置文件中的路径和节点名称在 <code>Zookeeper</code> 中注册自身，同时监控节点的状态变化，节点监控在下一点介绍。</p>
+<p>通过 <code>create().forPath(var1, var1)</code> 在 <code>Zookeeper</code> 中新建节点并存入数据，创建每个节点都可以存储一定的数据，若无需存储数据则使用 <code>.forPath(var1)</code> 即可。</p>
+<p>其中 <code>var1</code> 为节点的完整路径，即上述的 <code>nodePath + nodeName</code>；<code>var2</code> 为创建节点时所存入的数据，这里通过 <code>InetAddress</code> 获取当前服务的 <code>IP</code> 与端口然后存入。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">registered</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         InetAddress localHost <span class="token operator">=</span> InetAddress<span class="token punctuation">.</span><span class="token function">getLocalHost</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -674,9 +673,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="节点下线"><a href="#节点下线" class="headerlink" title="节点下线"></a>节点下线</h5><p>  节点下线非必须，如果你的集群节点不涉及到下线功能跳过即可。</p>
-<p>  节点下线功能相对简单，先判断节点是否存在，若存在删除即可。</p>
+<h5 id="2-节点下线"><a href="#2-节点下线" class="headerlink" title="(2) 节点下线"></a>(2) 节点下线</h5><p>节点下线非必须，如果你的集群节点不涉及到下线功能跳过即可。</p>
+<p>节点下线功能相对简单，先判断节点是否存在，若存在删除即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">cancellation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         Stat stat <span class="token operator">=</span> zkClient<span class="token punctuation">.</span><span class="token function">checkExists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forPath</span><span class="token punctuation">(</span>fullPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -688,8 +686,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="5-节点监控"><a href="#5-节点监控" class="headerlink" title="5. 节点监控"></a>5. 节点监控</h4><p>在上述节点下线的示例中通过 <code>checkExists()</code> 检查节点是否存在，而通过 <code>checkExists().usingWatcher()</code> 即可为节点设置一个监听器。</p>
 <p>这里使用监听器主要是为了监控节点状态，节点状态发生变化时则会触发，当节点异常下线时我们需要重新注册上线，以保证集群节点的稳定。</p>
 <p>需要注意 <code>Watcher</code> 只会在节点发生变化时触发一次，触发后会自动被删除，需要重新注册 <code>Watcher</code> 才能再次观察节点变化，因此在上述的 <code>registered()</code> 的节点注册完成后都执行 <code>monitorNode()</code> 方法。</p>
@@ -810,10 +806,9 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="节点监控"><a href="#节点监控" class="headerlink" title="节点监控"></a>节点监控</h5><p>  <code>PathChildrenCache</code> 是 <code>Curator</code> 提供的一种缓存节点的方式，可以监控一个节点的所有子节点变化，包括子节点的新增、删除和修改操作。而之前 <code>usingWatcher()</code> 只能同时监控单个节点且是一次性的，触发之后需要重新创建。</p>
-<p>  在 <code>PathChildrenCache</code> 中我们创建了一个监听器实时监听 <code>Zookeeper</code> 指定路径下的所有节点状态，当发生变化时则获取当前在线的节点列表并更新。</p>
-<p>  注意 <code>PathChildrenCache</code> 在高版本的 <code>Curator</code> 已标为弃用，而使用 <code>CuratorCacheListener</code> 创建监听器，但其目的是类似的这里不再重复介绍。</p>
+<h5 id="1-节点监控"><a href="#1-节点监控" class="headerlink" title="(1) 节点监控"></a>(1) 节点监控</h5><p><code>PathChildrenCache</code> 是 <code>Curator</code> 提供的一种缓存节点的方式，可以监控一个节点的所有子节点变化，包括子节点的新增、删除和修改操作。而之前 <code>usingWatcher()</code> 只能同时监控单个节点且是一次性的，触发之后需要重新创建。</p>
+<p>在 <code>PathChildrenCache</code> 中我们创建了一个监听器实时监听 <code>Zookeeper</code> 指定路径下的所有节点状态，当发生变化时则获取当前在线的节点列表并更新。</p>
+<p>注意 <code>PathChildrenCache</code> 在高版本的 <code>Curator</code> 已标为弃用，而使用 <code>CuratorCacheListener</code> 创建监听器，但其目的是类似的这里不再重复介绍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">monitorPath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     PathChildrenCache cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PathChildrenCache</span><span class="token punctuation">(</span>zkClient<span class="token punctuation">,</span> nodePath<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     cache<span class="token punctuation">.</span><span class="token function">getListenable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">(</span>client<span class="token punctuation">,</span> event<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -823,8 +818,6 @@
     cache<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-轮询策略"><a href="#3-轮询策略" class="headerlink" title="3. 轮询策略"></a>3. 轮询策略</h4><p>这里通过静态变量 <code>requestNum</code> 简单的实现一个类 <code>Nginx</code> 的基础轮询，即按节点列表顺序获取服务地址。</p>
 <p>在 <code>cluster-node</code> 工程中注册节点时我们存入的节点的服务 <code>IP</code> 和端口，这里通过 <code>getData()</code> 方法进行获取。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">roundRobin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1491,7 +1484,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

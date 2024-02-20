@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.8k
+                    4.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    24 分
+                    19 分
                 </div>
                 
 
@@ -623,10 +623,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><h4 id="1-基本示例"><a href="#1-基本示例" class="headerlink" title="1. 基本示例"></a>1. 基本示例</h4><p>除了获取类等基本信息外通过反射也可获取其字段 <code>(Field)</code>、方法 <code>(Method)</code>、方法参数 <code>(Parameter)</code> 与构造器 <code>(Constructor)</code> 等属性信息，这里仅以获取字段举例，其它类型使用方式同理。</p>
 <p>当上述四类属性声明为非 <code>public</code> 而又需要在外部实现访问时，可通过 <code>setAccessible(true)</code> 方法开放访问权限，这样即便定义为 <code>private</code> 仍可通过访问在类外部中使用。</p>
-<blockquote>
-<p><strong>(1) 信息获取</strong></p>
-</blockquote>
-<p>在 <code>Java</code> 中为每个类成员都提供 <code>getXXXs()</code>，<code>getDeclaredXXXs()</code>，<code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 四种方法用于获取成员属性，其中包含 <code>Declared</code> 表明读取的为当前类中所定义信息，否则默认读取所有（包含继承的父类），结尾为 <code>s</code> 表示读取所有集合，否则为指定名称进行过滤查询。</p>
+<h5 id="1-信息获取"><a href="#1-信息获取" class="headerlink" title="(1) 信息获取"></a>(1) 信息获取</h5><p>在 <code>Java</code> 中为每个类成员都提供 <code>getXXXs()</code>，<code>getDeclaredXXXs()</code>，<code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 四种方法用于获取成员属性，其中包含 <code>Declared</code> 表明读取的为当前类中所定义信息，否则默认读取所有（包含继承的父类），结尾为 <code>s</code> 表示读取所有集合，否则为指定名称进行过滤查询。</p>
 <p>这里以类属性字段 <code>Field</code> 为例，其方法描述信息如下。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
         <tr>
@@ -678,10 +675,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Static: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isStatic</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(2) 属性赋值</strong></p>
-</blockquote>
-<p>同理反射也可通过 <code>set()</code> 方法给实例对象赋值，若字段为私有属性时需要额外设置 <code>setAccessible(true)</code> 。</p>
+<h5 id="2-属性赋值"><a href="#2-属性赋值" class="headerlink" title="(2) 属性赋值"></a>(2) 属性赋值</h5><p>同理反射也可通过 <code>set()</code> 方法给实例对象赋值，若字段为私有属性时需要额外设置 <code>setAccessible(true)</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     Student std <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">85</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Get field instance</span>
@@ -1075,210 +1069,6 @@
     <span class="token keyword">return</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">invokeMethod</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> service<span class="token punctuation">,</span> params<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、注解介绍"><a href="#七、注解介绍" class="headerlink" title="七、注解介绍"></a>七、注解介绍</h3><h4 id="1-定义方式"><a href="#1-定义方式" class="headerlink" title="1. 定义方式"></a>1. 定义方式</h4><p>在 <code>Java</code> 中通过 <code>@interface</code> 创建注解，并通过 <code>@Target</code> 与 <code>@Retention</code> 定义注解的作用对象与声明周期对象。</p>
-<ul>
-<li><h5 id="注解类型"><a href="#注解类型" class="headerlink" title="注解类型"></a>注解类型</h5><p>  通过 <code>@Target</code> 注解定义注解的作用对象，其取值范围如下：</p>
-  <table style="display: table; margin-left: auto; margin-right: auto;">
-      <tr>
-          <th style="text-align: center;">参数</td>  
-          <th style="text-align: center;">描述</td> 
-      </tr>
-      <tr>
-          <td style="text-align: center;">ElementType.TYPE</td>  
-          <td style="text-align: center;">表明注解作用于类。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">ElementType.CONSTRUCTOR</td>  
-          <td style="text-align: center;">表明注解作用于构造方法。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">ElementType.FIELD</td>  
-          <td style="text-align: center;">表明注解作用于字段。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">ElementType.METHOD</td>  
-          <td style="text-align: center;">表明注解作用于方法。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">ElementType.PARAMETER</td>  
-          <td style="text-align: center;">表明注解作用于方法参数。</td>  
-      </tr>
-  </table></li>
-<li><h5 id="作用范围"><a href="#作用范围" class="headerlink" title="作用范围"></a>作用范围</h5><p>  通过 <code>@Retention</code> 注解定义注解的声明周期，其取值范围如下：</p>
-  <table style="display: table; margin-left: auto; margin-right: auto;">
-      <tr>
-          <th style="text-align: center;">参数</td>  
-          <th style="text-align: center;">描述</td> 
-      </tr>
-      <tr>
-          <td style="text-align: center;">RetentionPolicy.CLASS</td>  
-          <td style="text-align: center;">默认的取值，表明作用于类文件。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">RetentionPolicy.SOURCE</td>  
-          <td style="text-align: center;">表明注解作用编译期间。</td>  
-      </tr>
-      <tr>
-          <td style="text-align: center;">RetentionPolicy.RUNTIME</td>  
-          <td style="text-align: center;">表明注解作用程序运行期间。</td>  
-      </tr>
-  </table>
-  
-<p>  如下定义了一个方法注解，作用对象为方法，并设置作用于程序运行期间。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MethodAnn</span> <span class="token punctuation">{</span>
-
-    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
-
-    String <span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-使用示例"><a href="#2-使用示例" class="headerlink" title="2. 使用示例"></a>2. 使用示例</h4><p>这里我提前自定义了三类不同的注解，具体注解声明之前之前的文章已经介绍过了这里便不再详细说明，同时新建测试类 <code>TestService</code> 对三类注解进行简单应用供后续使用。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@ClassAnn</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"test-class"</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token string">"test-class-comment"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@FieldAnn</span><span class="token punctuation">(</span><span class="token string">"test-field1"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> String field1<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@FieldAnn</span><span class="token punctuation">(</span><span class="token string">"test-field2"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> String field2<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method1"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method2"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span> String msg1<span class="token punctuation">,</span>
-                        <span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"def"</span><span class="token punctuation">)</span> String msg2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg1 <span class="token operator">+</span> msg2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-属性获取"><a href="#3-属性获取" class="headerlink" title="3. 属性获取"></a>3. 属性获取</h4><p>在完成上述注解的定义与使用之后，即可通过反射获取不同注解中配置的属性值。</p>
-<ul>
-<li><h5 id="类注解属性"><a href="#类注解属性" class="headerlink" title="类注解属性"></a>类注解属性</h5><p>  一个类中相同的类注解只能包含一个，因此类注解获取相对简单，直接通过反射获取即可。</p>
-<p>  通过 <code>clazz.getDeclaredAnnotations()</code> 获取是类上定义的所有注解，而 <code>clazz.getAnnotation(annClazz)</code> 获取的则是指定注解。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">classDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    Class<span class="token operator">&lt;</span>ClassAnn<span class="token operator">></span> annClazz <span class="token operator">=</span> ClassAnn<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Class is existed "ClassAnn"?</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation: "</span> <span class="token operator">+</span> clazz<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>annClazz<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// Get declare annotation</span>
-    Annotation<span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Annotations: "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>annotations<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// Get class annotation value</span>
-    ClassAnn classAnn <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>annClazz<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"The annotation value: "</span> <span class="token operator">+</span> classAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"The annotation comment: "</span> <span class="token operator">+</span> classAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="字段注解属性"><a href="#字段注解属性" class="headerlink" title="字段注解属性"></a>字段注解属性</h5><p>  一个类中可能包含多个属性字段，其基本操作方法参考下表。</p>
-  <table style="display: table; margin-left: auto; margin-right: auto;">
-      <tr>
-          <th style="text-align: center;">方法</td>
-          <th style="text-align: center;">作用</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">isAnnotationPresent(class)</td>
-          <td style="text-align: center;">判断字段是否存在注解。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">getAnnotatedType()</td>
-          <td style="text-align: center;">获取注解作用对象信息，包含字段类型与字段名等信息。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">getAnnotations()</td>
-          <td style="text-align: center;">获取字段上的所有注解，包含其父类中标识。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">getAnnotation(class)</td>
-          <td style="text-align: center;">通过注解类信息获取指定注解，包含其父类中标识。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">getDeclaredAnnotations()</td>
-          <td style="text-align: center;">获取字段上的所有注解，不包含其父类中标识。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">getDeclaredAnnotation(class)</td>
-          <td style="text-align: center;">通过注解类信息获取指定注解，不包含其父类中标识。</td>
-      </tr>
-  </table>
-  
-<p>  如下示例中通过反射获取所有字段列表，再由 <code>getDeclaredAnnotation()</code> 获取字段注解并其配置值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Field f <span class="token operator">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"=========== %s ============\n"</span><span class="token punctuation">,</span> f<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">boolean</span> isPresent <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>fieldAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation ? "</span> <span class="token operator">+</span> isPresent<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>isPresent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            FieldAnn fieldAnn <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>FieldAnn<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Value: "</span> <span class="token operator">+</span> fieldAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Comment: "</span> <span class="token operator">+</span> fieldAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="方法注解属性"><a href="#方法注解属性" class="headerlink" title="方法注解属性"></a>方法注解属性</h5><p>  方法注解的获取思路与字段注解获取类似，这里就不再描述直接提供代码示例。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">methodDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    Method<span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Method m <span class="token operator">:</span> methods<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"=========== %s ============\n"</span><span class="token punctuation">,</span> m<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">boolean</span> isPresent <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>methodAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation ? "</span> <span class="token operator">+</span> isPresent<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>isPresent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            MethodAnn methodAnn <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>methodAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Value: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Comment: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="参数注解属性"><a href="#参数注解属性" class="headerlink" title="参数注解属性"></a>参数注解属性</h5><p>  方法中的参数注解获取对象较为复杂，通过反射返回的结果是一个二维数组 <code>A[i][j]</code>，其中的 <code>A[i][]</code> 表示方法的第 <code>i</code> 个参数注解, <code>A[][j]</code> 存储的是对应注解的属性值。</p>
-<p>  参数注解的获取示例如下:</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span> String msg1<span class="token punctuation">,</span>
-                        <span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"def"</span><span class="token punctuation">)</span> String msg2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg1 <span class="token operator">+</span> msg2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">parameterDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchMethodException <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 根据方法名和参数类型获取指定方法</span>
-    Method method <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"method2"</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Annotation[i][j] i: 方法的第 i 个参数注解, j: 该参数注解的第 j 个值</span>
-    Annotation<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annos <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getParameterAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Arrays<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>annos<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>record <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        ParameterAnn parameterAnn <span class="token operator">=</span> null<span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>Annotation ann <span class="token operator">:</span> record<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>ann <span class="token keyword">instanceof</span> <span class="token class-name">ParameterAnn</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                parameterAnn <span class="token operator">=</span> <span class="token punctuation">(</span>ParameterAnn<span class="token punctuation">)</span> ann<span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Annotation value: "</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Annotation comment: "</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  最终打印输出的结果如下：</p>
-<pre class="line-numbers language-txt"><code class="language-txt">@xyz.ibudai.ann.ParameterAnn(value="abc", comment=""), Annotation value: abc, Annotation comment: 
-@xyz.ibudai.ann.ParameterAnn(value="def", comment=""), Annotation value: def, Annotation comment: 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -1876,7 +1666,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

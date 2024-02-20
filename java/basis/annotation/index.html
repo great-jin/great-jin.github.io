@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Jenkins部署教程, 布袋青年">
+    <meta name="keywords" content="Java注解介绍与应用, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Jenkins部署教程 | 布袋青年</title>
+    <title>Java注解介绍与应用 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -327,12 +327,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/software/jenkins.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/43.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Jenkins部署教程</h1>
+                    <h1 class="description center-align post-title">Java注解介绍与应用</h1>
                 </div>
             </div>
         </div>
@@ -467,8 +467,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Jenkins/">
-                                <span class="chip bg-color">Jenkins</span>
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
                             </a>
                         
                     </div>
@@ -479,8 +479,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
-                                服务部署
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                JAVA基础
                             </a>
                         
                     </div>
@@ -492,28 +492,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-17
+                    2024-02-07
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    322
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -533,34 +533,204 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、服务下载"><a href="#一、服务下载" class="headerlink" title="一、服务下载"></a>一、服务下载</h3><h4 id="1-Docker安装"><a href="#1-Docker安装" class="headerlink" title="1. Docker安装"></a>1. Docker安装</h4><p>部署 <code>Jenkins</code> 这里我选择的是 <code>Docker</code> 容器，如果没有安装 <code>Docker</code> 可以参考之前的文章：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Server-Docker/">Docker安装</a>。</p>
-<h4 id="2-容器拉取"><a href="#2-容器拉取" class="headerlink" title="2. 容器拉取"></a>2. 容器拉取</h4><pre class="line-numbers language-bash"><code class="language-bash">docker pull jenkinsci/blueocean
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="3. 服务启动"></a>3. 服务启动</h4><p>其中将容器数据目录映射外部 <code>/home/docker/jenkins</code> 下，将容器 <code>8080</code> 端口映射到服务器 <code>8080</code> 端口，<code>50000</code> 为 <code>API</code> 访问端口，同样根据需要更改。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
---name jenkins \
--p 8080:8080 \
--p 50000:50000 \
--v /home/docker/jenkins:/usr/local/jenkins \
-jenkinsci/blueocean
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、应用配置"><a href="#二、应用配置" class="headerlink" title="二、应用配置"></a>二、应用配置</h3><h4 id="1-服务访问"><a href="#1-服务访问" class="headerlink" title="1. 服务访问"></a>1. 服务访问</h4><p>浏览器访问 <code>http://&lt;IP&gt;:8080</code> 即可访问，<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/1.png"></p>
-<h4 id="2-解锁服务"><a href="#2-解锁服务" class="headerlink" title="2. 解锁服务"></a>2. 解锁服务</h4><p>首次访问需要你提供解锁密码，获取密码步骤如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
-docker <span class="token function">exec</span> -it jenkins /bin/bash
+                <h3 id="一、定义声明"><a href="#一、定义声明" class="headerlink" title="一、定义声明"></a>一、定义声明</h3><p>在 <code>Java</code> 中通过 <code>@interface</code> 创建注解，并通过 <code>@Target</code> 与 <code>@Retention</code> 定义注解的作用对象与声明周期对象。</p>
+<h4 id="1-注解类型"><a href="#1-注解类型" class="headerlink" title="1. 注解类型"></a>1. 注解类型</h4><p>通过 <code>@Target</code> 注解定义注解的作用对象，其取值范围如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">ElementType.TYPE</td>  
+        <td style="text-align: center;">表明注解作用于类。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">ElementType.CONSTRUCTOR</td>  
+        <td style="text-align: center;">表明注解作用于构造方法。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">ElementType.FIELD</td>  
+        <td style="text-align: center;">表明注解作用于字段。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">ElementType.METHOD</td>  
+        <td style="text-align: center;">表明注解作用于方法。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">ElementType.PARAMETER</td>  
+       <td style="text-align: center;">表明注解作用于方法参数。</td>  
+    </tr>
+</table>
 
-<span class="token comment" spellcheck="true"># 查看密钥</span>
-<span class="token function">cat</span> /var/jenkins_home/secrets/initialAdminPassword
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如下图，将得到的密码复制到浏览器即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/2.png"></p>
-<h4 id="3-插件安装"><a href="#3-插件安装" class="headerlink" title="3. 插件安装"></a>3. 插件安装</h4><p>选择默认安装推荐的插件，等待安装完成即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/3.png"><br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/4.png"></p>
-<h4 id="4-用户创建"><a href="#4-用户创建" class="headerlink" title="4. 用户创建"></a>4. 用户创建</h4><p>创建一个用户用户后续登录等操作。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/5.png"></p>
-<h4 id="5-实例配置"><a href="#5-实例配置" class="headerlink" title="5. 实例配置"></a>5. 实例配置</h4><p>配置 <code>jenkins</code> 服务访问路径，选择默认下一步即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/6.png"></p>
-<h4 id="6-重启服务"><a href="#6-重启服务" class="headerlink" title="6. 重启服务"></a>6. 重启服务</h4><p>完成上述配置之后需要重新启动服务才能生效，在服务器中重启之后即可正常访问。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 重启服务</span>
-docker restart jenkins
+
+<h4 id="2-作用范围"><a href="#2-作用范围" class="headerlink" title="2. 作用范围"></a>2. 作用范围</h4><p>通过 <code>@Retention</code> 注解定义注解的声明周期，其取值范围如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">RetentionPolicy.CLASS</td>  
+        <td style="text-align: center;">默认的取值，表明作用于类文件。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">RetentionPolicy.SOURCE</td>  
+        <td style="text-align: center;">表明注解作用编译期间。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">RetentionPolicy.RUNTIME</td>  
+        <td style="text-align: center;">表明注解作用程序运行期间。</td>  
+    </tr>
+</table>
+    
+<p>如下定义了一个方法注解，作用对象为方法，并设置作用于程序运行期间。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MethodAnn</span> <span class="token punctuation">{</span>
+
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+    String <span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>这里我提前自定义了三类不同的注解，具体注解声明之前之前的文章已经介绍过了这里便不再详细说明。</p>
+<p>新建测试类 <code>TestService.java</code> 对三类注解进行简单应用供后续使用。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@ClassAnn</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"test-class"</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token string">"test-class-comment"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@FieldAnn</span><span class="token punctuation">(</span><span class="token string">"test-field1"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String field1<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@FieldAnn</span><span class="token punctuation">(</span><span class="token string">"test-field2"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String field2<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method1"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method2"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span> String msg1<span class="token punctuation">,</span>
+                        <span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"def"</span><span class="token punctuation">)</span> String msg2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg1 <span class="token operator">+</span> msg2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><p>在完成上述注解的定义与使用之后，即可通过反射获取不同注解中配置的属性值。</p>
+<h4 id="1-类注解"><a href="#1-类注解" class="headerlink" title="1. 类注解"></a>1. 类注解</h4><p>一个类中相同的类注解只能包含一个，因此类注解获取相对简单，直接通过反射获取即可。</p>
+<p>通过 <code>clazz.getDeclaredAnnotations()</code> 获取是类上定义的所有注解，而 <code>clazz.getAnnotation(annClazz)</code> 获取的则是指定注解。</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">classDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+        Class<span class="token operator">&lt;</span>ClassAnn<span class="token operator">></span> annClazz <span class="token operator">=</span> ClassAnn<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Class is existed "ClassAnn"?</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation: "</span> <span class="token operator">+</span> clazz<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>annClazz<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Get declare annotation</span>
+        Annotation<span class="token punctuation">[</span><span class="token punctuation">]</span> annotations <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Annotations: "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>annotations<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// Get class annotation value</span>
+        ClassAnn classAnn <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>annClazz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"The annotation value: "</span> <span class="token operator">+</span> classAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"The annotation comment: "</span> <span class="token operator">+</span> classAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-字段注解"><a href="#2-字段注解" class="headerlink" title="2. 字段注解"></a>2. 字段注解</h4><p>一个类中可能包含多个属性字段，其基本操作方法参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+        </tr>
+    <tr>
+        <td style="text-align: center;">isAnnotationPresent(class)</td>
+        <td style="text-align: center;">判断字段是否存在注解。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getAnnotatedType()</td>
+        <td style="text-align: center;">获取注解作用对象信息，包含字段类型与字段名等信息。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getAnnotations()</td>
+        <td style="text-align: center;">获取字段上的所有注解，包含其父类中标识。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getAnnotation(class)</td>
+        <td style="text-align: center;">通过注解类信息获取指定注解，包含其父类中标识。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getDeclaredAnnotations()</td>
+        <td style="text-align: center;">获取字段上的所有注解，不包含其父类中标识。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getDeclaredAnnotation(class)</td>
+        <td style="text-align: center;">通过注解类信息获取指定注解，不包含其父类中标识。</td>
+    </tr>
+</table>
+    
+<p>如下示例中通过反射获取所有字段列表，再由 <code>getDeclaredAnnotation()</code> 获取字段注解并其配置值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Field f <span class="token operator">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"=========== %s ============\n"</span><span class="token punctuation">,</span> f<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> isPresent <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>fieldAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation ? "</span> <span class="token operator">+</span> isPresent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>isPresent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            FieldAnn fieldAnn <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>FieldAnn<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Value: "</span> <span class="token operator">+</span> fieldAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Comment: "</span> <span class="token operator">+</span> fieldAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-方法注解"><a href="#3-方法注解" class="headerlink" title="3. 方法注解"></a>3. 方法注解</h4><p>方法注解的获取思路与字段注解获取类似，这里就不再描述直接提供代码示例。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">methodDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    Method<span class="token punctuation">[</span><span class="token punctuation">]</span> methods <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Method m <span class="token operator">:</span> methods<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"=========== %s ============\n"</span><span class="token punctuation">,</span> m<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">boolean</span> isPresent <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>methodAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exist annotation ? "</span> <span class="token operator">+</span> isPresent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>isPresent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            MethodAnn methodAnn <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>methodAnnClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Value: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Comment: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-参数注解"><a href="#4-参数注解" class="headerlink" title="4. 参数注解"></a>4. 参数注解</h4><p>方法中的参数注解获取对象较为复杂，通过反射返回的结果是一个二维数组 <code>A[i][j]</code>，其中的 <code>A[i][]</code> 表示方法的第 <code>i</code> 个参数注解, <code>A[][j]</code> 存储的是对应注解的属性值。</p>
+<p>参数注解的获取示例如下:</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"abc"</span><span class="token punctuation">)</span> String msg1<span class="token punctuation">,</span>
+                        <span class="token annotation punctuation">@ParameterAnn</span><span class="token punctuation">(</span><span class="token string">"def"</span><span class="token punctuation">)</span> String msg2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg1 <span class="token operator">+</span> msg2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">parameterDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchMethodException <span class="token punctuation">{</span>
+    Class<span class="token operator">&lt;</span>TestService<span class="token operator">></span> clazz <span class="token operator">=</span> TestService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 根据方法名和参数类型获取指定方法</span>
+    Method method <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"method2"</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Annotation[i][j] i: 方法的第 i 个参数注解, j: 该参数注解的第 j 个值</span>
+    Annotation<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> annos <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getParameterAnnotations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Arrays<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>annos<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>record <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        ParameterAnn parameterAnn <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>Annotation ann <span class="token operator">:</span> record<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ann <span class="token keyword">instanceof</span> <span class="token class-name">ParameterAnn</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                parameterAnn <span class="token operator">=</span> <span class="token punctuation">(</span>ParameterAnn<span class="token punctuation">)</span> ann<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"\n"</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Annotation value: "</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Annotation comment: "</span> <span class="token operator">+</span> parameterAnn<span class="token punctuation">.</span><span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最终打印输出的结果如下：</p>
+<pre class="line-numbers language-txt"><code class="language-txt">@xyz.ibudai.ann.ParameterAnn(value="abc", comment=""), Annotation value: abc, Annotation comment: 
+@xyz.ibudai.ann.ParameterAnn(value="def", comment=""), Annotation value: def, Annotation comment: 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/tool/jenkins/7.png"></p>
 
                 
             </div>
@@ -587,7 +757,7 @@ docker restart jenkins
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/app/jenkins/deploy/">https://great-jin.github.io/app/jenkins/deploy/</a>
+                    <a href="https://great-jin.github.io/java/basis/annotation/">https://great-jin.github.io/java/basis/annotation/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -625,8 +795,8 @@ docker restart jenkins
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Jenkins/">
-                                    <span class="chip bg-color">Jenkins</span>
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
                                 </a>
                             
                         </div>
@@ -802,30 +972,30 @@ docker restart jenkins
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/vue/basis/router/">
+                <a href="/java/advance/optimize/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/front/vue/6.png" class="responsive-img" alt="Vue 路由配置教程">
+                        <img src="/album/banner/java/44.png" class="responsive-img" alt="JVM参数调优教程">
                         
-                        <span class="card-title">Vue 路由配置教程</span>
+                        <span class="card-title">JVM参数调优教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Vue实现路由跳转传参与登录过滤。
+                            Java JVM参数调优教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-19
+                            <i class="far fa-clock fa-fw icon-date"></i>2024-02-07
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
                                 </a>
                             
                             
@@ -835,12 +1005,8 @@ docker restart jenkins
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Vue/">
-                        <span class="chip bg-color">Vue</span>
-                    </a>
-                    
-                    <a href="/tags/Ant-Design/">
-                        <span class="chip bg-color">Ant Design</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -854,30 +1020,30 @@ docker restart jenkins
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/app/nifi/use/">
+                <a href="/java/utils/easyexcel/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/nifi/2.jpg" class="responsive-img" alt="NIFI流程配置教程">
+                        <img src="/album/banner/office/excel.png" class="responsive-img" alt="EasyExcel工具使用教程">
                         
-                        <span class="card-title">NIFI流程配置教程</span>
+                        <span class="card-title">EasyExcel工具使用教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            NIFI常用流程配置教程。
+                            EasyExcel文件操作工具使用教程。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-01-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" class="post-category">
-                                    应用程序
+                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
+                                    后端
                                 </a>
                             
                             
@@ -887,8 +1053,8 @@ docker restart jenkins
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/NIFI/">
-                        <span class="chip bg-color">NIFI</span>
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
                     </a>
                     
                 </div>
@@ -1162,7 +1328,7 @@ docker restart jenkins
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

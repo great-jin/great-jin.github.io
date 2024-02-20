@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-27
+                    2024-02-20
                 </div>
                 
 
@@ -696,10 +696,7 @@
 </ul>
 </blockquote>
 <h4 id="2-分区类型"><a href="#2-分区类型" class="headerlink" title="2. 分区类型"></a>2. 分区类型</h4><p><code>MySQL</code> 的分区类型分为 <code>Range</code>、 <code>List</code>、 <code>Hash</code> 与 <code>Key</code> 四类，下面分别进行介绍。</p>
-<blockquote>
-<p><strong>(1) Range分区</strong></p>
-</blockquote>
-<p><code>Range</code> 分区即根据分区字段的范围进行划分。</p>
+<h5 id="1-Range分区"><a href="#1-Range分区" class="headerlink" title="(1) Range分区"></a>(1) Range分区</h5><p><code>Range</code> 分区即根据分区字段的范围进行划分。</p>
 <p>如下示例中即根据 <code>id</code> 的值划分了 <code>4</code> 个分区 <code>(-∞,100), [100,200), [200,300), [300,+∞)</code>。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> tb_info 
 <span class="token punctuation">(</span>
@@ -716,10 +713,7 @@
     <span class="token keyword">partition</span> p3 <span class="token keyword">values</span> less than maxvalue
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(2) List分区</strong></p>
-</blockquote>
-<p><code>List</code> 分区即为根据分区字段值定义确定的集合。</p>
+<h5 id="2-List分区"><a href="#2-List分区" class="headerlink" title="(2) List分区"></a>(2) List分区</h5><p><code>List</code> 分区即为根据分区字段值定义确定的集合。</p>
 <p>如下实例中定义了两个分区，当 <code>id</code> 值在集合 <code>(1, 3, 5)</code> 中则分配至分区一，若值在集合 <code>(2, 4, 6)</code> 中则分配至分区二。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> tb_info 
 <span class="token punctuation">(</span>
@@ -734,10 +728,7 @@
     <span class="token keyword">partition</span> p1 <span class="token keyword">values</span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(3) Hash分区</strong></p>
-</blockquote>
-<p><code>Hash</code> 分区即可通过指定表达式对分区字段进行计算从而分配所属分区。</p>
+<h5 id="3-Hash分区"><a href="#3-Hash分区" class="headerlink" title="(3) Hash分区"></a>(3) Hash分区</h5><p><code>Hash</code> 分区即可通过指定表达式对分区字段进行计算从而分配所属分区。</p>
 <p>注意若不指定表达式则使用默认的哈希算法。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> tb_info
 <span class="token punctuation">(</span>
@@ -748,10 +739,7 @@
 <span class="token punctuation">)</span>
 <span class="token keyword">partition</span> <span class="token keyword">by</span> <span class="token keyword">hash</span> <span class="token punctuation">(</span>id<span class="token punctuation">)</span> partitions <span class="token number">9</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(4) Key分区</strong></p>
-</blockquote>
-<p><code>Key</code> 分区与 <code>Hash</code> 分区类似，但不同的时 <code>Hash</code> 分区可以指定表达式而 <code>Key</code> 分区只能使用默认的分区算法。</p>
+<h5 id="4-Key分区"><a href="#4-Key分区" class="headerlink" title="(4) Key分区"></a>(4) Key分区</h5><p><code>Key</code> 分区与 <code>Hash</code> 分区类似，但不同的时 <code>Hash</code> 分区可以指定表达式而 <code>Key</code> 分区只能使用默认的分区算法。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> tb_info
 <span class="token punctuation">(</span>
     id <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">null</span> <span class="token keyword">auto_increment</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
@@ -761,27 +749,22 @@
 <span class="token punctuation">)</span>
 <span class="token keyword">partition</span> <span class="token keyword">by</span> <span class="token keyword">key</span> <span class="token punctuation">(</span>id<span class="token punctuation">)</span> partitions <span class="token number">9</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-分区编辑"><a href="#3-分区编辑" class="headerlink" title="3. 分区编辑"></a>3. 分区编辑</h4><ul>
-<li><h5 id="分区创建"><a href="#分区创建" class="headerlink" title="分区创建"></a>分区创建</h5><p>  在上面介绍了四类不同分区的在建表时的配置方式，当然也可通过 <code>alter table</code> 对已经存在的表划分分区。</p>
+<h4 id="3-分区编辑"><a href="#3-分区编辑" class="headerlink" title="3. 分区编辑"></a>3. 分区编辑</h4><h5 id="1-分区创建"><a href="#1-分区创建" class="headerlink" title="(1) 分区创建"></a>(1) 分区创建</h5><p>在上面介绍了四类不同分区的在建表时的配置方式，当然也可通过 <code>alter table</code> 对已经存在的表划分分区。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- add partition</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
 <span class="token keyword">partition</span> <span class="token keyword">by</span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span><span class="token punctuation">)</span> 
 <span class="token operator">&lt;</span>expression<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="分区添加"><a href="#分区添加" class="headerlink" title="分区添加"></a>分区添加</h5><p>  在完成分区创建之后随着业务的增长可能发现之前划分的分区数量不满足当下的需求，此时即在原有的分区基础上新增分区。</p>
-<p>  注意新增分区后需重新执行分析语句 <code>analyze table &lt;table_name&gt;</code> 让数据重新分配分区。</p>
+<h5 id="2-分区添加"><a href="#2-分区添加" class="headerlink" title="(2) 分区添加"></a>(2) 分区添加</h5><p>在完成分区创建之后随着业务的增长可能发现之前划分的分区数量不满足当下的需求，此时即在原有的分区基础上新增分区。</p>
+<p>注意新增分区后需重新执行分析语句 <code>analyze table &lt;table_name&gt;</code> 让数据重新分配分区。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
 <span class="token keyword">add</span> <span class="token keyword">partition</span> <span class="token operator">&lt;</span>expression<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="分区删除"><a href="#分区删除" class="headerlink" title="分区删除"></a>分区删除</h5><p>  删除分区时需要注意只有 <code>Range</code> 和 <code>List</code> 类型的分区才能删除。</p>
+<h5 id="3-分区删除"><a href="#3-分区删除" class="headerlink" title="(3) 分区删除"></a>(3) 分区删除</h5><p>删除分区时需要注意只有 <code>Range</code> 和 <code>List</code> 类型的分区才能删除。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- remove partition</span>
 <span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
 <span class="token keyword">drop</span> <span class="token keyword">partition</span> <span class="token operator">&lt;</span>partition_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="4-基本使用"><a href="#4-基本使用" class="headerlink" title="4. 基本使用"></a>4. 基本使用</h4><p>当一个表创建分区之后，在执行查询等操作时即可通过 <code>partition</code> 指定分区缩小范围从而提高效率。</p>
 <p>如下示例中即指定查询表 <code>tb_info</code> 其分区 <code>p1</code> 中的 <code>id</code> 值为 <code>(1, 2, 4)</code> 的数据。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
@@ -910,13 +893,13 @@ BEFORE <span class="token keyword">INSERT</span> <span class="token keyword">ON<
 <span class="token keyword">END</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-命令详解"><a href="#2-命令详解" class="headerlink" title="2. 命令详解"></a>2. 命令详解</h4><p><code>DECLARE CONTINUE HANDLER</code> 是用于声明异常处理器的关键字。异常处理器用于捕获和处理存储过程执行过程中可能发生的异常。</p>
-<h5 id="Ⅰ-Exception"><a href="#Ⅰ-Exception" class="headerlink" title="(Ⅰ)Exception"></a>(Ⅰ)Exception</h5><p><code>SQLSTATE value</code> 是一个 <code>SQL</code> 标准定义的异常代码。通常，<code>SQLEXCEPTION</code> 用于捕获所有异常。</p>
+<h5 id="1-Exception"><a href="#1-Exception" class="headerlink" title="(1) Exception"></a>(1) Exception</h5><p><code>SQLSTATE value</code> 是一个 <code>SQL</code> 标准定义的异常代码。通常，<code>SQLEXCEPTION</code> 用于捕获所有异常。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">DECLARE</span> <span class="token keyword">CONTINUE</span> <span class="token keyword">HANDLER</span> <span class="token keyword">FOR</span> SQLSTATE <span class="token keyword">value</span>
 <span class="token keyword">BEGIN</span>
     <span class="token comment" spellcheck="true">-- Exception handling code</span>
 <span class="token keyword">END</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="Ⅱ-GET-DIAGNOSTICS"><a href="#Ⅱ-GET-DIAGNOSTICS" class="headerlink" title="(Ⅱ)GET DIAGNOSTICS"></a>(Ⅱ)GET DIAGNOSTICS</h5><p>在异常处理器中，使用了 <code>GET DIAGNOSTICS</code> 语句。这个语句用于获取异常的详细信息，包括错误码（<code>MYSQL_ERRNO</code>）和错误消息（<code>MESSAGE_TEXT</code>）。</p>
+<h5 id="2-GET-DIAGNOSTICS"><a href="#2-GET-DIAGNOSTICS" class="headerlink" title="(2) GET DIAGNOSTICS"></a>(2) GET DIAGNOSTICS</h5><p>在异常处理器中，使用了 <code>GET DIAGNOSTICS</code> 语句。这个语句用于获取异常的详细信息，包括错误码（<code>MYSQL_ERRNO</code>）和错误消息（<code>MESSAGE_TEXT</code>）。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 获取第一个异常的信息。如果有多个异常，可以使用不同的条件号</span>
 <span class="token comment" spellcheck="true">-- 例如 `CONDITION 2`。</span>
 GET DIAGNOSTICS CONDITION <span class="token number">1</span>
@@ -1534,7 +1517,7 @@ errorCode <span class="token operator">=</span> MYSQL_ERRNO<span class="token pu
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

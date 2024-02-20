@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="NPS内网穿透使用教程, 布袋青年">
+    <meta name="keywords" content="Vue 项目搭建教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>NPS内网穿透使用教程 | 布袋青年</title>
+    <title>Vue 项目搭建教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -327,12 +327,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/network/1.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/front/axios.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">NPS内网穿透使用教程</h1>
+                    <h1 class="description center-align post-title">Vue 项目搭建教程</h1>
                 </div>
             </div>
         </div>
@@ -467,12 +467,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Windows/">
-                                <span class="chip bg-color">Windows</span>
+                            <a href="/tags/Vue/">
+                                <span class="chip bg-color">Vue</span>
                             </a>
                         
-                            <a href="/tags/Linux/">
-                                <span class="chip bg-color">Linux</span>
+                            <a href="/tags/Axios/">
+                                <span class="chip bg-color">Axios</span>
                             </a>
                         
                     </div>
@@ -483,8 +483,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-category">
-                                开发工具
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                前端
                             </a>
                         
                     </div>
@@ -496,28 +496,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-04-17
+                    2022-01-02
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-02-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -537,74 +537,131 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>NPS 是一款轻量级、高性能、功能强大的内网穿透代理服务器。支持 tcp、udp、socks5、http 等几乎所有流量转发，可用来访问内网网站、本地支付接口调试、ssh访问、远程桌面，内网 dns 解析、内网 socks5 代理等等，并带有功能强大的web管理端。</p>
-</blockquote>
-<p>首先我们需要了解一下什么是内网穿透？</p>
-<p>举个简单例子，我们有两个不同的 <code>network-A</code> 和 <code>network-B</code> ，两个网络之间是无法直接通信的。在 <code>network-A</code> 中我们部署了 <code>3</code> 个服务，如果 <code>network-B</code> 中的客户机想要访问 <code>network-A</code> 的服务该怎么办呢？</p>
-<p>很显然我们需要一个中间人，也就是一台公网服务器， <code>network-B</code> 的客户机请求先发送到服务器，再由服务器转发到 <code>network-A</code> 的内网服务，从而实现跨网服务访问，这个过程就可以简单理解为内网穿透。</p>
-<p>看一个简单的图加深一下理解。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/9.png"></p>
+                <p>本文将介绍如何创建 <code>Vue 2</code> 项目，并实现 <code>Axios</code> 进行二次封装，从而实现更简单的网络请求操作。</p>
 <blockquote>
-<p>接下来就具体介绍一下如何实现。</p>
+<p>Axios 是一个基于 promise 网络请求库，作用于 node.js 和浏览器，使用简单，小巧且提供了易于扩展的接口。</p>
 </blockquote>
-<p><strong>准备材料</strong> ：内网服务(客户端)、公网服务器(服务端)。</p>
-<p>这里我准备了一台Linux云服务器和本地Windows电脑用于演示。</p>
-<h3 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><p><code>NPS</code> 服务会用到 <code>8024</code> 和 <code>8080</code> 两个端口，我们的服务器需要提前在防火墙放行端口，命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 永久开放 8024 端口</span>
-firewall-cmd --add-port<span class="token operator">=</span>8024/tcp --zone<span class="token operator">=</span>public --permanent     
+<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><h4 id="1-Node安装"><a href="#1-Node安装" class="headerlink" title="1. Node安装"></a>1. Node安装</h4><p>先检查自己是否已经安装了 <code>node</code> ，没有的话先到<a target="_blank" rel="noopener" href="http://nodejs.cn/">官网</a>下载之后无脑下一步即可。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">node -v     <span class="token comment" spellcheck="true"># 查看Node版本</span>
 
-<span class="token comment" spellcheck="true"># 永久开放 8080 端口</span>
-firewall-cmd --add-port<span class="token operator">=</span>8080/tcp --zone<span class="token operator">=</span>public --permanent      
+<span class="token function">npm</span> -v      <span class="token comment" spellcheck="true"># 查看NPM版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-cnpm安装"><a href="#2-cnpm安装" class="headerlink" title="2. cnpm安装"></a>2. cnpm安装</h4><p><code>cnpm</code> 是阿里的 <code>npm</code>镜像， <code>npm</code> 有时候会抽风，安装一个备用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> -g cnpm --registry<span class="token operator">=</span>http://registry.npm.taobao.org    
 
-<span class="token comment" spellcheck="true"># 重载文件使生效</span>
-firewall-cmd --reload   
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、服务端"><a href="#二、服务端" class="headerlink" title="二、服务端"></a>二、服务端</h3><h4 id="1-NPS安装"><a href="#1-NPS安装" class="headerlink" title="1. NPS安装"></a>1. NPS安装</h4><p>打开 <code>NPS</code> 官网选择相应版本进行下载，记得下载的是 <code>Server</code> 版本，<a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps/releases">NPS官网</a>。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/1.png"></p>
-<p>将下载的文件上传到你的服务器并解压，这里我选择放在 <code>/usr/local/nps</code>，根据你的喜好自行更换。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local
+cnpm -v     <span class="token comment" spellcheck="true"># 查看cnpm版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、项目创建"><a href="#二、项目创建" class="headerlink" title="二、项目创建"></a>二、项目创建</h3><h4 id="1-新建工程"><a href="#1-新建工程" class="headerlink" title="1. 新建工程"></a>1. 新建工程</h4><p>根据你的喜好选择对应目录，新建命令行窗体运行如下命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> vue-demo    
+<span class="token function">cd</span> vue-demo                     <span class="token comment" spellcheck="true"># 新建文件夹并进入</span>
 
-<span class="token function">mkdir</span> nps
-
-<span class="token function">tar</span> -xzvf linux_amd64_server.tar.gz   <span class="token comment" spellcheck="true"># 解压文件</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-配置修改"><a href="#2-配置修改" class="headerlink" title="2. 配置修改"></a>2. 配置修改</h4><p>在启动服务之前我们需要修改一些默认配置，命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">vim conf/nps.conf
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>如果你的服务器 <code>80</code> 端口和 <code> 443</code> 端口已经部署其它服务则需要替换成其它端口，修改第二个红框中的登录用户信息。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/7.png"></p>
-<h4 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="3. 服务启动"></a>3. 服务启动</h4><p>在文件解压目录下执行如下命令：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">./nps <span class="token function">install</span>   
-
-nps start         <span class="token comment" spellcheck="true"># 启动服务</span>
-
-nps stop          <span class="token comment" spellcheck="true"># 关闭服务</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>安装服务成功后会在<code>/etc/nps</code>目录下生成<code>conf web</code>两个文件夹。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/8.png"></p>
-<p>服务启动日志路径：<code>/var/log/nps.log</code>，如果出现异常可查看日志信息，启动服务之后就可以通过你的服务器 <code>IP</code> 地址加 <code>8080</code> 端口进行访问了。</p>
-<h4 id="4-创建连接"><a href="#4-创建连接" class="headerlink" title="4. 创建连接"></a>4. 创建连接</h4><h5 id="1-服务新增"><a href="#1-服务新增" class="headerlink" title="(1) 服务新增"></a>(1) 服务新增</h5><p>点击右侧客户端并点击新增<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/6.png"></p>
-<h5 id="2-信息填写"><a href="#2-信息填写" class="headerlink" title="(2) 信息填写"></a>(2) 信息填写</h5><p>橙色框内信息无效填写会自动生成，压缩和加密选是。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/3.png"></p>
-<h5 id="3-隧道添加"><a href="#3-隧道添加" class="headerlink" title="(3) 隧道添加"></a>(3) 隧道添加</h5><p>点击隧道并新增服务<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/10.png"></p>
-<h5 id="4-端口信息"><a href="#4-端口信息" class="headerlink" title="(4) 端口信息"></a>(4) 端口信息</h5><p>填写服务相关信息，服务端端口为之后你公网要访问的端口，目标填写你内网服务的 <code>ID</code> 加端口。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/5.png"></p>
-<h3 id="三、客户端"><a href="#三、客户端" class="headerlink" title="三、客户端"></a>三、客户端</h3><h4 id="1-服务下载"><a href="#1-服务下载" class="headerlink" title="1. 服务下载"></a>1. 服务下载</h4><p>这里演示的客户端是 <code>Window</code> 服务，进入官网下载对应<code>Client</code>版本.<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/2.png"></p>
-<h4 id="2-配置修改-1"><a href="#2-配置修改-1" class="headerlink" title="2. 配置修改"></a>2. 配置修改</h4><p>解压下载的文件，修改<code>conf/npc.conf</code>文件。把原文件内容全部删除，复制下面内容，记得 <code>server_addr</code> 替换成你自己的服务端<code>IP</code>，<code>vkey</code> 为创建客户端时自动生成。</p>
-<pre class="line-numbers language-vim"><code class="language-vim"><span class="token punctuation">[</span>common<span class="token punctuation">]</span>
-server_addr<span class="token operator">=</span><span class="token punctuation">[</span>your ip<span class="token punctuation">]</span><span class="token punctuation">:</span><span class="token number">8024</span>
-conn_type<span class="token operator">=</span>tcp
-vkey<span class="token operator">=</span>jwep5wv3zcn8etn6
-auto_reconnection<span class="token operator">=</span>true
-max_conn<span class="token operator">=</span><span class="token number">1000</span>
-flow_limit<span class="token operator">=</span><span class="token number">1000</span>
-rate_limit<span class="token operator">=</span><span class="token number">1000</span>
-basic_username<span class="token operator">=</span><span class="token number">11</span>
-basic_password<span class="token operator">=</span><span class="token number">3</span>
-web_username<span class="token operator">=</span>user
-web_password<span class="token operator">=</span><span class="token number">123</span>
-crypt<span class="token operator">=</span>true
-compress<span class="token operator">=</span>true
+vue init webpack my-project     <span class="token comment" spellcheck="true"># 初始化项目</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-配置信息"><a href="#2-配置信息" class="headerlink" title="2. 配置信息"></a>2. 配置信息</h4><p>回车之后就会下载项目模板，期间会让你输入项目描述，注意选择 <code>ESLint</code> 的时候记得选 <code>no</code> ，否则后续格式会出现奇奇怪怪的格式错误。</p>
+<p>具体提示信息如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">Project name <span class="token operator">&lt;</span>你的项目名<span class="token operator">></span>
+Project description <span class="token operator">&lt;</span>你的项目描述<span class="token operator">></span>
+Author <span class="token operator">&lt;</span>作者<span class="token operator">></span>
+Vue build standalone
+<span class="token comment" spellcheck="true"># 是否生成 router 目录</span>
+Install vue-router? Yes
+<span class="token comment" spellcheck="true"># 是否引入 ESlint</span>
+Use ESLint to lint your code? No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Set up unit tests No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Setup e2e tests with Nightwatch? No
+<span class="token comment" spellcheck="true"># 是否在项目创建后运行 npm install</span>
+Should we run <span class="token variable"><span class="token variable">`</span><span class="token function">npm</span> <span class="token function">install</span><span class="token variable">`</span></span> <span class="token keyword">for</span> you after the project has been created? <span class="token punctuation">(</span>recommended<span class="token punctuation">)</span> <span class="token function">npm</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/tool/nps/4.png"></p>
-<h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3. 启动服务"></a>3. 启动服务</h4><p>双击<code>npc.exe</code>文件即可，显示下图说明连接成功，此时就可以通过你的公网 <code>IP</code> 访问本地服务了。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/11.png"></p>
-<h4 id="4-后台启动"><a href="#4-后台启动" class="headerlink" title="4. 后台启动"></a>4. 后台启动</h4><p>上述步骤启动之后<code>npc.exe</code>命令行窗口必须一直开着，如果我们将其注册成服务就可以后台运行了。</p>
-<p>具体教程参考之前一篇文章：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Win-BatServer/">将Bat注册为服务</a>。</p>
+<h3 id="三、样式引入"><a href="#三、样式引入" class="headerlink" title="三、样式引入"></a>三、样式引入</h3><h4 id="1-依赖安装"><a href="#1-依赖安装" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>这边我选择的是阿里的 <code>Ant Design</code> ，布局样式更方便，当然你可以选择原生样式或者其它 UI 框架。</p>
+<p>在新建的工程目录下新建命令窗口运行如下命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> i --save ant-design-vue 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-导入配置"><a href="#2-导入配置" class="headerlink" title="2. 导入配置"></a>2. 导入配置</h4><p>找到 <code>src/main.js</code> 文件，添加如下代码全局导入样式，当然你也可以在对应的页面里选择的单独引入。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 全局引入样式</span>
+<span class="token keyword">import</span> Antd <span class="token keyword">from</span> <span class="token string">'ant-design-vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'ant-design-vue/dist/antd.css'</span><span class="token punctuation">;</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Antd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、Axios配置"><a href="#四、Axios配置" class="headerlink" title="四、Axios配置"></a>四、Axios配置</h3><h4 id="1-依赖安装-1"><a href="#1-依赖安装-1" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>打开之前新建的工程根目录，新建命令行窗口运行如下命令安装 <code>Axios </code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> axios
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-Axios配置"><a href="#2-Axios配置" class="headerlink" title="2. Axios配置"></a>2. Axios配置</h4><p>这里用到的的接口是用的是 <code>Spring Boot</code> 编写，可以参考教程：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Spring-Boot/">Spring Boot接口开发</a>。</p>
+<p>然后在 <code>src</code> 目录下新建文件夹 <code>api</code> ，文件夹内新建文件 <code>axios.js</code> 用于对 <code>axios</code> 进行基本封装以及对相应进行简单处理，代码如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        baseURL<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+        timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>                       <span class="token comment" spellcheck="true">// 设置统一的超时时长, 单位毫秒</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>config <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> config
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 响应拦截</span>
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>response<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> res
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 请求信息弹窗提示</span>
+        <span class="token keyword">const</span> errorBody <span class="token operator">=</span> err<span class="token punctuation">.</span>response<span class="token punctuation">.</span>data
+        Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$notification<span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            message<span class="token punctuation">:</span> <span class="token string">'Internal Server Error'</span><span class="token punctuation">,</span>
+            description<span class="token punctuation">:</span> errorBody<span class="token punctuation">.</span>error<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token function">service</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> request<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、Axios封装"><a href="#五、Axios封装" class="headerlink" title="五、Axios封装"></a>五、Axios封装</h3><h4 id="1-接口封装"><a href="#1-接口封装" class="headerlink" title="1. 接口封装"></a>1. 接口封装</h4><p>在api目录下新建文件 <code>user.js</code> ，在该文件内利用二次封装的 <code>axios</code> 对进行接口方法封装，这样在页面代码中我们只需引入相应的方法即可。</p>
+<p>相应的配置示例代码如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> request <span class="token keyword">from</span> <span class="token string">'./axios'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getUser</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/get'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'get'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Update</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/update'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'post'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-接口调用"><a href="#2-接口调用" class="headerlink" title="2. 接口调用"></a>2. 接口调用</h4><p>具体的调用封装的接口方法可以参考另一篇文章，这里不详细展开：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Vue-Request/">Vue接口请求详解</a></p>
+<h3 id="六、跨域处理"><a href="#六、跨域处理" class="headerlink" title="六、跨域处理"></a>六、跨域处理</h3><p>找到项目下的 <code>config/index.js</code> 文件，在 <code>proxyTable: &#123;&#125;</code> 括号里添加如下内容，需要注意若后端配置了 <code>servlet.context-path</code> 前缀，这里对应的 <code>&#39;/&#39;</code> 需要改成其对应的值。</p>
+<p>将其中的名称 <code>your-name</code> 替换为你需要前缀，最终的接口请求地址样式即为：<code>http://localhost:8080/your-name/backend-api-path/</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token string">"/your-name"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
+    target<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>
+    changeOrigin<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    pathRewrite<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'^/your-name'</span><span class="token punctuation">:</span> <span class="token string">'/'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后回到第四步的 <code>axios.js</code> 文件中将 <code>baseURL</code> 的值替换成 <code>/your-name</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseURL<span class="token punctuation">:</span> <span class="token string">'/your-name'</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+    timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>           <span class="token comment" spellcheck="true">// 设置统一的超时时长</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>源码：</strong><a target="_blank" rel="noopener" href="https://github.com/great-jin/Blog-Code/tree/master/Vue/Axios-Seal">Axios封装</a></p>
+<p><strong>参考链接：</strong><a target="_blank" rel="noopener" href="https://juejin.cn/post/6968630178163458084">Axios二次封装</a></p>
 
                 
             </div>
@@ -631,7 +688,7 @@ compress<span class="token operator">=</span>true
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/app/tool/nps/">https://great-jin.github.io/app/tool/nps/</a>
+                    <a href="https://great-jin.github.io/vue/create/">https://great-jin.github.io/vue/create/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -669,12 +726,12 @@ compress<span class="token operator">=</span>true
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Windows/">
-                                    <span class="chip bg-color">Windows</span>
+                                <a href="/tags/Vue/">
+                                    <span class="chip bg-color">Vue</span>
                                 </a>
                             
-                                <a href="/tags/Linux/">
-                                    <span class="chip bg-color">Linux</span>
+                                <a href="/tags/Axios/">
+                                    <span class="chip bg-color">Axios</span>
                                 </a>
                             
                         </div>
@@ -850,78 +907,30 @@ compress<span class="token operator">=</span>true
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/vue/js/util/">
+                <a href="/db/minio/deploy/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/front/js/3.png" class="responsive-img" alt="JavaScript常用操作">
+                        <img src="/album/banner/db/minio/1.png" class="responsive-img" alt="MinIO服务部署教程">
                         
-                        <span class="card-title">JavaScript常用操作</span>
+                        <span class="card-title">MinIO服务部署教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            JavaScript常用操作合集。
+                            MinIO不同环境安装部署教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-08
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JavaScript/">
-                        <span class="chip bg-color">JavaScript</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/linux/ubantu/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/linux/ubantu/1.png" class="responsive-img" alt="Ubantu重置登录密码">
-                        
-                        <span class="card-title">Ubantu重置登录密码</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Ubantu重置 root 登录密码教程。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-14
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-category">
-                                    服务器
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    服务部署
                                 </a>
                             
                             
@@ -935,8 +944,56 @@ compress<span class="token operator">=</span>true
                         <span class="chip bg-color">Linux</span>
                     </a>
                     
-                    <a href="/tags/Ubantu/">
-                        <span class="chip bg-color">Ubantu</span>
+                    <a href="/tags/MinIO/">
+                        <span class="chip bg-color">MinIO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/spring/restful/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/spring/1.jpeg" class="responsive-img" alt="Spring Boot RESTful开发教程">
+                        
+                        <span class="card-title">Spring Boot RESTful开发教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Boot RESTful接口开发教程。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
+                                    Spring框架
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
                     </a>
                     
                 </div>
@@ -1210,7 +1267,7 @@ compress<span class="token operator">=</span>true
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

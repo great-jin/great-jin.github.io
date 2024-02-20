@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
@@ -627,7 +627,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="6-具体实现"><a href="#6-具体实现" class="headerlink" title="6. 具体实现"></a>6. 具体实现</h4><blockquote>
-<p><strong>(1) next() 实现</strong></p>
+<p><strong>(Ⅰ) next() 实现</strong></p>
 </blockquote>
 <p><code>next()</code> 实现的较为简单，即每次执行 <code>next()</code> 时判断当前行标 <code>(cursorRow)</code> 是否已经超过行数 <code>(rowCount)</code>，若否则行标加一。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> SQLException <span class="token punctuation">{</span>
@@ -640,7 +640,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p><strong>(2) getString(int index) 实现</strong></p>
+<p><strong>(Ⅱ) getString(int index) 实现</strong></p>
 </blockquote>
 <p><code>getString(int)</code> 即通过下标获取属性值，因为在执行 next() 时行标已经为对应的目标行，因此通过 <code>rowContainer.get(cursorRow)</code> 即可获取行标所对应的该行数据。</p>
 <p>获取到对应行后即可将转为数组并通过下标获取，注意这里的 <code>columnIndex</code> 是按照 <code>JDBC</code> 标准从 <code>1</code> 开始，因此转为数组读取时需要减一。</p>
@@ -656,7 +656,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p><strong>(3) getString(String name) 实现</strong></p>
+<p><strong>(Ⅲ) getString(String name) 实现</strong></p>
 </blockquote>
 <p>与之对应的 <code>getString(String)</code> 即通过属性名进行查询。</p>
 <p>这里参考了 <code>CachedRowSetImpl#getString(String)</code> 的实现思路，根据 <code>columnLabel</code> 获取对应属性的下标，即可复用上述的 <code>getString(int)</code> 方法</p>
@@ -684,7 +684,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p><strong>(4) close() 实现</strong></p>
+<p><strong>(Ⅳ) close() 实现</strong></p>
 </blockquote>
 <p>因为继承了 <code>AutoCloseable</code> 类，所以需要重写 <code>close()</code> 方法，内容也相对简单，将成员遍历重置即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
@@ -1327,7 +1327,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

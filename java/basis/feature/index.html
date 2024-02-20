@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-20
                 </div>
                 
 
@@ -546,25 +546,17 @@ bin\jlink.exe --module-path jmods --add-modules java.desktop --output jre
 bin/jlink --module-path jmods --add-modules java.desktop --output jre
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-IDEA配置"><a href="#2-IDEA配置" class="headerlink" title="2. IDEA配置"></a>2. IDEA配置</h4><p>若要在 <code>IDEA</code> 中指定工程的 <code>JDK</code> 版本，需要完成下述两个步骤。</p>
-<ul>
-<li><h5 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h5><p>  在 <code>IDEA</code> 左上角 <code>File</code> 选择 <code>Project Structure</code> 按照下图修改，添加上述解压的 <code>JDK</code> 目录即可。</p>
-<p>  同时可以选择图中的 <code>modules</code> 为工程的每个模块手动设置 <code>JDK</code> 版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/2.png" alt="Project Structure"></p>
-</li>
-<li><h5 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h5><p>  在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/3.png" alt="Java Compiler"></p>
-</li>
-</ul>
-<h4 id="3-Maven配置"><a href="#3-Maven配置" class="headerlink" title="3. Maven配置"></a>3. Maven配置</h4><ul>
-<li><h5 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h5><p>  在 <code>Maven</code> 工程的 <code>POM</code> 文件中添加下述属性配置用于指定 <code>JDK</code> 依赖版本，完成后刷新配置即可。</p>
+<h5 id="1-项目配置"><a href="#1-项目配置" class="headerlink" title="(1) 项目配置"></a>(1) 项目配置</h5><p>在 <code>IDEA</code> 左上角 <code>File</code> 选择 <code>Project Structure</code> 按照下图修改，添加上述解压的 <code>JDK</code> 目录即可。</p>
+<p>同时可以选择图中的 <code>modules</code> 为工程的每个模块手动设置 <code>JDK</code> 版本。<br><img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/2.png" alt="Project Structure"></p>
+<h5 id="2-编译配置"><a href="#2-编译配置" class="headerlink" title="(2) 编译配置"></a>(2) 编译配置</h5><p>在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br><img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/3.png" alt="Java Compiler"></p>
+<h4 id="3-Maven配置"><a href="#3-Maven配置" class="headerlink" title="3. Maven配置"></a>3. Maven配置</h4><h5 id="1-文件配置"><a href="#1-文件配置" class="headerlink" title="(1) 文件配置"></a>(1) 文件配置</h5><p>在 <code>Maven</code> 工程的 <code>POM</code> 文件中添加下述属性配置用于指定 <code>JDK</code> 依赖版本，完成后刷新配置即可。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.source</span><span class="token punctuation">></span></span>17<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.source</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>maven.compiler.target</span><span class="token punctuation">></span></span>17<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>maven.compiler.target</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="编译配置-1"><a href="#编译配置-1" class="headerlink" title="编译配置"></a>编译配置</h5><p>  在通过 <code>Maven</code> 进行 <code>install</code> 时若提示 <code>警告：源发行版17需要目标发行版17</code> 等类似信息时是因为 <code>IDEA</code> 中配置 <code>Maven</code> 版本与实际项目的版本不匹配，需要手动在 <code>IDEA</code> 配置中修改。</p>
-<p>  在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/4.png" alt="Maven Runner"></p>
-</li>
-</ul>
+<h5 id="2-编译配置-1"><a href="#2-编译配置-1" class="headerlink" title="(2) 编译配置"></a>(2) 编译配置</h5><p>在通过 <code>Maven</code> 进行 <code>install</code> 时若提示 <code>警告：源发行版17需要目标发行版17</code> 等类似信息时是因为 <code>IDEA</code> 中配置 <code>Maven</code> 版本与实际项目的版本不匹配，需要手动在 <code>IDEA</code> 配置中修改。</p>
+<p>在 <code>IDEA</code> 中左上角 <code>File</code> 选择 <code>Settings</code> 按照下图修改编译版本。<br><img src="/album/loading.gif" data-original="/album/article/java/jdk/feature/4.png" alt="Maven Runner"></p>
 <h3 id="二、JDK-9"><a href="#二、JDK-9" class="headerlink" title="二、JDK 9"></a>二、JDK 9</h3><h4 id="1-集合"><a href="#1-集合" class="headerlink" title="1. 集合"></a>1. 集合</h4><p>在 <code>JDK 9</code> 中为 <code>List</code> 等集合提供了 <code>of()</code> 初始化方式，实现更便捷的默认值初始化。</p>
 <p>相应的使用示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">collectionDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -712,7 +704,7 @@ bin/jlink --module-path jmods --add-modules java.desktop --output jre
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-yield"><a href="#2-yield" class="headerlink" title="2. yield"></a>2. yield</h4><p>在 <code>switch</code> 表达式中每个 <code>case</code> 对应的内容为一个函数， <code>break</code> 无法在此使用用于结束分支。因此 JDK 13 引入全新关键字 <code>yield</code> 用于结束分支并返回结果。</p>
+<h4 id="2-yield"><a href="#2-yield" class="headerlink" title="2. yield"></a>2. yield</h4><p>在 <code>switch</code> 表达式中每个 <code>case</code> 对应的内容为一个函数， <code>break</code> 无法在此使用用于结束分支。因此 <code>JDK 13</code> 引入全新关键字 <code>yield</code> 用于结束分支并返回结果。</p>
 <p><code>yield</code> 关键字作用类似于 <code>break</code> 于 <code>return</code> 的结合，但 <code>break</code> 仅有中断效果没有返回结果功能，而 <code>return</code> 是结束整个方法块但 <code>yield</code> 仅结束对应的 <code>case</code> 分支。</p>
 <p>相应的 <code>yield</code> 关键字使用示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">switchDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -767,7 +759,7 @@ bin/jlink --module-path jmods --add-modules java.desktop --output jre
 -XX:+UnlockExperimentalVMOptions -XX:+UseZGC
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、JDK-17"><a href="#六、JDK-17" class="headerlink" title="六、JDK 17"></a>六、JDK 17</h3><h4 id="1-sealed"><a href="#1-sealed" class="headerlink" title="1. sealed"></a>1. sealed</h4><p>在 <code>JDK 17</code> 中引入了新关键词 <code>sealed</code> 与 <code>permits</code> 用于限定类的继承关系。</p>
-<p><code>sealed</code> 关键字可作用于类<code>（class）</code>或接口<code>（interface）</code>，通过 <code>permit</code> 关键字指定允许继承的子类，只有被 <code>permits</code> 的类才允许继承类，同时继承的子类也需标注其是否为 <code>sealed</code> 或 <code>non-sealed</code>。</p>
+<p><code>sealed</code> 关键字可作用于类 <code>（class）</code> 或接口 <code>（interface）</code>，通过 <code>permit</code> 关键字指定允许继承的子类，只有被 <code>permits</code> 的类才允许继承类，同时继承的子类也需标注其是否为 <code>sealed</code> 或 <code>non-sealed</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> sealed <span class="token keyword">class</span> <span class="token class-name">Human</span> permits Student <span class="token punctuation">{</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
@@ -793,7 +785,7 @@ bin/jlink --module-path jmods --add-modules java.desktop --output jre
     <span class="token punctuation">}</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、JDK-19"><a href="#七、JDK-19" class="headerlink" title="七、JDK 19"></a>七、JDK 19</h3><h4 id="1-虚拟线程"><a href="#1-虚拟线程" class="headerlink" title="1. 虚拟线程"></a>1. 虚拟线程</h4><p>在 JDK 19 中引入了新的虚拟线程概念，并在 JDK 21 得到完善加强。</p>
+<h3 id="七、JDK-19"><a href="#七、JDK-19" class="headerlink" title="七、JDK 19"></a>七、JDK 19</h3><h4 id="1-虚拟线程"><a href="#1-虚拟线程" class="headerlink" title="1. 虚拟线程"></a>1. 虚拟线程</h4><p>在 <code>JDK 19</code> 中引入了新的虚拟线程概念，并在 <code>JDK 21</code> 得到完善加强。</p>
 <p>在之前的线程中一个线程则对应一个系统线程，针对轻度任务显然这种方式有点浪费，而虚拟线程可以粗暴的理解将一个系统工作线程进行二次拆分，从而达到更高的资源利用。</p>
 <p>虚拟线程的创建方式提供了基础的 <code>Thread.ofVirtual()</code> 与 <code>Thread.startVirtualThread()</code> 方式用于创建单线程，同时通过 <code>Executors.newVirtualThreadPerTaskExecutor()</code> 即可创建虚拟线程池。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">vtDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -1428,7 +1420,7 @@ bin/jlink --module-path jmods --add-modules java.desktop --output jre
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             

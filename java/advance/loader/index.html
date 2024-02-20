@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-28
+                    2024-02-20
                 </div>
                 
 
@@ -570,7 +570,7 @@ java xyz.ibudai.MyBean
 <h4 id="2-加载阶段"><a href="#2-加载阶段" class="headerlink" title="2. 加载阶段"></a>2. 加载阶段</h4><p>主要负责查找并且加载类的二进制数据文件，其实就是 <code>class</code> 文件，简单而言即将编译后的 <code>class</code> 文件以二进制的形式加载进 <code>JVM</code> 内存中。</p>
 <h4 id="3-连接阶段"><a href="#3-连接阶段" class="headerlink" title="3. 连接阶段"></a>3. 连接阶段</h4><p>主要是确保类文件的正确性，比如 <code>class</code> 的版本，<code>class</code> 文件的魔术因子是否正确。</p>
 <blockquote>
-<p><strong>(1) 验证(文件)</strong></p>
+<p><strong>(Ⅰ) 验证(文件)</strong></p>
 </blockquote>
 <ul>
 <li>验证文件格式，是否以魔数 <code>0xCAFEBABE</code> 开头。</li>
@@ -579,7 +579,7 @@ java xyz.ibudai.MyBean
 <li>文件中各个部分及文件本身是否有被删除的或附加的其他信息。</li>
 </ul>
 <blockquote>
-<p><strong>(2) 验证(元数据)</strong></p>
+<p><strong>(Ⅱ) 验证(元数据)</strong></p>
 </blockquote>
 <ul>
 <li>类是否有父类（除了 <code>java.lang.Object</code> 之外，所有的类都应当有父类）。</li>
@@ -588,20 +588,18 @@ java xyz.ibudai.MyBean
 <li>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的 <code>final</code> 字段，或者出现不符合规则的方法重载，例如方法参数都一致，但返回值类型却不同等）。</li>
 </ul>
 <blockquote>
-<p><strong>(3) 验证(字节码)</strong></p>
+<p><strong>(Ⅲ) 验证(字节码)</strong></p>
 </blockquote>
 <ul>
 <li>通过数据流分析和控制流分析，确定程序语义是合法的、符合逻辑的。</li>
 <li>保证任何跳转指令都不会跳转到方法体以外的字节码指令上。</li>
 </ul>
 <blockquote>
-<p><strong>(4) 准备</strong></p>
+<p><strong>(Ⅳ) 准备</strong><br>准备阶段是正式为类中定义的变量（即静态变量，被 <code>static</code> 修饰的变量）分配内存并设置类变量初始值的阶段。当前阶段在进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在 <code>Java</code> 堆中。</p>
 </blockquote>
-<p>准备阶段是正式为类中定义的变量（即静态变量，被 <code>static</code> 修饰的变量）分配内存并设置类变量初始值的阶段。当前阶段在进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在 <code>Java</code> 堆中。</p>
 <blockquote>
-<p><strong>(5) 解析</strong></p>
+<p><strong>(Ⅴ) 解析</strong><br>解析阶段是 <code>Java</code> 虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
 </blockquote>
-<p>解析阶段是 <code>Java</code> 虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
 <h4 id="4-初始化阶段"><a href="#4-初始化阶段" class="headerlink" title="4. 初始化阶段"></a>4. 初始化阶段</h4><p>准备阶段时，变量已经赋过一次系统要求的初始零值，而在初始化阶段，则会根据程序员通过程序编码制定的主观计划去初始化类变量和其他资源。除了在加载阶段用户应用程序可以通过自定义类加载器的方式局部参与外，其余动作都完全由 <code>Java</code> 虚拟机来主导控制。</p>
 <p>如定义的 <code>static int i = 123;</code> 等类变量在准备阶段已经完成初始化，而类的普通成员变量如 <code>int j;</code> 仍未进行初始化，因此经过初始化阶段之后 <code>int j;</code> 则会初始化为 <code>int j = 0;</code>，类中其它普通成员变量同理。</p>
 <h3 id="三、类加载器"><a href="#三、类加载器" class="headerlink" title="三、类加载器"></a>三、类加载器</h3><h4 id="1-基本类别"><a href="#1-基本类别" class="headerlink" title="1. 基本类别"></a>1. 基本类别</h4><p>在 <code>Java</code> 中类加载器分为以下四类，各类加载器说明如下：<br><img src="/album/loading.gif" data-original="/album/article/java/loader/2.png"></p>
@@ -785,21 +783,21 @@ java xyz.ibudai.MyBean
 <h4 id="2-loadClass"><a href="#2-loadClass" class="headerlink" title="2. loadClass()"></a>2. loadClass()</h4><p>接下来也是自定义类加载的重点，在 <code>JDK</code> 中类的加载核心流程由 <code>loadClass()</code> 方法控制，想要打破默认的双亲委派机制就必须重写该方法。</p>
 <p>重写的 <code>loadClass()</code> 其具象化的加载实现流程如下：</p>
 <blockquote>
-<p><strong>(1) 检查当前类是否已经被加载过？</strong></p>
+<p><strong>(Ⅰ) 检查当前类是否已经被加载过？</strong></p>
 </blockquote>
 <ul>
 <li>若已加载，则返回结果。</li>
 <li>若未加载，则进入下一步。</li>
 </ul>
 <blockquote>
-<p><strong>(2) 加载类是否在目标集合中？</strong></p>
+<p><strong>(Ⅱ) 加载类是否在目标集合中？</strong></p>
 </blockquote>
 <ul>
 <li>若是，则实现自定义 <code>.class</code> 文件读取加载。</li>
 <li>若否，则调用父加载器的 <code>loadClass()</code> 加载重试，即仍按双亲委派机制。</li>
 </ul>
 <blockquote>
-<p><strong>(3) 判断自定义加载是否成功？</strong></p>
+<p><strong>(Ⅲ) 判断自定义加载是否成功？</strong></p>
 </blockquote>
 <ul>
 <li>若是，则返回结果。</li>
@@ -1587,7 +1585,7 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">222.1k</span>
+                <span class="white-color">224.7k</span>
             
             
             
