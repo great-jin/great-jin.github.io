@@ -499,21 +499,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-02-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6.5k
+                    6.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    24 分
+                    25 分
                 </div>
                 
 
@@ -890,7 +890,7 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
 <h3 id="六、动态加载"><a href="#六、动态加载" class="headerlink" title="六、动态加载"></a>六、动态加载</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>Java</code> 中实现类的动态加载或运行时加载通常有两种方式，第一种就是通过定义自己的类加载器打破双亲委派机制实现，第二种就是通过 <code>JDK</code> 中自带的 <code>URLClassLoader</code> 实现。</p>
 <p>上面已经介绍了如何自定义加载器并打破双亲委派实现类的加载，下面着重介绍 <code>URLClassLoader</code> 如何实现类的动态加载。</p>
 <h4 id="2-源码解读"><a href="#2-源码解读" class="headerlink" title="2. 源码解读"></a>2. 源码解读</h4><p><code>URLClassLoader</code> 是 <code>JDK</code> 中自带的动态类加载器，其提供在程序运行期间通过外部资源动态加载类文件的能力。</p>
-<p>查看 <code>URLClassLoader</code> 的源码可看到其核心为继承 <code>ClassLoader</code> 并实现了 <code>findClass()</code> 与 <code>defineClass()</code> 方法。可以看到其并没有重写 <code>loadClass()</code> 说明其委派机制仍是基于双亲委派实现，那它又是如何实现的呢？</p>
+<p>查看 <code>URLClassLoader</code> 的源码可看到其核心为继承 <code>ClassLoader</code> 并实现了 <code>findClass()</code> 与 <code>defineClass()</code> 方法。同时我们可以看到其并没有重写 <code>loadClass()</code> 说明其委派机制仍是基于双亲委派实现，那它又是如何实现的呢？</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">findClass</span><span class="token punctuation">(</span><span class="token keyword">final</span> String name<span class="token punctuation">)</span>
         <span class="token keyword">throws</span> ClassNotFoundException
 <span class="token punctuation">{</span>
@@ -933,6 +933,33 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>根据之前的介绍，双亲委派机制首先会通过层层委派到达顶级父加载器（通过为 <code>Bootstrap ClassLoader</code>），当到达顶级父加载器后，根据 <code>loadClass()</code> 代码可以得知其将会调用 <code>findBootstrapClassOrNull()</code> 尝试进行类加载。而 <code>Bootstrap ClassLoader</code> 将会从类空间中进行扫描类尝试读取加载，又因为 <code>URLClassLoader</code> 是通过外部资源进行的，很显然顶级父加载器无法在默认类空间中读取到对应的 <code>.class</code> 文件数据，因此 <code>findBootstrapClassOrNull()</code> 将会返回空。</p>
 <p>同样，在上面解析双亲委派机制 <code>loadClass()</code> 源码时已经提到了当 <code>findBootstrapClassOrNull()</code> 结果为 <code>null</code> 时，将会调用自身的 <code>findClass()</code> 方法，这也是 <code>URLClassLoader</code> 为何通过重写 <code>findClass()</code> 与 <code>defineClass()</code> 即实现了动态加载。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">protected</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">loadClass</span><span class="token punctuation">(</span>String name<span class="token punctuation">,</span> <span class="token keyword">boolean</span> resolve<span class="token punctuation">)</span> <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+    <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token function">getClassLoadingLock</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> c <span class="token operator">=</span> <span class="token function">findLoadedClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    c <span class="token operator">=</span> parent<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 双亲委派直至顶级 Bootstrap ClassLoader 尝试加载</span>
+                    <span class="token comment" spellcheck="true">// class文件为外部资源此时加载失败，c = null</span>
+                    c <span class="token operator">=</span> <span class="token function">findBootstrapClassOrNull</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ClassNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// ClassNotFoundException thrown if class not found</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment" spellcheck="true">// Bootstrap ClassLoader 尝试加载失败 c = null</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// URLClassLoader 重写了 findClass()</span>
+                <span class="token comment" spellcheck="true">// 此处将执行 URLClassLoader#findClass() 从外部资源加载类</span>
+                c <span class="token operator">=</span> <span class="token function">findClass</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>而 <code>URLClassLoader</code> 实现的不仅是动态加载，其进行加载时每个加载器都是由其自身的 <code>loadClass()</code> 加载实现，因此只需要通过定义不同的 <code>URLClassLoader</code> 即可同时实现类隔离，因为一个不同类加载器加载的类对应是不相同的，即可以理解为 <code>JVM</code> 对于一个类的定义是 <code>加载器.类完整限定名</code>，当加载器不同时即便类的完整限定名相同 <code>JVM</code> 仍认定其为不同的类。</p>
 <p>但需要注意一点，在常用的 <code>Maven</code> 工程中，若在 <code>pom.xml</code> 文件中已经引入了 <code>URLClassLoader</code> 将要加载的类依赖时，根据双亲委派机制其最终的加载还是经由顶级父加载器的 <code>findBootstrapClassOrNull()</code> 实现，此时 <code>URLClassLoader</code> 的动态加载将失效，此类情景若想达到目的只能通过自定义类加载器破坏双亲委派机制实现。</p>
 <h4 id="3-实现示例"><a href="#3-实现示例" class="headerlink" title="3. 实现示例"></a>3. 实现示例</h4><p>基于上述理论，即可通过 <code>URLClassLoader</code> 实现从 <code>URL</code> 资源加载类，如下示例中即通过 <code>URLClassLoader</code> 加载 <code>JDBC</code> 驱动类。</p>
@@ -1585,7 +1612,7 @@ Loader<span class="token operator">-</span><span class="token number">2</span><s
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">224.7k</span>
+                <span class="white-color">225.2k</span>
             
             
             
