@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-28
+                    2024-02-22
                 </div>
                 
 
@@ -843,10 +843,11 @@
 <p>在之前已经提到了 <code>Java</code> 中的线程并不是真正意义上的并行而是并发，由 <code>CPU</code> 按照一定算法进行时间切片轮询调度，从而实现宏观上的并行。因此，当线程执行 <code>Thread.yield()</code> 即表明降低当前自身优先级，将 <code>CPU</code> 资源优先提供给其它线程。</p>
 <h4 id="5-区别介绍"><a href="#5-区别介绍" class="headerlink" title="5. 区别介绍"></a>5. 区别介绍</h4><p>既然上述几者都能实现线程休眠，那么二者到底有什么区别？</p>
 <p>区别很简单：如果线程在持有锁的同时调用 <code>sleep()</code> 后其并不会释放锁，其它对象在此时是无法访问锁的，在这种情况下即容易造成死锁现象。而 <code>wait()</code> 在持有锁的情况下进入休眠将会释放锁，其它对象此时仍能访问锁。</p>
+<blockquote>
 <p>下面通过两个例子详细介绍二者实际生效情况。</p>
-<ul>
-<li><h5 id="sleep"><a href="#sleep" class="headerlink" title="sleep()"></a>sleep()</h5><p>  在下述示例中，当 <code>t1</code> 通过 <code>synchronized</code> 获取锁之后通过 <code>sleep()</code> 进入睡眠，注意此时 <code>t1</code> 仍然持有锁。而同时 <code>t2</code> 尝试获取锁时发现锁已被其它线程持有，将进入重试等待，等到 <code>t1</code> 休眠结束释放锁才能获取锁并输出信息。</p>
-<p>  最终程序运行的效果就是等待 <code>3</code> 秒后才输出 <code>Get lock</code> 信息，和我们预期的结果一致。</p>
+</blockquote>
+<h5 id="1-sleep-1"><a href="#1-sleep-1" class="headerlink" title="(1) sleep()"></a>(1) sleep()</h5><p>在下述示例中，当 <code>t1</code> 通过 <code>synchronized</code> 获取锁之后通过 <code>sleep()</code> 进入睡眠，注意此时 <code>t1</code> 仍然持有锁。而同时 <code>t2</code> 尝试获取锁时发现锁已被其它线程持有，将进入重试等待，等到 <code>t1</code> 休眠结束释放锁才能获取锁并输出信息。</p>
+<p>最终程序运行的效果就是等待 <code>3</code> 秒后才输出 <code>Get lock</code> 信息，和我们预期的结果一致。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SleepDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>object<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -870,8 +871,7 @@
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="wait"><a href="#wait" class="headerlink" title="wait()"></a>wait()</h5><p>  稍微改造上面的例子，运行程序后可以发现在间隔 <code>500ms</code> 启动线程后几乎立即输出的 <code>Get lock</code> ，这正是因为 <code>t1</code> 在进入 <code>wait()</code> 休眠时释放锁的原因，此时 <code>t2</code> 可以直接取锁无需进入等待。</p>
+<h5 id="2-wait-1"><a href="#2-wait-1" class="headerlink" title="(2) wait()"></a>(2) wait()</h5><p>稍微改造上面的例子，运行程序后可以发现在间隔 <code>500ms</code> 启动线程后几乎立即输出的 <code>Get lock</code> ，这正是因为 <code>t1</code> 在进入 <code>wait()</code> 休眠时释放锁的原因，此时 <code>t2</code> 可以直接取锁无需进入等待。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>object<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -895,8 +895,6 @@
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="六、线程状态"><a href="#六、线程状态" class="headerlink" title="六、线程状态"></a>六、线程状态</h3><h4 id="1-线程中断"><a href="#1-线程中断" class="headerlink" title="1. 线程中断"></a>1. 线程中断</h4><p>当一个线程在运行期间若想停止任务即可通过 <code>interrupt()</code> 中断线程，但中断 <code>interrupt()</code> 只是向线程任务发送一个中断信号，至于线程相应需要根据其自身调度，并不是一发送中断即会中断线程。</p>
 <p>线程中断状态第一次中断后将清除中断标识，后续再读全为 <code>false</code> ，同时当线程处于 <code>sleep(), wait(), join()</code> 等阻塞状态时若中断线程同样会清除中断状态。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -917,8 +915,8 @@
     thread<span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-线程阻塞"><a href="#2-线程阻塞" class="headerlink" title="2. 线程阻塞"></a>2. 线程阻塞</h4><h5 id="1-notify"><a href="#1-notify" class="headerlink" title="(1)notify"></a>(1)notify</h5><p>在上面 <code>wait()</code> 示例中已经介绍了如何使用 <code>notify()</code> ，这里就不再过多介绍。</p>
-<h5 id="2-Condition"><a href="#2-Condition" class="headerlink" title="(2)Condition"></a>(2)Condition</h5><p>在使用 <code>synchronized</code> 实现同步块时可以通过 <code>wait()</code> 实现动态唤醒的效果，而 <code>Condition</code> 则是针对 <code>ReentrantLock</code> 而言，可达到同样效果。</p>
+<h4 id="2-线程阻塞"><a href="#2-线程阻塞" class="headerlink" title="2. 线程阻塞"></a>2. 线程阻塞</h4><h5 id="1-notify"><a href="#1-notify" class="headerlink" title="(1) notify"></a>(1) notify</h5><p>在上面 <code>wait()</code> 示例中已经介绍了如何使用 <code>notify()</code> ，这里就不再过多介绍。</p>
+<h5 id="2-Condition"><a href="#2-Condition" class="headerlink" title="(2) Condition"></a>(2) Condition</h5><p>在使用 <code>synchronized</code> 实现同步块时可以通过 <code>wait()</code> 实现动态唤醒的效果，而 <code>Condition</code> 则是针对 <code>ReentrantLock</code> 而言，可达到同样效果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     Lock lock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 绑定到锁对象</span>
@@ -1180,6 +1178,54 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/java/spring/annotation/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/spring/6.jpg" class="responsive-img" alt="Spring常用注解介绍">
+                        
+                        <span class="card-title">Spring常用注解介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Boot常用注解介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
+                                    Spring框架
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/vue/basis/dynamic/">
                     <div class="card-image">
                         
@@ -1195,9 +1241,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1219,54 +1265,6 @@
                     
                     <a href="/tags/Ant-Design/">
                         <span class="chip bg-color">Ant Design</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/vue/basis/components/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/front/vue/8.png" class="responsive-img" alt="Vue 组件使用教程">
-                        
-                        <span class="card-title">Vue 组件使用教程</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Vue 组件注册及参数传递使用教程。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-19
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Vue/">
-                        <span class="chip bg-color">Vue</span>
                     </a>
                     
                 </div>
@@ -1540,7 +1538,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.2k</span>
+                <span class="white-color">225.3k</span>
             
             
             

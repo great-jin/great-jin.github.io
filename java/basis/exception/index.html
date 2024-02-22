@@ -499,14 +499,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-29
+                    2024-02-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    2.6k
                 </div>
                 
 
@@ -581,7 +581,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>但如果将上述示例的 <code>task()</code> 方法中捕获异常替换为 <code>e.printStackTrace();</code> 则 <code>demo()</code> 在调用 <code>task()</code> 时将无法捕获到程序异常，从而导致代码的执行顺序可能将与我们设想的有所偏差。</p>
+<p>但如果将上述示例的 <code>task()</code> 方法中捕获异常替换为 <code>e.printStackTrace()</code> 则 <code>demo()</code> 在调用 <code>task()</code> 时将无法捕获到程序异常，从而导致代码的执行顺序可能将与我们设想的有所偏差。</p>
 <p>当然还有一种情景是需要执行批量操作，但是我们又想每一批之间可以互不影响，此时底层模块也可以选择不向上抛出异常。</p>
 <p>稍微修改一下上述的 <code>task()</code> 方法为如下，这里通过 <code>continue</code> 跳过，替换为 <code>e.printStackTrace()</code> 效果一致。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">task</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -644,7 +644,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、日志监控"><a href="#三、日志监控" class="headerlink" title="三、日志监控"></a>三、日志监控</h3><p>在开发时如果需要查看某一处代码信息时我们可以直接使用 <code>println()</code> 进行打印输出，但生成环境下控制台信息显然变得没有意义，此时我们就需要通过日志进行信息打印。</p>
-<h4 id="1-日志打印"><a href="#1-日志打印" class="headerlink" title="1. 日志打印"></a>1. 日志打印</h4><p>``Java` 提供原生日志工具类，导入包即可使用。</p>
+<h4 id="1-日志打印"><a href="#1-日志打印" class="headerlink" title="1. 日志打印"></a>1. 日志打印</h4><p><code>Java</code> 提供原生日志工具类，导入包即可使用。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>Logger<span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">LogDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -656,7 +656,7 @@
     logger<span class="token punctuation">.</span><span class="token function">severe</span><span class="token punctuation">(</span><span class="token string">"process will be terminated..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-Log4j框架"><a href="#2-Log4j框架" class="headerlink" title="2. Log4j框架"></a>2. Log4j框架</h4><p>除了自带的日志框架，``Log4j<code>是当下较为流行的日志插件，在项目工程中引入下列依赖，其中</code>slf4j` 指的是日志规范。</p>
+<h4 id="2-Log4j框架"><a href="#2-Log4j框架" class="headerlink" title="2. Log4j框架"></a>2. Log4j框架</h4><p>除了自带的日志框架，<code>Log4j</code> 是当下较为流行的日志插件，在项目工程中引入下列依赖，其中 <code>slf4j</code> 指的是日志规范。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.slf4j<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>slf4j-log4j12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -669,13 +669,13 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
 <span class="token comment" spellcheck="true">// 当前类与其子类都可用</span>
 Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>Slf4j` 规范针对不同级别的日志提供不同的接口方法如：</code>info()<code>、 `warn()</code>、 <code>debug()``、 </code>error()``， 基本使用示例如下:</p>
+<p><code>Slf4j</code> 规范针对不同级别的日志提供不同的接口方法如：<code>info()</code>、 <code>warn()</code>、 <code>debug()</code>、 <code>error()</code>， 基本使用示例如下:</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>Logger<span class="token punctuation">;</span>
 <span class="token keyword">import</span> org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>LoggerFactory<span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogTest</span><span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LogTest</span> <span class="token punctuation">{</span>
         
-    Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>LogTest<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>LogTest<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"info ..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -690,7 +690,7 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
 <span class="token key atrule">logging</span><span class="token punctuation">:</span>
   <span class="token key atrule">config</span><span class="token punctuation">:</span> classpath<span class="token punctuation">:</span>logback<span class="token punctuation">-</span>spring.xml
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-日志级别"><a href="#2-日志级别" class="headerlink" title="2. 日志级别"></a>2. 日志级别</h4><p>这里单独介绍一下 <code>logger</code> 标签的作用，它可以用于控制指定包路径下的日志是否输出。</p>
+<h4 id="2-级别控制"><a href="#2-级别控制" class="headerlink" title="2. 级别控制"></a>2. 级别控制</h4><p>这里单独介绍一下 <code>logger</code> 标签的作用，它可以用于控制指定包路径下的日志是否输出。</p>
 <p>如配置了 <code>&lt;logger name=&quot;xyz.ibudai.slf4j.error&quot; level=&quot;ERROR&quot;/&gt;</code> 则 <code>xyz.ibudai.slf4j.error</code> 包路径下的 <code>info, debug, warn</code> 将不会出现在配置的输出日志文件中。</p>
 <blockquote>
 <p><code>logger</code> 标签中不同的 <code>level</code> 配置输出的信息如下：</p>
@@ -712,7 +712,26 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
     
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-配置格式"><a href="#3-配置格式" class="headerlink" title="3. 配置格式"></a>3. 配置格式</h4><p>在 <code>resources</code> 目录下新建 <code>logback-spring.xml</code> 配置文件，常见标签参考下表。</p>
+<h4 id="3-开关配置"><a href="#3-开关配置" class="headerlink" title="3. 开关配置"></a>3. 开关配置</h4><p>除了通过上述配置文件设置外，在 <code>Spring</code> 工程中可通过下述配置指定类的日志级别。</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">logging</span><span class="token punctuation">:</span>
+  <span class="token key atrule">level</span><span class="token punctuation">:</span> 
+    <span class="token key atrule">xyz.ibudai.MyTest</span><span class="token punctuation">:</span> DEBUG
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在配置上述后，在工程中即可通过 <code>isDebugEnabled()</code> 实现更便捷的日志调试。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTest</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>LogTest<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>logger<span class="token punctuation">.</span><span class="token function">isDebugEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"info ..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-配置格式"><a href="#4-配置格式" class="headerlink" title="4. 配置格式"></a>4. 配置格式</h4><p>在 <code>resources</code> 目录下新建 <code>logback-spring.xml</code> 配置文件，常见标签参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">标签</td>
@@ -844,9 +863,8 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>logger</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.sql.Connection<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>ERROR<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>logger</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.sql.Statement<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>ERROR<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>logger</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>java.sql.PreparedStatement<span class="token punctuation">"</span></span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>ERROR<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1448,7 +1466,7 @@ Logger logger <span class="token operator">=</span> LoggerFactory<span class="to
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.2k</span>
+                <span class="white-color">225.3k</span>
             
             
             
