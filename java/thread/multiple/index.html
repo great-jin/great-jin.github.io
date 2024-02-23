@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-22
+                    2024-02-23
                 </div>
                 
 
@@ -723,7 +723,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、线程并发"><a href="#四、线程并发" class="headerlink" title="四、线程并发"></a>四、线程并发</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>当线程启动之后，不同线程任务间交替运行，我们无法清楚得知当前运行的为哪个任务，尤其当多个线程共享变量时，就会涉及到变量值不可知的情景。</p>
+<h3 id="四、线程并发"><a href="#四、线程并发" class="headerlink" title="四、线程并发"></a>四、线程并发</h3><p>当线程启动之后，不同线程任务间交替运行，我们无法清楚得知当前运行的为哪个任务，尤其当多个线程共享变量时，就会涉及到变量值不可知的情景。</p>
 <p>如以下代码中当 <code>main</code> 方法中通过 <code>start()</code> 启动线程后，此时为线程 <code>main</code> 和 线程 <code>thread</code> 二者异步并发执行，在 <code>main</code> 方法执行自增前，并不能确定 <code>thread</code> 中的自增是否完成，导致最终输出的结果不确定性。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">int</span> amount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
@@ -746,7 +746,7 @@
 <blockquote>
 <p>针对上述的情况，除了通过加锁的方式 <code>Java</code> 提供了更简单的 <code>isAlive()</code> 和 <code>join()</code> 以应对上述问题，下面分别介绍两种方法作用。</p>
 </blockquote>
-<h4 id="2-isAlive"><a href="#2-isAlive" class="headerlink" title="2. isAlive()"></a>2. isAlive()</h4><p><code>isAlive()</code> 方法用于判断当前线程是否处于活动状态，我们可以根据不同状态进行不同操作，从而避免共享变量冲突。</p>
+<h4 id="1-isAlive"><a href="#1-isAlive" class="headerlink" title="1. isAlive()"></a>1. isAlive()</h4><p><code>isAlive()</code> 方法用于判断当前线程是否处于活动状态，我们可以根据不同状态进行不同操作，从而避免共享变量冲突。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AliveDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -759,7 +759,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>amount<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-Join"><a href="#3-Join" class="headerlink" title="3. Join()"></a>3. Join()</h4><p><code>join()</code> 作用效果等同于 <code>isAlive</code> ，直到线程处于结束状态才会继续执行后续内容。</p>
+<h4 id="2-Join"><a href="#2-Join" class="headerlink" title="2. Join()"></a>2. Join()</h4><p><code>join()</code> 作用效果等同于 <code>isAlive</code> ，直到线程处于结束状态才会继续执行后续内容。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">JoinDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1538,7 +1538,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.3k</span>
+                <span class="white-color">225.5k</span>
             
             
             

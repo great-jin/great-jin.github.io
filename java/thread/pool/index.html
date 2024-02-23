@@ -503,7 +503,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-02-23
                 </div>
                 
 
@@ -694,21 +694,21 @@
 
 <h4 id="2-执行流程"><a href="#2-执行流程" class="headerlink" title="2. 执行流程"></a>2. 执行流程</h4><p>当在代码中向线程池提交一个线程任务时，系统将会根据下述流程决定线程的创建销毁与否。</p>
 <blockquote>
-<p><strong>(1)</strong> 判断线程池中当前存活线程数量是否达到了 `corePoolSize``。</p>
+<p><strong>(Ⅰ)</strong> 判断线程池中当前存活线程数量是否达到了 <code>corePoolSize</code></p>
 </blockquote>
 <ul>
 <li><strong>达到</strong> ：进入下一步。</li>
 <li><strong>未达到</strong> ：新建线程运行此任务，且任务结束后将该线程保留在线程池中，不做销毁处理。</li>
 </ul>
 <blockquote>
-<p><strong>(2)</strong> 判断工作队列 (<code>queueCapacity</code>) 是否已满。</p>
+<p><strong>(Ⅱ)</strong> 判断工作队列 (<code>queueCapacity</code>) 是否已满。</p>
 </blockquote>
 <ul>
 <li><strong>已满</strong> ：进入下一步。</li>
 <li><strong>未满</strong> ：将新的任务提交到工作队列中进入等待。</li>
 </ul>
 <blockquote>
-<p><strong>(3)</strong> 判断线程池中存活的线程数量是否达到了 `maxPoolSize``。</p>
+<p><strong>(Ⅲ)</strong> 判断线程池中存活的线程数量是否达到了 <code>maxPoolSize</code></p>
 </blockquote>
 <ul>
 <li><strong>达到</strong> ：使用 <code>饱和策略</code> 来处理这个任务。</li>
@@ -716,12 +716,24 @@
 </ul>
 <p><strong>需要注意一点</strong>：在线程池中的线程数量超过 <code>corePoolSize</code> 时，每当有线程的空闲时间超过了 <code>keepAliveTime</code> ，这个线程就会被终止，直到线程池中线程的数量不大于 <code>corePoolSize</code> 为止。<br><img src="/album/loading.gif" data-original="/album/article/java/thread/pool.png"></p>
 <h4 id="3-阻塞队列"><a href="#3-阻塞队列" class="headerlink" title="3. 阻塞队列"></a>3. 阻塞队列</h4><p>线程池的等待队列用于保存待执行的任务的阻塞队列，包含以下四类：</p>
-<h5 id="1-ArrayBlockingQueue"><a href="#1-ArrayBlockingQueue" class="headerlink" title="(1) ArrayBlockingQueue:"></a>(1) ArrayBlockingQueue:</h5><p>有界阻塞队列。基于数组的先进先出队列 <code>(FIFO)</code>，创建时必须指定大小。</p>
-<h5 id="2-LinkedBlockingQueue"><a href="#2-LinkedBlockingQueue" class="headerlink" title="(2) LinkedBlockingQueue"></a>(2) LinkedBlockingQueue</h5><p>无界阻塞队列，基于链表的先进先出队列 <code>(FIFO)</code>，如果创建时没有指定此队列大小，则默认为 <code>Integer.MAX_VALUE</code>。</p>
+<blockquote>
+<p><strong>(Ⅰ) ArrayBlockingQueue</strong></p>
+</blockquote>
+<p>有界阻塞队列。基于数组的先进先出队列 <code>(FIFO)</code>，创建时必须指定大小。</p>
+<blockquote>
+<p><strong>(Ⅱ) LinkedBlockingQueue</strong></p>
+</blockquote>
+<p>无界阻塞队列，基于链表的先进先出队列 <code>(FIFO)</code>，如果创建时没有指定此队列大小，则默认为 <code>Integer.MAX_VALUE</code>。</p>
 <p>吞吐量通常要高于 <code>ArrayBlockingQueue</code>，<code>Executors.newFixedThreadPool</code> 使用了这个队列。若使用 <code>LinkedBlockingQueue</code> 则 <code>maximumPoolSize</code> 将不起作用，线程池能创建的最大线程数为 <code>corePoolSize</code> ，因为任务等待队列是无界队列。</p>
-<h5 id="3-SynchronousQueue"><a href="#3-SynchronousQueue" class="headerlink" title="(3) SynchronousQueue"></a>(3) SynchronousQueue</h5><p>不会保存提交的任务，而是将直接新建一个线程来执行新来的任务，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态。</p>
+<blockquote>
+<p><strong>(Ⅲ) SynchronousQueue</strong></p>
+</blockquote>
+<p>不会保存提交的任务，而是将直接新建一个线程来执行新来的任务，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态。</p>
 <p><code>SynchronousQueue</code> 吞吐量通常要高于 <code>LinkedBlockingQueue</code>， <code>Executors.newCachedThreadPool</code> 使用了这个队列。</p>
-<h5 id="4-PriorityBlockingQueue"><a href="#4-PriorityBlockingQueue" class="headerlink" title="(4) PriorityBlockingQueue"></a>(4) PriorityBlockingQueue</h5><p><code>PriorityBlockingQueue</code> 是具有优先级的无界阻塞队列。</p>
+<blockquote>
+<p><strong>(Ⅳ) PriorityBlockingQueue</strong></p>
+</blockquote>
+<p><code>PriorityBlockingQueue</code> 是具有优先级的无界阻塞队列。</p>
 <h4 id="4-饱和策略"><a href="#4-饱和策略" class="headerlink" title="4. 饱和策略"></a>4. 饱和策略</h4><p>通过饱和策略用于管理当线程资源已满时如何处理新提交的线程任务。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1315,18 +1327,18 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/basis/encode/">
+                <a href="/java/io/encode/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/40.png" class="responsive-img" alt="Java 数据编码与压缩">
+                        <img src="/album/banner/java/40.png" class="responsive-img" alt="Java编码与加解密实现">
                         
-                        <span class="card-title">Java 数据编码与压缩</span>
+                        <span class="card-title">Java编码与加解密实现</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java 数据的编码与压缩实现。
+                            Java 数据的编码与加解密实现。
                         
                     </div>
                     <div class="publish-info">
@@ -1623,7 +1635,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.3k</span>
+                <span class="white-color">225.5k</span>
             
             
             

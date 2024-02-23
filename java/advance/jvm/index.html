@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-02-23
                 </div>
                 
 
@@ -749,41 +749,48 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 <h4 id="4-应用场景"><a href="#4-应用场景" class="headerlink" title="4. 应用场景"></a>4. 应用场景</h4><p>自 <code>Java 9</code> 开始 <code>JDK</code> 默认使用的垃圾收集器取决于所选择的 <code>JVM</code> 启动模式，有两种启动模式可供选择：</p>
 <blockquote>
 <p><strong>服务器模式</strong>不同 <code>JDK</code> 版本默认垃圾收集器如下：</p>
+</blockquote>
 <ul>
 <li><code>Server</code> 模式，这是 <code>JDK</code> 默认的启动模式，适用于长时间运行的服务器应用程序。</li>
 <li><code>Java 8</code> 及之前的版本，默认使用 <code>Parallel</code> （基于标记复制） 垃圾收集器。</li>
 <li><code>Java 9</code> 及之后默认使用的垃圾收集器是 <code>G1</code> 垃圾收集器。</li>
 </ul>
-</blockquote>
 <blockquote>
 <p><strong>客户端模式</strong>不同 <code>JDK</code> 版本默认垃圾收集器如下：</p>
+</blockquote>
 <ul>
 <li><code>Client</code> 模式，这是面向桌面应用程序和短期运行的应用程序的启动模式。</li>
 <li><code>Java 8</code> 及之前的版本，默认使用 <code>Serial</code> （基于标记清除）垃圾收集器。</li>
 <li><code>Java 9</code> 及之后的版本，默认使用 <code>Serial/Serial Old</code> 垃圾收集器组合。</li>
 </ul>
-</blockquote>
 <h3 id="七、CMS收集器"><a href="#七、CMS收集器" class="headerlink" title="七、CMS收集器"></a>七、CMS收集器</h3><p><code>CMS(Concurrent Mark Sweep)</code> 是一款优秀的收集器，它最主要的优点在名字上已经体现出来：并发收集、低停顿，一些官方公开文档里面也称之为“并发低停顿收集器”（<code>Concurrent Low Pause Collector</code>）。垃圾收集的目标范围为整个新生代（<code>Minor GC</code>），或整个老年代（<code>Major GC</code>），亦或整个 <code>Java</code> 堆（<code>Full GC</code>）。</p>
 <h4 id="1-工作流程"><a href="#1-工作流程" class="headerlink" title="1. 工作流程"></a>1. 工作流程</h4><p><code>CMS</code> 收集器的执行流程共分为四步，具体工程流程如下：</p>
-<ul>
-<li><h5 id="初始标记"><a href="#初始标记" class="headerlink" title="初始标记"></a>初始标记</h5><p>  <code>CMS initial mark</code>，需要停止所有用户线程，仅标记 <code>GC Roots</code> 能直接关联到的对象，整个过程耗时很短。</p>
-</li>
-<li><h5 id="并发标记"><a href="#并发标记" class="headerlink" title="并发标记"></a>并发标记</h5><p>  <code>CMS concurrent mark</code>，不需要停顿用户线程，从 <code>GC Roots</code> 的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是可以与垃圾收集线程一起并发运行。</p>
-</li>
-<li><h5 id="重新标记"><a href="#重新标记" class="headerlink" title="重新标记"></a>重新标记</h5><p>  <code>CMS remark</code>，需要停止所有用户线程，修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录。</p>
-</li>
-<li><h5 id="并发清除"><a href="#并发清除" class="headerlink" title="并发清除"></a>并发清除</h5><p>  <code>CMS concurrent sweep</code>，不需要停顿用户线程，清理删除掉标记阶段判断的已经死亡的对象。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cms.png"></p>
-</li>
-</ul>
+<blockquote>
+<p><strong>(Ⅰ) 初始标记</strong></p>
+</blockquote>
+<p><code>CMS initial mark</code>，需要停止所有用户线程，仅标记 <code>GC Roots</code> 能直接关联到的对象，整个过程耗时很短。</p>
+<blockquote>
+<p><strong>(Ⅱ) 并发标记</strong></p>
+</blockquote>
+<p><code>CMS concurrent mark</code>，不需要停顿用户线程，从 <code>GC Roots</code> 的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长，但是可以与垃圾收集线程一起并发运行。</p>
+<blockquote>
+<p><strong>(Ⅲ) 重新标记</strong></p>
+</blockquote>
+<p><code>CMS remark</code>，需要停止所有用户线程，修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录。</p>
+<blockquote>
+<p><strong>(Ⅳ) 并发清除</strong></p>
+</blockquote>
+<p><code>CMS concurrent sweep</code>，不需要停顿用户线程，清理删除掉标记阶段判断的已经死亡的对象。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cms.png"></p>
 <h4 id="2-缺点不足"><a href="#2-缺点不足" class="headerlink" title="2. 缺点不足"></a>2. 缺点不足</h4><p><code>CMS</code> 默认启动的回收线程数是 <code>(处理器核心数量+3)/4</code> ，如果处理器核心数在四个或以上，并发回收时垃圾收集线程只占用不超过 <code>25%</code> 的处理器运算资源，并且会随着处理器核心数量的增加而下降。但是当处理器核心数量不足四个时，<code>CMS</code> 对用户程序的影响就可能变得很大。</p>
 <blockquote>
+<p>CMS 回收器的缺点主要包含下述几点</p>
+</blockquote>
 <ul>
 <li><code>CMS</code> 在最后一步执行并发清除是基于标记清除的回收模式，因此会造成内存空间碎片化，后续若需要存入大对象时则会再次触发 <code>GC</code> 造成性能损耗。</li>
 <li>在并发阶段它虽然不会导致用户线程停顿，但却会因为占用了一部分线程（或者说处理器的计算能力）而导致应用程序变慢，降低总吞吐量。</li>
 <li>在并发标记与并发清除的过程中用户线程仍在运行中，若在此期间的新生成的对象在本轮 <code>GC</code> 中无法被回收，只能等待下一次 <code>GC</code> 回收。</li>
 <li>在垃圾收集阶段用户线程仍在运行状态，则需要预留足够内存空间提供给用户线程使用，因此 <code>CMS</code> 收集器不能像其他收集器那样等待到老年代几乎完全被填满了再进行收集，必须预留一部分空间供并发收集时的程序运作使用，通过 <code>XX：CMSInitiatingOccu-pancyFraction</code> 参数设置 <code>GC</code> 触发阈值（百分比）。</li>
 </ul>
-</blockquote>
 <h3 id="八、G1收集器"><a href="#八、G1收集器" class="headerlink" title="八、G1收集器"></a>八、G1收集器</h3><p><code>G1(Garbage First)</code> 收集器面向堆内存任何部分来组成回收集（<code>Collection Set</code>）进行回收，衡量标准不再是它属于哪个分代，而是哪块内存中存放的垃圾数量最多，回收收益最大，这就是 <code>G1</code> 收集器的 <code>Mixed GC</code> 模式。</p>
 <p>虽然使用这种分代方式提高了效率但由于更多的分代 <code>G1</code> 至少要耗费大约相当于 <code>Java堆</code> 容量 <code>10%</code> 至 <code>20%</code> 的额外内存来维持收集器工作。</p>
 <h4 id="1-Region"><a href="#1-Region" class="headerlink" title="1. Region"></a>1. Region</h4><p><code>G1</code> 收集器将连续的 <code>Java</code> 堆划分为多个大小相等的独立区域（<code>Region</code>），每一个 <code>Region</code> 都可以根据需要，扮演新生代的 <code>Eden</code> 空间、 <code>Survivor</code> 空间，或者老年代空间。</p>
@@ -794,16 +801,22 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 <h4 id="3-Humongous"><a href="#3-Humongous" class="headerlink" title="3. Humongous"></a>3. Humongous</h4><p><code>Region</code> 中还有一类特殊的 <code>Humongous</code> 区域专门用来存储大对象，<code>G1</code> 收集器认为只要大小超过了一个 <code>Region</code> 容量一半的对象即可判定为大对象。</p>
 <p>每个 <code>Region</code> 的大小可以通过参数 <code>-XX：G1HeapRegionSize</code> 设定，取值范围为 <code>1MB～32MB</code>，对于那些超过了整个 <code>Region</code> 容量的超级大对象，将会被存放在 <code>N</code> 个连续的 <code>Humongous Region</code> 之中， <code>G1</code> 的大多数行为都把 <code>Humongous Region</code> 作为老年代的一部分来进行看待。</p>
 <h4 id="4-工作流程"><a href="#4-工作流程" class="headerlink" title="4. 工作流程"></a>4. 工作流程</h4><p>与 <code>CMS</code> 收集器类， <code>G1</code> 收集器的工作同样分为下列四步：</p>
-<ul>
-<li><h5 id="初始标记-1"><a href="#初始标记-1" class="headerlink" title="初始标记"></a>初始标记</h5><p>  需要停顿线程，但耗时很短，仅仅只是标记一下 <code>GC Roots</code> 能直接关联到的对象。</p>
-</li>
-<li><h5 id="并发标记-1"><a href="#并发标记-1" class="headerlink" title="并发标记"></a>并发标记</h5><p>  从 <code>GC Root</code> 开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。</p>
-</li>
-<li><h5 id="最终标记"><a href="#最终标记" class="headerlink" title="最终标记"></a>最终标记</h5><p>  对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的 <code>SATB</code> 记录。</p>
-</li>
-<li><h5 id="筛选回收"><a href="#筛选回收" class="headerlink" title="筛选回收"></a>筛选回收</h5><p>  负责更新 <code>Region</code> 的统计数据，对各个 <code>Region</code> 的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个 <code>Region</code> 构成回收集，然后把决定回收的那一部分 <code>Region</code> 的存活对象复制到空的 <code>Region</code> 中，再清理掉整个旧 <code>Region</code> 的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/g1.png"></p>
-</li>
-</ul>
+<blockquote>
+<p><strong>(Ⅰ) 初始标记</strong></p>
+</blockquote>
+<p>需要停顿线程，但耗时很短，仅仅只是标记一下 <code>GC Roots</code> 能直接关联到的对象。</p>
+<blockquote>
+<p><strong>(Ⅱ) 并发标记</strong></p>
+</blockquote>
+<p>从 <code>GC Root</code> 开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。</p>
+<blockquote>
+<p><strong>(Ⅲ) 最终标记</strong></p>
+</blockquote>
+<p>对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的 <code>SATB</code> 记录。</p>
+<blockquote>
+<p><strong>(Ⅳ) 筛选回收</strong></p>
+</blockquote>
+<p>负责更新 <code>Region</code> 的统计数据，对各个 <code>Region</code> 的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个 <code>Region</code> 构成回收集，然后把决定回收的那一部分 <code>Region</code> 的存活对象复制到空的 <code>Region</code> 中，再清理掉整个旧 <code>Region</code> 的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/g1.png"></p>
 <h3 id="九、ZGC收集器"><a href="#九、ZGC收集器" class="headerlink" title="九、ZGC收集器"></a>九、ZGC收集器</h3><p><code>ZGC</code> 收集器是一款在 <code>JDK 11</code> 中新加入的具有实验性质的低延迟垃圾收集器，是由 <code>Oracle</code> 公司研发的，目的是在尽可能对吞吐量影响不太大的前提下实现在任意堆内存大小下都可以把垃圾收集的停顿时间限制在十毫秒以内的低延迟。</p>
 <h4 id="1-Region-1"><a href="#1-Region-1" class="headerlink" title="1. Region"></a>1. Region</h4><p><code>ZGC</code> 收集器中对 <code>Region</code> 实现了更细的划分，分为小、中、大型三种。</p>
 <blockquote>
@@ -815,19 +828,25 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
 </blockquote>
 <h4 id="2-染色指针"><a href="#2-染色指针" class="headerlink" title="2. 染色指针"></a>2. 染色指针</h4><p>染色指针是 <code>ZGC</code> 收集器的核心，在 <code>64</code> 位虚拟机中有 <code>18</code> 位是无法寻址的，<code>ZGC</code> 的染色指针技术将剩下的 <code>46</code> 位指针宽度中其高 <code>4</code> 位用于存储四个标志信息。通过这些标志位，虚拟机可以直接从指针中看到其引用对象的三色标记状态、是否进入了重分配集（即被移动 <code>Remapped</code>）、是否只能通过 <code>finalize()</code> 方法才能被访问到。</p>
 <p><code>ZGC</code> 能够管理的内存不可以超过 <code>4TB</code>（2 的 42次幂）。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/zgc.png"></p>
-<h4 id="3-工作流程"><a href="#3-工作流程" class="headerlink" title="3. 工作流程"></a>3. 工作流程</h4><ul>
-<li><h5 id="并发标记-2"><a href="#并发标记-2" class="headerlink" title="并发标记"></a>并发标记</h5><p>  并发标记是遍历对象图做可达性分析的阶段，<code>ZGC</code> 的标记是在指针上而不是在对象上进行的，标记阶段会更新染色指针中的 <code>Marked 0</code>、<code>Marked 1</code> 标志位。</p>
-</li>
-<li><h5 id="并发预备重分配"><a href="#并发预备重分配" class="headerlink" title="并发预备重分配"></a>并发预备重分配</h5><p>  这个阶段需要根据特定的查询条件统计得出本次收集过程要清理哪些 <code>Region</code> ，将这些 <code>Region</code> 组成重分配集（<code>Relocation Set</code>）。</p>
-<p>  <code>ZGC</code> 每次回收都会扫描所有的 <code>Region</code>，用范围更大的扫描成本换取省去 <code>G1</code> 中记忆集的维护成本。因此 <code>ZGC</code> 的重分配集只是决定了里面的存活对象会被重新复制到其他的 <code>Region</code> 中，里面的 <code>Region</code> 会被释放，而并不能说回收行为就只是针对这个集合里面的 <code>Region</code> 进行，因为标记过程是针对全堆的。</p>
-</li>
-<li><h5 id="并发重分配"><a href="#并发重分配" class="headerlink" title="并发重分配"></a>并发重分配</h5><p>  这个过程要把重分配集中的存活对象复制到新的 <code>Region</code> 上，并为重分配集中的每个 <code>Region</code> 维护一个转发表（<code>Forward Table</code>），记录从旧对象到新对象的转向关系。</p>
-<p>  得益于染色指针的支持，<code>ZGC</code> 收集器能仅从引用上就明确得知一个对象是否处于重分配集之中，如果用户线程此时并发访问了位于重分配集中的对象，这次访问将会被预置的内存屏障所截获，然后立即根据 <code>Region</code> 上的转发表记录将访问转发到新复制的对象上，并同时修正更新该引用的值，使其直接指向新对象，<code>ZGC</code> 将这种行为称为指针的自愈（<code>Self-Healing</code>）能力。</p>
-</li>
-<li><h5 id="并发重映射"><a href="#并发重映射" class="headerlink" title="并发重映射"></a>并发重映射</h5><p>  重映射所做的就是修正整个堆中指向重分配集中旧对象的所有引用。</p>
-<p>  但是 <code>ZGC</code> 的并发重映射并不是一个必须要迫切去完成的任务，因为前面说过，即使是旧引用，它也是可以自愈的，最多只是第一次使用时多一次转发和修正操作。重映射清理这些旧引用的主要目的是为了不变慢（还有清理结束后可以释放转发表这样的附带收益），所以说这并不是很迫切。</p>
-</li>
-</ul>
+<h4 id="3-工作流程"><a href="#3-工作流程" class="headerlink" title="3. 工作流程"></a>3. 工作流程</h4><blockquote>
+<p><strong>(Ⅰ) 并发标记</strong></p>
+</blockquote>
+<p>并发标记是遍历对象图做可达性分析的阶段，<code>ZGC</code> 的标记是在指针上而不是在对象上进行的，标记阶段会更新染色指针中的 <code>Marked 0</code>、<code>Marked 1</code> 标志位。</p>
+<blockquote>
+<p><strong>(Ⅱ) 并发预备重分配</strong></p>
+</blockquote>
+<p>这个阶段需要根据特定的查询条件统计得出本次收集过程要清理哪些 <code>Region</code> ，将这些 <code>Region</code> 组成重分配集（<code>Relocation Set</code>）。</p>
+<p><code>ZGC</code> 每次回收都会扫描所有的 <code>Region</code>，用范围更大的扫描成本换取省去 <code>G1</code> 中记忆集的维护成本。因此 <code>ZGC</code> 的重分配集只是决定了里面的存活对象会被重新复制到其他的 <code>Region</code> 中，里面的 <code>Region</code> 会被释放，而并不能说回收行为就只是针对这个集合里面的 <code>Region</code> 进行，因为标记过程是针对全堆的。</p>
+<blockquote>
+<p><strong>(Ⅲ) 并发重分配</strong></p>
+</blockquote>
+<p>这个过程要把重分配集中的存活对象复制到新的 <code>Region</code> 上，并为重分配集中的每个 <code>Region</code> 维护一个转发表（<code>Forward Table</code>），记录从旧对象到新对象的转向关系。</p>
+<p>得益于染色指针的支持，<code>ZGC</code> 收集器能仅从引用上就明确得知一个对象是否处于重分配集之中，如果用户线程此时并发访问了位于重分配集中的对象，这次访问将会被预置的内存屏障所截获，然后立即根据 <code>Region</code> 上的转发表记录将访问转发到新复制的对象上，并同时修正更新该引用的值，使其直接指向新对象，<code>ZGC</code> 将这种行为称为指针的自愈（<code>Self-Healing</code>）能力。</p>
+<blockquote>
+<p><strong>(Ⅳ) 并发重映射</strong></p>
+</blockquote>
+<p>重映射所做的就是修正整个堆中指向重分配集中旧对象的所有引用。</p>
+<p>但是 <code>ZGC</code> 的并发重映射并不是一个必须要迫切去完成的任务，因为前面说过，即使是旧引用，它也是可以自愈的，最多只是第一次使用时多一次转发和修正操作。重映射清理这些旧引用的主要目的是为了不变慢（还有清理结束后可以释放转发表这样的附带收益），所以说这并不是很迫切。</p>
 <hr>
 <p><strong>参考链接</strong>：</p>
 <ol>
@@ -1431,7 +1450,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.3k</span>
+                <span class="white-color">225.5k</span>
             
             
             
