@@ -486,21 +486,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.6k
+                    3.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    13 分
                 </div>
                 
 
@@ -522,245 +522,283 @@
             <div id="articleContent">
                 <p>数据结构是计算机存储、组织数据的方式，是指相互之间存在一种或多种特定关系的数据元素的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储效率。数据结构往往同高效的检索算法和索引技术有关。</p>
 <p>本文将系统的对数据结构所涉及的知识进行梳理，以最简单易懂的语言帮助你构建属于自己的知识体系。</p>
-<h3 id="一、线性表"><a href="#一、线性表" class="headerlink" title="一、线性表"></a>一、线性表</h3><h4 id="1-顺序表"><a href="#1-顺序表" class="headerlink" title="1. 顺序表"></a>1. 顺序表</h4><ul>
-<li><p><strong>静态存储：</strong>大小不可变，在定义声明时即固定大小。</p>
+<h3 id="一、线性表"><a href="#一、线性表" class="headerlink" title="一、线性表"></a>一、线性表</h3><h4 id="1-顺序表"><a href="#1-顺序表" class="headerlink" title="1. 顺序表"></a>1. 顺序表</h4><h5 id="1-静态存储"><a href="#1-静态存储" class="headerlink" title="(1) 静态存储"></a>(1) 静态存储</h5><p>大小不可变，在定义声明时即固定大小。</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 静态存储</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
-    <span class="token keyword">int</span> length<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">//当前元素个数</span>
-<span class="token punctuation">}</span>SqLsit<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> length<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">// 当前元素个数</span>
+<span class="token punctuation">}</span> SqLsit<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>动态存储：</strong>可根据需求通过<code>malloc</code>函数声明大小，<code>free()</code>函数释放。</p>
+<h5 id="2-动态存储"><a href="#2-动态存储" class="headerlink" title="(2) 动态存储"></a>(2) 动态存储</h5><p>可根据需求通过 <code>malloc</code> 函数声明大小，<code>free()</code> 函数释放。</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 动态存储</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> <span class="token operator">*</span>date<span class="token punctuation">;</span>         
     <span class="token keyword">int</span> length<span class="token punctuation">,</span> MaxSize<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//当前个数和最大容量</span>
-<span class="token punctuation">}</span>SeqList<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> SeqList<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">// 动态分配  </span>
 SeqList L<span class="token punctuation">;</span>
 L<span class="token punctuation">.</span>date <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span> <span class="token function">malloc</span> <span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-链表"><a href="#2-链表" class="headerlink" title="2. 链表"></a>2. 链表</h4><ul>
-<li><h5 id="单链表"><a href="#单链表" class="headerlink" title="单链表"></a>单链表</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> LNode<span class="token punctuation">{</span> 
+<h4 id="2-链表"><a href="#2-链表" class="headerlink" title="2. 链表"></a>2. 链表</h4><h5 id="1-单链表"><a href="#1-单链表" class="headerlink" title="(1) 单链表"></a>(1) 单链表</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> LNode <span class="token punctuation">{</span> 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">//值域</span>
     <span class="token keyword">struct</span> LNode <span class="token operator">*</span>next<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//指针域</span>
-<span class="token punctuation">}</span>LNode<span class="token punctuation">,</span> <span class="token operator">*</span>LinkList<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> LNode<span class="token punctuation">,</span> <span class="token operator">*</span>LinkList<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="双链表"><a href="#双链表" class="headerlink" title="双链表"></a>双链表</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> LNode
-<span class="token punctuation">{</span>
+<h5 id="2-双链表"><a href="#2-双链表" class="headerlink" title="(2) 双链表"></a>(2) 双链表</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> LNode <span class="token punctuation">{</span>
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">//值域</span>
     <span class="token keyword">struct</span> LNode <span class="token operator">*</span>prior<span class="token punctuation">,</span> <span class="token operator">*</span>next<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//前驱，后继</span>
-<span class="token punctuation">}</span>LNode<span class="token punctuation">,</span> <span class="token operator">*</span>LinkList<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
+<span class="token punctuation">}</span> LNode<span class="token punctuation">,</span> <span class="token operator">*</span>LinkList<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-广义表"><a href="#3-广义表" class="headerlink" title="3. 广义表"></a>3. 广义表</h4><h5 id="1-定义"><a href="#1-定义" class="headerlink" title="(1) 定义"></a>(1) 定义</h5><ul>
+<li><strong>子表</strong>：嵌套于广义表中的表。</li>
+<li><strong>原子</strong>：广义表中的单个元素。</li>
+<li><strong>长度</strong>：原子个数 + 子表个数。</li>
+<li><strong>深度</strong>：广义表嵌套层级。</li>
 </ul>
-<h4 id="3-广义表"><a href="#3-广义表" class="headerlink" title="3. 广义表"></a>3. 广义表</h4><ul>
-<li><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><p>  (1) 子表：嵌套于广义表中的表。<br>  (2) 原子：广义表中的单个元素。<br>  (3) 长度：原子个数 + 子表个数。<br>  (4) 深度：广义表嵌套层级。</p>
-</li>
-<li><h5 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h5><p>  (1) 取表头：取出表中的第一个元素，结果可能是单个原子，也可能是广义表。<br>  (2) 取表尾：去除第一个元素之后剩余部分，结果一定是广义表。</p>
-</li>
+<h5 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="(2) 基本操作"></a>(2) 基本操作</h5><ul>
+<li><strong>取表头</strong>：取出表中的第一个元素，结果可能是单个原子，也可能是广义表。</li>
+<li><strong>取表尾</strong>：去除第一个元素之后剩余部分，结果一定是广义表。</li>
 </ul>
-<h4 id="4-区别"><a href="#4-区别" class="headerlink" title="4. 区别"></a>4. 区别</h4><ul>
-<li><h5 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h5><p>  (1) 物理相邻，逻辑也相邻(在内存中分配了一块连续区域用于存储数据)。<br>  (2) 满足随机存储(即根据下标可以直接定位到对应元素)。<br>  (3) 插入删除需要移动大量元素。</p>
-</li>
-<li><h5 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h5><p>  (1) 逻辑相邻，物理不相邻(通过指针相连)。<br>  (2) 满足顺序存储(一个连一个)。<br>  (3) 插入删除更方便，无需移动大量数据。<br>  (4) 查找元素效率低，需要从首节点遍历寻找。</p>
-</li>
+<h4 id="4-区别"><a href="#4-区别" class="headerlink" title="4. 区别"></a>4. 区别</h4><h5 id="1-线性表"><a href="#1-线性表" class="headerlink" title="(1) 线性表"></a>(1) 线性表</h5><ul>
+<li>物理相邻，逻辑也相邻(在内存中分配了一块连续区域用于存储数据)。</li>
+<li>满足随机存储(即根据下标可以直接定位到对应元素)。</li>
+<li>插入删除需要移动大量元素。</li>
 </ul>
-<h3 id="二、栈及应用"><a href="#二、栈及应用" class="headerlink" title="二、栈及应用"></a>二、栈及应用</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>(1) 栈空：<code>top = -1</code>。<br>(2) 栈满：<code>top = MaxSize - 1</code>。<br>(3) 单向通道，先进后出。</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// 顺序栈</span>
-    <span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
-        <span class="token keyword">int</span> date<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
-        <span class="token keyword">int</span> top<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//栈顶</span>
-    <span class="token punctuation">}</span>SqStack<span class="token punctuation">;</span>
+<h5 id="2-链表-1"><a href="#2-链表-1" class="headerlink" title="(2) 链表"></a>(2) 链表</h5><ul>
+<li>逻辑相邻，物理不相邻(通过指针相连)。</li>
+<li>满足顺序存储(一个连一个)。</li>
+<li>插入删除更方便，无需移动大量数据。</li>
+<li>查找元素效率低，需要从首节点遍历寻找。</li>
+</ul>
+<h3 id="二、栈及应用"><a href="#二、栈及应用" class="headerlink" title="二、栈及应用"></a>二、栈及应用</h3><h4 id="1-定义-1"><a href="#1-定义-1" class="headerlink" title="1. 定义"></a>1. 定义</h4><ul>
+<li>栈空： <code>top = -1</code> 。</li>
+<li>栈满： <code>top = MaxSize - 1</code> 。</li>
+<li>单向通道，先进后出。</li>
+</ul>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 顺序栈</span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
+    <span class="token keyword">int</span> date<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
+    <span class="token keyword">int</span> top<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//栈顶</span>
+<span class="token punctuation">}</span> SqStack<span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 链栈</span>
-    <span class="token keyword">typedef</span> <span class="token keyword">struct</span> LinkNode<span class="token punctuation">{</span>                 
-        <span class="token keyword">int</span> <span class="token operator">*</span>date<span class="token punctuation">;</span>         
-        <span class="token keyword">struct</span> LinkNode <span class="token operator">*</span>top<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//栈顶</span>
-    <span class="token punctuation">}</span><span class="token operator">*</span>LiStack<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 链栈</span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> LinkNode <span class="token punctuation">{</span>                 
+    <span class="token keyword">int</span> <span class="token operator">*</span>date<span class="token punctuation">;</span>         
+    <span class="token keyword">struct</span> LinkNode <span class="token operator">*</span>top<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//栈顶</span>
+<span class="token punctuation">}</span> <span class="token operator">*</span>LiStack<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><ul>
-<li><h5 id="顺序栈"><a href="#顺序栈" class="headerlink" title="顺序栈"></a>顺序栈</h5><p>  (1) 出栈(先出栈再减1): <code>values = S.data[S.top--]</code>。<br>  (2) 进栈(先加1再进栈): <code>values = S.data[++S.top]</code>。</p>
-</li>
-<li><h5 id="链栈"><a href="#链栈" class="headerlink" title="链栈"></a>链栈</h5><p>  (1) 初始化栈: <code>InitStack(&amp;S)</code>。<br>  (2) 判定栈是否为空: <code>StackEmpty(S)</code>。<br>  (3) 进栈(链栈): <code>Push(&amp;S, x)</code>。<br>  (4) 出栈(链栈): <code>Pop(&amp;S, &amp;x)</code>。<br>  (5) 读取栈顶元素: <code>GetTop(s, &amp;x)</code>。<br>  (6) 销毁栈: <code>DestroyStack(&amp;S)</code>。</p>
-</li>
+<h4 id="2-基本操作-1"><a href="#2-基本操作-1" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><h5 id="1-顺序栈"><a href="#1-顺序栈" class="headerlink" title="(1) 顺序栈"></a>(1) 顺序栈</h5><ul>
+<li><strong>出栈</strong>: 先出栈再减 <code>1</code> ， <code>values = S.data[S.top--]</code> 。</li>
+<li><strong>进栈</strong>: 先加 <code>1</code> 再进栈， <code>values = S.data[++S.top]</code> 。</li>
 </ul>
-<h4 id="3-中缀表达式"><a href="#3-中缀表达式" class="headerlink" title="3. 中缀表达式"></a>3. 中缀表达式</h4><p>(1) 声明一个栈操作数栈和运算符栈。<br>(2) 遇到操作数，加入操作数栈。<br>(3) 遇到运算符或界限符，弹出操作数栈顶两位元素，进行运算后重新入栈。</p>
-<h4 id="4-中缀转后缀"><a href="#4-中缀转后缀" class="headerlink" title="4. 中缀转后缀"></a>4. 中缀转后缀</h4><p>(1) 声明一个栈用于存放界限符<code>( )</code>和运算符<code>+ - * /</code>。<br>(2) 遇到操作数，直接加入后缀表达式。<br>(3) 遇到<code>(</code>直接入栈, 遇到<code>)</code>则依次弹出栈内运算符并加入后缀表达式，直到弹出<code>(</code>为止， <code>(</code>不加入后缀表达式。<br>(4) 遇到运算符，依次弹出栈中优先级<code>高于或等于</code>当前运算符的所有运算符，并加入后缀表达式，若碰到“(”或栈空则停止，之后再把当前运算符入栈。</p>
-<h3 id="三、队列及应用"><a href="#三、队列及应用" class="headerlink" title="三、队列及应用"></a>三、队列及应用</h3><h4 id="1-定义-1"><a href="#1-定义-1" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>(1)队空：<code>front = rear = 0</code>。<br>(2)双向通道，一边只能进，一边只能出，先进先出。</p>
+<h5 id="2-链栈"><a href="#2-链栈" class="headerlink" title="(2) 链栈"></a>(2) 链栈</h5><ul>
+<li><strong>初始化栈</strong>:  <code>InitStack(&amp;S)</code> 。</li>
+<li><strong>判定栈是否为空</strong>:  <code>StackEmpty(S)</code> 。</li>
+<li><strong>进栈(链栈)</strong>:  <code>Push(&amp;S, x)</code> 。</li>
+<li><strong>出栈(链栈)</strong>:  <code>Pop(&amp;S, &amp;x)</code> 。</li>
+<li><strong>读取栈顶元素</strong>:  <code>GetTop(s, &amp;x)</code> 。</li>
+<li><strong>销毁栈</strong>:  <code>DestroyStack(&amp;S)</code> 。</li>
+</ul>
+<h4 id="3-中缀表达式"><a href="#3-中缀表达式" class="headerlink" title="3. 中缀表达式"></a>3. 中缀表达式</h4><ul>
+<li>声明一个栈操作数栈和运算符栈。</li>
+<li>遇到操作数，加入操作数栈。</li>
+<li>遇到运算符或界限符，弹出操作数栈顶两位元素，进行运算后重新入栈。</li>
+</ul>
+<h4 id="4-中缀转后缀"><a href="#4-中缀转后缀" class="headerlink" title="4. 中缀转后缀"></a>4. 中缀转后缀</h4><ul>
+<li>声明一个栈用于存放界限符 <code>( )</code> 和运算符 <code>+ - * /</code> 。</li>
+<li>遇到操作数，直接加入后缀表达式。</li>
+<li>遇到 <code>(</code> 直接入栈, 遇到 <code>)</code> 则依次弹出栈内运算符并加入后缀表达式，直到弹出 <code>(</code> 为止，  <code>(</code> 不加入后缀表达式。</li>
+<li>遇到运算符，依次弹出栈中优先级 <code>高于或等于</code> 当前运算符的所有运算符，并加入后缀表达式，若碰到“(”或栈空则停止，之后再把当前运算符入栈。</li>
+</ul>
+<h3 id="三、队列及应用"><a href="#三、队列及应用" class="headerlink" title="三、队列及应用"></a>三、队列及应用</h3><h4 id="1-定义-2"><a href="#1-定义-2" class="headerlink" title="1. 定义"></a>1. 定义</h4><ul>
+<li>队空：<code>front = rear = 0</code> 。</li>
+<li>双向通道，一边只能进，一边只能出，先进先出。</li>
+</ul>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 顺序队列</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
     <span class="token keyword">int</span> front<span class="token punctuation">,</span> rear<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//队头和队尾</span>
-<span class="token punctuation">}</span>SqQueue<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> SqQueue<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">// 链队</span>
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>         
     <span class="token keyword">struct</span> LinkNode <span class="token operator">*</span>next<span class="token punctuation">;</span>     
-<span class="token punctuation">}</span>LinkNode<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> LinkNode<span class="token punctuation">;</span>
+
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>        
     LinkNode <span class="token operator">*</span>front<span class="token punctuation">,</span> <span class="token operator">*</span>rear<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//队头和队尾</span>
-<span class="token punctuation">}</span><span class="token operator">*</span>LiQueue<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-基本操作-1"><a href="#2-基本操作-1" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><ul>
-<li><h5 id="顺序队列"><a href="#顺序队列" class="headerlink" title="顺序队列"></a>顺序队列</h5><p>  (1) 出队 ：<code>values = Q.data[Q.front--]</code>。<br>  (2) 入队：<code>values = Q.data[Q.rear++]</code>。</p>
-</li>
-<li><h5 id="链队"><a href="#链队" class="headerlink" title="链队"></a>链队</h5><p>  (1) <code>InitQueue(&amp;Q)</code>：初始化队列，构造一个空队列 Q。<br>  (2) <code>QueueEmpty(Q)</code>：判队列空，若队列Q为空返回true，否则返回false。<br>  (3) <code>EnQueue(&amp;Q, x)</code>：入队，若队列Q未满，将x加入，使之成为新的队尾。<br>  (4) <code>DeQueue (&amp;Q, &amp;X)</code>：出队，若队列Q非空，删除队头元素并用x返回。<br>  (5) <code>GetHead(Q, &amp;X)</code>：读队头元素，若队列Q非空，则将队头元素赋值给x。</p>
-</li>
+<span class="token punctuation">}</span> <span class="token operator">*</span>LiQueue<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-基本操作-2"><a href="#2-基本操作-2" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><h5 id="1-顺序队列"><a href="#1-顺序队列" class="headerlink" title="(1) 顺序队列"></a>(1) 顺序队列</h5><ul>
+<li>出队：<code>values = Q.data[Q.front--]</code> 。</li>
+<li>入队：<code>values = Q.data[Q.rear++]</code> 。</li>
 </ul>
-<h3 id="四、矩阵压缩"><a href="#四、矩阵压缩" class="headerlink" title="四、矩阵压缩"></a>四、矩阵压缩</h3><h4 id="1-对称矩阵"><a href="#1-对称矩阵" class="headerlink" title="1. 对称矩阵"></a>1. 对称矩阵</h4><p>(1) 矩阵元素关于对角线对称，只需存储上(下)三角和对角线元素即可。<br>(2) 从上至下元素个数依次递增，构成等差数列，利用等差求和公式求和即可。</p>
+<h5 id="2-链队"><a href="#2-链队" class="headerlink" title="(2) 链队"></a>(2) 链队</h5><ul>
+<li> <code>InitQueue(&amp;Q)</code> ：初始化队列，构造一个 <code>空队列Q</code> 。</li>
+<li> <code>QueueEmpty(Q)</code> ：判队列空，若 <code>队列Q</code> 为空返回 <code>true</code> ，否则返回 <code>false</code> 。</li>
+<li> <code>EnQueue(&amp;Q, x)</code> ：入队，若 <code>队列Q</code> 未满，将 <code>x</code> 加入，使之成为新的队尾。</li>
+<li> <code>DeQueue (&amp;Q, &amp;X)</code> ：出队，若 <code>队列Q</code> 非空，删除队头元素并用 <code>x</code> 返回。</li>
+<li> <code>GetHead(Q, &amp;X)</code> ：读队头元素，若 <code>队列Q</code> 非空，则将队头元素赋值给 <code>x</code> 。</li>
+</ul>
+<h3 id="四、矩阵压缩"><a href="#四、矩阵压缩" class="headerlink" title="四、矩阵压缩"></a>四、矩阵压缩</h3><h4 id="1-对称矩阵"><a href="#1-对称矩阵" class="headerlink" title="1. 对称矩阵"></a>1. 对称矩阵</h4><ul>
+<li>矩阵元素关于对角线对称，只需存储上(下)三角和对角线元素即可。</li>
+<li>从上至下元素个数依次递增，构成等差数列，利用等差求和公式求和即可。</li>
+</ul>
 <pre class="line-numbers language-cpp"><code class="language-cpp">S <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>a1 <span class="token operator">+</span> an<span class="token punctuation">)</span><span class="token operator">*</span>n<span class="token punctuation">]</span><span class="token operator">/</span>d   <span class="token comment" spellcheck="true">//d：公差； n：一共多少项 </span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>(3) 需要注意数组下标通常从 <code>0</code> 开始。</p>
-<h4 id="2-三角矩阵"><a href="#2-三角矩阵" class="headerlink" title="2. 三角矩阵"></a>2. 三角矩阵</h4><p>(1) 矩阵上三角或下三角值为0，只需存储上三角或下三角即可。<br>(2) 计算方法同对称矩阵。</p>
+<ul>
+<li>需要注意数组下标通常从 <code>0</code> 开始。</li>
+</ul>
+<h4 id="2-三角矩阵"><a href="#2-三角矩阵" class="headerlink" title="2. 三角矩阵"></a>2. 三角矩阵</h4><ul>
+<li>矩阵上三角或下三角值为 <code>0</code> ，只需存储上三角或下三角即可。</li>
+<li>计算方法同对称矩阵。</li>
+</ul>
 <h4 id="3-三对角矩阵"><a href="#3-三对角矩阵" class="headerlink" title="3. 三对角矩阵"></a>3. 三对角矩阵</h4><p>只有对角线和其相邻元素有值。</p>
 <h4 id="4-稀疏矩阵"><a href="#4-稀疏矩阵" class="headerlink" title="4. 稀疏矩阵"></a>4. 稀疏矩阵</h4><p>稀疏矩阵通常指 <code>0</code> 元素个数远多于非 <code>0</code> 元素，采用三元组或十字链表法记录。</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 三元组</span>
-<span class="token keyword">struct</span> V<span class="token punctuation">{</span>
+<span class="token keyword">struct</span> V <span class="token punctuation">{</span>
     <span class="token keyword">int</span> i<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">//行号</span>
     <span class="token keyword">int</span> j<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">//列号</span>
     <span class="token keyword">int</span> k<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">//元素值</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、串模式匹配"><a href="#五、串模式匹配" class="headerlink" title="五、串模式匹配"></a>五、串模式匹配</h3><h4 id="1-定义-2"><a href="#1-定义-2" class="headerlink" title="1. 定义"></a>1. 定义</h4><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 静态存储</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
+<h3 id="五、串模式匹配"><a href="#五、串模式匹配" class="headerlink" title="五、串模式匹配"></a>五、串模式匹配</h3><h4 id="1-定义-3"><a href="#1-定义-3" class="headerlink" title="1. 定义"></a>1. 定义</h4><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 静态存储</span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">char</span> ch<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
     <span class="token keyword">int</span> length<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//串的长度</span>
-<span class="token punctuation">}</span>SString<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> SString<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">// 动态存储</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span><span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">char</span> <span class="token operator">*</span>ch<span class="token punctuation">;</span>         
     <span class="token keyword">int</span> length<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//串的长度</span>
-<span class="token punctuation">}</span>HString<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> HString<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-KMP算法"><a href="#2-KMP算法" class="headerlink" title="2. KMP算法"></a>2. KMP算法</h4><pre class="line-numbers language-cpp"><code class="language-cpp">
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="六、树及应用"><a href="#六、树及应用" class="headerlink" title="六、树及应用"></a>六、树及应用</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><ul>
-<li><h5 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h5><ul>
-<li>(1) 树的结点数 = 所有结点度数 <code>+ 1</code> = 边数 <code>- 1</code>。</li>
-<li>(2) 度为 <code>M</code> 的树结点数 = 度为 <code>0</code> 的结点个数 + … + 度为 <code>M</code> 的结点个数。</li>
-<li>(3) 度为 <code>M</code> 的树第 h 层最多有<code>M^(h-1)</code>个结点。</li>
-<li>(4) 高度为 <code>h</code> 的 <code>M</code> 又树最多有<code>[M^(h-1)]/[m-1]</code>个结点。</li>
+<h3 id="六、树及应用"><a href="#六、树及应用" class="headerlink" title="六、树及应用"></a>六、树及应用</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><h5 id="1-性质"><a href="#1-性质" class="headerlink" title="(1) 性质"></a>(1) 性质</h5><ul>
+<li>树的结点数 = 所有结点度数 <code>+ 1</code> =  <code>边数 - 1</code>。</li>
+<li>度为 <code>M</code> 的树结点数 = 度为 <code>0</code> 的结点个数 + … + 度为 <code>M</code> 的结点个数。</li>
+<li>度为 <code>M</code> 的树第 <code>h</code> 层最多有 <code>M^(h-1)</code> 个结点。</li>
+<li>高度为 <code>h</code> 的 <code>M</code> 又树最多有 <code>[M^(h-1)]/[m-1]</code> 个结点。</li>
 </ul>
-</li>
-<li><h5 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h5><p>  孩子表示法：左孩子存孩子，右孩子存兄弟。<br>  <img src="/album/loading.gif" data-original="/album/article/ds/1.png"></p>
+<h5 id="2-定义"><a href="#2-定义" class="headerlink" title="(2) 定义"></a>(2) 定义</h5><p>孩子表示法：左孩子存孩子，右孩子存兄弟。<br><img src="/album/loading.gif" data-original="/album/article/ds/1.png"></p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//孩子表示法</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span> CSNode<span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> CSNode <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>         
     <span class="token keyword">struct</span> CSNode <span class="token operator">*</span>firstchild<span class="token punctuation">,</span> <span class="token operator">*</span>nextsibling<span class="token punctuation">;</span>  
-<span class="token punctuation">}</span>CSNode<span class="token punctuation">,</span> <span class="token operator">*</span>CSTree<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> CSNode<span class="token punctuation">,</span> <span class="token operator">*</span>CSTree<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">//双亲表示法</span>
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>         
-   <span class="token keyword">int</span> parent<span class="token punctuation">;</span>     
-<span class="token punctuation">}</span>PTNode<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> parent<span class="token punctuation">;</span>     
+<span class="token punctuation">}</span> PTNode<span class="token punctuation">;</span>
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>        
     PTNode nodes<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//队头和队尾</span>
     <span class="token keyword">int</span> n<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>PTress<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> PTress<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
+<h4 id="2-二叉树"><a href="#2-二叉树" class="headerlink" title="2. 二叉树"></a>2. 二叉树</h4><h5 id="1-性质-1"><a href="#1-性质-1" class="headerlink" title="(1) 性质"></a>(1) 性质</h5><ul>
+<li>非空二又树叶子结点数 = 度为 <code>2</code> 的结点数 <code>+ 1</code>。</li>
+<li>非空二又树第 <code>K</code> 层最多有 <code>2^(k-1)</code> 个结点。</li>
+<li>高度为 <code>h</code> 的二叉树最多有 <code>2^h - 1</code> 个结点。</li>
+<li><code>n</code> 个结点的完全二叉树高度： <code>log2[n + 1]</code> 。</li>
 </ul>
-<h4 id="2-二叉树"><a href="#2-二叉树" class="headerlink" title="2. 二叉树"></a>2. 二叉树</h4><ul>
-<li><h5 id="性质-1"><a href="#性质-1" class="headerlink" title="性质"></a>性质</h5><ul>
-<li>(1) 非空二又树叶子结点数 = 度为 2 的结点数 + 1。</li>
-<li>(2) 非空二又树第 K 层最多有<code>2^(k-1)</code>个结点。</li>
-<li>(3) 高度为 h 的二叉树最多有<code>2^h - 1</code>个结点。</li>
-<li>(4) n 个结点的完全二叉树高度：<code>log2[n + 1]</code>。</li>
-</ul>
-</li>
-<li><h5 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 顺序存储</span>
-<span class="token keyword">struct</span> TreeNode<span class="token punctuation">{</span>                 
+<h5 id="2-定义-1"><a href="#2-定义-1" class="headerlink" title="(2) 定义"></a>(2) 定义</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 顺序存储</span>
+<span class="token keyword">struct</span> TreeNode <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>         
     <span class="token keyword">bool</span> isEmpty<span class="token punctuation">;</span>       <span class="token comment" spellcheck="true">//结点是否空</span>
-<span class="token punctuation">}</span>T<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> T<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">// 链式存储</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span> BitNode<span class="token punctuation">{</span>                 
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> BitNode <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">;</span>         
     <span class="token keyword">struct</span> BitNode <span class="token operator">*</span>lchild<span class="token punctuation">,</span> <span class="token operator">*</span>rchild<span class="token punctuation">;</span>  
-<span class="token punctuation">}</span>BitNode<span class="token punctuation">,</span> <span class="token operator">*</span>BitTree<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> BitNode<span class="token punctuation">,</span> <span class="token operator">*</span>BitTree<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-哈弗曼树"><a href="#3-哈弗曼树" class="headerlink" title="3. 哈弗曼树"></a>3. 哈弗曼树</h4><ul>
-<li><h5 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h5>  (1) 将所有结点按权升序排列(从小到大排)。<br>  (2) 取两个权最小构成一个二叉树，计算其父结点权值。<br>  (3) 若父结点权同时大于剩余未加入中的两个结点权值，则将之后两个结点作为新叶子构造树，和当前根的孩子同级。<br>  (4) 若只有小于父结点,则作为父结点的兄弟结点。</li>
+<li>将所有结点按权升序排列(从小到大排)。</li>
+<li>取两个权最小构成一个二叉树，计算其父结点权值。</li>
+<li>若父结点权同时大于剩余未加入中的两个结点权值，则将之后两个结点作为新叶子构造树，和当前根的孩子同级。</li>
+<li>若只有小于父结点,则作为父结点的兄弟结点。</li>
 </ul>
-<h3 id="七、图及应用"><a href="#七、图及应用" class="headerlink" title="七、图及应用"></a>七、图及应用</h3><h4 id="1-定义-3"><a href="#1-定义-3" class="headerlink" title="1. 定义"></a>1. 定义</h4><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 邻接矩阵</span>
+<h3 id="七、图及应用"><a href="#七、图及应用" class="headerlink" title="七、图及应用"></a>七、图及应用</h3><h4 id="1-定义-4"><a href="#1-定义-4" class="headerlink" title="1. 定义"></a>1. 定义</h4><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 邻接矩阵</span>
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>                 
     <span class="token keyword">int</span> date<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>         
     <span class="token keyword">int</span> edge<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span> 
     <span class="token keyword">int</span> vexNum<span class="token punctuation">,</span> arcNum<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//顶点数和边数 </span>
-<span class="token punctuation">}</span>MGraph<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> MGraph<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">// 邻接表</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span> ArcNode<span class="token punctuation">{</span>     <span class="token comment" spellcheck="true">//边表结点                 </span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> ArcNode <span class="token punctuation">{</span>     <span class="token comment" spellcheck="true">//边表结点                 </span>
     <span class="token keyword">int</span> adjvex<span class="token punctuation">;</span>         
     <span class="token keyword">struct</span> ArcNode <span class="token operator">*</span>next<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>ArcNode<span class="token punctuation">;</span>
-<span class="token keyword">typedef</span> <span class="token keyword">struct</span> VNode<span class="token punctuation">{</span>       <span class="token comment" spellcheck="true">//顶点           </span>
+<span class="token punctuation">}</span> ArcNode<span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> VNode <span class="token punctuation">{</span>       <span class="token comment" spellcheck="true">//顶点           </span>
     <span class="token keyword">int</span> data<span class="token punctuation">;</span>                
     VNode <span class="token operator">*</span>first<span class="token punctuation">;</span> 
-<span class="token punctuation">}</span>VNode<span class="token punctuation">,</span> AdjList<span class="token punctuation">[</span>MaxVexNum<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> VNode<span class="token punctuation">,</span> AdjList<span class="token punctuation">[</span>MaxVexNum<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span> 
     AdjList vertices<span class="token punctuation">;</span>
     <span class="token keyword">int</span> vexNum<span class="token punctuation">,</span> arcNum<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">//顶点数和边数</span>
-<span class="token punctuation">}</span>ALGraph<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> ALGraph<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-最小生成树"><a href="#2-最小生成树" class="headerlink" title="2. 最小生成树"></a>2. 最小生成树</h4><ul>
-<li><h5 id="普里姆算法"><a href="#普里姆算法" class="headerlink" title="普里姆算法"></a>普里姆算法</h5><p>  每次将代价最小(边权值最小)的结点纳入生成树，从一个结点出发不断往下走，不断纳入新结点。<br>  <img src="/album/loading.gif" data-original="/album/article/ds/2.png"></p>
-</li>
-<li><h5 id="克鲁斯卡尔算法"><a href="#克鲁斯卡尔算法" class="headerlink" title="克鲁斯卡尔算法"></a>克鲁斯卡尔算法</h5><p>  每次选取权最小的一条边，让其两边结点相连，忽略已行连通的结点。<br>  <img src="/album/loading.gif" data-original="/album/article/ds/3.png"></p>
-</li>
-</ul>
-<h4 id="3-最短路径"><a href="#3-最短路径" class="headerlink" title="3. 最短路径"></a>3. 最短路径</h4><ul>
-<li><h5 id="迪杰斯特拉算法"><a href="#迪杰斯特拉算法" class="headerlink" title="迪杰斯特拉算法"></a>迪杰斯特拉算法</h5><p>  适用于求解单源最短路径(即一个顶点到其它顶点的最短路径)，求解思路如下：</p>
+<h4 id="2-最小生成树"><a href="#2-最小生成树" class="headerlink" title="2. 最小生成树"></a>2. 最小生成树</h4><h5 id="1-普里姆算法"><a href="#1-普里姆算法" class="headerlink" title="(1) 普里姆算法"></a>(1) 普里姆算法</h5><p>每次将代价最小(边权值最小)的结点纳入生成树，从一个结点出发不断往下走，不断纳入新结点。<br><img src="/album/loading.gif" data-original="/album/article/ds/2.png"></p>
+<h5 id="2-克鲁斯卡尔算法"><a href="#2-克鲁斯卡尔算法" class="headerlink" title="(2) 克鲁斯卡尔算法"></a>(2) 克鲁斯卡尔算法</h5><p>每次选取权最小的一条边，让其两边结点相连，忽略已行连通的结点。<br><img src="/album/loading.gif" data-original="/album/article/ds/3.png"></p>
+<h4 id="3-最短路径"><a href="#3-最短路径" class="headerlink" title="3. 最短路径"></a>3. 最短路径</h4><h5 id="1-迪杰斯特拉算法"><a href="#1-迪杰斯特拉算法" class="headerlink" title="(1) 迪杰斯特拉算法"></a>(1) 迪杰斯特拉算法</h5><p>适用于求解单源最短路径(即一个顶点到其它顶点的最短路径)，求解思路如下：</p>
 <ul>
-<li>(1) 定义三个数组.<code>final[size]</code>：标记各结点是否找到最短路径；<code>dist[size]</code>：当前顶点到相邻顶点长度；<code>path[size]</code>：各结点前驱，初始为-1。</li>
-<li>(2) 每轮循环从<code>final[i]=false</code>开始，且<code>dist[i]</code>值最小的开始，令其<code>final[i]=true</code>。</li>
-<li>(3) 计算与<code>i</code>相连顶点<code>j</code>的<code>dist</code>值: <code>dist[j]= dist[i] + i到j的权</code>，若新得到<code>dist</code>值更小，则替换旧值，并将其相应<code>path</code>值改为<code>i</code>，反之则不变。</li>
-<li>(4) 重复上述步骤直至所有结点<code>final</code>值为真。<br><img src="/album/loading.gif" data-original="/album/article/ds/4.png"></li>
+<li>定义三个数组. <code>final[size]</code> ：标记各结点是否找到最短路径； <code>dist[size]</code> ：当前顶点到相邻顶点长度； <code>path[size]</code> ：各结点前驱，初始为 <code>-1</code> 。</li>
+<li>每轮循环从 <code>final[i]=false</code> 开始，且 <code>dist[i]</code> 值最小的开始，令其 <code>final[i]=true</code> 。</li>
+<li>计算与 <code>i</code> 相连顶点 <code>j</code> 的 <code>dist</code> 值:  <code>dist[j]= dist[i] + i到j的权</code> ，若新得到 <code>dist</code> 值更小，则替换旧值，并将其相应 <code>path</code> 值改为 <code>i</code> ，反之则不变。</li>
+<li>重复上述步骤直至所有结点 <code>final</code> 值为真。</li>
 </ul>
-</li>
-<li><h5 id="弗洛伊德算法"><a href="#弗洛伊德算法" class="headerlink" title="弗洛伊德算法"></a>弗洛伊德算法</h5></li>
+<p><img src="/album/loading.gif" data-original="/album/article/ds/4.png"></p>
+<h4 id="4-拓扑排序"><a href="#4-拓扑排序" class="headerlink" title="4. 拓扑排序"></a>4. 拓扑排序</h4><h5 id="1-拓扑排序"><a href="#1-拓扑排序" class="headerlink" title="(1) 拓扑排序"></a>(1) 拓扑排序</h5><ul>
+<li>图必须为有向无环图。</li>
+<li>步骤：选择一个 <code>无前驱</code> 结点输出，删除以该顶点为起点的有向边，不断重复即可。</li>
 </ul>
-<h4 id="4-拓扑排序"><a href="#4-拓扑排序" class="headerlink" title="4. 拓扑排序"></a>4. 拓扑排序</h4><ul>
-<li><h5 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h5><p>  (1) 图必须为有向无环图。<br>  (2) 步骤：选择一个<code>无前驱</code>结点输出，删除以该顶点为起点的有向边，不断重复即可。</p>
-</li>
-<li><h5 id="逆拓扑排序"><a href="#逆拓扑排序" class="headerlink" title="逆拓扑排序"></a>逆拓扑排序</h5><p>  (1) 图必须为有向无环图。<br>  (2) 步骤：选择一个<code>无后继</code>结点输出，删除以该顶点为终点的有向边，不断重复即可。</p>
-</li>
+<h5 id="2-逆拓扑排序"><a href="#2-逆拓扑排序" class="headerlink" title="(2) 逆拓扑排序"></a>(2) 逆拓扑排序</h5><ul>
+<li>图必须为有向无环图。</li>
+<li>步骤：选择一个 <code>无后继</code> 结点输出，删除以该顶点为终点的有向边，不断重复即可。</li>
 </ul>
-<h4 id="5-关键路径"><a href="#5-关键路径" class="headerlink" title="5. 关键路径"></a>5. 关键路径</h4><ul>
-<li><h5 id="顶点最早开始时间"><a href="#顶点最早开始时间" class="headerlink" title="顶点最早开始时间"></a>顶点最早开始时间</h5><p>  (1) 源点出发,按<code>拓扑序列</code>求每个顶点最早发生时间<code>Ve</code>。<br>  (2) <code>Ve</code>若存在多条路经,则选取总权值最大的那条。<br>  (3) 最后一个顶点的<code>Ve</code>即键路径长度。</p>
-</li>
-<li><h5 id="顶点最晚开始时间"><a href="#顶点最晚开始时间" class="headerlink" title="顶点最晚开始时间"></a>顶点最晚开始时间</h5><p>  (1) 汇点出发，按<code>逆拓扑序列</code>求每个顶点最晚发生时间<code>Vl</code>。<br>  (2) Vl = 后继顶点最晚发生时间 - 活动边的值。<br>  (3) Vl若存在多条路径, 则选取权值最小的那条。</p>
-</li>
-<li><h5 id="活动最早开始时间"><a href="#活动最早开始时间" class="headerlink" title="活动最早开始时间"></a>活动最早开始时间</h5><p>  (1) e = 该弧的<code>起点</code>(弧尾)<code>最早</code>发生时间<code>Ve</code>。</p>
-</li>
-<li><h5 id="活动最早开始时间-1"><a href="#活动最早开始时间-1" class="headerlink" title="活动最早开始时间"></a>活动最早开始时间</h5><p>  (1) l = 该弧的<code>终点</code>(弧头)<code>最晚</code>发生时间 - 该弧的值。</p>
-</li>
-<li><h5 id="关键路径"><a href="#关键路径" class="headerlink" title="关键路径**"></a>关键路径**</h5><p>  (1) 每个差额为 0 的顶点即为关键路径，<code>差额 = l - e</code></p>
-</li>
+<h4 id="5-关键路径"><a href="#5-关键路径" class="headerlink" title="5. 关键路径"></a>5. 关键路径</h4><h5 id="1-顶点最早开始时间"><a href="#1-顶点最早开始时间" class="headerlink" title="(1) 顶点最早开始时间"></a>(1) 顶点最早开始时间</h5><ul>
+<li>源点出发，按 <code>拓扑序列</code> 求每个顶点最早发生时间 <code>Ve</code> 。</li>
+<li> <code>Ve</code> 若存在多条路经，则选取总权值最大的那条。</li>
+<li>最后一个顶点的 <code>Ve</code> 即键路径长度。</li>
 </ul>
-<h3 id="八、查找算法"><a href="#八、查找算法" class="headerlink" title="八、查找算法"></a>八、查找算法</h3><h4 id="1-二分查找"><a href="#1-二分查找" class="headerlink" title="1. 二分查找"></a>1. 二分查找</h4><p>(1) 定义两个头尾游标，分别指向每次循环的高低位：<code>low, high</code>。<br>(2) 定义<code>mid</code>变量，取值为每次头尾游标下标和的<code>1/2</code>。<br>(3) 将待查找元素值<code>target</code>和<code>mid</code>相比，若大于mid，则<code>low = mid + 1</code>，若小于mid，则<code>high = mid - 1</code>。<br>(4) <code>low, high, mid</code>重合即索要查找元素，若不是则查找失败。</p>
-<h4 id="2-分块查找"><a href="#2-分块查找" class="headerlink" title="2. 分块查找"></a>2. 分块查找</h4><p>(1) 建立对应索引表(存放块内的最大值和块的起始下标)。<br>(2) 将查找的元素和索引表的每个块的最大值进行比较，。<br>(3) 若直到遇到块的最大值大于查找的元素值，则进入块内进行查询。<br>(4) 最理想效率：<code>n</code>个元素分为<code>根号n</code>块.</p>
-<h3 id="九、排序算法"><a href="#九、排序算法" class="headerlink" title="九、排序算法"></a>九、排序算法</h3><h4 id="1-插入排序"><a href="#1-插入排序" class="headerlink" title="1. 插入排序"></a>1. 插入排序</h4><ul>
-<li><h5 id="简单插入排序"><a href="#简单插入排序" class="headerlink" title="简单插入排序"></a>简单插入排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 最开始子表中存放一个元素，即数组中第一个(不算哨兵)</span>
+<h5 id="2-顶点最晚开始时间"><a href="#2-顶点最晚开始时间" class="headerlink" title="(2) 顶点最晚开始时间"></a>(2) 顶点最晚开始时间</h5><ul>
+<li>汇点出发，按 <code>逆拓扑序列</code> 求每个顶点最晚发生时间 <code>Vl</code> 。</li>
+<li>Vl = 后继顶点最晚发生时间 - 活动边的值。</li>
+<li><code>Vl</code> 若存在多条路径, 则选取权值最小的那条。</li>
+</ul>
+<h5 id="3-活动最早开始时间"><a href="#3-活动最早开始时间" class="headerlink" title="(3) 活动最早开始时间"></a>(3) 活动最早开始时间</h5><ul>
+<li>e = 该弧的 <code>起点</code> (弧尾) <code>最早</code> 发生时间 <code>Ve</code> 。</li>
+</ul>
+<h5 id="4-活动最早开始时间"><a href="#4-活动最早开始时间" class="headerlink" title="(4) 活动最早开始时间"></a>(4) 活动最早开始时间</h5><ul>
+<li>l = 该弧的 <code>终点</code> (弧头) <code>最晚</code> 发生时间 - 该弧的值。</li>
+</ul>
+<h5 id="5-关键路径-1"><a href="#5-关键路径-1" class="headerlink" title="(5) 关键路径"></a>(5) 关键路径</h5><ul>
+<li>每个差额为 <code>0</code> 的顶点即为关键路径， <code>差额 = l - e</code> </li>
+</ul>
+<h3 id="八、查找算法"><a href="#八、查找算法" class="headerlink" title="八、查找算法"></a>八、查找算法</h3><h4 id="1-二分查找"><a href="#1-二分查找" class="headerlink" title="1. 二分查找"></a>1. 二分查找</h4><ul>
+<li>定义两个头尾游标，分别指向每次循环的高低位： <code>low, high</code> 。</li>
+<li>定义 <code>mid</code> 变量，取值为每次头尾游标下标和的 <code>1/2</code> 。</li>
+<li>将待查找元素值 <code>target</code> 和 <code>mid</code> 相比，若大于mid，则 <code>low = mid + 1</code> ，若小于mid，则 <code>high = mid - 1</code> 。</li>
+<li><code>low, high, mid</code> 重合即索要查找元素，若不是则查找失败。</li>
+</ul>
+<h4 id="2-分块查找"><a href="#2-分块查找" class="headerlink" title="2. 分块查找"></a>2. 分块查找</h4><ul>
+<li>建立对应索引表(存放块内的最大值和块的起始下标)。</li>
+<li>将查找的元素和索引表的每个块的最大值进行比较。</li>
+<li>若直到遇到块的最大值大于查找的元素值，则进入块内进行查询。</li>
+<li>最理想效率： <code>n</code> 个元素分为 <code>根号n</code> 块.</li>
+</ul>
+<h3 id="九、排序算法"><a href="#九、排序算法" class="headerlink" title="九、排序算法"></a>九、排序算法</h3><h4 id="1-插入排序"><a href="#1-插入排序" class="headerlink" title="1. 插入排序"></a>1. 插入排序</h4><h5 id="1-简单插入排序"><a href="#1-简单插入排序" class="headerlink" title="(1) 简单插入排序"></a>(1) 简单插入排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 最开始子表中存放一个元素，即数组中第一个(不算哨兵)</span>
 <span class="token keyword">void</span> <span class="token function">InsertSort_1</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span> <span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n <span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//将待插元素放置到哨兵位置</span>
-        
         <span class="token comment" spellcheck="true">// 如果插入元素比表尾大则跳出，当前元素变为表尾元素</span>
         <span class="token keyword">if</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> A<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span> 
-
             <span class="token comment" spellcheck="true">// 从子表表尾往前扫描，把大于插入元素的元素后移</span>
             <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token number">-1</span> <span class="token punctuation">;</span> A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&lt;=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span><span class="token punctuation">{</span>      
                 A<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -769,14 +807,13 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
         A<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="折半插入排序"><a href="#折半插入排序" class="headerlink" title="折半插入排序"></a>折半插入排序</h5><p>  实现逻辑和简单插入一致，在查找元素时使用折半查找进行。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-折半插入排序"><a href="#2-折半插入排序" class="headerlink" title="(2) 折半插入排序"></a>(2) 折半插入排序</h5><p>实现逻辑和简单插入一致，在查找元素时使用折半查找进行。</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">InsertSort_2</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">int</span> i<span class="token punctuation">,</span> j<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">,</span> mid<span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span> <span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n <span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 将待插元素放置到哨兵位置</span>
-        
+            
         low <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> 
         high <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
         <span class="token keyword">while</span><span class="token punctuation">(</span>low <span class="token operator">&lt;=</span> high<span class="token punctuation">)</span><span class="token punctuation">{</span>
@@ -787,7 +824,7 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
                 low <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
-       
+           
         <span class="token comment" spellcheck="true">// 把大于插入元素的元素后移</span>
         <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token number">-1</span> <span class="token punctuation">;</span> j <span class="token operator">>=</span> high<span class="token operator">+</span><span class="token number">1</span> <span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span><span class="token punctuation">{</span>      
             A<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -796,15 +833,15 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h5><p>  (1) 将整个表按某特定增量<code>d</code>划为<code>k</code>个子表。<br>  (2) 相隔为<code>d</code>的元素为同一子表，即：[i，i+d, …, i+nd]<br>  (3) 对每个子表各进行一次插入排序.<br>  (4) 不断缩增量<code>d</code>的值，如<code>d1=n/2, d2=d1/2</code>, 重复上述步骤直到<code>d=1</code>。</p>
-</li>
+<h5 id="1-希尔排序"><a href="#1-希尔排序" class="headerlink" title="(1) 希尔排序"></a>(1) 希尔排序</h5><ul>
+<li>将整个表按某特定增量 <code>d</code> 划为 <code>k</code> 个子表。</li>
+<li>相隔为 <code>d</code> 的元素为同一子表，即：<code>[i，i+d, ..., i+nd]</code> 。</li>
+<li>对每个子表各进行一次插入排序。</li>
+<li>不断缩增量 <code>d</code> 的值，如 <code>d1=n/2, d2=d1/2</code> , 重复上述步骤直到 <code>d=1</code> 。</li>
 </ul>
-<h4 id="2-交换排序"><a href="#2-交换排序" class="headerlink" title="2. 交换排序"></a>2. 交换排序</h4><ul>
-<li><h5 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">BubbleSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
+<h4 id="2-交换排序"><a href="#2-交换排序" class="headerlink" title="2. 交换排序"></a>2. 交换排序</h4><h5 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="(1) 冒泡排序"></a>(1) 冒泡排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">BubbleSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">int</span> temp<span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token number">-1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-
         <span class="token comment" spellcheck="true">// 每次循环从后往前，将最小的不断前移</span>
         <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> n<span class="token number">-1</span><span class="token punctuation">;</span> j <span class="token operator">></span> i<span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
             <span class="token keyword">if</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>j<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">></span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
@@ -815,9 +852,16 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h5><p>  (1) 选择一个元毒作为枢轴，确定它最终位置(即左边元素都小于它.右边都大于它)。<br>  (2) 取<code>low</code>指头，<code>high</code>指尾，两个指针依次向中间扫。<br>  (3) <code>low</code>为框轴,定义临时变量存枢轴，让表中枢袖位置空出来。<br>  (4) <code>low</code>空:<code>high-1</code>; <code>high</code>空:<code>low+1</code>(空的那端动)。<br>  (5) 小于枢轴放到<code>low</code>，大于放<code>high</code> ,柜袖在<code>low high</code>重合。<br>  (6) 每一轮排结来枢轴左端元素都比期小，右端比大。<br>  (7) 重复上述步骤。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-快速排序"><a href="#2-快速排序" class="headerlink" title="(2) 快速排序"></a>(2) 快速排序</h5><ul>
+<li>选择一个元毒作为枢轴，确定它最终位置(即左边元素都小于它.右边都大于它)。</li>
+<li>取 <code>low</code> 指头， <code>high</code> 指尾，两个指针依次向中间扫。</li>
+<li><code>low</code> 为框轴,定义临时变量存枢轴，让表中枢袖位置空出来。</li>
+<li><code>low</code> 空: <code>high-1</code> ;  <code>high</code> 空: <code>low+1</code> (空的那端动)。</li>
+<li>小于枢轴放到 <code>low</code> ，大于放 <code>high  </code>,柜袖在 <code>low high</code> 重合。</li>
+<li>每一轮排结来枢轴左端元素都比期小，右端比大。</li>
+<li>重复上述步骤。</li>
+</ul>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">QuickSort</span><span class="token punctuation">(</span>ElemType Arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> low<span class="token punctuation">,</span> <span class="token keyword">int</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">//将表 Arr[low, high] 划分为满足上述条件的两个子表</span>
@@ -845,10 +889,7 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
     <span class="token keyword">return</span> low<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="3-选择排序"><a href="#3-选择排序" class="headerlink" title="3. 选择排序"></a>3. 选择排序</h4><ul>
-<li><h5 id="简单选择排序"><a href="#简单选择排序" class="headerlink" title="简单选择排序"></a>简单选择排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">SelectSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
+<h4 id="3-选择排序"><a href="#3-选择排序" class="headerlink" title="3. 选择排序"></a>3. 选择排序</h4><h5 id="1-简单选择排序"><a href="#1-简单选择排序" class="headerlink" title="(1) 简单选择排序"></a>(1) 简单选择排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">SelectSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token number">-1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         <span class="token keyword">int</span> min <span class="token operator">=</span> i<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 记录最小元素</span>
         <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
@@ -864,15 +905,22 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h5><p>  (1) 小根堆：任意子树中根的值永远 <code>&lt;=</code> 左右孩子值。<br>  (2) 大根堆：任意子树中根的值永远 <code>&gt;=</code> 左右孩子值。</p>
-</li>
-<li><h5 id="堆的建立"><a href="#堆的建立" class="headerlink" title="堆的建立"></a>堆的建立</h5><p>  (1) 依次检查非终端结点 <code>i &lt; n/2</code>。<br>  (2) 若其不满足同时大于左右孩子,则和子孩子中更大交换。<br>  (3) 交换后子中树不满足条件,重复1，2步骤。</p>
-</li>
-<li><h5 id="堆的插入"><a href="#堆的插入" class="headerlink" title="堆的插入"></a>堆的插入</h5><p>  (1) 小根堆：新元素放表尾 <code>叶结点</code> , 不断上升。<br>  (2) 大根堆：新元素放表头 <code>根结点</code> , 不断下坠。</p>
-</li>
-<li><h5 id="堆的删除"><a href="#堆的删除" class="headerlink" title="堆的删除"></a>堆的删除</h5><p>  (1) 把堆底元素移到删除位置。<br>  (2) 重新调整为大(小)根堆。</p>
-</li>
+<h5 id="2-堆排序"><a href="#2-堆排序" class="headerlink" title="(2) 堆排序"></a>(2) 堆排序</h5><ul>
+<li>小根堆：任意子树中根的值永远 <code>&lt;=</code> 左右孩子值。</li>
+<li>大根堆：任意子树中根的值永远 <code>&gt;=</code> 左右孩子值。</li>
+</ul>
+<h5 id="3-堆的建立"><a href="#3-堆的建立" class="headerlink" title="(3) 堆的建立"></a>(3) 堆的建立</h5><ul>
+<li>依次检查非终端结点 <code>i &lt; n/2</code>。</li>
+<li>若其不满足同时大于左右孩子,则和子孩子中更大交换。</li>
+<li>交换后子中树不满足条件,重复1，2步骤。</li>
+</ul>
+<h5 id="4-堆的插入"><a href="#4-堆的插入" class="headerlink" title="(4) 堆的插入"></a>(4) 堆的插入</h5><ul>
+<li>小根堆：新元素放表尾 <code>叶结点</code>, 不断上升。</li>
+<li>大根堆：新元素放表头 <code>根结点</code>, 不断下坠。</li>
+</ul>
+<h5 id="5-堆的删除"><a href="#5-堆的删除" class="headerlink" title="(5) 堆的删除"></a>(5) 堆的删除</h5><ul>
+<li>把堆底元素移到删除位置。</li>
+<li>重新调整为大(小)根堆。</li>
 </ul>
 <h4 id="4-归并排序"><a href="#4-归并排序" class="headerlink" title="4. 归并排序"></a>4. 归并排序</h4><p>归并排序即将两个有序的顺序表进行排序处理，分别定义两个扫描指针便利两张表进行比较。</p>
 <hr>

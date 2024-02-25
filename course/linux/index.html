@@ -486,7 +486,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-02-25
                 </div>
                 
 
@@ -521,20 +521,17 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>对于每个人程序员而言，平日里或多或少都会接触到 <code>Linux</code> ，在服务器方面， <code>Linux</code> 更是占据江山，本文简单介绍一些日常高频使用的命令。</p>
-<h3 id="一、基本命令"><a href="#一、基本命令" class="headerlink" title="一、基本命令"></a>一、基本命令</h3><h4 id="1-系统设置"><a href="#1-系统设置" class="headerlink" title="1. 系统设置"></a>1. 系统设置</h4><ul>
-<li><h5 id="时间修改"><a href="#时间修改" class="headerlink" title="时间修改"></a>时间修改</h5><p>  例：将当前时间设置为 <code>10</code> 点：<code>date -s 10:00</code> 。<br>  将当前日期设置为 <code>2022-1-1</code> ：<code>date -s 1/1/2022</code> 。</p>
+<h3 id="一、基本命令"><a href="#一、基本命令" class="headerlink" title="一、基本命令"></a>一、基本命令</h3><h4 id="1-系统设置"><a href="#1-系统设置" class="headerlink" title="1. 系统设置"></a>1. 系统设置</h4><h5 id="1-时间修改"><a href="#1-时间修改" class="headerlink" title="(1) 时间修改"></a>(1) 时间修改</h5><p>例：将当前时间设置为 <code>10</code> 点：<code>date -s 10:00</code> 。</p>
+<p>将当前日期设置为 <code>2022-1-1</code> ：<code>date -s 1/1/2022</code> 。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">date</span> -s <span class="token operator">&lt;</span>时间<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-<li><h5 id="关闭系统"><a href="#关闭系统" class="headerlink" title="关闭系统"></a>关闭系统</h5><p>  通过 <code>reboot</code> 则可实现服务器重启</p>
+<h5 id="2-关闭系统"><a href="#2-关闭系统" class="headerlink" title="(2) 关闭系统"></a>(2) 关闭系统</h5><p>通过 <code>reboot</code> 则可实现服务器重启</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">shutdown</span> -r Now               <span class="token comment" spellcheck="true"># 立即重启</span>
 
 <span class="token function">shutdown</span> -h 18:00             <span class="token comment" spellcheck="true"># 设置 18:00 关机</span>
 
 <span class="token function">shutdown</span> -r +1                <span class="token comment" spellcheck="true"># 设置 1 分钟后重启</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-信息查看"><a href="#2-信息查看" class="headerlink" title="2. 信息查看"></a>2. 信息查看</h4><p><code>arch</code> 命令可以查看当前服务是 <code>arm</code> 架构还是 <code>x86</code> 架构。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">arch                <span class="token comment" spellcheck="true"># 查看系统内核</span>
 
@@ -570,18 +567,14 @@ nproc               <span class="token comment" spellcheck="true"># 查看 CPU �
 
 <span class="token function">mkdir</span> -p <span class="token operator">&lt;</span>dire_1<span class="token operator">></span>/<span class="token operator">&lt;</span>dire_2<span class="token operator">></span>      <span class="token comment" spellcheck="true"># 根据层级创建目录</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><p><strong>删除目录</strong></p>
+<h5 id="1-删除目录"><a href="#1-删除目录" class="headerlink" title="(1) 删除目录"></a>(1) 删除目录</h5><p>通过 <code>rm</code> 命令删除目录。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">rmdir</span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 无法删除非空目录</span>
-    
+        
 <span class="token function">rm</span> -rf <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 强制删除，删除非空目录时使用</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>删除 N 天前的文件</strong></p>
+<h5 id="2-删除文件"><a href="#2-删除文件" class="headerlink" title="(2) 删除文件"></a>(2) 删除文件</h5><p>删除 <code>N</code> 天前的文件。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> -type f -mtime +N -exec <span class="token function">rm</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-目录迁移"><a href="#2-目录迁移" class="headerlink" title="2. 目录迁移"></a>2. 目录迁移</h4><p>在 <code>Linux</code> 中没有重命名命令，移动到当前目录即等价于重命名。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mv</span> <span class="token operator">&lt;</span>source_path<span class="token operator">></span> <span class="token operator">&lt;</span>target_path<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -637,22 +630,18 @@ nproc               <span class="token comment" spellcheck="true"># 查看 CPU �
 <span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> -type f -mtime +N -exec <span class="token function">ls</span> -l <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-文件分发"><a href="#4-文件分发" class="headerlink" title="4. 文件分发"></a>4. 文件分发</h4><p>通过 <code>scp</code> 命令可实现不同服务器之间的文件传输，当传输对象为目录时需要添加 <code>-r</code> 参数。</p>
-<ul>
-<li><h5 id="分发到远程"><a href="#分发到远程" class="headerlink" title="分发到远程"></a>分发到远程</h5><p>  如下命令将本机 <code>/temp/hellp.txt</code> 文件复制到 <code>192.168.0.1</code> 的 <code>/temp</code> 目录下，回车后需输入目标服务器的 <code>root</code> 登录密码。</p>
+<h5 id="1-分发到远程"><a href="#1-分发到远程" class="headerlink" title="(1) 分发到远程"></a>(1) 分发到远程</h5><p>如下命令将本机 <code>/temp/hellp.txt</code> 文件复制到 <code>192.168.0.1</code> 的 <code>/temp</code> 目录下，回车后需输入目标服务器的 <code>root</code> 登录密码。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 命令格式</span>
 <span class="token function">scp</span> -r <span class="token operator">&lt;</span>local_path<span class="token operator">></span> <span class="token operator">&lt;</span>User<span class="token operator">></span>@<span class="token operator">&lt;</span>IP<span class="token operator">></span>:<span class="token operator">&lt;</span>remote_path<span class="token operator">></span>
-
+    
 <span class="token function">scp</span> -r /temp/hellp.txt root@192.168.173.1:/temp
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="分发到本机"><a href="#分发到本机" class="headerlink" title="分发到本机"></a>分发到本机</h5><p>  如下将 <code>192.168.173.1</code> 的 <code>/temp/hellp.txt</code> 文件复制到本机 <code>/temp</code> 目录下。</p>
+<h5 id="2-分发到本机"><a href="#2-分发到本机" class="headerlink" title="(2) 分发到本机"></a>(2) 分发到本机</h5><p>如下将 <code>192.168.173.1</code> 的 <code>/temp/hellp.txt</code> 文件复制到本机 <code>/temp</code> 目录下。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 命令格式</span>
 <span class="token function">scp</span> -r root@<span class="token operator">&lt;</span>IP<span class="token operator">></span>:<span class="token operator">&lt;</span>remote_path<span class="token operator">></span> <span class="token operator">&lt;</span>local_path<span class="token operator">></span>
 
 <span class="token function">scp</span> -r root@192.168.173.1:/temp/hellp.txt /temp
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="四、用户管理"><a href="#四、用户管理" class="headerlink" title="四、用户管理"></a>四、用户管理</h3><h4 id="1-创建用户"><a href="#1-创建用户" class="headerlink" title="1. 创建用户"></a>1. 创建用户</h4><p>通过 <code>useradd</code> 创建用户之后会在 <code>/home</code> 目录下生成同名目录。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">useradd</span> <span class="token operator">&lt;</span>用户名<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 创建用户</span>
 
@@ -783,8 +772,7 @@ systemctl disable firewalld             <span class="token comment" spellcheck="
 
 firewall-cmd --reload                   <span class="token comment" spellcheck="true"># 刷新配置</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-策略管理"><a href="#2-策略管理" class="headerlink" title="2. 策略管理"></a>2. 策略管理</h4><ul>
-<li><h5 id="端口策略"><a href="#端口策略" class="headerlink" title="端口策略"></a>端口策略</h5><p>  每次修改端口策略后都需要刷新配置使其生效。</p>
+<h4 id="2-策略管理"><a href="#2-策略管理" class="headerlink" title="2. 策略管理"></a>2. 策略管理</h4><h5 id="1-端口策略"><a href="#1-端口策略" class="headerlink" title="(1) 端口策略"></a>(1) 端口策略</h5><p>每次修改端口策略后都需要刷新配置使其生效。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启指定端口</span>
 firewall-cmd --zone<span class="token operator">=</span>public --add-port<span class="token operator">=</span>80/tcp --permanent
 
@@ -794,8 +782,7 @@ firewall-cmd --zone<span class="token operator">=</span>public --remove-port<spa
 <span class="token comment" spellcheck="true"># 查看已打开的所有端口</span>
 firewall-cmd --zone<span class="token operator">=</span>public --list-ports   
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="IP策略"><a href="#IP策略" class="headerlink" title="IP策略"></a>IP策略</h5><p>  每次修改 <code>IP</code> 策略后都需要刷新配置使其生效。</p>
+<h5 id="2-IP策略"><a href="#2-IP策略" class="headerlink" title="(2) IP策略"></a>(2) IP策略</h5><p>每次修改 <code>IP</code> 策略后都需要刷新配置使其生效。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 放行指定 IP</span>
 firewall-cmd --permanent --add-rich-rule<span class="token operator">=</span><span class="token string">"rule family="</span>ipv4<span class="token string">" source address="</span>192.168.0.1<span class="token string">" accept"</span>
 
@@ -805,8 +792,6 @@ firewall-cmd --permanent --remove-rich-rule<span class="token operator">=</span>
 <span class="token comment" spellcheck="true"># 查看策略</span>
 firewall-cmd --list-all
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-进程管理"><a href="#3-进程管理" class="headerlink" title="3. 进程管理"></a>3. 进程管理</h4><p>通过 <code>ps</code> 组合命令可根据服务名查询进程信息。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">top</span>                      <span class="token comment" spellcheck="true"># 查看系统中进程动态变化 </span>
 
