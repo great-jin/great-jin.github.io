@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-30
+                    2024-02-28
                 </div>
                 
 
@@ -706,12 +706,9 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-间接依赖"><a href="#3-间接依赖" class="headerlink" title="3. 间接依赖"></a>3. 间接依赖</h4><p>当项目需要引用到其它依赖时，只需指定所依赖的工程的基本信息即可，剩下的一切都交给 <code>Maven</code> 处理。即便是所要依赖的工程依赖了其它工程，我们也只需引入项目所直接的依赖的工程。</p>
 <p>如下图示例中 <code>Dependency-A</code> 引用了 <code>Dependency-B</code> ，而 <code>Dependency-B</code> 又依赖于 <code>Dependency-C</code> ，在传统项目中若在 <code>Dependency-A</code> 中引用 <code>Dependency-B</code> 则需要同时手动添加 <code>Dependency-B</code> 与 <code>Dependency-C</code> 所对应的 <code>JAR</code> 包，但在 <code>Maven</code> 中我们只需要引入 <code>Dependency-B</code> 即可， <code>Mavne</code> 会自动将子模块所依赖的包导入。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/2.png"></p>
-<ul>
-<li><h5 id="依赖顺序"><a href="#依赖顺序" class="headerlink" title="依赖顺序"></a>依赖顺序</h5><p>  在 <code>maven</code> 工程中遵循先定义先导入的原则，即当存在多个相同间接依赖，优先导入其父依赖定义在前的简洁依赖。</p>
-<p>  举个例子，如工程中引入 <code>Dependency-A</code> 与 <code>Dependency-B</code> 两个依赖，二者又分别引用了不同版本的 <code>Dependency-C</code> ，但对于 <code>Maven</code> 而言最终编译时同一个依赖即便是不同的版本也只会选择一份。</p>
-<p>  其计算规则如下：若 <code>Dependency-A</code> 定义在 <code>Dependency-B</code> 之前则最终将导入 <code>Dependency-A</code> 中的 <code>C-1.0</code> 版本。而在右侧图例中虽然 <code>Dependency-A</code> 引入优先级高于 <code>Dependency-B</code> ，但是 <code>C-2.0</code> 的间接依赖层级高于 <code>C-1.0``，因此将导入 </code>C-2.0` 版本。<br>  <img src="/album/loading.gif" data-original="/album/article/java/maven/4.png"></p>
-</li>
-</ul>
+<h5 id="1-依赖顺序"><a href="#1-依赖顺序" class="headerlink" title="(1) 依赖顺序"></a>(1) 依赖顺序</h5><p>在 <code>maven</code> 工程中遵循先定义先导入的原则，即当存在多个相同间接依赖，优先导入其父依赖定义在前的简洁依赖。</p>
+<p>举个例子，如工程中引入 <code>Dependency-A</code> 与 <code>Dependency-B</code> 两个依赖，二者又分别引用了不同版本的 <code>Dependency-C</code> ，但对于 <code>Maven</code> 而言最终编译时同一个依赖即便是不同的版本也只会选择一份。</p>
+<p>其计算规则如下：若 <code>Dependency-A</code> 定义在 <code>Dependency-B</code> 之前则最终将导入 <code>Dependency-A</code> 中的 <code>C-1.0</code> 版本。而在右侧图例中虽然 <code>Dependency-A</code> 引入优先级高于 <code>Dependency-B</code> ，但是 <code>C-2.0</code> 的间接依赖层级高于 <code>C-1.0</code>，因此将导入 <code>C-2.0</code> 版本。<br><img src="/album/loading.gif" data-original="/album/article/java/maven/4.png"></p>
 <h3 id="四、统一管理"><a href="#四、统一管理" class="headerlink" title="四、统一管理"></a>四、统一管理</h3><h4 id="1-导入管理"><a href="#1-导入管理" class="headerlink" title="1. 导入管理"></a>1. 导入管理</h4><p>当一共项目包含多个模块，且多个模块引用了相同依赖时显然重复引用是不太合适的，而通过 <code>dependencyManagement</code> 即可很好的解决依赖共用的问题。</p>
 <p>将项目依赖统一定义在父模块的 <code>dependencyManagement</code> 标签中，子模块只需继承父模块并在 <code>dependencies</code> 引入所需的依赖，便可自动读取父模块 <code>dependencyManagement</code> 所指定的版本等信息。</p>
 <p><code>dependencyManagement</code> 既不会在当前模块引入依赖，也不会给其子模块引入依赖，同时其是可以被继承的。只有在子模块下同样声明了该依赖，才会引入到模块中，子模块中只需在依赖中引入 <code>groupId</code> 与 <code>artifactId</code> 即可, 也可以指定版本则会进行覆盖。    </p>
@@ -1065,7 +1062,7 @@ mvn clean <span class="token function">install</span> -Denforcer.skip<span class
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/maven/basis/">https://great-jin.github.io/maven/basis/</a>
+                    <a href="https://great-jin.github.io/java/maven/basis/">https://great-jin.github.io/java/maven/basis/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1636,7 +1633,7 @@ mvn clean <span class="token function">install</span> -Denforcer.skip<span class
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.4k</span>
+                <span class="white-color">225.5k</span>
             
             
             
