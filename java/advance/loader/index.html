@@ -499,7 +499,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-21
+                    2024-02-29
                 </div>
                 
 
@@ -595,11 +595,16 @@ java xyz.ibudai.MyBean
 <li>保证任何跳转指令都不会跳转到方法体以外的字节码指令上。</li>
 </ul>
 <blockquote>
-<p><strong>(Ⅳ) 准备</strong><br>准备阶段是正式为类中定义的变量（即静态变量，被 <code>static</code> 修饰的变量）分配内存并设置类变量初始值的阶段。当前阶段在进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在 <code>Java</code> 堆中。</p>
+<p><strong>(Ⅳ) 准备</strong></p>
 </blockquote>
+<ul>
+<li>准备阶段是正式为类中定义的变量（即静态变量，被 <code>static</code> 修饰的变量）分配内存并设置类变量初始值的阶段。</li>
+<li>当前阶段在进行内存分配的仅包括类变量，而不包括实例变量，实例变量将会在对象实例化时随着对象一起分配在 <code>Java</code> 堆中。</li>
+</ul>
 <blockquote>
-<p><strong>(Ⅴ) 解析</strong><br>解析阶段是 <code>Java</code> 虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
+<p><strong>(Ⅴ) 解析</strong></p>
 </blockquote>
+<p>解析阶段是 <code>Java</code> 虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
 <h4 id="4-初始化阶段"><a href="#4-初始化阶段" class="headerlink" title="4. 初始化阶段"></a>4. 初始化阶段</h4><p>准备阶段时，变量已经赋过一次系统要求的初始零值，而在初始化阶段，则会根据程序员通过程序编码制定的主观计划去初始化类变量和其他资源。除了在加载阶段用户应用程序可以通过自定义类加载器的方式局部参与外，其余动作都完全由 <code>Java</code> 虚拟机来主导控制。</p>
 <p>如定义的 <code>static int i = 123;</code> 等类变量在准备阶段已经完成初始化，而类的普通成员变量如 <code>int j;</code> 仍未进行初始化，因此经过初始化阶段之后 <code>int j;</code> 则会初始化为 <code>int j = 0;</code>，类中其它普通成员变量同理。</p>
 <h3 id="三、类加载器"><a href="#三、类加载器" class="headerlink" title="三、类加载器"></a>三、类加载器</h3><h4 id="1-基本类别"><a href="#1-基本类别" class="headerlink" title="1. 基本类别"></a>1. 基本类别</h4><p>在 <code>Java</code> 中类加载器分为以下四类，各类加载器说明如下：<br><img src="/album/loading.gif" data-original="/album/article/java/loader/2.png"></p>
@@ -650,10 +655,9 @@ java xyz.ibudai.MyBean
 <h3 id="四、双亲委派"><a href="#四、双亲委派" class="headerlink" title="四、双亲委派"></a>四、双亲委派</h3><p>双亲委派机制是类加载中非常重要的一类加载机制，通过该机制保证了类的安全完整性。</p>
 <p>默认 <code>JDK</code> 中使用的即双亲委派机制，你可以在 <code>java.lang</code> 包下找到 <code>ClassLoader</code> 类，下面就从源码的角度分析双亲委派机制。</p>
 <h4 id="1-加载方式"><a href="#1-加载方式" class="headerlink" title="1. 加载方式"></a>1. 加载方式</h4><p>在 <code>Java</code> 中加载类可以共有 <code>Class.forName()</code> 与 <code>Classloader.loadClass()</code> 两种方式，下面分别进行介绍。</p>
-<ul>
-<li><h5 id="Class-forName"><a href="#Class-forName" class="headerlink" title="Class.forName()"></a>Class.forName()</h5><p>  通过 <code>Class.forName()</code> 方式加载不仅会将当前类加载进内存并且会初始化对象，可在需被加载的类中添加 <code>static</code> 静态块打印提示，当使用 <code>Class.forName()</code> 加载类时可以发现静态块代码将会被执行，说明此时创建了对象。</p>
-<p>  若想实现类加载但不创建对象可通过 <code>Class.forName(className, false, classLoader)</code> 方法加载，其中第二个参数用于指定是否创建对象，第三个参数指定类加载器。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<h5 id="1-Class-forName"><a href="#1-Class-forName" class="headerlink" title="(1) Class.forName()"></a>(1) Class.forName()</h5><p>通过 <code>Class.forName()</code> 方式加载不仅会将当前类加载进内存并且会初始化对象，可在需被加载的类中添加 <code>static</code> 静态块打印提示，当使用 <code>Class.forName()</code> 加载类时可以发现静态块代码将会被执行，说明此时创建了对象。</p>
+<p>若想实现类加载但不创建对象可通过 <code>Class.forName(className, false, classLoader)</code> 方法加载，其中第二个参数用于指定是否创建对象，第三个参数指定类加载器。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String className <span class="token operator">=</span> <span class="token string">"xyz.ibudai.bean.User"</span><span class="token punctuation">;</span>
     ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -666,8 +670,7 @@ java xyz.ibudai.MyBean
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="Classloader-loadClass"><a href="#Classloader-loadClass" class="headerlink" title="Classloader.loadClass()"></a>Classloader.loadClass()</h5><p>  通过 <code>loadClass()</code> 方式加载并不会解析类只实现加载并不会创建相应对象，只有当对象被引用时才会初始化。</p>
+<h5 id="2-Classloader-loadClass"><a href="#2-Classloader-loadClass" class="headerlink" title="(2) Classloader.loadClass()"></a>(2) Classloader.loadClass()</h5><p>通过 <code>loadClass()</code> 方式加载并不会解析类只实现加载并不会创建相应对象，只有当对象被引用时才会初始化。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initDemo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String className <span class="token operator">=</span> <span class="token string">"xyz.ibudai.bean.User"</span><span class="token punctuation">;</span>
     ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -679,8 +682,6 @@ java xyz.ibudai.MyBean
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <p>需要注意一点 <code>java.lang.String</code> 等核心类库是在 <code>JVM</code> 启动时加载的，它们位于 <code>Java</code> 虚拟机的核心类库中，并由 <code>Bootstrap ClassLoader</code> 加载。因此在获取这些类的类加载器时，结果通常为 <code>null</code> ，需要注意的是 <code>null</code> 表示类加载器未知或者无法确定，而非没有类加载器。</p>
 <h4 id="2-方法描述"><a href="#2-方法描述" class="headerlink" title="2. 方法描述"></a>2. 方法描述</h4><p>在解析核心源码之前先过一遍下面这个表格，其中各方法在后面将会涉及到，在此简单描述其作用功能，后续不作详细描述。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
