@@ -138,6 +138,29 @@
   
   <li class="hide-on-med-and-down nav-item">
     
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-suitcase" style="zoom: 0.6;"></i>
+      
+      <span>资源</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/resource/tool">
+          
+          <span>应用工具</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
     <a href="/friends" class="waves-effect waves-light">
       
       <i class="fas fa-heart" style="zoom: 0.6;"></i>
@@ -257,6 +280,28 @@
           <a href="/course/network " style="margin-left:75px">
               
                   <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fas fa-suitcase"></i>
+          
+          资源
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/resource/tool " style="margin-left:75px">
+              
+                  <span>应用工具</span>
                       </a>
                     </li>
                   
@@ -503,7 +548,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-03-07
                 </div>
                 
 
@@ -565,8 +610,7 @@ lower_case_table_names<span class="token operator">=</span>1
 <span class="token punctuation">[</span>mysqld<span class="token punctuation">]</span>
 sql_mode<span class="token operator">=</span>STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="bin-log配置"><a href="#bin-log配置" class="headerlink" title="bin log配置"></a>bin log配置</h5><p>  在上述的 <code>my.conf</code> 配置文件添加如下内容，完成后重启 <code>MySQL</code> 容器服务即可生效。</p>
+<h5 id="1-bin-log配置"><a href="#1-bin-log配置" class="headerlink" title="(1) bin log配置"></a>(1) bin log配置</h5><p>在上述的 <code>my.conf</code> 配置文件添加如下内容，完成后重启 <code>MySQL</code> 容器服务即可生效。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">server-id <span class="token operator">=</span> 1
 log_bin <span class="token operator">=</span> mysql-bin
 binlog_format <span class="token operator">=</span> row
@@ -575,7 +619,7 @@ expire_logs_days <span class="token operator">=</span> 10
 gtid_mode <span class="token operator">=</span> on
 enforce_gtid_consistency <span class="token operator">=</span> on
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>  查看 <code>bin log</code> 记录的内容步骤如下：</p>
+<p>查看 <code>bin log</code> 记录的内容步骤如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it mysql /bin/bash             <span class="token comment" spellcheck="true"># 进入容器</span>
 
 show variables like <span class="token string">'%log_bin%'</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true"># 查看目录</span>
@@ -584,8 +628,6 @@ show variables like <span class="token string">'%log_bin%'</span><span class="to
 
 mysqlbinlog --base64-output<span class="token operator">=</span>decode-rows -v mysql-bin.000001<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>在启动容器之前先创建对应目录用于存放相关配置与数据，可根据自身需要修改路径。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 配置文件目录</span>
 <span class="token function">mkdir</span> -p /usr/local/dockerdata/mysql/conf 
@@ -1472,7 +1514,7 @@ elasticsearch-setup-passwords interactive
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.5k</span>
+                <span class="white-color">225.2k</span>
             
             
             

@@ -138,6 +138,29 @@
   
   <li class="hide-on-med-and-down nav-item">
     
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-suitcase" style="zoom: 0.6;"></i>
+      
+      <span>资源</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/resource/tool">
+          
+          <span>应用工具</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
     <a href="/friends" class="waves-effect waves-light">
       
       <i class="fas fa-heart" style="zoom: 0.6;"></i>
@@ -257,6 +280,28 @@
           <a href="/course/network " style="margin-left:75px">
               
                   <span>计算机网络</span>
+                      </a>
+                    </li>
+                  
+                </ul>
+              
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="javascript:;">
+          
+          <i class="fa-fw fas fa-suitcase"></i>
+          
+          资源
+          <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+        </a>
+        <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/resource/tool " style="margin-left:75px">
+              
+                  <span>应用工具</span>
                       </a>
                     </li>
                   
@@ -507,14 +552,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-03-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    770
+                    773
                 </div>
                 
 
@@ -542,16 +587,13 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、编译安装"><a href="#一、编译安装" class="headerlink" title="一、编译安装"></a>一、编译安装</h3><h4 id="1-文件安装"><a href="#1-文件安装" class="headerlink" title="1. 文件安装"></a>1. 文件安装</h4><p>进入<a target="_blank" rel="noopener" href="https://redis.io/download">官网</a>下载最新的稳定版安装包，将下载的文件通过工具上传到服务器，这里我将文件上传至 <code>/usr/local/redis</code> 目录下。<br><img src="/album/loading.gif" data-original="/album/article/db/redis/3.png"></p>
-<ul>
-<li><p><strong>文件编译</strong><br>  打开上述上传的目录解压文件，等待文件解压完成则进入目录通过 <code>make</code> 命令编译。</p>
+<h5 id="1-文件编译"><a href="#1-文件编译" class="headerlink" title="(1) 文件编译"></a>(1) 文件编译</h5><p>打开上述上传的目录解压文件，等待文件解压完成则进入目录通过 <code>make</code> 命令编译。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">tar</span> -xzvf redis-6.2.0.tar.gz
 
 <span class="token function">cd</span> ./redis-6.2.0        <span class="token comment" spellcheck="true"># 打开目录</span>
 
 <span class="token function">make</span>                    <span class="token comment" spellcheck="true"># 编译</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-配置修改"><a href="#2-配置修改" class="headerlink" title="2. 配置修改"></a>2. 配置修改</h4><p>修改 <code>redis.conf</code> 文件中的如下内容： </p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> redis.conf
 
@@ -564,16 +606,14 @@ protected-mode <span class="token function">yes</span>
 <span class="token comment" spellcheck="true"># 将 foobared  替换为你需要的密码。</span>
 requirepass foobared
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务启停"><a href="#3-服务启停" class="headerlink" title="3. 服务启停"></a>3. 服务启停</h4><ul>
-<li><p><strong>启动服务</strong><br>  打开编译完成后的目录，进入 <code>src</code> 目录执行下述命令即就可以看到 <code>redis</code> 已经在后台运行了。</p>
+<h4 id="3-服务启停"><a href="#3-服务启停" class="headerlink" title="3. 服务启停"></a>3. 服务启停</h4><h5 id="1-启动服务"><a href="#1-启动服务" class="headerlink" title="(1) 启动服务"></a>(1) 启动服务</h5><p>打开编译完成后的目录，进入 <code>src</code> 目录执行下述命令即就可以看到 <code>redis</code> 已经在后台运行了。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> src/ 
 
 ./redis-server  <span class="token punctuation">..</span>/redis.conf
 
 <span class="token function">ps</span> aux <span class="token operator">|</span> <span class="token function">grep</span> redis             <span class="token comment" spellcheck="true"># 查看 redis 进程</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p><strong>停止服务</strong><br>  同理停止服务同样是进入 <code>src</code> 执行。</p>
+<h5 id="2-停止服务"><a href="#2-停止服务" class="headerlink" title="(2) 停止服务"></a>(2) 停止服务</h5><p>同理停止服务同样是进入 <code>src</code> 执行。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> src/ 
 
 ./redis-cli
@@ -583,8 +623,6 @@ requirepass foobared
 
 <span class="token function">ps</span> aux <span class="token operator">|</span> <span class="token function">grep</span> redis             <span class="token comment" spellcheck="true"># 查看 redis 进程</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h3 id="二、Bloom安装"><a href="#二、Bloom安装" class="headerlink" title="二、Bloom安装"></a>二、Bloom安装</h3><h4 id="1-应用下载"><a href="#1-应用下载" class="headerlink" title="1. 应用下载"></a>1. 应用下载</h4><p>这里我选择安装在<code>/usr/local/redis</code>下，根据自己需求更改。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/redis                     <span class="token comment" spellcheck="true"># 打开目录</span>
 
@@ -620,10 +658,10 @@ loadmodule /usr/local/redis/RedisBloom-2.0.3/redisbloom.so
 <span class="token operator">></span> auth <span class="token string">"password"</span>
 <span class="token operator">></span> bf.add newFilter foo
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Docker安装"><a href="#三、Docker安装" class="headerlink" title="三、Docker安装"></a>三、Docker安装</h3><h4 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h4><p>先拉取 <code>Redis</code> 相应的 <code>Docker</code> 镜像。</p>
+<h3 id="三、Docker安装"><a href="#三、Docker安装" class="headerlink" title="三、Docker安装"></a>三、Docker安装</h3><h4 id="1-镜像拉取"><a href="#1-镜像拉取" class="headerlink" title="1. 镜像拉取"></a>1. 镜像拉取</h4><p>先拉取 <code>Redis</code> 相应的 <code>Docker</code> 镜像。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker pull redis
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="2-启动服务"><a href="#2-启动服务" class="headerlink" title="2. 启动服务"></a>2. 启动服务</h4><p>这里数据文件设置映射到服务器的 <code>/usr/local/redis/data</code> 目录下。</p>
+<h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>这里数据文件设置映射到服务器的 <code>/usr/local/redis/data</code> 目录下。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建映射目录</span>
 <span class="token function">mkdir</span> /usr/local/redis/data
 
@@ -637,7 +675,7 @@ docker run -d --privileged<span class="token operator">=</span>true \
 redis redis-server \
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、Windows部署"><a href="#四、Windows部署" class="headerlink" title="四、Windows部署"></a>四、Windows部署</h3><h4 id="1-应用下载-1"><a href="#1-应用下载-1" class="headerlink" title="1. 应用下载"></a>1. 应用下载</h4><p>进入<a target="_blank" rel="noopener" href="https://github.com/tporadowski/redis/releases">官网</a>下载对应文件解压至本地。<br><img src="/album/loading.gif" data-original="/album/article/db/redis/1.png"></p>
-<h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>进入解压后文件夹新建命令行窗口，执行下行语句：</p>
+<h4 id="2-服务启动-1"><a href="#2-服务启动-1" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>进入解压后文件夹新建命令行窗口，执行下行语句：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">redis-server.exe redis.windows.conf
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>显示下图说明启动成功，注意此窗口不要关闭。<br><img src="/album/loading.gif" data-original="/album/article/db/redis/2.png"></p>
@@ -1257,7 +1295,7 @@ redis-server --service-stop         <span class="token comment" spellcheck="true
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.5k</span>
+                <span class="white-color">225.2k</span>
             
             
             
