@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring Swagger配置教程, 布袋青年">
+    <meta name="keywords" content="Spring Boot AOP详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring Swagger配置教程 | 布袋青年</title>
+    <title>Spring Boot AOP详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -361,7 +361,7 @@
         (function() {
             let pwd = '';
             if (pwd && pwd.length > 0) {
-                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】回复文章名获取文章密码')).toString(CryptoJS.enc.Hex)) {
                     alert('密码错误，将返回主页！');
                     location.href = '/';
                 }
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/swagger.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring Swagger配置教程</h1>
+                    <h1 class="description center-align post-title">Spring Boot AOP详解</h1>
                 </div>
             </div>
         </div>
@@ -524,8 +524,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Spring%E5%B7%A5%E5%85%B7/" class="post-category">
-                                Spring工具
+                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
+                                Spring框架
                             </a>
                         
                     </div>
@@ -537,28 +537,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-11-22
+                    2023-05-21
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-03-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    470
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    5 分
                 </div>
                 
 
@@ -578,111 +578,142 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><code>Swagger</code> 可为 <code>Spring Boot</code> 工程生成清晰的接口文档，从而减少前后端开发人员的沟通所带来的不必要麻烦。</p>
+                <p><code>Spring AOP</code>（Aspect-Oriented Programming，面向切面编程）是 <code>Spring</code> 框架中的一个重要特性，用于实现横切关注点的模块化和重用。它通过将横切关注点（如日志记录、性能监控、事务管理等）从业务逻辑中分离出来，以便将它们应用到多个模块中的相同位置，实现代码的重用和解耦。</p>
 <blockquote>
-<p>下面就介绍如何在工程中集成 Swagger 文档</p>
-</blockquote>
-<h4 id="1-项目创建"><a href="#1-项目创建" class="headerlink" title="1. 项目创建"></a>1. 项目创建</h4><p>新建 <code>Spring Boot</code> 工程，在 <code>Maven</code> 中导入 <code>Swagger</code> 相关依赖。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.springfox<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>springfox-swagger2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.springfox<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>springfox-swagger-ui<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.2
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-Bean配置"><a href="#2-Bean配置" class="headerlink" title="2. Bean配置"></a>2. Bean配置</h4><p>新建 <code>SwaggerConfig</code> 配置类，添加如下内容。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@EnableSwagger2</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SwaggerConfig</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token keyword">public</span> Docket <span class="token function">createRestApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 接口类所在包路径</span>
-        String apiPath <span class="token operator">=</span> <span class="token string">"xyz.ibudai.controller"</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Docket</span><span class="token punctuation">(</span>DocumentationType<span class="token punctuation">.</span>SWAGGER_2<span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">enable</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">apis</span><span class="token punctuation">(</span>RequestHandlerSelectors<span class="token punctuation">.</span><span class="token function">basePackage</span><span class="token punctuation">(</span>apiPath<span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">paths</span><span class="token punctuation">(</span>PathSelectors<span class="token punctuation">.</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">private</span> ApiInfo <span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ApiInfoBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">title</span><span class="token punctuation">(</span><span class="token string">"Spring Boot Demo"</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">description</span><span class="token punctuation">(</span><span class="token string">"这是一个简单的 Swagger API 演示"</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">contact</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Contact</span><span class="token punctuation">(</span><span class="token string">"ibudai"</span><span class="token punctuation">,</span> <span class="token string">"www.ibudai.xyz"</span><span class="token punctuation">,</span> <span class="token string">"ibudai56@163.com"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">version</span><span class="token punctuation">(</span><span class="token string">"1.0.0-SNAPSHOT"</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-基本使用"><a href="#3-基本使用" class="headerlink" title="3. 基本使用"></a>3. 基本使用</h4><p>完成上述配置后下面介绍如何在接口中添加描述信息。</p>
+<p><code>Spring AOP</code> 的核心概念是切面（<code>Aspect</code>）、连接点（<code>Join Point</code>）、通知（<code>Advice</code>）和切点（<code>Pointcut</code>）。</p>
 <ul>
-<li><h5 id="ApiOperation"><a href="#ApiOperation" class="headerlink" title="@ApiOperation"></a>@ApiOperation</h5><p>  <code>@ApiOperation</code> 用于设置接口摘要，简单描述接口用途。</p>
-</li>
-<li><h5 id="ApiImplicitParams"><a href="#ApiImplicitParams" class="headerlink" title="@ApiImplicitParams"></a>@ApiImplicitParams</h5><p>  <code>@ApiImplicitParams</code> 用于设置接口具体描述，其参数内容参考下表。</p>
-  <table style="display: table; margin-left: auto; margin-right: auto;">
-      <tr>
-          <th style="text-align: center;">方法</td>
-          <th style="text-align: center;">作用</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">name</td>
-          <td style="text-align: center;">说明参数名称。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">value</td>
-          <td style="text-align: center;">说明参数介绍。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">dataType</td>
-          <td style="text-align: center;">说明参数类型。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">paramType</td>
-          <td style="text-align: center;">说明参数请求方式。</td>
-      </tr>
-      <tr>
-          <td style="text-align: center;">required</td>
-          <td style="text-align: center;">说明参数是否必须。</td>
-      </tr>
-  </table>
+<li><strong>切面</strong>：切面是一个跨越多个对象的模块化单元，它定义了横切关注点和它们的行为，一个切面可以包含多个通知和切点。</li>
+<li><strong>连接点</strong>：连接点是在应用程序执行过程中能够插入切面的点，通常连接点是方法的执行点，但也可以是异常抛出时或字段访问时等。</li>
+<li><strong>通知</strong>：通知是切面在连接点处执行的代码，可以在连接点之前、之后或周围执行，以实现不同的行为。常见的通知类型包括前置通知（在连接点之前执行）、后置通知（在连接点之后执行）、异常通知（在连接点抛出异常时执行）和环绕通知（在连接点前后都执行）。</li>
+<li><strong>切点</strong>：切点定义了在哪些连接点上应用通知，通过指定切点表达式或使用注解来确定切点的位置。</li>
+</ul>
+</blockquote>
+<p><code>Spring AOP</code> 可以通过 <code>XML</code> 配置、注解或基于 <code>Java</code> 的配置类来定义切面和通知。它可以与任何 <code>Spring</code> 管理的 <code>bean</code> 一起使用，包括业务对象、服务类、控制器等。在运行时 <code>Spring AOP</code> 使用动态代理技术将通知织入到目标对象的方法中，实现切面的功能。</p>
+<p>通过使用 <code>Spring AOP</code>，可以实现横切关注点的集中管理和复用，提高代码的可维护性和灵活性。它可以帮助开发人员解决各种横切关注点的需求，如日志记录、性能监控、事务管理、安全性检查等。</p>
+<h4 id="1-切点定义"><a href="#1-切点定义" class="headerlink" title="1. 切点定义"></a>1. 切点定义</h4><p>在 <code>Spring</code> 中通过 <code>@Pointcut</code> 定义切点，通过在类上使用 <code>@Aspect</code> 注解开启切面。其基本格式如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Aspect</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspectConfig</span> <span class="token punctuation">{</span>
+    
+    <span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"&lt;Action> (&lt;Pattern> &lt;Return> &lt;Package>(&lt;Params>))"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
-<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"api/swagger"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SwaggerController</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"get"</span><span class="token punctuation">)</span>
-    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"Swagger - 测试接口"</span><span class="token punctuation">)</span>
-    <span class="token annotation punctuation">@ApiImplicitParams</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-            <span class="token annotation punctuation">@ApiImplicitParam</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"编号"</span><span class="token punctuation">,</span> dataType <span class="token operator">=</span> <span class="token string">"string"</span><span class="token punctuation">,</span> paramType <span class="token operator">=</span> <span class="token string">"query"</span><span class="token punctuation">,</span> required <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            <span class="token annotation punctuation">@ApiImplicitParam</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"msg"</span><span class="token punctuation">,</span> value <span class="token operator">=</span> <span class="token string">"消息"</span><span class="token punctuation">,</span> dataType <span class="token operator">=</span> <span class="token string">"string"</span><span class="token punctuation">,</span> paramType <span class="token operator">=</span> <span class="token string">"query"</span><span class="token punctuation">,</span> required <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> String <span class="token function">get</span><span class="token punctuation">(</span>String id<span class="token punctuation">,</span> String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> id <span class="token operator">+</span> <span class="token string">"_"</span> <span class="token operator">+</span> msg<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="4-工程配置"><a href="#4-工程配置" class="headerlink" title="4. 工程配置"></a>4. 工程配置</h4><p>在工程配置文件中添加如下内容，若未设置 <code>context-path</code> 则后续访问地址则无需添加相应配置。</p>
-<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
-  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9090</span>
-  <span class="token key atrule">servlet</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># Swagger 地址: localhost:9090/budai/swagger-ui.html</span>
-    <span class="token key atrule">context-path</span><span class="token punctuation">:</span> /budai
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述各参数对应描述信息参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>  
+        <th style="text-align: center;">说明</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">Action</td>  
+        <td style="text-align: center;">表示作用类型，最常用的为 execution ，后续将详细介绍。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">Pattern</td>  
+        <td style="text-align: center;">指定作用对象的修饰符，如方法的 public 、 private 等，为 * 表示所有。非必填，缺省时为 * 。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">Return</td>  
+        <td style="text-align: center;">指定作用对象的返回类型，为 * 表示所有。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">Package</td>  
+        <td style="text-align: center;">指定作用的对象，通常为方法类所在包，非必填，缺省时为 * 。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">Params</td>  
+        <td style="text-align: center;">指定方法的行参类型，如 String 等，设置为 .. 表示允许零个或多个参数。</td>  
+    </tr>
+</table>
 
-<span class="token key atrule">spring</span><span class="token punctuation">:</span>
-  <span class="token key atrule">mvc</span><span class="token punctuation">:</span>
-    <span class="token key atrule">pathmatch</span><span class="token punctuation">:</span>
-      <span class="token key atrule">matching-strategy</span><span class="token punctuation">:</span> ant_path_matcher
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-效果测试"><a href="#5-效果测试" class="headerlink" title="5. 效果测试"></a>5. 效果测试</h4><p>打开浏览器访问地址：<code>localhost:9090/budai/swagger-ui.html</code>，出现下图内容说明成功。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/swagger.png"></p>
+
+<h4 id="2-切点分类"><a href="#2-切点分类" class="headerlink" title="2. 切点分类"></a>2. 切点分类</h4><p>根据作用对象切点共分为下列几类，下面分别介绍各类定义方式</p>
+<h5 id="1-方法切点"><a href="#1-方法切点" class="headerlink" title="(1) 方法切点"></a>(1) 方法切点</h5><p><code>execution</code> 作用域细化到方式，也是最常用的方式，具体参数参考上一点的表格。</p>
+<p>如下切点定义示例作用域为 <code>xyz.ibudai.controller</code> 包中所有类的方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"execution (public * xyz.ibudai.controller.*.*(..))"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-类切点"><a href="#2-类切点" class="headerlink" title="(2) 类切点"></a>(2) 类切点</h5><p><code>within</code> 作用域细化到类，即只能监听类中所有方法，无法细化到指定方法。</p>
+<p>如下示例定义了监控 <code>StudentServiceImpl</code> 类中所有方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"within(xyz.ibudai.service.Impl.StudentServiceImpl)"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-参数切点"><a href="#3-参数切点" class="headerlink" title="(3) 参数切点"></a>(3) 参数切点</h5><p><code>args()</code> 用于定义参数切面，其参数说明如下：</p>
+<ul>
+<li><code>args()</code>: 不带参数。</li>
+<li><code>args(..)</code>: 任意参数。</li>
+<li><code>args(java.lang.String)</code>: 指定参数类型。</li>
+</ul>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"args(..)"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-注解切点"><a href="#4-注解切点" class="headerlink" title="(4) 注解切点"></a>(4) 注解切点</h5><p>通过 <code>@annotation</code> 定义注解切面，提供两种如下两种方式，第二种方式可以获取注解中的值更为常用。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(methodAnn) &amp;&amp; @annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut2()"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Object <span class="token function">around2</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">,</span> MethodAnn methodAnn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"value 2: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-通知事件"><a href="#3-通知事件" class="headerlink" title="3. 通知事件"></a>3. 通知事件</h4><p>通知是切面在连接点处执行的代码，可以在连接点之前、之后或周围执行，以实现不同的行为。</p>
+<h5 id="1-Before"><a href="#1-Before" class="headerlink" title="(1) @Before"></a>(1) @Before</h5><p>前置通知在连接点之前执行。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">before</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before advice: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-Around"><a href="#2-Around" class="headerlink" title="(2) @Around"></a>(2) @Around</h5><p>环绕通知在连接点前后都执行，可获取请求目标的详细信息并通过 <code>joinPoint.proceed()</code> 放行请求。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Object <span class="token function">around</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Around advice"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 作用类型</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut effect type: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">getKind</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 作用域</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut effect range: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 切面目标类</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut target class: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">getTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 切面方法</span>
+    MethodSignature signature <span class="token operator">=</span> <span class="token punctuation">(</span>MethodSignature<span class="token punctuation">)</span> joinPoint<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut method name: "</span> <span class="token operator">+</span> signature<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 返回方法传入的参数</span>
+    Object<span class="token punctuation">[</span><span class="token punctuation">]</span> obj <span class="token operator">=</span> joinPoint<span class="token punctuation">.</span><span class="token function">getArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut receive parameter: "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 放行方法</span>
+        <span class="token keyword">return</span> joinPoint<span class="token punctuation">.</span><span class="token function">proceed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-AfterThrowing"><a href="#3-AfterThrowing" class="headerlink" title="(3) @AfterThrowing"></a>(3) @AfterThrowing</h5><p>异常通知在连接点抛出异常时执行。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterThrowing</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> throwing <span class="token operator">=</span> <span class="token string">"throwable"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterThrowing</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Exception throwable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"切面异常, 方法: {}"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>MethodSignature<span class="token punctuation">)</span> joinPoint<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After throwing "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", throw message: "</span> <span class="token operator">+</span> throwable<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-AfterReturning"><a href="#4-AfterReturning" class="headerlink" title="(4) @AfterReturning"></a>(4) @AfterReturning</h5><p>后置通知，在目标方法成功执行并返回结果后执行，即在方法返回之后执行。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterReturning</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> returning <span class="token operator">=</span> <span class="token string">"obj"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterReturning</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After returning, "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", return: "</span> <span class="token operator">+</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="5-After"><a href="#5-After" class="headerlink" title="(5) @After"></a>(5) @After</h5><p>后置通知，无论目标方法是正常返回还是抛出异常，都会在方法执行之后执行，<code>@AfterReturning</code> 可以理解为 <code>@After</code> 的真子集。</p>
+<p><code>@After</code> 使用方式与 <code>@AfterReturning</code> 相同，仅作用域不同，这里不再提供示例。</p>
 
                 
             </div>
@@ -709,7 +740,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/spring/tool/swagger/">https://great-jin.github.io/java/spring/tool/swagger/</a>
+                    <a href="https://great-jin.github.io/java/spring/native/aop/">https://great-jin.github.io/java/spring/native/aop/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -924,30 +955,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/hexo/domain/">
+                <a href="/java/design/builder/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/hexo/8.png" class="responsive-img" alt="GitHub Page域名绑定">
+                        <img src="/album/banner/java/36.jpg" class="responsive-img" alt="Java Build对象构建教程">
                         
-                        <span class="card-title">GitHub Page域名绑定</span>
+                        <span class="card-title">Java Build对象构建教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            GitHub Page域名绑定教程。
+                            Builder方式实现属性动态注入对象构建。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-26
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-27
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/HEXO/" class="post-category">
-                                    HEXO
+                            <a href="/categories/%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1/" class="post-category">
+                                    模式设计
                                 </a>
                             
                             
@@ -957,8 +988,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/HEXO%E6%9C%8D%E5%8A%A1/">
-                        <span class="chip bg-color">HEXO服务</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -972,30 +1003,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/utils/test/">
+                <a href="/java/advance/jvm/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/util/junit.png" class="responsive-img" alt="Junit与Mock测试介绍">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Java JVM虚拟机详解">
                         
-                        <span class="card-title">Junit与Mock测试介绍</span>
+                        <span class="card-title">Java JVM虚拟机详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            单元测试与 Mock 测试介绍。
+                            Java 虚拟机 JVM 基本介绍。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-14
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
-                                    后端
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
                                 </a>
                             
                             
@@ -1005,8 +1036,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Java/">
-                        <span class="chip bg-color">Java</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1280,7 +1311,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.2k</span>
+                <span class="white-color">228.1k</span>
             
             
             

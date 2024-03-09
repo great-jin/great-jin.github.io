@@ -359,9 +359,9 @@
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/cryptojs/crypto-js.min.js"></script>
     <script>
         (function() {
-            let pwd = 'ac709db0f8f08387993d72b60b25e14cbbec7e94537c83305ec48a52e064e993';
+            let pwd = 'e063cc42adb7ec76ebe9dfd382215a806e28dcb0e4229d971e344eefd3bc55aa';
             if (pwd && pwd.length > 0) {
-                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】回复文章名获取文章密码')).toString(CryptoJS.enc.Hex)) {
                     alert('密码错误，将返回主页！');
                     location.href = '/';
                 }
@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-08
+                    2024-03-09
                 </div>
                 
 
@@ -584,155 +584,152 @@
 </blockquote>
 <h3 id="一、EL表达式"><a href="#一、EL表达式" class="headerlink" title="一、EL表达式"></a>一、EL表达式</h3><p>通常将需要判断的值提到流文件属性，再通过 <code>EL</code> 表达式进行判断。</p>
 <p>这里仅列举日常流程中较常用的表达式，详细文档参考<a target="_blank" rel="noopener" href="https://nifi.apache.org/docs.html">官方教程</a>。</p>
-<h4 id="1-字符串"><a href="#1-字符串" class="headerlink" title="1. 字符串"></a>1. 字符串</h4><ul>
-<li><p><strong>UUID</strong><br>  <code>$&#123;UUID()&#125;</code></p>
-</li>
-<li><p><strong>Equals</strong><br>  <code>$&#123;filename:equals(&#39;hello.txt&#39;)&#125;</code></p>
-</li>
-<li><p><strong>IsNull</strong><br>  <code>$&#123;filename:isNull()&#125;</code></p>
-</li>
-<li><p><strong>IsEmpty</strong><br>  <code>$&#123;filename:isEmpty()&#125;</code></p>
-</li>
-<li><p><strong>NotNull</strong><br>  <code>$&#123;filename:notNull()&#125;</code></p>
-</li>
-<li><p><strong>Append</strong><br>  <code>$&#123;filename:append(&#39;aaa&#39;)&#125;</code></p>
-</li>
-<li><p><strong>Replace</strong><br>  <code>$&#123;filename:replace(&#39;.&#39;, &#39;_&#39;)&#125;</code></p>
-</li>
-<li><p><strong>Substring</strong><br>  <code>$&#123;filename:substring(start, end)&#125;</code></p>
-</li>
-<li><p><strong>IfElse</strong><br>  <code>$&#123;filename:isNull():ifElse(&#39;file null&#39;, &#39;file not null&#39;)&#125;</code></p>
-</li>
-</ul>
-<h4 id="2-时间"><a href="#2-时间" class="headerlink" title="2. 时间"></a>2. 时间</h4><ul>
-<li><strong>Now</strong><br>  <code>$&#123;now()&#125;</code></li>
-<li><strong>Format</strong><br>  <code>$&#123;now():format(&#39;yyyy&#39;)&#125;</code></li>
-<li><strong>Timestamp</strong><br>  <code>$&#123;now():toNumber()&#125;</code></li>
-</ul>
-<h3 id="二、文件读取"><a href="#二、文件读取" class="headerlink" title="二、文件读取"></a>二、文件读取</h3><h4 id="1-FTP文件"><a href="#1-FTP文件" class="headerlink" title="1. FTP文件"></a>1. FTP文件</h4><ul>
-<li><h5 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h5>  配置 <code>FTP</code> 地址以及用户名密码，属性<code>Delete Original</code>用于控制在获取文件之后是否删除源文件。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/1-1.png"><br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/1-3.png"></li>
-<li><h5 id="存入"><a href="#存入" class="headerlink" title="存入"></a>存入</h5>  配置FTP地址和用户名密码，以及需要存放的路径，配置冲突文件进行覆盖。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/1-2.png"><br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/1-4.png"></li>
-</ul>
-<h4 id="2-本地文件"><a href="#2-本地文件" class="headerlink" title="2. 本地文件"></a>2. 本地文件</h4><ul>
-<li><h5 id="读取-1"><a href="#读取-1" class="headerlink" title="读取"></a>读取</h5>  配置本地文件夹路径，会自动获取文件夹内所有文件，属性<code>Keep Source File</code>用于控制在获取文件之后是否删除源文件。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/2-1.png"><br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/2-3.png"></li>
-<li><h5 id="存入-1"><a href="#存入-1" class="headerlink" title="存入"></a>存入</h5>  配置需要存放的路径以及冲突文件进行覆盖。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/2-2.png"><br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/2-4.png"></li>
-</ul>
-<h3 id="三、内容操作"><a href="#三、内容操作" class="headerlink" title="三、内容操作"></a>三、内容操作</h3><h4 id="1-GenerateFlowFile"><a href="#1-GenerateFlowFile" class="headerlink" title="1. GenerateFlowFile"></a>1. GenerateFlowFile</h4><ul>
-<li><h5 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h5>  通过配置属性可以生产对应流文件，通常用于生成测试数据。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/17.png"></li>
-<li><h5 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h5>  通过设置<code>Custome Text</code>属性值配置生成的流文件内容，可以填入<code>Json</code>格式数据生成测试流文件。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/17-1.png"></li>
-</ul>
-<h4 id="2-LogAttribute"><a href="#2-LogAttribute" class="headerlink" title="2. LogAttribute"></a>2. LogAttribute</h4><ul>
-<li><h5 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h5>  记录日志，通常将组件<code>Failture</code>关系连到<code>LogAttribute</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/3.png"></li>
-</ul>
-<h4 id="3-UpdateAttribute"><a href="#3-UpdateAttribute" class="headerlink" title="3. UpdateAttribute"></a>3. UpdateAttribute</h4><ul>
-<li><h5 id="作用-2"><a href="#作用-2" class="headerlink" title="作用"></a>作用</h5>  用于更新流文件属性，配置EL表达式进行使用。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/4.png"></li>
-<li><h5 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h5>  通过右上角加号新增一条属性，属性名自定义，属性值可以取固定值，也可以通过EL表达式进行赋值。当流文件经过此组件之后，将会自动添加这条属性。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/4-1.png"></li>
-</ul>
-<h4 id="4-EvaluateJsonPath"><a href="#4-EvaluateJsonPath" class="headerlink" title="4. EvaluateJsonPath"></a>4. EvaluateJsonPath</h4><ul>
-<li><h5 id="作用-3"><a href="#作用-3" class="headerlink" title="作用"></a>作用</h5>  当流文件内容为Json格式数据时，可以提取相应的键值对值，其中<code>Destination</code>设置将取到的值添加到流文件内容还是属性。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/5.png"></li>
-<li><h5 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h5>  例如此时流文件内容如下：<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">123</span><span class="token punctuation">,</span>
-<span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"budai"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-  在通过新增一条属性<code>id</code>，并赋值为<code>$.id</code>，即可获取上述中的<code>123</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/5-1.png"></li>
-</ul>
-<h4 id="5-JoltTransformJSON"><a href="#5-JoltTransformJSON" class="headerlink" title="5. JoltTransformJSON"></a>5. JoltTransformJSON</h4><ul>
-<li><h5 id="作用-4"><a href="#作用-4" class="headerlink" title="作用"></a>作用</h5>  通常用于过滤<code>Json</code>格式的数据。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/10.png"></li>
-<li><h5 id="使用-3"><a href="#使用-3" class="headerlink" title="使用"></a>使用</h5>  假设流文件有如下格式数据，而我们只需要保留<code>id</code>的值。<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+<h4 id="1-字符串"><a href="#1-字符串" class="headerlink" title="1. 字符串"></a>1. 字符串</h4><p>字符串对应的 <code>EL</code> 表达式如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">函数</td>
+        <th style="text-align: center;">表达式</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">UUID</td>
+        <td style="text-align: center;">${UUID()}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Equals</td>
+        <td style="text-align: center;">${filename:equals('hello.txt')}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">IsNull</td>
+        <td style="text-align: center;">${filename:isNull()}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">IsEmpty</td>
+        <td style="text-align: center;">${filename:isEmpty()}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NotNull</td>
+        <td style="text-align: center;">${filename:notNull()}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Append</td>
+        <td style="text-align: center;">${filename:append('abc')}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Replace</td>
+        <td style="text-align: center;">${filename:replace('.', '_')}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Substring</td>
+        <td style="text-align: center;">${filename:substring(start, end)}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">IfElse</td>
+        <td style="text-align: center;">${filename:isNull():ifElse('file null', 'file not null')}</td>
+    </tr>
+</table>
+
+
+<h4 id="2-时间"><a href="#2-时间" class="headerlink" title="2. 时间"></a>2. 时间</h4><p>相对应的时间 <code>EL</code> 表达式如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">函数</td>
+        <th style="text-align: center;">表达式</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Now</td>
+        <td style="text-align: center;">${now()}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Format</td>
+        <td style="text-align: center;">${now():format('yyyy')}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Timestamp</td>
+        <td style="text-align: center;">${now():toNumber()}</td>
+    </tr>
+</table>
+
+
+
+<h3 id="二、文件读取"><a href="#二、文件读取" class="headerlink" title="二、文件读取"></a>二、文件读取</h3><h4 id="1-FTP文件"><a href="#1-FTP文件" class="headerlink" title="1. FTP文件"></a>1. FTP文件</h4><h5 id="1-读取"><a href="#1-读取" class="headerlink" title="(1) 读取"></a>(1) 读取</h5><p>配置 <code>FTP</code> 地址以及用户名密码，属性 <code>Delete Original</code> 用于控制在获取文件之后是否删除源文件。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/1-1.png"><br><img src="/album/loading.gif" data-original="/album/article/nifi/use/1-3.png"></p>
+<h5 id="2-存入"><a href="#2-存入" class="headerlink" title="(2) 存入"></a>(2) 存入</h5><p>配置 <code>FTP</code> 地址和用户名密码，以及需要存放的路径，配置冲突文件进行覆盖。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/1-2.png"><br><img src="/album/loading.gif" data-original="/album/article/nifi/use/1-4.png"></p>
+<h4 id="2-本地文件"><a href="#2-本地文件" class="headerlink" title="2. 本地文件"></a>2. 本地文件</h4><h5 id="1-读取-1"><a href="#1-读取-1" class="headerlink" title="(1) 读取"></a>(1) 读取</h5><p>配置本地文件夹路径，会自动获取文件夹内所有文件，属性 <code>Keep Source File</code> 用于控制在获取文件之后是否删除源文件。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/2-1.png"><br><img src="/album/loading.gif" data-original="/album/article/nifi/use/2-3.png"></p>
+<h5 id="2-存入-1"><a href="#2-存入-1" class="headerlink" title="(2) 存入"></a>(2) 存入</h5><p>配置需要存放的路径以及冲突文件进行覆盖。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/2-2.png"><br><img src="/album/loading.gif" data-original="/album/article/nifi/use/2-4.png"></p>
+<h3 id="三、内容操作"><a href="#三、内容操作" class="headerlink" title="三、内容操作"></a>三、内容操作</h3><h4 id="1-GenerateFlowFile"><a href="#1-GenerateFlowFile" class="headerlink" title="1. GenerateFlowFile"></a>1. GenerateFlowFile</h4><h5 id="1-作用"><a href="#1-作用" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通过配置属性可以生产对应流文件，通常用于生成测试数据。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/17.png"></p>
+<h5 id="2-使用"><a href="#2-使用" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>通过设置 <code>Custome Text</code> 属性值配置生成的流文件内容，可以填入 <code>Json</code> 格式数据生成测试流文件。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/17-1.png"></p>
+<h4 id="2-LogAttribute"><a href="#2-LogAttribute" class="headerlink" title="2. LogAttribute"></a>2. LogAttribute</h4><h5 id="1-作用-1"><a href="#1-作用-1" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>记录日志，通常将组件 <code>Failture</code> 关系连到 <code>LogAttribute</code> 。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/3.png"></p>
+<h4 id="3-UpdateAttribute"><a href="#3-UpdateAttribute" class="headerlink" title="3. UpdateAttribute"></a>3. UpdateAttribute</h4><h5 id="1-作用-2"><a href="#1-作用-2" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于更新流文件属性，配置 <code>EL</code> 表达式进行使用。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/4.png"></p>
+<h5 id="2-使用-1"><a href="#2-使用-1" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>通过右上角加号新增属性，属性名自定义，属性值可以取固定值，也可以通过 <code>EL</code> 表达式进行赋值。当流文件经过此组件之后，将会自动添加这条属性。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/4-1.png"></p>
+<h4 id="4-EvaluateJsonPath"><a href="#4-EvaluateJsonPath" class="headerlink" title="4. EvaluateJsonPath"></a>4. EvaluateJsonPath</h4><h5 id="1-作用-3"><a href="#1-作用-3" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>当流文件内容为 <code>Json</code> 格式数据时，可以提取相应的键值对值，其中 <code>Destination</code> 设置将取到的值添加到流文件内容还是属性。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/5.png"></p>
+<h5 id="2-使用-2"><a href="#2-使用-2" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>例如此时流文件内容如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">123</span><span class="token punctuation">,</span>
     <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"budai"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-  通过配置Jolt Specification属性的值为为如下所示，即可对数据进行过滤。<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">[</span><span class="token punctuation">{</span>
+<p>在通过新增一条属性 <code>id</code>，并赋值为 <code>$.id</code>，即可获取上述中的 <code>123</code>。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/5-1.png"></p>
+<h4 id="5-JoltTransformJSON"><a href="#5-JoltTransformJSON" class="headerlink" title="5. JoltTransformJSON"></a>5. JoltTransformJSON</h4><h5 id="1-作用-4"><a href="#1-作用-4" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通常用于过滤 <code>Json</code> 格式的数据。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/10.png"></p>
+<h5 id="2-使用-3"><a href="#2-使用-3" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>假设流文件有如下格式数据，而我们只需要保留 <code>id</code> 的值。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">123</span><span class="token punctuation">,</span>
+    <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"budai"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过配置 <code>Jolt Specification</code> 属性的值为为如下所示，即可对数据进行过滤。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">[</span><span class="token punctuation">{</span>
     <span class="token string">"operation"</span><span class="token punctuation">:</span><span class="token string">"shift"</span><span class="token punctuation">,</span>
     <span class="token string">"spec"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
-    <span class="token string">"id"</span><span class="token punctuation">:</span><span class="token string">"id"</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span><span class="token string">"id"</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-  <img src="/album/loading.gif" data-original="/album/article/nifi/use/10-1.png"><br>  最终得到的数据如下：<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+<p><img src="/album/loading.gif" data-original="/album/article/nifi/use/10-1.png"><br>最终得到的数据如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
     <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">123</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="6-ExtractText"><a href="#6-ExtractText" class="headerlink" title="6. ExtractText"></a>6. ExtractText</h4><ul>
-<li><h5 id="作用-5"><a href="#作用-5" class="headerlink" title="作用"></a>作用</h5>  通常用于将流文件内容提取到属性上。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/7.png"></li>
-<li><h5 id="使用-4"><a href="#使用-4" class="headerlink" title="使用"></a>使用</h5>  在通过新增一条属性<code>content</code>，并赋值为<code>$.*</code>，当流文件经过此组件之后，将会自动添加该属性，值为流文件内容。不过需要注意一点，属性长度有长度限制，过长时会自动截断。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/7-1.png"></li>
-</ul>
-<h4 id="7-RouteOnAttribute"><a href="#7-RouteOnAttribute" class="headerlink" title="7. RouteOnAttribute"></a>7. RouteOnAttribute</h4><ul>
-<li><h5 id="作用-6"><a href="#作用-6" class="headerlink" title="作用"></a>作用</h5>  通常用于路由判断，利用<code>UpdateAttribute</code>与<code>EvaluateJsonPath</code>对流文件属性进行修改，再根据EL表达式进行判断。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/19.png"></li>
-<li><h5 id="使用-5"><a href="#使用-5" class="headerlink" title="使用"></a>使用</h5>  新建一条属性，根据需求设置EL表达式，这条属性将转化为该组件的一条关系。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/19-1.png"></li>
-</ul>
-<h4 id="8-ReplaceText"><a href="#8-ReplaceText" class="headerlink" title="8. ReplaceText"></a>8. ReplaceText</h4><ul>
-<li><h5 id="作用-7"><a href="#作用-7" class="headerlink" title="作用"></a>作用</h5>  用于替换流文件内容值，<code>Search Value</code>设置需要被替换的内容，<code>Replacement Values</code>设置替换后的内容。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/20.png"></li>
-<li><h5 id="使用-6"><a href="#使用-6" class="headerlink" title="使用"></a>使用</h5>  可以进行单值替换，如将流文件内容中<code>a</code>替换为<code>A</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/20-1.png"><br>  同时可以进行全局替换，如将流文件内容更替为<code>this is a test</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/20-2.png"></li>
-</ul>
-<h4 id="9-UpdateRecord"><a href="#9-UpdateRecord" class="headerlink" title="9. UpdateRecord"></a>9. UpdateRecord</h4><ul>
-<li><h5 id="作用-8"><a href="#作用-8" class="headerlink" title="作用"></a>作用</h5>  用于更新流文件内容值，若已存在则进行覆盖，更新前后的字段类型需一致。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/23.png"></li>
-<li><h5 id="使用-7"><a href="#使用-7" class="headerlink" title="使用"></a>使用</h5>  配置流文件的读写服务，需要注意在属性名之前要加上斜杠 <code>/</code>。如我们新建属性<code>/test</code>，当流文件经过此组件之后，内容将会自动添加<code>test</code>的键值对。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/23-1.png"></li>
-</ul>
-<h3 id="四、格式转化"><a href="#四、格式转化" class="headerlink" title="四、格式转化"></a>四、格式转化</h3><h4 id="1-SplitText"><a href="#1-SplitText" class="headerlink" title="1. SplitText"></a>1. SplitText</h4><ul>
-<li><h5 id="作用-9"><a href="#作用-9" class="headerlink" title="作用"></a>作用</h5>  用于拆分文本，如读取的 CSV 文件进行拆分为单条数据。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/18.png"></li>
-</ul>
-<h4 id="2-SplitRecord"><a href="#2-SplitRecord" class="headerlink" title="2. SplitRecord"></a>2. SplitRecord</h4><ul>
-<li><h5 id="作用-10"><a href="#作用-10" class="headerlink" title="作用"></a>作用</h5>  用于将单个流文件拆分为多个流文件。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/6.png"></li>
-<li><h5 id="使用-8"><a href="#使用-8" class="headerlink" title="使用"></a>使用</h5>  需要配置对应的流文件读写服务并启动。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/6-1.png"></li>
-</ul>
-<h4 id="3-MergeRecord"><a href="#3-MergeRecord" class="headerlink" title="3. MergeRecord"></a>3. MergeRecord</h4><ul>
-<li><h5 id="作用-11"><a href="#作用-11" class="headerlink" title="作用"></a>作用</h5>  用于将多个流文件合并为单个流文件。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/11.png"></li>
-<li><h5 id="使用-9"><a href="#使用-9" class="headerlink" title="使用"></a>使用</h5>  配置相对简单，只需根据流文件格式新建相应的读写服务并点击右侧箭头进行启用即可。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/11-1.png"></li>
-</ul>
-<h4 id="4-ConvertRecord"><a href="#4-ConvertRecord" class="headerlink" title="4. ConvertRecord"></a>4. ConvertRecord</h4><ul>
-<li><h5 id="作用-12"><a href="#作用-12" class="headerlink" title="作用"></a>作用</h5>  用于转化流文件格式，例如数据库抽取的数据格式为<code>Avro</code>，但<code>EvaluateJsonPath</code>等组件只能对<code>Json</code>格式文件进行操作，需要进行格式转换。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/9.png"></li>
-<li><h5 id="使用-10"><a href="#使用-10" class="headerlink" title="使用"></a>使用</h5>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/9-1.png"></li>
-</ul>
-<h3 id="五、网络请求"><a href="#五、网络请求" class="headerlink" title="五、网络请求"></a>五、网络请求</h3><h4 id="1-InvokeHttp"><a href="#1-InvokeHttp" class="headerlink" title="1. InvokeHttp"></a>1. InvokeHttp</h4><ul>
-<li><h5 id="作用-13"><a href="#作用-13" class="headerlink" title="作用"></a>作用</h5><p>  通常用于请求网络接口以获取数据。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/22.png"></p>
-</li>
-<li><h5 id="使用-11"><a href="#使用-11" class="headerlink" title="使用"></a>使用</h5><p>  根据场景选择不同请求方式，如<code>Get、Post</code>，填上请求地址即可。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/22-1.png"></p>
-</li>
-</ul>
-<h4 id="2-HandleHttpRequest"><a href="#2-HandleHttpRequest" class="headerlink" title="2. HandleHttpRequest"></a>2. HandleHttpRequest</h4><ul>
-<li><h5 id="作用-14"><a href="#作用-14" class="headerlink" title="作用"></a>作用</h5>  配合<code>HandleHttpResponse</code>使用用于生成接口。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/15.png"></li>
-<li><h5 id="使用-12"><a href="#使用-12" class="headerlink" title="使用"></a>使用</h5>  设置访问端口以及接口路径，对应的Http服务除了<code>Post</code>属性其余设置为<code>false</code>创建服务并启动，注意对应的服务必须和<code>HandleHttpRequest</code>中使用的一致。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/15-1.png"></li>
-</ul>
-<h4 id="3-HandleHttpResponse"><a href="#3-HandleHttpResponse" class="headerlink" title="3. HandleHttpResponse"></a>3. HandleHttpResponse</h4><ul>
-<li><h5 id="作用-15"><a href="#作用-15" class="headerlink" title="作用"></a>作用</h5>  通过<code>HandleHttpResponse</code>与<code>HandleHttpRequest</code>两个组件相配合可以生成接口。如通过Post方法传入Json数据，通过上诉其余组件组合使用实现对数据的修改，最后返回相应的结果<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/16.png"></li>
-<li><h5 id="使用-13"><a href="#使用-13" class="headerlink" title="使用"></a>使用</h5>  设置状态码为<code>200</code>，创建服务并启动，注意其使用的<code>HTTP Context Map</code>服务必须和<code>HandleHttpRequest</code>中使用的为同一个。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/16-1.png"></li>
-</ul>
-<h3 id="六、数据库操作"><a href="#六、数据库操作" class="headerlink" title="六、数据库操作"></a>六、数据库操作</h3><h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><ul>
-<li><p><strong>MySQL</strong><br>  驱动包需要提前下载到本地，填写绝对路径即可。</p>
+<h4 id="6-ExtractText"><a href="#6-ExtractText" class="headerlink" title="6. ExtractText"></a>6. ExtractText</h4><h5 id="1-作用-5"><a href="#1-作用-5" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通常用于将流文件内容提取到属性上。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/7.png"></p>
+<h5 id="2-使用-4"><a href="#2-使用-4" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>在通过新增一条属性 <code>content</code> ，并赋值为 <code>$.*</code>，当流文件经过此组件之后将会自动添加该属性，值为流文件内容。</p>
+<p>不过需要注意一点，属性长度有长度限制，过长时会自动截断。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/7-1.png"></p>
+<h4 id="7-RouteOnAttribute"><a href="#7-RouteOnAttribute" class="headerlink" title="7. RouteOnAttribute"></a>7. RouteOnAttribute</h4><h5 id="1-作用-6"><a href="#1-作用-6" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通常用于路由判断，利用 <code>UpdateAttribute</code> 与 <code>EvaluateJsonPath</code> 对流文件属性进行修改，再根据 <code>EL</code> 表达式进行判断。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/19.png"></p>
+<h5 id="2-使用-5"><a href="#2-使用-5" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>新建一条属性，根据需求设置EL表达式，这条属性将转化为该组件的一条关系。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/19-1.png"></p>
+<h4 id="8-ReplaceText"><a href="#8-ReplaceText" class="headerlink" title="8. ReplaceText"></a>8. ReplaceText</h4><h5 id="1-作用-7"><a href="#1-作用-7" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于替换流文件内容值， <code>Search Value</code> 设置需要被替换的内容， <code>Replacement Values</code> 设置替换后的内容。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/20.png"></p>
+<h5 id="2-使用-6"><a href="#2-使用-6" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>可以进行单值替换，如将流文件内容中 <code>a</code> 替换为 <code>A</code>。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/20-1.png"></p>
+<p>同时可以进行全局替换，如将流文件内容更替为 <code>this is a test</code>。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/20-2.png"></p>
+<h4 id="9-UpdateRecord"><a href="#9-UpdateRecord" class="headerlink" title="9. UpdateRecord"></a>9. UpdateRecord</h4><h5 id="1-作用-8"><a href="#1-作用-8" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于更新流文件内容值，若已存在则进行覆盖，更新前后的字段类型需一致。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/23.png"></p>
+<h5 id="2-使用-7"><a href="#2-使用-7" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>配置流文件的读写服务，需要注意在属性名之前要加上斜杠 <code>/</code>。如我们新建属性 <code>/test</code>，当流文件经过此组件之后，内容将会自动添加 <code>test</code> 的键值对。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/23-1.png"></p>
+<h3 id="四、格式转化"><a href="#四、格式转化" class="headerlink" title="四、格式转化"></a>四、格式转化</h3><h4 id="1-SplitText"><a href="#1-SplitText" class="headerlink" title="1. SplitText"></a>1. SplitText</h4><h5 id="1-作用-9"><a href="#1-作用-9" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于拆分文本，如读取的 <code>CSV</code> 文件进行拆分为单条数据。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/18.png"></p>
+<h4 id="2-SplitRecord"><a href="#2-SplitRecord" class="headerlink" title="2. SplitRecord"></a>2. SplitRecord</h4><h5 id="1-作用-10"><a href="#1-作用-10" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于将单个流文件拆分为多个流文件。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/6.png"></p>
+<h5 id="2-使用-8"><a href="#2-使用-8" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>需要配置对应的流文件读写服务并启动。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/6-1.png"></p>
+<h4 id="3-MergeRecord"><a href="#3-MergeRecord" class="headerlink" title="3. MergeRecord"></a>3. MergeRecord</h4><h5 id="1-作用-11"><a href="#1-作用-11" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于将多个流文件合并为单个流文件。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/11.png"></p>
+<h5 id="2-使用-9"><a href="#2-使用-9" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>配置相对简单，只需根据流文件格式新建相应的读写服务并点击右侧箭头进行启用即可。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/11-1.png"></p>
+<h4 id="4-ConvertRecord"><a href="#4-ConvertRecord" class="headerlink" title="4. ConvertRecord"></a>4. ConvertRecord</h4><h5 id="1-作用-12"><a href="#1-作用-12" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于转化流文件格式，例如数据库抽取的数据格式为 <code>Avro</code>，但 <code>EvaluateJsonPath</code> 等组件只能对 <code>Json</code> 格式文件进行操作，需要进行格式转换。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/9.png"></p>
+<h5 id="2-使用-10"><a href="#2-使用-10" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p><img src="/album/loading.gif" data-original="/album/article/nifi/use/9-1.png"></p>
+<h3 id="五、网络请求"><a href="#五、网络请求" class="headerlink" title="五、网络请求"></a>五、网络请求</h3><h4 id="1-InvokeHttp"><a href="#1-InvokeHttp" class="headerlink" title="1. InvokeHttp"></a>1. InvokeHttp</h4><h5 id="1-作用-13"><a href="#1-作用-13" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通常用于请求网络接口以获取数据。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/22.png"></p>
+<h5 id="2-使用-11"><a href="#2-使用-11" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>根据场景选择不同请求方式，如 <code>Get、Post</code>，填上请求地址即可。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/22-1.png"></p>
+<h4 id="2-HandleHttpRequest"><a href="#2-HandleHttpRequest" class="headerlink" title="2. HandleHttpRequest"></a>2. HandleHttpRequest</h4><h5 id="1-作用-14"><a href="#1-作用-14" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>配合 <code>HandleHttpResponse</code> 使用用于生成接口。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/15.png"></p>
+<h5 id="2-使用-12"><a href="#2-使用-12" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>设置访问端口以及接口路径，对应的Http服务除了 <code>Post</code> 属性其余设置为 <code>false</code> 创建服务并启动。</p>
+<p>注意对应的服务必须和 <code>HandleHttpRequest</code> 中使用的一致。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/15-1.png"></p>
+<h4 id="3-HandleHttpResponse"><a href="#3-HandleHttpResponse" class="headerlink" title="3. HandleHttpResponse"></a>3. HandleHttpResponse</h4><h5 id="1-作用-15"><a href="#1-作用-15" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>通过 <code>HandleHttpResponse</code> 与 <code>HandleHttpRequest</code> 两个组件相配合可以生成接口。</p>
+<p>如通过 <code>Post</code> 方法传入 <code>Json</code> 数据，通过上诉其余组件组合使用实现对数据的修改，最后返回相应的结果<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/16.png"></p>
+<h5 id="1-使用"><a href="#1-使用" class="headerlink" title="(1) 使用"></a>(1) 使用</h5><p>设置状态码为 <code>200</code> ，创建服务并启动，注意其使用的 <code>HTTP Context Map</code> 服务必须和 <code>HandleHttpRequest</code> 中使用的为同一个。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/16-1.png"></p>
+<h3 id="六、数据库操作"><a href="#六、数据库操作" class="headerlink" title="六、数据库操作"></a>六、数据库操作</h3><h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><h5 id="1-MySQL"><a href="#1-MySQL" class="headerlink" title="(1) MySQL"></a>(1) MySQL</h5><p>驱动包需要提前下载到本地，填写绝对路径即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jdbc:mysql://<span class="token punctuation">{</span>host<span class="token punctuation">}</span>:<span class="token punctuation">{</span>port<span class="token punctuation">}</span>/<span class="token punctuation">{</span>database<span class="token punctuation">}</span>
 
 com.mysql.jdbc.Driver
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/21.png"></p>
-</li>
-<li><p><strong>Oracle</strong><br>  基本配置和MySQL一致，更改URL格式和<code>Class Name</code>即可。</p>
+<p><img src="/album/loading.gif" data-original="/album/article/nifi/use/21.png"></p>
+<h5 id="2-Oracle"><a href="#2-Oracle" class="headerlink" title="(2) Oracle"></a>(2) Oracle</h5><p>基本配置和 <code>MySQL</code> 一致，更改 <code>URL</code> 格式和<code>Class Name</code>即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jdbc:oracle:thin:@<span class="token punctuation">{</span>host<span class="token punctuation">}</span>:<span class="token punctuation">{</span>port<span class="token punctuation">}</span>:<span class="token punctuation">{</span>database<span class="token punctuation">}</span>
 
 oracle.jdbc.OracleDriver
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-ExecuteSQL"><a href="#2-ExecuteSQL" class="headerlink" title="2. ExecuteSQL"></a>2. ExecuteSQL</h4><ul>
-<li><h5 id="作用-16"><a href="#作用-16" class="headerlink" title="作用"></a>作用</h5>  用于执行SQL语句，配置连接池服务即可执行预期SQL命令，当没有填写SQL语句时，会自动读取上游流文件内容进行执行，可以根据需要提前拼凑SQL语句。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/12.png"></li>
-<li><h5 id="使用-14"><a href="#使用-14" class="headerlink" title="使用"></a>使用</h5>  注意第三个红框中的属性值需要设置为<code>true</code>。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/12-1.png"></li>
-</ul>
-<h4 id="3-QueryDatabaseTable"><a href="#3-QueryDatabaseTable" class="headerlink" title="3. QueryDatabaseTable"></a>3. QueryDatabaseTable</h4><ul>
-<li><h5 id="作用-17"><a href="#作用-17" class="headerlink" title="作用"></a>作用</h5><p>  用于查询数据表记录，需要配置连接池服务。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/13.png"></p>
-</li>
-<li><h5 id="使用-15"><a href="#使用-15" class="headerlink" title="使用"></a>使用</h5><p>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/13-1.png"></p>
-</li>
-</ul>
-<h4 id="4-PutDatabaseRecord"><a href="#4-PutDatabaseRecord" class="headerlink" title="4. PutDatabaseRecord"></a>4. PutDatabaseRecord</h4><ul>
-<li><h5 id="作用-18"><a href="#作用-18" class="headerlink" title="作用"></a>作用</h5><p>  用于插入数据表记录，需要配置连接池服务。<br>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/14.png"></p>
-</li>
-<li><h5 id="使用-16"><a href="#使用-16" class="headerlink" title="使用"></a>使用</h5><p>  <img src="/album/loading.gif" data-original="/album/article/nifi/use/14-1.png"></p>
-</li>
-</ul>
+<h4 id="2-ExecuteSQL"><a href="#2-ExecuteSQL" class="headerlink" title="2. ExecuteSQL"></a>2. ExecuteSQL</h4><h5 id="1-作用-16"><a href="#1-作用-16" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于执行 <code>SQL</code> 语句，配置连接池服务即可执行预期 <code>SQL</code> 命令，当没有填写时会自动读取上游流文件内容进行执行，可以根据需要提前拼凑语句。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/12.png"></p>
+<h5 id="2-使用-13"><a href="#2-使用-13" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p>注意第三个红框中的属性值需要设置为<code>true</code>。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/12-1.png"></p>
+<h4 id="3-QueryDatabaseTable"><a href="#3-QueryDatabaseTable" class="headerlink" title="3. QueryDatabaseTable"></a>3. QueryDatabaseTable</h4><h5 id="1-作用-17"><a href="#1-作用-17" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于查询数据表记录，需要配置连接池服务。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/13.png"></p>
+<h5 id="2-使用-14"><a href="#2-使用-14" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p><img src="/album/loading.gif" data-original="/album/article/nifi/use/13-1.png"></p>
+<h4 id="4-PutDatabaseRecord"><a href="#4-PutDatabaseRecord" class="headerlink" title="4. PutDatabaseRecord"></a>4. PutDatabaseRecord</h4><h5 id="1-作用-18"><a href="#1-作用-18" class="headerlink" title="(1) 作用"></a>(1) 作用</h5><p>用于插入数据表记录，需要配置连接池服务。<br><img src="/album/loading.gif" data-original="/album/article/nifi/use/14.png"></p>
+<h5 id="2-使用-15"><a href="#2-使用-15" class="headerlink" title="(2) 使用"></a>(2) 使用</h5><p><img src="/album/loading.gif" data-original="/album/article/nifi/use/14-1.png"></p>
 
                 
             </div>
@@ -1338,7 +1335,7 @@ oracle.jdbc.OracleDriver
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.2k</span>
+                <span class="white-color">228.1k</span>
             
             
             

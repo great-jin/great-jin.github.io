@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring Boot AOP详解, 布袋青年">
+    <meta name="keywords" content="Websocket入门教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring Boot AOP详解 | 布袋青年</title>
+    <title>Websocket入门教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -361,7 +361,7 @@
         (function() {
             let pwd = '';
             if (pwd && pwd.length > 0) {
-                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】获取文章密码')).toString(CryptoJS.enc.Hex)) {
+                if (pwd !== CryptoJS.SHA256(prompt('关注公众【布袋青年】回复文章名获取文章密码')).toString(CryptoJS.enc.Hex)) {
                     alert('密码错误，将返回主页！');
                     location.href = '/';
                 }
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/19.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring Boot AOP详解</h1>
+                    <h1 class="description center-align post-title">Websocket入门教程</h1>
                 </div>
             </div>
         </div>
@@ -512,8 +512,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Spring-Boot/">
-                                <span class="chip bg-color">Spring Boot</span>
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
                             </a>
                         
                     </div>
@@ -524,8 +524,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
-                                Spring框架
+                            <a href="/categories/Spring%E5%B7%A5%E5%85%B7/" class="post-category">
+                                Spring工具
                             </a>
                         
                     </div>
@@ -537,21 +537,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-05-21
+                    2023-12-30
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-03-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.3k
                 </div>
                 
 
@@ -578,142 +578,205 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><code>Spring AOP</code>（Aspect-Oriented Programming，面向切面编程）是 <code>Spring</code> 框架中的一个重要特性，用于实现横切关注点的模块化和重用。它通过将横切关注点（如日志记录、性能监控、事务管理等）从业务逻辑中分离出来，以便将它们应用到多个模块中的相同位置，实现代码的重用和解耦。</p>
-<blockquote>
-<p><code>Spring AOP</code> 的核心概念是切面（<code>Aspect</code>）、连接点（<code>Join Point</code>）、通知（<code>Advice</code>）和切点（<code>Pointcut</code>）。</p>
-<ul>
-<li><strong>切面</strong>：切面是一个跨越多个对象的模块化单元，它定义了横切关注点和它们的行为，一个切面可以包含多个通知和切点。</li>
-<li><strong>连接点</strong>：连接点是在应用程序执行过程中能够插入切面的点，通常连接点是方法的执行点，但也可以是异常抛出时或字段访问时等。</li>
-<li><strong>通知</strong>：通知是切面在连接点处执行的代码，可以在连接点之前、之后或周围执行，以实现不同的行为。常见的通知类型包括前置通知（在连接点之前执行）、后置通知（在连接点之后执行）、异常通知（在连接点抛出异常时执行）和环绕通知（在连接点前后都执行）。</li>
-<li><strong>切点</strong>：切点定义了在哪些连接点上应用通知，通过指定切点表达式或使用注解来确定切点的位置。</li>
-</ul>
-</blockquote>
-<p><code>Spring AOP</code> 可以通过 <code>XML</code> 配置、注解或基于 <code>Java</code> 的配置类来定义切面和通知。它可以与任何 <code>Spring</code> 管理的 <code>bean</code> 一起使用，包括业务对象、服务类、控制器等。在运行时 <code>Spring AOP</code> 使用动态代理技术将通知织入到目标对象的方法中，实现切面的功能。</p>
-<p>通过使用 <code>Spring AOP</code>，可以实现横切关注点的集中管理和复用，提高代码的可维护性和灵活性。它可以帮助开发人员解决各种横切关注点的需求，如日志记录、性能监控、事务管理、安全性检查等。</p>
-<h4 id="1-切点定义"><a href="#1-切点定义" class="headerlink" title="1. 切点定义"></a>1. 切点定义</h4><p>在 <code>Spring</code> 中通过 <code>@Pointcut</code> 定义切点，通过在类上使用 <code>@Aspect</code> 注解开启切面。其基本格式如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Aspect</span>
-<span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspectConfig</span> <span class="token punctuation">{</span>
-    
-    <span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"&lt;Action> (&lt;Pattern> &lt;Return> &lt;Package>(&lt;Params>))"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <p>在网络通讯领域，我们最熟悉的通讯协议即 <code>HTTP</code>，其在 <code>TCP</code> 的基础上进一步扩展使之更为的简单易用。而 WebSocket 作为一种通讯方式在某些应用场景下也是一种不错的选择。</p>
+<p><code>WebSocket</code> 是一种在单个 <code>TCP</code> 连接上进行全双工通信的通信协议，它提供了一个持久的连接（即长链接），允许客户端和服务器之间进行实时、双向的数据传输。<code>WebSocket</code> 的出现解决了传统的 <code>HTTP</code> 协议的一些限制，特别是对于需要频繁更新的实时应用程序（如聊天应用、在线游戏等）而言，<code>WebSocket</code> 提供了更低的延迟和更高的效率。</p>
+<p><code>Websocket</code> 一个经典应用场景即消息的主动推送，即由后端向主动推送讯息，在通知与聊天场景中应用广泛。本文即着重介绍如何在前后端分离项目中实现后端的消息主动推送。</p>
+<h3 id="一、后端配置"><a href="#一、后端配置" class="headerlink" title="一、后端配置"></a>一、后端配置</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>老规矩，在后端的 Spring 项目工程中导入对应的依赖，内容如下：</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-websocket<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-配置管理"><a href="#2-配置管理" class="headerlink" title="2. 配置管理"></a>2. 配置管理</h4><p>在项目中注入 <code>WebSocket Bean</code> 对象，代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Bean<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>socket<span class="token punctuation">.</span>server<span class="token punctuation">.</span>standard<span class="token punctuation">.</span>ServerEndpointExporter<span class="token punctuation">;</span>
 
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WebSocketConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> ServerEndpointExporter <span class="token function">serverEndpointExporter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ServerEndpointExporter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上述各参数对应描述信息参考下表：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">参数</td>  
-        <th style="text-align: center;">说明</td> 
-    </tr>
-    <tr>
-        <td style="text-align: center;">Action</td>  
-        <td style="text-align: center;">表示作用类型，最常用的为 execution ，后续将详细介绍。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">Pattern</td>  
-        <td style="text-align: center;">指定作用对象的修饰符，如方法的 public 、 private 等，为 * 表示所有。非必填，缺省时为 * 。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">Return</td>  
-        <td style="text-align: center;">指定作用对象的返回类型，为 * 表示所有。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">Package</td>  
-        <td style="text-align: center;">指定作用的对象，通常为方法类所在包，非必填，缺省时为 * 。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">Params</td>  
-        <td style="text-align: center;">指定方法的行参类型，如 String 等，设置为 .. 表示允许零个或多个参数。</td>  
-    </tr>
-</table>
-
-
-<h4 id="2-切点分类"><a href="#2-切点分类" class="headerlink" title="2. 切点分类"></a>2. 切点分类</h4><p>根据作用对象切点共分为下列几类，下面分别介绍各类定义方式</p>
-<h5 id="1-方法切点"><a href="#1-方法切点" class="headerlink" title="(1) 方法切点"></a>(1) 方法切点</h5><p><code>execution</code> 作用域细化到方式，也是最常用的方式，具体参数参考上一点的表格。</p>
-<p>如下切点定义示例作用域为 <code>xyz.ibudai.controller</code> 包中所有类的方法。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"execution (public * xyz.ibudai.controller.*.*(..))"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-类切点"><a href="#2-类切点" class="headerlink" title="(2) 类切点"></a>(2) 类切点</h5><p><code>within</code> 作用域细化到类，即只能监听类中所有方法，无法细化到指定方法。</p>
-<p>如下示例定义了监控 <code>StudentServiceImpl</code> 类中所有方法。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"within(xyz.ibudai.service.Impl.StudentServiceImpl)"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-参数切点"><a href="#3-参数切点" class="headerlink" title="(3) 参数切点"></a>(3) 参数切点</h5><p><code>args()</code> 用于定义参数切面，其参数说明如下：</p>
-<ul>
-<li><code>args()</code>: 不带参数。</li>
-<li><code>args(..)</code>: 任意参数。</li>
-<li><code>args(java.lang.String)</code>: 指定参数类型。</li>
-</ul>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"args(..)"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-注解切点"><a href="#4-注解切点" class="headerlink" title="(4) 注解切点"></a>(4) 注解切点</h5><p>通过 <code>@annotation</code> 定义注解切面，提供两种如下两种方式，第二种方式可以获取注解中的值更为常用。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token punctuation">}</span>
-
-<span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(methodAnn) &amp;&amp; @annotation(xyz.ibudai.anntation.MethodAnn)"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pointcut2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-<span class="token punctuation">}</span>
-
-<span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut2()"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> Object <span class="token function">around2</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">,</span> MethodAnn methodAnn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"value 2: "</span> <span class="token operator">+</span> methodAnn<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-通知事件"><a href="#3-通知事件" class="headerlink" title="3. 通知事件"></a>3. 通知事件</h4><p>通知是切面在连接点处执行的代码，可以在连接点之前、之后或周围执行，以实现不同的行为。</p>
-<h5 id="1-Before"><a href="#1-Before" class="headerlink" title="(1) @Before"></a>(1) @Before</h5><p>前置通知在连接点之前执行。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">before</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Before advice: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-Around"><a href="#2-Around" class="headerlink" title="(2) @Around"></a>(2) @Around</h5><p>环绕通知在连接点前后都执行，可获取请求目标的详细信息并通过 <code>joinPoint.proceed()</code> 放行请求。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pointcut()"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> Object <span class="token function">around</span><span class="token punctuation">(</span>ProceedingJoinPoint joinPoint<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Around advice"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 作用类型</span>
-    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut effect type: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">getKind</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 作用域</span>
-    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut effect range: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 切面目标类</span>
-    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut target class: "</span> <span class="token operator">+</span> joinPoint<span class="token punctuation">.</span><span class="token function">getTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 切面方法</span>
-    MethodSignature signature <span class="token operator">=</span> <span class="token punctuation">(</span>MethodSignature<span class="token punctuation">)</span> joinPoint<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut method name: "</span> <span class="token operator">+</span> signature<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 返回方法传入的参数</span>
-    Object<span class="token punctuation">[</span><span class="token punctuation">]</span> obj <span class="token operator">=</span> joinPoint<span class="token punctuation">.</span><span class="token function">getArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Pointcut receive parameter: "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h4 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="3. 服务启动"></a>3. 服务启动</h4><p>新建 <code>WebSocketServer</code> 类用于管理请求的连接与关闭，当接收到新的请求时存入缓存容器 <code>websocketMap</code>，同时计数器 <code>onlineCount</code> 自增用于记录当前的连接数。</p>
+<p>为了区分不同的连接这里通过请求参数的第一个值作为唯一标识符，即请求地址格式为：<code>ws://$&#123;host&#125;:$&#123;port&#125;/websocket?userId=1</code>，从而使后续能够精准的推送消息给指定连接用户。</p>
+<p>其中 <code>@ServerEndpoint</code> 注解可以理解为 <code>HTTP</code> 接口中 <code>@RequstMapping</code> 与 <code>@RestController</code> 的复合体， <code>onMessage()</code> 方法为首次连接时返回值，用于响应以便知晓是否连接成功。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token annotation punctuation">@ServerEndpoint</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/websocket"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WebSocketServer</span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 放行方法</span>
-        <span class="token keyword">return</span> joinPoint<span class="token punctuation">.</span><span class="token function">proceed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">static</span> Logger log <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>WebSocketServer<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 当前在线连接数
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> AtomicInteger onlineCount <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AtomicInteger</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 存放客户端对应的 WebSocket 对象
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> WebSocketServer<span class="token operator">></span> websocketMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcurrentHashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 会话标识
+     */</span>
+    <span class="token keyword">private</span> String flag<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 与某个客户端的连接会话，需要通过它来给客户端发送数据
+     */</span>
+    <span class="token keyword">private</span> Session session<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 连接建立成功调用的方法
+     */</span>
+    <span class="token annotation punctuation">@OnOpen</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onOpen</span><span class="token punctuation">(</span>Session session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 添加会话至容器</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>session <span class="token operator">=</span> session<span class="token punctuation">;</span>
+        String queryString <span class="token operator">=</span> session<span class="token punctuation">.</span><span class="token function">getQueryString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        flag <span class="token operator">=</span> queryString<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"="</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        websocketMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>flag<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 计数器自增</span>
+        onlineCount<span class="token punctuation">.</span><span class="token function">incrementAndGet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Receive new session, current connected number: "</span> <span class="token operator">+</span> <span class="token function">getOnlineCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">sendMessage</span><span class="token punctuation">(</span><span class="token string">"You have successfully connected."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Websocket IO exception, stack tree: "</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 连接关闭调用的方法
+     */</span>
+    <span class="token annotation punctuation">@OnClose</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onClose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从容器中删除会话</span>
+        websocketMap<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 计数器自减</span>
+        onlineCount<span class="token punctuation">.</span><span class="token function">decrementAndGet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"New session close, current connected number: "</span> <span class="token operator">+</span> <span class="token function">getOnlineCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 收到客户端消息后调用的方法
+     *
+     * @param message 客户端发送过来的消息
+     */</span>
+    <span class="token annotation punctuation">@OnMessage</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">,</span> Session session<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Receive from client, message: {}"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 群发消息</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>WebSocketServer item <span class="token operator">:</span> websocketMap<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                item<span class="token punctuation">.</span><span class="token function">sendMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Session onMessage, stack tree: "</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@OnError</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onError</span><span class="token punctuation">(</span>Session session<span class="token punctuation">,</span> Throwable error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Session onError, stack tree: "</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>session<span class="token punctuation">.</span><span class="token function">getBasicRemote</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">sendText</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getOnlineCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> onlineCount<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-AfterThrowing"><a href="#3-AfterThrowing" class="headerlink" title="(3) @AfterThrowing"></a>(3) @AfterThrowing</h5><p>异常通知在连接点抛出异常时执行。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterThrowing</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> throwing <span class="token operator">=</span> <span class="token string">"throwable"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterThrowing</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Exception throwable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"切面异常, 方法: {}"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>MethodSignature<span class="token punctuation">)</span> joinPoint<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After throwing "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", throw message: "</span> <span class="token operator">+</span> throwable<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-消息推送"><a href="#4-消息推送" class="headerlink" title="4. 消息推送"></a>4. 消息推送</h4><p>当连接建立之后即可向连接主动推送数据消息，这里定义了两个方法 <code>send()</code> 与 <code>batchSend()</code> 用于单点推送与消息群发，其仍定义于上述的 <code>WebSocketServer</code> 类中，限于篇幅故分点介绍。</p>
+<p>其中单点推送方法 <code>send()</code> 第一个参数 <code>key</code> 即建立连接时传入的唯一标识符，<code>batchSend()</code> 则会推送消息至所有当前的连接的用户，注意其中输入的内容为字符串，可使用 <code>Jackson</code> 等类库序列化为 <code>Json</code> 字符串后传输。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 群发自定义消息
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">send</span><span class="token punctuation">(</span>String key<span class="token punctuation">,</span> String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>websocketMap<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Currently didn't have valid session."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">boolean</span> success <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        WebSocketServer server <span class="token operator">=</span> websocketMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>server<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"The session of [{}] not existed."</span><span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        server<span class="token punctuation">.</span><span class="token function">sendMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        success <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Session send() error, stack tree: "</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> success<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-AfterReturning"><a href="#4-AfterReturning" class="headerlink" title="(4) @AfterReturning"></a>(4) @AfterReturning</h5><p>后置通知，在目标方法成功执行并返回结果后执行，即在方法返回之后执行。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@AfterReturning</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"pointcut()"</span><span class="token punctuation">,</span> returning <span class="token operator">=</span> <span class="token string">"obj"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterReturning</span><span class="token punctuation">(</span>JoinPoint joinPoint<span class="token punctuation">,</span> Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"After returning, "</span> <span class="token operator">+</span> joinPoint <span class="token operator">+</span> <span class="token string">", return: "</span> <span class="token operator">+</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">batchSend</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>websocketMap<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Currently didn't have valid session."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">boolean</span> success <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>WebSocketServer item <span class="token operator">:</span> websocketMap<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            item<span class="token punctuation">.</span><span class="token function">sendMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            success <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"Session batchSend() error, stack tree: "</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> success<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="5-After"><a href="#5-After" class="headerlink" title="(5) @After"></a>(5) @After</h5><p>后置通知，无论目标方法是正常返回还是抛出异常，都会在方法执行之后执行，<code>@AfterReturning</code> 可以理解为 <code>@After</code> 的真子集。</p>
-<p><code>@After</code> 使用方式与 <code>@AfterReturning</code> 相同，仅作用域不同，这里不再提供示例。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、前端应用"><a href="#二、前端应用" class="headerlink" title="二、前端应用"></a>二、前端应用</h3><h4 id="1-依赖安装"><a href="#1-依赖安装" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>在 <code>Vue</code> 前端项目中同样需要安装 <code>WebSocket</code> 依赖，命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> vue-websocket
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-应用监听"><a href="#2-应用监听" class="headerlink" title="2. 应用监听"></a>2. 应用监听</h4><p>完成依赖安装后即可在项目中建立依赖，通过 <code>new WebSocket(url)</code> 即可相对较为简单。 </p>
+<p>连接建立之后通过 <code>addEventListener</code> 回调函数监听不同的连接事件，代码如下不详细介绍。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> host <span class="token operator">=</span> <span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span>
+    <span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">9090</span>
+    <span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token template-string"><span class="token string">`ws://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>host<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/websocket?userId=1`</span></span>
+    <span class="token keyword">const</span> socket <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebSocket</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 添加WebSocket事件监听器</span>
+    socket<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'open'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'WebSocket 连接已打开'</span><span class="token punctuation">,</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    socket<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> data <span class="token operator">=</span> event<span class="token punctuation">.</span>data
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'接受到后端信息: '</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>data <span class="token operator">!==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>$message<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token string">'接受到后端消息: '</span> <span class="token operator">+</span> data<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    socket<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'close'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'WebSocket 连接已关闭'</span><span class="token punctuation">,</span> event<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    socket<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'WebSocket 错误'</span><span class="token punctuation">,</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -740,7 +803,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/spring/aop/">https://great-jin.github.io/java/spring/aop/</a>
+                    <a href="https://great-jin.github.io/java/spring/framework/websocket/">https://great-jin.github.io/java/spring/framework/websocket/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -778,8 +841,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Spring-Boot/">
-                                    <span class="chip bg-color">Spring Boot</span>
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
                                 </a>
                             
                         </div>
@@ -955,30 +1018,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/design/builder/">
+                <a href="/vue/deploy/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/36.jpg" class="responsive-img" alt="Java Build对象构建教程">
+                        <img src="/album/banner/front/vue/3.png" class="responsive-img" alt="Vue构建部署教程">
                         
-                        <span class="card-title">Java Build对象构建教程</span>
+                        <span class="card-title">Vue构建部署教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Builder方式实现属性动态注入对象构建。
+                            Vue项目打包部署教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-27
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-30
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%A8%A1%E5%BC%8F%E8%AE%BE%E8%AE%A1/" class="post-category">
-                                    模式设计
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    服务部署
                                 </a>
                             
                             
@@ -988,8 +1051,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/CentOS/">
+                        <span class="chip bg-color">CentOS</span>
+                    </a>
+                    
+                    <a href="/tags/Vue/">
+                        <span class="chip bg-color">Vue</span>
                     </a>
                     
                 </div>
@@ -1003,30 +1070,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/advance/jvm/">
+                <a href="/db/es/basic/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Java JVM虚拟机详解">
+                        <img src="/album/banner/db/es/4.png" class="responsive-img" alt="ElasticSearch基础概念">
                         
-                        <span class="card-title">Java JVM虚拟机详解</span>
+                        <span class="card-title">ElasticSearch基础概念</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java 虚拟机 JVM 基本介绍。
+                            ElasticSearch基础概念介绍。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
-                                    JAVA进阶
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
+                                    大数据
                                 </a>
                             
                             
@@ -1036,8 +1103,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/Elasticsearch/">
+                        <span class="chip bg-color">Elasticsearch</span>
                     </a>
                     
                 </div>
@@ -1311,7 +1378,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">225.2k</span>
+                <span class="white-color">228.1k</span>
             
             
             
