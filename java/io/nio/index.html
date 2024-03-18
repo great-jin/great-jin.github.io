@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-26
+                    2024-03-18
                 </div>
                 
 
@@ -816,16 +816,11 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、概念介绍"><a href="#三、概念介绍" class="headerlink" title="三、概念介绍"></a>三、概念介绍</h3><h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>在 <code>NIO</code> 中有三个核心：通道 <code>(Channel)</code>，缓冲区 <code>(Buffer)</code>，选择器 <code>(Selector)</code>。</p>
 <p>传统 <code>IO</code> 基于字节流和字符流进行操作，而 <code>NIO</code> 则是基于 <code>Channel</code> 与和 <code>Buffer</code> 进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中，而 <code>Selector</code> 则是用于监听多个通道的事件（如连接打开，数据到达），从而实现单线程监听多个数据通道。</p>
-<ul>
-<li><h5 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h5><p>  <code>Channel</code> 和 <code>IO</code> 中的 <code>Stream</code> 是差不多一个等级的，只不过 <code>Stream</code> 是单向的，譬如：<code>InputStream</code>，<code>OutputStream</code>，而 <code>Channel</code> 是双向的，既可以用来进行读操作，又可以用来进行写操作。</p>
-<p>  <code>NIO</code> 中的 <code>Channel</code> 的主要实现有： <code>FileChannel</code>，<code>DatagramChannel</code>，<code>SocketChannel</code>，<code>ServerSocketChannel</code>，分别对应文件 <code>IO</code>、<code>UDP</code> 和 <code>TCP</code> (Server 和 Client)。</p>
-</li>
-<li><h5 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h5><p>  <code>NIO</code> 中的关键 <code>Buffer</code> 实现有：<code>ByteBuffer, CharBuffer, DoubleBuffer, FloatBuffer, IntBuffer, LongBuffer, ShortBuffer</code>，分别对应基本数据类型: <code>byte, char, double, float, int, long, short</code>，相对应的还有 <code>MappedByteBuffer, HeapByteBuffer, DirectByteBuffer</code> 等等。</p>
-</li>
-<li><h5 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h5><p>  <code>Selector</code> 用于单线程中处理多个 <code>Channel</code>，若应用打开了多个通道，但每个连接的流量都很低，通过 <code>Selector</code> 即可实现编辑的管理。</p>
-<p>  例如在一个聊天服务器中，通过向 <code>Selector</code> 注册 <code>Channel</code>，然后调用它的 <code>select()</code> 方法即可。这个方法会一直阻塞到某个注册的通道有事件就绪，一旦这个方法返回线程就可以处理这些事件，如新的连接进来、数据接收等。</p>
-</li>
-</ul>
+<h5 id="1-Channel"><a href="#1-Channel" class="headerlink" title="(1) Channel"></a>(1) Channel</h5><p><code>Channel</code> 和 <code>IO</code> 中的 <code>Stream</code> 是差不多一个等级的，只不过 <code>Stream</code> 是单向的，譬如：<code>InputStream</code>，<code>OutputStream</code>，而 <code>Channel</code> 是双向的，既可以用来进行读操作，又可以用来进行写操作。</p>
+<p><code>NIO</code> 中的 <code>Channel</code> 的主要实现有： <code>FileChannel</code>，<code>DatagramChannel</code>，<code>SocketChannel</code>，<code>ServerSocketChannel</code>，分别对应文件 <code>IO</code>、<code>UDP</code> 和 <code>TCP</code> (Server 和 Client)。</p>
+<h5 id="2-Buffer"><a href="#2-Buffer" class="headerlink" title="(2) Buffer"></a>(2) Buffer</h5><p><code>NIO</code> 中的关键 <code>Buffer</code> 实现有：<code>ByteBuffer, CharBuffer, DoubleBuffer, FloatBuffer, IntBuffer, LongBuffer, ShortBuffer</code>，分别对应基本数据类型: <code>byte, char, double, float, int, long, short</code>，相对应的还有 <code>MappedByteBuffer, HeapByteBuffer, DirectByteBuffer</code> 等等。</p>
+<h5 id="3-Selector"><a href="#3-Selector" class="headerlink" title="(3) Selector"></a>(3) Selector</h5><p><code>Selector</code> 用于单线程中处理多个 <code>Channel</code>，若应用打开了多个通道，但每个连接的流量都很低，通过 <code>Selector</code> 即可实现编辑的管理。</p>
+<p>例如在一个聊天服务器中，通过向 <code>Selector</code> 注册 <code>Channel</code>，然后调用它的 <code>select()</code> 方法即可。这个方法会一直阻塞到某个注册的通道有事件就绪，一旦这个方法返回线程就可以处理这些事件，如新的连接进来、数据接收等。</p>
 <h4 id="2-通道"><a href="#2-通道" class="headerlink" title="2. 通道"></a>2. 通道</h4><p>传统的 <code>IO</code> 操作是与文件等资源直接建立连接通过 <code>stream</code> 的方式进行读取与写入，而 <code>NIO</code> 中引入新的概念 <code>Channel</code>，利用通道与文件或网络资源创建连接。同时 <code>Channel</code> 不同于传统的 <code>IO Stream</code>，其一旦建立连接后既可以用于读取，也可以用于写入，省去一堆恼人的 <code>API</code>。</p>
 <blockquote>
 <p><code>Channel</code> 创建的常用的创建方式有以下两类，更推荐第一种方式：</p>
@@ -1746,7 +1741,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">228.1k</span>
+                <span class="white-color">228.6k</span>
             
             
             

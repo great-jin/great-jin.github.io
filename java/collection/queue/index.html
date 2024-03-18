@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-23
+                    2024-03-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    10 分
                 </div>
                 
 
@@ -626,53 +626,114 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、延时队列"><a href="#二、延时队列" class="headerlink" title="二、延时队列"></a>二、延时队列</h3><p><code>Java</code> 同时提供了一种阻塞的延迟队列 <code>DelayQueue</code> ，其队列元素必须实现 <code>Delayed</code> 接口。</p>
-<h4 id="1-延迟接口"><a href="#1-延迟接口" class="headerlink" title="1. 延迟接口"></a>1. 延迟接口</h4><p>新建一个类实现 <code>Delayed</code> 接口并重写 <code>getDelay()</code> 与 <code>compareTo()</code> 接口。</p>
-<blockquote>
-<p>当调用延迟队列的 <code>take()</code> 获取队列元素时将会触发 <code>Delayed</code> 接口的 <code>getDelay()</code> 方法。</p>
-<ul>
-<li>若返回值小于等于 <code>0</code>，返回队列元素。</li>
-<li>若返回值大于 <code>0</code>，则访问队头的后一位元素。</li>
-<li>若队列中所有元素的 <code>getDelay()</code> 返回值皆大于 <code>0</code>，<code>take()</code> 将一直处于阻塞状态。</li>
-</ul>
-</blockquote>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DelayTask</span> <span class="token keyword">implements</span> <span class="token class-name">Delayed</span> <span class="token punctuation">{</span>
+<h4 id="1-延迟接口"><a href="#1-延迟接口" class="headerlink" title="1. 延迟接口"></a>1. 延迟接口</h4><p><code>Delayed</code> 扩展了 <code>Comparable</code> 接口，因此元素实现时必须同时重写 <code>getDelay()</code> 与 <code>compareTo()</code> 方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Delayed</span> <span class="token keyword">extends</span> <span class="token class-name">Comparable</span><span class="token operator">&lt;</span>Delayed<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">private</span> String data<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">long</span> startTime<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">/**
+     * Returns the remaining delay associated with this object, in the
+     * given time unit.
+     *
+     * @param unit the time unit
+     * @return the remaining delay; zero or negative values indicate
+     * that the delay has already elapsed
+     */</span>
+    <span class="token keyword">long</span> <span class="token function">getDelay</span><span class="token punctuation">(</span>TimeUnit unit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="1-getDelay"><a href="#1-getDelay" class="headerlink" title="(1) getDelay()"></a>(1) getDelay()</h5><p>返回对象还需要延迟的时间，这个时间会以指定的时间单位（例如毫秒、秒等）返回。</p>
+<h5 id="2-compareTo"><a href="#2-compareTo" class="headerlink" title="(2) compareTo()"></a>(2) compareTo()</h5><p>比较当前对象与指定对象的顺序，即用于设置队列元素的存入顺序。如果当前对象的延迟时间比指定对象的延迟时间更长，则返回一个正值；如果当前对象的延迟时间比指定对象的延迟时间更短，则返回一个负值；如果两者的延迟时间相等，则返回 <code>0</code>。</p>
+<h4 id="2-队列介绍"><a href="#2-队列介绍" class="headerlink" title="2. 队列介绍"></a>2. 队列介绍</h4><p>在上述提到 <code>compareTo()</code> 方法保证了队列元素的有序性，而 <code>getDelay()</code> 则正是实现延时阻塞的关键。</p>
+<p>查看延迟队列 <code>DelayQueue</code> 的 <code>take()</code> 方法源码可以看到线程先取锁并进入死循环，当队列元素无数据则持锁进入阻塞；若队列不为空，则判断当前队头元素的 <code>getDelay()</code> 值是否小于 <code>0</code>，若是则线程阻塞指定时间，阻塞时间值为 <code>getDelay()</code> 的值，又因 <code>delay &gt; 0</code> 所以数据并未出队，因此阻塞结束后下一循环时队头仍为上循环的元素，而经过 <code>delay</code> 时间的睡眠阻塞后其 <code>getDelay()</code> 的值一定小于或等于 <code>0</code> 此时数据将出队。</p>
+<p>因此了解了 <code>take()</code> 的阻塞原理，若想要控制数据的阻塞获取，核心即在于定义 <code>getDelay()</code> 的处理逻辑，当其返回的值大于 <code>0</code> 时，线程将根据返回的值阻塞指定时间，从而保证下一次尝试出队时其值一定小于等于 <code>0</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> E <span class="token function">take</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> ReentrantLock lock <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lock<span class="token punctuation">;</span>
+    lock<span class="token punctuation">.</span><span class="token function">lockInterruptibly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 1. 获取队头</span>
+            E first <span class="token operator">=</span> q<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>first <span class="token operator">==</span> null<span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">// 2.1 队头为空，即队列为空将阻塞</span>
+                available<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 2.2 队列不为空调用元素的 getDelay()</span>
+                <span class="token keyword">long</span> delay <span class="token operator">=</span> first<span class="token punctuation">.</span><span class="token function">getDelay</span><span class="token punctuation">(</span>NANOSECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>delay <span class="token operator">&lt;=</span> 0L<span class="token punctuation">)</span>
+                    <span class="token comment" spellcheck="true">// 3. 结果小于 0 则返回该元素</span>
+                    <span class="token keyword">return</span> q<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                first <span class="token operator">=</span> null<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// don't retain ref while waiting</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>leader <span class="token operator">!=</span> null<span class="token punctuation">)</span>
+                    available<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                    Thread thisThread <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    leader <span class="token operator">=</span> thisThread<span class="token punctuation">;</span>
+                    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                        <span class="token comment" spellcheck="true">// 4. 阻塞指定时间，值为 getDelay() 返回的大小</span>
+                        <span class="token comment" spellcheck="true">// 当退出阻塞后进入下一循环，此时队头 getDelay() 值一定小于或等于 0</span>
+                        available<span class="token punctuation">.</span><span class="token function">awaitNanos</span><span class="token punctuation">(</span>delay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>leader <span class="token operator">==</span> thisThread<span class="token punctuation">)</span>
+                            leader <span class="token operator">=</span> null<span class="token punctuation">;</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>leader <span class="token operator">==</span> null <span class="token operator">&amp;&amp;</span> q<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span>
+            available<span class="token punctuation">.</span><span class="token function">signal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-示例演示-1"><a href="#3-示例演示-1" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>下面通过一个具体的示例介绍阻塞队列的效果。</p>
+<p>定义队列元素 <code>DelayTask</code> 并实现 <code>Delayed</code> 接口，元素内定义两个属性，<code>data</code> 用于存储真实数据内容，构造函数中入参 <code>offset</code> 用于控制具体阻塞时间。</p>
+<p>队列中的元素顺序将根据 <code>compareTo()</code> 定义进行存储，此处即 <code>delayTime</code> 值更小的处于队头。当 <code>take()</code> 读取队列时，若未达到指定的 <code>offset</code> 时间其 <code>getDelay()</code> 返回的值将为正数，在上述 <code>take()</code> 源码中提到的其将会根据这个返回的时间进行阻塞。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">Delayed</span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">public</span> <span class="token function">DelayTask</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> <span class="token keyword">long</span> startTime<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> data<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>startTime <span class="token operator">=</span> startTime<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> T data<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">long</span> delayTime<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">DelayTask</span><span class="token punctuation">(</span>T t<span class="token punctuation">,</span> <span class="token keyword">long</span> offset<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> t<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>delayTime <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> offset<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">getDelay</span><span class="token punctuation">(</span>TimeUnit unit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">long</span> interval <span class="token operator">=</span> startTime <span class="token operator">-</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">long</span> interval <span class="token operator">=</span> delayTime <span class="token operator">-</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> unit<span class="token punctuation">.</span><span class="token function">convert</span><span class="token punctuation">(</span>interval<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">compareTo</span><span class="token punctuation">(</span>Delayed o<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         DelayTask task <span class="token operator">=</span> <span class="token punctuation">(</span>DelayTask<span class="token punctuation">)</span> o<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> Ints<span class="token punctuation">.</span><span class="token function">saturatedCast</span><span class="token punctuation">(</span>startTime <span class="token operator">-</span> task<span class="token punctuation">.</span>startTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Ints<span class="token punctuation">.</span><span class="token function">saturatedCast</span><span class="token punctuation">(</span>delayTime <span class="token operator">-</span> task<span class="token punctuation">.</span>delayTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>介绍了 <code>Delayed</code> 的基本定义之后下面看一个具体的使用示例。</p>
+<p>完成上述对象定义之后下面介绍如何使用，初始化 <code>DelayQueue</code> 并存入两个元素，因为 <code>compareTo()</code> 的作用即便 <code>Beth</code> 后执行入队其仍为队头。当执行 <code>take()</code> 方法时队列内部执行 <code>peek()</code> 获取队头调用其 <code>getDelay()</code> 方法，而 <code>Beth</code> 的 <code>offset</code> 设置为 <code>3s</code> 返回的值将大于 <code>0</code> 因而将阻塞睡眠 <code>3s</code>，睡眠结束后再次循环获取队头的 <code>getDelay()</code> 值此时将小于 <code>0</code>，从而输出队头元素。</p>
+<p>因此下述的示例代码输出顺序应如下：程序阻塞 <code>3s</code> 后打印 <code>Beth</code>，再次阻塞两秒后打印 <code>Alex</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delayDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     BlockingQueue<span class="token operator">&lt;</span>DelayTask<span class="token operator">></span> delayQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DelayQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> 1980836715841L<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 间隔存入数据</span>
+    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    DelayTask task <span class="token operator">=</span> delayQueue<span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>delayQueue<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 阻塞等待直到元素到期</span>
+            DelayTask task <span class="token operator">=</span> delayQueue<span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>task<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、BlockingQueue"><a href="#三、BlockingQueue" class="headerlink" title="三、BlockingQueue"></a>三、BlockingQueue</h3><h4 id="1-基本操作"><a href="#1-基本操作" class="headerlink" title="1. 基本操作"></a>1. 基本操作</h4><p><code>Java</code> 中默认提供了两类阻塞队列，其结构为线程安全，扩展了一系列方法实现阻塞读存。</p>
 <ul>
 <li><code>ArrayBlockingQueue</code>：有界集合，队列容量在初始化时指定，一旦定义后续无法变更。</li>
-<li><code>LinkedBlockingQueue</code>：无界集合，若初始化时指定容量则效果等同于 <code>ArrayBlockingQueue</code>，若不指定容量则为无界集合。</li>
+<li><code>LinkedBlockingQueue</code>：无界集合，若初始化时指定容量则效果等同于 `ArrayBlockingQueue``，若不指定容量则为无界集合。</li>
 </ul>
 <p>在阻塞队列中除了 <code>offer()、poll()</code> 方法可以指定阻塞时间，同时提供了 <code>put()、take()</code> 方法实现阻塞读存。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -699,7 +760,7 @@
 </table>
 
 
-<h4 id="2-示例演示-1"><a href="#2-示例演示-1" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>BlockingQueue</code> 具体操作示例如下，这里以 <code>ArrayBlockingQueue</code> 为例，<code>LinkedBlockingQueue</code> 仅结构有所差异，具体使用方法类似。</p>
+<h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>BlockingQueue</code> 具体操作示例如下，这里以 <code>ArrayBlockingQueue</code> 为例，<code>LinkedBlockingQueue</code> 仅结构有所差异，具体使用方法类似。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">blockDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     ArrayBlockingQueue<span class="token operator">&lt;</span>Integer<span class="token operator">></span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayBlockingQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">6</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -733,7 +794,7 @@
 </table>
 
 
-<h4 id="2-示例演示-2"><a href="#2-示例演示-2" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>如下示例分别创建了两个读写线程，<code>t1</code> 线程用于执行 <code>put()</code> 写入，<code>t2</code> 线程用于执行 <code>take()</code> 读取。</p>
+<h4 id="2-示例演示-1"><a href="#2-示例演示-1" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>如下示例分别创建了两个读写线程，<code>t1</code> 线程用于执行 <code>put()</code> 写入，<code>t2</code> 线程用于执行 <code>take()</code> 读取。</p>
 <p>在 <code>t1</code> 线程中通过 <code>sleep(5)</code> 模拟休眠五秒，运行示例代码可以看到当启动程序后 <code>t2</code> 线程在打印 <code>start take</code> 将陷入阻碍状态，只有在 <code>t1</code> 中休眠结束后执行 <code>put()</code> 操作 <code>t2</code> 才会退出阻塞读取数据并打印 <code>end take</code></p>
 <p>同理如果将 <code>t1</code> 中的 <code>sleep(5)</code> 移至 <code>t2</code> 的 <code>take()</code> 之前，运行程序后 <code>t1</code> 的 <code>put()</code> 操作的则会进入阻塞等待 <code>t2</code> 的休眠结束执行 <code>take()</code> 才会退出阻塞。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">synchronousQueueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -790,7 +851,7 @@
 </table>
 
 
-<h4 id="2-示例演示-3"><a href="#2-示例演示-3" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>LinkedTransferQueue</code> 的测试示例代码如下，与 <code>SynchronousQueue</code> 模拟场景类型这里不再详细介绍。</p>
+<h4 id="2-示例演示-2"><a href="#2-示例演示-2" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>LinkedTransferQueue</code> 的测试示例代码如下，与 <code>SynchronousQueue</code> 模拟场景类型这里不再详细介绍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">transferQueueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     LinkedTransferQueue<span class="token operator">&lt;</span>Integer<span class="token operator">></span> transferQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedTransferQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Thrad t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -1419,7 +1480,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">228.1k</span>
+                <span class="white-color">228.6k</span>
             
             
             

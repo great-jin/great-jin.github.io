@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-09
+                    2024-03-18
                 </div>
                 
 
@@ -635,31 +635,23 @@
 </ul>
 </blockquote>
 <h4 id="4-隔离级别"><a href="#4-隔离级别" class="headerlink" title="4. 隔离级别"></a>4. 隔离级别</h4><p>为了解决上述中的几大问题事务引入了隔离级别，其描述一个事务必须与由其他事务进行的资源或数据更改相隔离的程度。</p>
-<p><code>Spring</code> 的事物隔离级别可取参数如下，其中 <code>MYSQL</code> 默认为 <code>REPEATABLE_READ</code> 级别。</p>
-<h5 id="1-Isolation-READ-UNCOMMITTED"><a href="#1-Isolation-READ-UNCOMMITTED" class="headerlink" title="(1) Isolation.READ_UNCOMMITTED"></a>(1) Isolation.READ_UNCOMMITTED</h5><blockquote>
-<ul>
+<p><code>Spring</code> 的事务隔离级别可取参数如下，其中 <code>MYSQL</code> 默认为 <code>REPEATABLE_READ</code> 级别。</p>
+<h5 id="1-Isolation-READ-UNCOMMITTED"><a href="#1-Isolation-READ-UNCOMMITTED" class="headerlink" title="(1) Isolation.READ_UNCOMMITTED"></a>(1) Isolation.READ_UNCOMMITTED</h5><ul>
 <li>读取未提交数据，若事务已经开始写数据，则其它事务仅允许读此行数据。</li>
 <li>该隔离级别会出现脏读。</li>
 </ul>
-</blockquote>
-<h5 id="2-Isolation-READ-COMMITTED"><a href="#2-Isolation-READ-COMMITTED" class="headerlink" title="(2) Isolation.READ_COMMITTED"></a>(2) Isolation.READ_COMMITTED</h5><blockquote>
-<ul>
+<h5 id="2-Isolation-READ-COMMITTED"><a href="#2-Isolation-READ-COMMITTED" class="headerlink" title="(2) Isolation.READ_COMMITTED"></a>(2) Isolation.READ_COMMITTED</h5><ul>
 <li>读取已提交数据，若是写事务将会禁止其他事务访问该行数据。</li>
 <li>避免了脏读，但会出现不可重复读。</li>
 </ul>
-</blockquote>
-<h5 id="3-Isolation-REPEATABLE-READ"><a href="#3-Isolation-REPEATABLE-READ" class="headerlink" title="(3) Isolation.REPEATABLE_READ"></a>(3) Isolation.REPEATABLE_READ</h5><blockquote>
-<ul>
+<h5 id="3-Isolation-REPEATABLE-READ"><a href="#3-Isolation-REPEATABLE-READ" class="headerlink" title="(3) Isolation.REPEATABLE_READ"></a>(3) Isolation.REPEATABLE_READ</h5><ul>
 <li>一个事务内多次读同一个数据，当前事务还没结束则其它事务不能访问该数据。</li>
 <li>读取数据的事务将会禁止写事务(但允许读事务)，写事务则禁止任何其他事务(包括了读写)。</li>
 <li>该隔离级别会出现幻读。</li>
 </ul>
-</blockquote>
-<h5 id="4-Isolation-SERIALIZABLE"><a href="#4-Isolation-SERIALIZABLE" class="headerlink" title="(4) Isolation.SERIALIZABLE"></a>(4) Isolation.SERIALIZABLE</h5><blockquote>
-<ul>
+<h5 id="4-Isolation-SERIALIZABLE"><a href="#4-Isolation-SERIALIZABLE" class="headerlink" title="(4) Isolation.SERIALIZABLE"></a>(4) Isolation.SERIALIZABLE</h5><ul>
 <li>要求事务序列化执行，事务只能一个接着一个地执行，但不能并发执行。</li>
 </ul>
-</blockquote>
 <h3 id="二、注解介绍"><a href="#二、注解介绍" class="headerlink" title="二、注解介绍"></a>二、注解介绍</h3><h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p>在 <code>Spring</code> 工程中使用注解相对较为简单，通过 <code>@Transactiona</code> 注解即可实现对事件开启事务。</p>
 <p>当注解作用于类上时将会为类中所有声明为 <code>pulbic</code> 的方法开启事务，当作用于单个方法时则只为当前方法开启事务，为了细化事务粒度，更推荐使用后者配置事务。</p>
 <p>注意当同时在类上和方式上同时使用事务注解则方法上的将会覆盖类上注解的配置，且 <code>@Transactiona</code> 作用于方法时方法必须声明为 <code>public</code>，否则将不会生效。</p>
@@ -1335,7 +1327,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">228.1k</span>
+                <span class="white-color">228.6k</span>
             
             
             

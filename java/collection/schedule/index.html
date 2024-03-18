@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-23
+                    2024-03-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    898
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    3 分
                 </div>
                 
 
@@ -666,87 +666,9 @@
 
 
 
-<h3 id="二、延时类"><a href="#二、延时类" class="headerlink" title="二、延时类"></a>二、延时类</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>Java</code> 中提供了 <code>Delayed</code> 接口类以供延迟队列，延迟队列中的元素必须实现 <code>Delayed</code> 接口。</p>
-<p><code>Delayed</code> 接口中包含了重要接口方法 <code>getDelay()</code>，新建自定义延迟任务类 <code>DelayTask</code> 并重新该方法，当延迟队列 <code>DelayQueue</code> 在获取元素即会调用该方法。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">Delayed</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">long</span> EXPIRE <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">toMillis</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> T t<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">long</span> startTime<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token function">DelayTask</span><span class="token punctuation">(</span>T t<span class="token punctuation">,</span> <span class="token keyword">long</span> startTime<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>t <span class="token operator">=</span> t<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>startTime <span class="token operator">=</span> startTime <span class="token operator">+</span> EXPIRE<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * Get element will activate getDelay().
-     * &lt;p>
-     * If "interval" lower the zero then retrieved to get.
-     */</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">getDelay</span><span class="token punctuation">(</span>TimeUnit unit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">long</span> interval <span class="token operator">=</span> startTime <span class="token operator">-</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// convert time interval to milliseconds</span>
-        <span class="token keyword">return</span> unit<span class="token punctuation">.</span><span class="token function">convert</span><span class="token punctuation">(</span>interval<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">compareTo</span><span class="token punctuation">(</span>Delayed o<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        DelayTask<span class="token operator">&lt;</span>T<span class="token operator">></span> task <span class="token operator">=</span> <span class="token punctuation">(</span>DelayTask<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">)</span> o<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> Ints<span class="token punctuation">.</span><span class="token function">saturatedCast</span><span class="token punctuation">(</span>startTime <span class="token operator">-</span> task<span class="token punctuation">.</span>startTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-任务提交-1"><a href="#2-任务提交-1" class="headerlink" title="2. 任务提交"></a>2. 任务提交</h4><p>完成延迟任务对象定义之后即可创建延迟队列，其常用方法参考下表：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">方法</td>
-        <th style="text-align: center;">作用</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">add()</td>
-        <td style="text-align: center;">添加延时任务至队列，返回 boolean 值。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">put()</td>
-        <td style="text-align: center;">添加延时任务至队列，无返回值。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">take()</td>
-        <td style="text-align: center;">以阻塞的方式获取队列元素。</td>
-    </tr>
-</table>
-
-<p>这里重点介绍一下 <code>take()</code> 方法的作用效果。</p>
-<blockquote>
-<p>当 <code>take()</code> 获取队列元素时将会触发 <code>Delayed</code> 接口的 <code>getDelay()</code> 方法。</p>
-<ul>
-<li>若返回值小于等于 <code>0</code>，返回队列元素。</li>
-<li>若返回值大于 <code>0</code>，则访问队头的后一位元素。</li>
-<li>若队列中所有元素的 <code>getDelay()</code> 返回值皆大于 <code>0</code>，<code>take()</code> 将一直处于阻塞状态。</li>
-</ul>
-</blockquote>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delayDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
-    DelayQueue<span class="token operator">&lt;</span>DelayTask<span class="token operator">&lt;</span>String<span class="token operator">>></span> delayQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DelayQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    delayQueue<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DelayTask</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">,</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">/*
-     * task(): Get queue head element and active getDelay() result
-     * ==> 1. result &lt;= 0: return element.
-     * ==> 2. result > 0: skit element and visit next, if all > 0 then block.
-     */</span>
-    DelayTask<span class="token operator">&lt;</span>String<span class="token operator">></span> task <span class="token operator">=</span> delayQueue<span class="token punctuation">.</span><span class="token function">take</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Task: "</span> <span class="token operator">+</span> task<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、定时线程池"><a href="#三、定时线程池" class="headerlink" title="三、定时线程池"></a>三、定时线程池</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>上述提到 Timer 类中维护了一个工作队列并以单线程执行定时任务，而 <code>ScheduledExecutorService</code> 可用于创建定时线程任务资源池。</p>
+<h3 id="二、定时线程池"><a href="#二、定时线程池" class="headerlink" title="二、定时线程池"></a>二、定时线程池</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>上述提到 Timer 类中维护了一个工作队列并以单线程执行定时任务，而 <code>ScheduledExecutorService</code> 可用于创建定时线程任务资源池。</p>
 <p><code>ScheduledExecutorService</code> 提交任务不再限制必须继承于 <code>TimerTask</code>，任务类继承于线程同样允许。</p>
-<h4 id="2-任务提交-2"><a href="#2-任务提交-2" class="headerlink" title="2. 任务提交"></a>2. 任务提交</h4><p>通过 <code>newScheduledThreadPool()</code> 创建定时任务线程池资源，通过构造器指定线程数。</p>
+<h4 id="2-任务提交-1"><a href="#2-任务提交-1" class="headerlink" title="2. 任务提交"></a>2. 任务提交</h4><p>通过 <code>newScheduledThreadPool()</code> 创建定时任务线程池资源，通过构造器指定线程数。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -765,7 +687,14 @@
         <td style="text-align: center;">提交定时任务，任务触发间隔周期是按上次任务完成时间计算。</td>
     </tr>
 </table>
+<br/>
 
+<p><code>ScheduledExecutorService</code> 线程池存在 <code>scheduleAtFixedRate()</code> 与 <code>scheduleWithFixedDelay()</code> 两种方式提交任务，二者的区别如下：</p>
+<ul>
+<li><h5 id="scheduleAtFixedRate"><a href="#scheduleAtFixedRate" class="headerlink" title="scheduleAtFixedRate()"></a>scheduleAtFixedRate()</h5>  间隔时间是从上一个任务开始时计算，无论上个任务是否已经结束。</li>
+<li><h5 id="scheduleWithFixedDelay"><a href="#scheduleWithFixedDelay" class="headerlink" title="scheduleWithFixedDelay()"></a>scheduleWithFixedDelay()</h5>  间隔时间是从上个任务完成时开始计算，只有当上个任务结束才会开始计时。</li>
+</ul>
+<p><img src="/album/loading.gif" data-original="/album/article/java/thread/1.png" alt="scheduleAtFixedRate 与 scheduleWithFixedDelay"></p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">scheduledPoolDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     ScheduledExecutorService executor <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newScheduledThreadPool</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">int</span> start <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
@@ -785,11 +714,6 @@
     executor<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>需要注意 <code>scheduleAtFixedRate </code> 与 <code>scheduleWithFixedDelay</code> 的区别。</p>
-<ul>
-<li><h5 id="scheduleAtFixedRate"><a href="#scheduleAtFixedRate" class="headerlink" title="scheduleAtFixedRate()"></a>scheduleAtFixedRate()</h5>  间隔时间是从上一个任务开始时计算，无论上个任务是否已经结束。</li>
-<li><h5 id="scheduleWithFixedDelay"><a href="#scheduleWithFixedDelay" class="headerlink" title="scheduleWithFixedDelay()"></a>scheduleWithFixedDelay()</h5>  间隔时间是从上个任务完成时开始计算，只有当上个任务结束才会开始计时。<br>  <img src="/album/loading.gif" data-original="/album/article/java/thread/1.png" alt="scheduleAtFixedRate 与 scheduleWithFixedDelay"></li>
-</ul>
 
                 
             </div>
@@ -816,7 +740,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/basis/schedule/">https://great-jin.github.io/java/basis/schedule/</a>
+                    <a href="https://great-jin.github.io/java/collection/schedule/">https://great-jin.github.io/java/collection/schedule/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1387,7 +1311,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">228.1k</span>
+                <span class="white-color">228.6k</span>
             
             
             

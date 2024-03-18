@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-22
+                    2024-03-18
                 </div>
                 
 
@@ -667,8 +667,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>arr2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="类型转化"><a href="#类型转化" class="headerlink" title="类型转化"></a>类型转化</h5><p>  通过 <code>Arrays.asList()</code> 可以将数组与列表之间进行转化，但转化后对于底层而言仍为数组，无法使用 <code>add()</code> 等系列操作，必须通过流 <code>stream</code> 的方式转化才允许。</p>
+<h5 id="1-类型转化"><a href="#1-类型转化" class="headerlink" title="(1) 类型转化"></a>(1) 类型转化</h5><p>通过 <code>Arrays.asList()</code> 可以将数组与列表之间进行转化，但转化后对于底层而言仍为数组，无法使用 <code>add()</code> 等系列操作，必须通过流 <code>stream</code> 的方式转化才允许。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">arrayToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String<span class="token punctuation">[</span><span class="token punctuation">]</span> str <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"path1"</span><span class="token punctuation">,</span> <span class="token string">"path2"</span><span class="token punctuation">,</span> <span class="token string">"path3"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list1 <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -681,8 +680,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-Vector"><a href="#2-Vector" class="headerlink" title="2. Vector"></a>2. Vector</h4><p><code>Vector</code> 底层封装了数组，在此基础上新增了扩容操作，弥补了普通数据必须在定义时固定长度的缺点，且元素操作封装了 <code>synchronized</code> 因此为线程安全容器，在多线程并发情况下可替代 <code>ArrayList</code> 容器。</p>
 <p>但由于 <code>Vector</code> 的锁是通过 <code>synchronized</code> 并基于类层级的，虽实现了线程安全当频繁操作时性能相对较低，在现行的编程中用到的较少。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// Vector addElement 源码实现，通过 synchronized 保证原子性</span>
@@ -766,18 +763,6 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><h5 id="子串获取"><a href="#子串获取" class="headerlink" title="子串获取"></a>子串获取</h5>  通过 <code>subList()</code> 方法可以获取列表的子串。<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">SubListDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">9</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list1 <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">subList</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="2-LinkedList"><a href="#2-LinkedList" class="headerlink" title="2. LinkedList"></a>2. LinkedList</h4><p><code>LinkedList</code> 同样是 <code>List</code> 的接口实现类，底层实现为 <code>链表</code>，可以在任意位置进行高效插入删除操作。</p>
 <p>由于链表的自身特性，其相邻元素间通过指针连接，故不支持下标随机访问，即获取元素时只能通过首节点依次遍历指针往后读取，但对于插入与新增则通过变化指针指向即可，所以 <code>LinkedList</code> 在读取频繁的场景下性能低于 <code>ArrayList</code>，但在写入或修改的情景下拥有不错的性能。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">linkedListDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1010,9 +995,9 @@
                 <span class="token string">"GBK"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
+<h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><h4 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1. 基本结构"></a>1. 基本结构</h4><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
 <p>如存在一组数据 <code>[1, 2, 3, ..., n]</code> 并按照顺序压入栈内，则读取的顺序则正好相反为  <code>[n, ..., 3, 2, 1]</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/stack.png"></p>
-<p><code>Stack</code> 具体定义方式与常见操作如下：</p>
+<h4 id="2-操作示例"><a href="#2-操作示例" class="headerlink" title="2. 操作示例"></a>2. 操作示例</h4><p><code>Stack</code> 具体定义方式与常见操作如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">stackDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Stack<span class="token operator">&lt;</span>String<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 访问栈顶元素</span>
@@ -1114,7 +1099,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/collection/defination/">https://great-jin.github.io/java/collection/defination/</a>
+                    <a href="https://great-jin.github.io/java/collection/basic/">https://great-jin.github.io/java/collection/basic/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1685,7 +1670,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">228.1k</span>
+                <span class="white-color">228.6k</span>
             
             
             
