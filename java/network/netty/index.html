@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-24
+                    2024-03-25
                 </div>
                 
 
@@ -558,7 +558,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -591,7 +591,14 @@
 <h4 id="3-ChannelFuture"><a href="#3-ChannelFuture" class="headerlink" title="3. ChannelFuture"></a>3. ChannelFuture</h4><p>在 <code>netty</code> 中通过事件的处理都是异步非阻塞，而 <code>ChannelFuture</code> 继承于 <code>Java</code> 中的 <code>Future</code> 类，返回异步事件处理结果。</p>
 <h4 id="4-ChannelHandler"><a href="#4-ChannelHandler" class="headerlink" title="4. ChannelHandler"></a>4. ChannelHandler</h4><p>当 <code>EventLoop</code> 接收到事件时将提交至 <code>ChannelHandler</code> 进行处理，在此实现具体的业务处理逻辑。</p>
 <h4 id="5-ChannelPipeline"><a href="#5-ChannelPipeline" class="headerlink" title="5. ChannelPipeline"></a>5. ChannelPipeline</h4><p>类似于 <code>EventLoopGroup</code>，当存在多个 <code>ChannelHandler</code> 时可将其连接为 <code>ChannelPipeline</code>，事件的处理将按照 <code>ChannelHandler</code> 在 <code>ChannelPipeline</code> 中添加的顺序有序执行。</p>
-<h3 id="三、服务端应用"><a href="#三、服务端应用" class="headerlink" title="三、服务端应用"></a>三、服务端应用</h3><h4 id="1-事件处理"><a href="#1-事件处理" class="headerlink" title="1. 事件处理"></a>1. 事件处理</h4><p>通过继承类 <code>SimpleChannelInboundHandler</code> 编写数据业务处理逻辑，<code>EventLoop</code> 会将数据提交至此。</p>
+<h3 id="三、工程管理"><a href="#三、工程管理" class="headerlink" title="三、工程管理"></a>三、工程管理</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>新增 <code>Maven</code> 工程并在 <code>pom</code> 文件中引入相应依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.netty<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>netty-all<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>4.1.89.Final<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、服务端应用"><a href="#四、服务端应用" class="headerlink" title="四、服务端应用"></a>四、服务端应用</h3><h4 id="1-事件处理"><a href="#1-事件处理" class="headerlink" title="1. 事件处理"></a>1. 事件处理</h4><p>通过继承类 <code>SimpleChannelInboundHandler</code> 编写数据业务处理逻辑，<code>EventLoop</code> 会将数据提交至此。</p>
 <p>当存在多个处理器时，需要在 <code>channelRead0()</code> 处理完成时通过 <code>fireChannelRead()</code> 方法将数据传递至一处理器，若只存在单个处理器则可忽略该行。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SimpleServerHandler</span> <span class="token keyword">extends</span> <span class="token class-name">SimpleChannelInboundHandler</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
 
@@ -722,7 +729,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在 <code>netty</code> 中每一步操作通过 <code>sync()</code> 或 <code>await()</code> 表示其为同步或异步操作，同时将返回一个 <code>ChannelFuture</code> 对象。即当以 <code>sync()</code> 操作时若任务耗时主线程将陷入阻塞，反之 <code>await()</code> 为异步则不会阻塞线程。</p>
 <p>在 <code>netty</code> 中通过 <code>close()</code> 关闭传输通道，而 <code>closeFuture()</code> 用于获取关闭的结果。在上述示例中并未执行 <code>close()</code> 操作，因此 <code>closeFuture().sync()</code> 将会阻塞线程。</p>
-<h3 id="四、客户端应用"><a href="#四、客户端应用" class="headerlink" title="四、客户端应用"></a>四、客户端应用</h3><h4 id="1-事件处理-1"><a href="#1-事件处理-1" class="headerlink" title="1. 事件处理"></a>1. 事件处理</h4><p>同理，客户端此处创建了一个处理器用于接收处理服务端返回的数据。</p>
+<h3 id="五、客户端应用"><a href="#五、客户端应用" class="headerlink" title="五、客户端应用"></a>五、客户端应用</h3><h4 id="1-事件处理-1"><a href="#1-事件处理-1" class="headerlink" title="1. 事件处理"></a>1. 事件处理</h4><p>同理，客户端此处创建了一个处理器用于接收处理服务端返回的数据。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SimpleClientHandler</span> <span class="token keyword">extends</span> <span class="token class-name">SimpleChannelInboundHandler</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token comment" spellcheck="true">/**
@@ -1408,7 +1415,7 @@ byteBuf1<span class="token punctuation">.</span><span class="token function">wri
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">232.6k</span>
+                <span class="white-color">232.4k</span>
             
             
             

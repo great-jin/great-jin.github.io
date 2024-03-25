@@ -548,21 +548,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-03-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    966
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -587,10 +587,18 @@
 </blockquote>
 <p>对于编程工作者而言，当临时需要用到某个环境即可快速通过容器构建服务，简单且又高效。下面将简单介绍 <code>Docker</code> 的基本操作。</p>
 <h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>默认安装路径：<code>/var/lib/docker</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> docker-ce -y                <span class="token comment" spellcheck="true"># 通过 yum 源安装</span>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下载关于docker的依赖环境 </span>
+yum -y <span class="token function">install</span> yum-utils device-mapper-persistent-data lvm2
 
-systemctl start docker                  <span class="token comment" spellcheck="true"># 启动服务</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<span class="token comment" spellcheck="true"># 设置下载 Docker 的镜像源</span>
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+<span class="token comment" spellcheck="true"># 安装Docker的服务 </span>
+yum -y <span class="token function">install</span> docker-ce
+
+<span class="token comment" spellcheck="true"># 启动服务</span>
+systemctl start docker                 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-服务更新"><a href="#2-服务更新" class="headerlink" title="2. 服务更新"></a>2. 服务更新</h4><p>在执行 <code>curl -fsSL https://get.docker.com/ | sh</code> 可能会提示超时，多试几次就可以了。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                          <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
 
@@ -1305,7 +1313,7 @@ docker rmi <span class="token operator">&lt;</span>Images ID<span class="token o
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">232.6k</span>
+                <span class="white-color">232.4k</span>
             
             
             

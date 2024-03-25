@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-26
+                    2024-03-25
                 </div>
                 
 
@@ -650,31 +650,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-多参数-1"><a href="#3-多参数-1" class="headerlink" title="3. 多参数"></a>3. 多参数</h4><p><code>Consumer</code> 和 <code>Function</code> 类似，同样提供 <code>BiConsumer</code> 用于传入两个参数，但注意其并没有提供两个参数以上的初始化方式。</p>
 <p>具体的 <code>BiConsumer</code> 初始化声明方式与 <code>BiFunction</code> 类似，这里不进行过多的阐述。</p>
-<h3 id="三、Predicate"><a href="#三、Predicate" class="headerlink" title="三、Predicate"></a>三、Predicate</h3><p><code>Predicate&lt;T&gt;</code> 是 <code>Function</code> 的一类特例，允许接收单个参数并最终返回 <code>boolean</code> 类型，与 <code>Function&lt;T, Boolean&gt;</code> 作用效果等价。</p>
-<p>通过 <code>test()</code> 方法触发 <code>Predicate</code> 函数，下面看一个具体示例。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Predicate<span class="token operator">&lt;</span>Integer<span class="token operator">></span> predicate <span class="token operator">=</span> <span class="token punctuation">(</span>it<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        num <span class="token operator">+=</span> it<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> num <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">;</span>
-    <span class="token keyword">boolean</span> result <span class="token operator">=</span> predicate<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// true</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、Supplier"><a href="#四、Supplier" class="headerlink" title="四、Supplier"></a>四、Supplier</h3><p><code>Supplier&lt;R&gt;</code> 函数接口不允许传入参数，最终返回 <code>R</code> 类型结果，通过 <code>get()</code> 方法触发函数。</p>
-<p>下面看一个 <code>Supplier</code> 的基本示例：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Supplier<span class="token operator">&lt;</span>String<span class="token operator">></span> supplier <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token string">"Hello world!"</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">;</span>
-    String result <span class="token operator">=</span> supplier<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Hello world!</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、示例演示"><a href="#五、示例演示" class="headerlink" title="五、示例演示"></a>五、示例演示</h3><p>下面通过一个具体的示例演示将 <code>Consumer</code> 作为参数传入方法执行。</p>
+<h4 id="4-示例演示"><a href="#4-示例演示" class="headerlink" title="4. 示例演示"></a>4. 示例演示</h4><p>下面通过一个具体的示例演示将 <code>Consumer</code> 作为参数传入方法执行。</p>
 <p>在下述示例中定义了泛型方法 <code>funProcess()</code> 用于拆分任务分批执行，通过 <code>batchSize</code> 指定单批次的大小，<code>dataList</code> 为需要拆分执行的目标集合， <code>consumer</code> 即为单次执行的具体内容实现。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -725,6 +701,30 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、Predicate"><a href="#三、Predicate" class="headerlink" title="三、Predicate"></a>三、Predicate</h3><p><code>Predicate&lt;T&gt;</code> 是 <code>Function</code> 的一类特例，允许接收单个参数并最终返回 <code>boolean</code> 类型，与 <code>Function&lt;T, Boolean&gt;</code> 作用效果等价。</p>
+<p>通过 <code>test()</code> 方法触发 <code>Predicate</code> 函数，下面看一个具体示例。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Predicate<span class="token operator">&lt;</span>Integer<span class="token operator">></span> predicate <span class="token operator">=</span> <span class="token punctuation">(</span>it<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        num <span class="token operator">+=</span> it<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> num <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> result <span class="token operator">=</span> predicate<span class="token punctuation">.</span><span class="token function">test</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// true</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、Supplier"><a href="#四、Supplier" class="headerlink" title="四、Supplier"></a>四、Supplier</h3><p><code>Supplier&lt;R&gt;</code> 函数接口不允许传入参数，最终返回 <code>R</code> 类型结果，通过 <code>get()</code> 方法触发函数。</p>
+<p>下面看一个 <code>Supplier</code> 的基本示例：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Supplier<span class="token operator">&lt;</span>String<span class="token operator">></span> supplier <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello world!"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    String result <span class="token operator">=</span> supplier<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Hello world!</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1322,7 +1322,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">232.6k</span>
+                <span class="white-color">232.4k</span>
             
             
             
