@@ -544,14 +544,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-09
+                    2024-03-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.6k
                 </div>
                 
 
@@ -579,41 +579,41 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>在开发过程中我们最为熟悉的数据库应该就是 <code>MySQL</code> 与 <code>Oracle</code> 此类关系型数据库，二者都是将数据存储于硬盘之中。而非关系型数据库 <code>Redis</code> 与之不同的是将数据存储与内存之中，熟悉电脑的小伙伴肯定知道内存读取速度肯定是远远超过硬盘读取速率，所带来的最大区别就是 <code>Redis</code> 读取速度远超传统关系型数据库。</p>
-<p>由于读取速度快的特性， <code>Redis</code> 常用于缓存数据，将热点数据缓存以提供访问速度降低服务压力，但 Redis 一样存在一定的局限，也正是将数据存于内存的原因，出于成本考虑其天然就无法进行海量数据存储，通常只能存储一些热点数据。</p>
-<blockquote>
-<p>本文主要介绍使用 Redis 作为缓存器所面对的问题以及解决方案。</p>
-</blockquote>
-<p>先回顾一下 <code>Redis</code> 缓存工作的基本原理，即将频繁查询的数据存入缓存，当第一次请求之后便无需再向数据库发送请求，直接从缓存中读取数据即可，降低数据库负载压力。</p>
-<h3 id="一、缓存问题"><a href="#一、缓存问题" class="headerlink" title="一、缓存问题"></a>一、缓存问题</h3><h4 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1. 缓存穿透"></a>1. 缓存穿透</h4><p>缓存穿透是指当用户查询某个不存在的数据时，因 <code>Redis</code> 中不存在该数据，即缓存没有命中，此时查询请求就会转向 <code>MySQL</code> 数据库，结果发现 <code>MySQL</code> 中也不存在该数据，因此只能返回一个空对象代表查询失败。如果这种类请求非常多，或者用户利用这种请求进行恶意攻击，就会给 <code>MySQL</code> 数据库造成很大压力，甚至于崩溃。</p>
+<p>由于读取速度快的特性，<code>Redis</code> 常用于缓存数据，将热点数据缓存以提供访问速度降低服务压力，但 <code>Redis</code> 一样存在一定的局限，也正是将数据存于内存的原因，出于成本考虑其天然就无法进行海量数据存储，通常只能存储一些热点数据。</p>
+<h3 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h3><h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p><code>Redis</code> 支持多种数据结构，每种数据结构都有不同的用途和特点，主要数据结构如下：</p>
+<h5 id="1-字符串"><a href="#1-字符串" class="headerlink" title="(1) 字符串"></a>(1) 字符串</h5><p>字符串类型 <code>(String)</code> 是 <code>Redis</code> 的基本数据结构之一，可以存储任何类型的数据，包括文本、数字等。</p>
+<h5 id="2-哈希"><a href="#2-哈希" class="headerlink" title="(2) 哈希"></a>(2) 哈希</h5><p>哈希类型 <code>(Hash)</code> 用于存储键值对集合，每个键都映射到一个值。适合存储对象的字段和值。</p>
+<h5 id="3-列表"><a href="#3-列表" class="headerlink" title="(3) 列表"></a>(3) 列表</h5><p>列表类型 <code>(List)</code> 是一个有序的字符串集合，支持在列表的两端进行插入和删除操作。</p>
+<h5 id="4-集合"><a href="#4-集合" class="headerlink" title="(4) 集合"></a>(4) 集合</h5><p>集合类型 <code>(Set)</code> 是一个无序的字符串集合，不允许重复的成员。支持集合间的交集、并集、差集等操作。</p>
+<h5 id="5-有序集合"><a href="#5-有序集合" class="headerlink" title="(5) 有序集合"></a>(5) 有序集合</h5><p>有序集合类型 <code>(Sorted Set)</code> 和集合类型类似，不同之处在于每个成员都关联了一个分数 <code>(score)</code>，用于排序。</p>
+<h5 id="6-位图"><a href="#6-位图" class="headerlink" title="(6) 位图"></a>(6) 位图</h5><p>位图类型 <code>(Bitmap)</code> 是一种特殊的字符串类型，用于存储位级别的数据，支持位操作。</p>
+<h5 id="7-HyperLogLog"><a href="#7-HyperLogLog" class="headerlink" title="(7) HyperLogLog"></a>(7) HyperLogLog</h5><p><code>HyperLogLog</code> 类型用于估计一个集合中不重复元素的数量，通过较少的内存来实现对大数据集的近似计数。</p>
+<h5 id="8-Geospatial"><a href="#8-Geospatial" class="headerlink" title="(8) Geospatial"></a>(8) Geospatial</h5><p>地理位置类型 <code>(Geospatial)</code> 用于存储地理位置信息，支持存储经度和纬度，并提供了诸如计算两个位置之间距离等功能。</p>
+<h3 id="二、缓存问题"><a href="#二、缓存问题" class="headerlink" title="二、缓存问题"></a>二、缓存问题</h3><h4 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1. 缓存穿透"></a>1. 缓存穿透</h4><p>缓存穿透是指当用户查询某个不存在的数据时，因 <code>Redis</code> 中不存在该数据，即缓存没有命中，此时查询请求就会转向 <code>MySQL</code> 数据库，结果发现 <code>MySQL</code> 中也不存在该数据，因此只能返回一个空对象代表查询失败。如果这种类请求非常多，或者用户利用这种请求进行恶意攻击，就会给 <code>MySQL</code> 数据库造成很大压力，甚至于崩溃。</p>
 <blockquote>
 <p>缓存穿透对应具体解决的方案如下：</p>
 </blockquote>
-<ul>
-<li><p><strong>缓存空对象</strong><br>  <code>Redis</code> 在默认情况下针对空值会进行缓存，这样当发送同一个结果为空的请求也不会重复进行数据库请求，但缺点是会造成 <code>Redis</code> 空间的浪费，需要根据实际情况选择判断。</p>
-</li>
-<li><p><strong>布隆过滤器</strong><br>  这里先不讲，下面会进行详细介绍。</p>
-</li>
-</ul>
-<h4 id="2-缓存击穿"><a href="#2-缓存击穿" class="headerlink" title="2. 缓存击穿"></a>2. 缓存击穿</h4><p>缓存击穿是指用户查询的数据缓存中不存在，但是后端数据库却存在，这种现象出现原因是一般是由缓存中  <code>key</code> 过期导致的。</p>
-<p>比如一个热点数据 <code>key</code> ，它无时无刻都在接受大量的并发访问，如果某一时刻这个 <code>key</code> 突然失效了，就致使大量的并发请求进入后端数据库，导致其压力瞬间增大。</p>
+<h5 id="1-缓存空对象"><a href="#1-缓存空对象" class="headerlink" title="(1) 缓存空对象"></a>(1) 缓存空对象</h5><p><code>Redis</code> 在默认情况下针对空值会进行缓存，这样当发送同一个结果为空的请求也不会重复进行数据库请求，但缺点是会造成 <code>Redis</code> 空间的浪费，需要根据实际情况选择判断。</p>
+<h5 id="2-布隆过滤器"><a href="#2-布隆过滤器" class="headerlink" title="(2) 布隆过滤器"></a>(2) 布隆过滤器</h5><p>这里先不讲，下面会进行详细介绍。</p>
+<h4 id="2-缓存击穿"><a href="#2-缓存击穿" class="headerlink" title="2. 缓存击穿"></a>2. 缓存击穿</h4><p>缓存击穿是指用户查询的数据缓存中不存在，但是后端数据库却存在，这种现象出现原因是一般是由缓存中 <code>key</code> 过期导致的。</p>
+<p>比如一个热点数据 <code>key</code>，它无时无刻都在接受大量的并发访问，如果某一时刻这个 <code>key</code> 突然失效了，就致使大量的并发请求进入后端数据库，导致其压力瞬间增大。</p>
 <blockquote>
 <p>缓存击穿对应具体解决的方案如下：</p>
 </blockquote>
-<ul>
-<li><p><strong>延长过期时间</strong><br>  因为是缓存过期导致的瞬间请求量增加，那么通过将热点数据缓存设置为永不过期即可避免此类情况。</p>
-</li>
-<li><p><strong>分布式锁</strong><br>  (1)上锁：当我们通过 <code>key</code> 去查询数据时，首先查询缓存，如果没有就通过分布式锁进行加锁，第一个获取锁的进程进入后端数据库查询，并将查询结果缓到 <code>Redis</code> 中。<br>  (2)解锁：当其他进程发现锁被某个进程占用时，就进入等待状态直至解锁后，其余进程再依次访问被缓存的 <code>key</code>。</p>
-<p>  简单的来说就是类似线程锁，只有一个进程能够进行后台数据访问，其余进程将会等待，当第一个进程读取后台数据后写入 <code>Redis</code> 缓存，此时释放锁则其它进程即可通过缓存读取数据，整个过程中后台数据库仅响应了一次操作。</p>
-</li>
+<h5 id="1-延长过期时间"><a href="#1-延长过期时间" class="headerlink" title="(1) 延长过期时间"></a>(1) 延长过期时间</h5><p>因为是缓存过期导致的瞬间请求量增加，那么通过将热点数据缓存设置为永不过期即可避免此类情况。</p>
+<h5 id="2-分布式锁"><a href="#2-分布式锁" class="headerlink" title="(2) 分布式锁"></a>(2) 分布式锁</h5><ul>
+<li><strong>上锁</strong>：当我们通过 <code>key</code> 去查询数据时，首先查询缓存，如果没有就通过分布式锁进行加锁，第一个获取锁的进程进入后端数据库查询，并将查询结果缓到 <code>Redis</code> 中。</li>
+<li><strong>解锁</strong>：当其他进程发现锁被某个进程占用时，就进入等待状态直至解锁后，其余进程再依次访问被缓存的 <code>key</code>。</li>
 </ul>
+<p>简单的来说就是类似线程锁，只有一个进程能够进行后台数据访问，其余进程将会等待，当第一个进程读取后台数据后写入 <code>Redis</code> 缓存，此时释放锁则其它进程即可通过缓存读取数据，整个过程中后台数据库仅响应了一次操作。</p>
 <h4 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3. 缓存雪崩"></a>3. 缓存雪崩</h4><p>缓存雪崩是指缓存中大批量的 <code>key</code> 同时过期，而此时数据访问量又非常大，从而导致后端数据库压力突然暴增，甚至会挂掉。它和缓存击穿不同之处在于缓存击穿是在并发量特别大时，某一个热点 <code>key</code> 突然过期，而缓存雪崩则是大量的 <code>key</code> 同时过期，因此它们根本不是一个量级。</p>
 <p>具体的解决的方案和缓存击穿类似，同样可以设置热点数据永不过期。</p>
-<h3 id="二、布隆过滤器"><a href="#二、布隆过滤器" class="headerlink" title="二、布隆过滤器"></a>二、布隆过滤器</h3><p>以上面缓存穿透的场景举个例子，我们在查询数据库之前无法得知用户所查询的数据是否存在，若用户使用大量的不存在进行访问将给数据库造成极大的压力。</p>
+<h3 id="三、布隆过滤器"><a href="#三、布隆过滤器" class="headerlink" title="三、布隆过滤器"></a>三、布隆过滤器</h3><p>以上面缓存穿透的场景举个例子，我们在查询数据库之前无法得知用户所查询的数据是否存在，若用户使用大量的不存在进行访问将给数据库造成极大的压力。</p>
 <p>布隆过滤器即为了应对类似场景，其可以判断用户请求在数据库中是否存在，不存在则跳过数据库访问。但其也存在一定局限性，其存在一定几率的误判，即数据库存在数据但其判断不存在，即对于存在的数据可能存在误判，但如果其判断为不存在那么该数据一定不存在。</p>
 <blockquote>
 <p>为什么会存在误判情况？首先我们需要了解 <code>Bloom</code> 过滤器的实现原理。</p>
 </blockquote>
-<h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p>在之前的数据缓存中的， <code>Redis</code> 是根据用户指定的 <code>Key</code> 直接进行存储，而 <code>Bloom</code> 过滤器是将 <code>Key</code> 多次进行二次哈希算法求值时以二进制形式存于内存之中。</p>
+<h4 id="1-数据结构-1"><a href="#1-数据结构-1" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p>在之前的数据缓存中的， <code>Redis</code> 是根据用户指定的 <code>Key</code> 直接进行存储，而 <code>Bloom</code> 过滤器是将 <code>Key</code> 多次进行二次哈希算法求值时以二进制形式存于内存之中。</p>
 <p>在传统 <code>key value</code> 形式中当需要判断一个数据是否存在时需要根据 <code>key</code> 去对应的内存中查找，而这样做的前提是需要将所有的数据对应的 <code>key</code> 进行存储。对于需用到其对应 <code>value</code> 的数据此类方式无伤大雅，但是对于 <code>value</code> 无用仅需判断是否存在的情况此类方式显然过度浪费。</p>
 <p>此处以用户注册为例，当需要判断对应的用户名是否已经被使用，最简单的方法即读取当前数据库中已使用的用户名进行匹配，而为了更好的效率，我们可能会将已存在的用户名存入 <code>Redis</code> 中从而提供检索匹配效率。但当用户数量达到一定量级，将全部的用户名存入 <code>Redis</code> 显然对服务器内存压力是不小的，而使用布隆过滤器则可大大节省内存占用。</p>
 <p>首先，让我们来看一个简化版的布隆过滤器实现思路，对于值无关数据若需要实现存在匹配，可以通过哈希算法实现。其实现逻辑为基础的哈希拉链法，即将目标数据经过特定哈希算法计算，将计算得到的数值在定长数组对应位置标识记为 <code>1</code>。</p>
@@ -1227,7 +1227,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">232.4k</span>
+                <span class="white-color">233.5k</span>
             
             
             

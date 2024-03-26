@@ -531,21 +531,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-20
+                    2024-03-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    11 分
                 </div>
                 
 
@@ -593,7 +593,6 @@
 </table>
 
 
-
 <h4 id="2-七层模型"><a href="#2-七层模型" class="headerlink" title="2. 七层模型"></a>2. 七层模型</h4><table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">名称</td>
@@ -629,13 +628,70 @@
     </tr>
 </table>
 
+<h5 id="1-应用层"><a href="#1-应用层" class="headerlink" title="(1) 应用层"></a>(1) 应用层</h5><p>应用层用于终端用户软件，如 <code>web</code> 浏览器和电子邮件客户端。它提供协议，允许软件发送和接收信息，并向用户呈现有意义的数据。</p>
+<p>应用层协议的几个例子是超文本传输协议 <code>(HTTP)</code>、文件传输协议 <code>(FTP)</code>、邮政协议 <code>(POP)</code>、简单邮件传输协议 <code>(SMTP)</code> 和域名系统 <code>(DNS)</code>。</p>
+<h5 id="2-表示层"><a href="#2-表示层" class="headerlink" title="(2) 表示层"></a>(2) 表示层</h5><p>表示层为应用层准备数据，它定义了两个设备应该如何编码、加密和压缩数据，以便在另一端正确接收数据。表示层接收应用层传输的任何数据，并为在会话层上传输做好准备。</p>
+<h5 id="3-会话层"><a href="#3-会话层" class="headerlink" title="(3) 会话层"></a>(3) 会话层</h5><p>会话层在设备之间创建通信通道，称为会话，它负责打开会话，确保它们在传输数据时保持打开和功能，并在通信结束时关闭它们。会话层还可以在数据传输期间设置检查点——如果会话中断，设备可以从上一个检查点恢复数据传输。</p>
+<h5 id="4-传输层"><a href="#4-传输层" class="headerlink" title="(4) 传输层"></a>(4) 传输层</h5><p>传输层接收在会话层传输的数据，并在传输端将其分成 <code>段</code>，它负责在接收端重新组装数据段，并将其转换回会话层可以使用的数据。</p>
+<p>传输层进行流量控制，以与接收设备的连接速度相匹配的速率发送数据，以及错误控制，检查数据是否被错误接收，如果没有则重新请求数据，常见的协议如 <code>TCP</code> 即处于传输层。</p>
+<h5 id="5-网络层"><a href="#5-网络层" class="headerlink" title="(5) 网络层"></a>(5) 网络层</h5><p>网络层主要有两个功能：一种是将数据段分解为网络数据包，然后在接收端重新组装这些数据包；另一种是通过发现穿越物理网络的最佳路径来路由数据包。</p>
+<p>网络层使用网络地址(通常是 <code>Internet</code> 协议地址)将数据包路由到目标节点。</p>
+<h5 id="6-数据链路层"><a href="#6-数据链路层" class="headerlink" title="(6) 数据链路层"></a>(6) 数据链路层</h5><p>数据链路层在网络上两个物理连接的节点之间建立和终止连接。它将数据包分解成帧，并将其从源发送到目的。</p>
+<p>该层由逻辑链路控制 <code>(LLC)</code> 和媒体访问控制 <code>(MAC)</code> 两部分组成，前者负责识别网络协议、执行错误检查和同步帧，后者使用 <code>MAC</code> 地址连接设备并定义传输和接收数据的权限。</p>
+<h5 id="7-物理层"><a href="#7-物理层" class="headerlink" title="(7) 物理层"></a>(7) 物理层</h5><p>物理层负责网络节点之间的物理电缆或无线连接。它定义了连接设备的连接器、电缆或无线技术，并负责传输原始数据，这只是一系列 <code>0</code> 和 <code>1</code>，同时负责比特率控制。</p>
+<h3 id="二、传输协议"><a href="#二、传输协议" class="headerlink" title="二、传输协议"></a>二、传输协议</h3><h4 id="1-IP协议"><a href="#1-IP协议" class="headerlink" title="1. IP协议"></a>1. IP协议</h4><p><code>IP</code> 是互联网协议，是一种网络层协议，允许在网络上任何位置的两台主机之间传输数据包(网络可以是私有的、隔离的网络，也可以是 <code>Internet</code>)。</p>
+<p><code>IP</code> 都是关于数据包的，它没有说明包的内容。尽管可以将 <code>IP</code> 数据包发送到网络中的任何其他主机，但基本协议对最终用户来说并没有那么有用，因为除非查看数据包的内容，否则无法区分数据包。因此，还有其他更高级别的协议建立在 <code>IP</code> 之上，允许应用程序更智能地使用网络。</p>
+<h4 id="2-TCP协议"><a href="#2-TCP协议" class="headerlink" title="2. TCP协议"></a>2. TCP协议</h4><p><code>TCP</code> 是传输控制协议，在 <code>IP</code> 上运行，所以通用名称为 <code>TCP/IP</code>，它的目的是在两台主机之间建立了通信通道提供可靠的通信流。</p>
+<p><code>TCP</code> 保证消息按照最初发送的顺序传递。此外，<code>TCP</code> 包含处理拥塞的特殊机制，使用特殊算法检测数据包丢失并相应地调整传输速度。</p>
+<h4 id="3-UDP协议"><a href="#3-UDP协议" class="headerlink" title="3. UDP协议"></a>3. UDP协议</h4><p><code>UDP</code> 是用户数据报协议，是另一种直接在 <code>IP</code> 上运行的协议。其与 <code>TCP</code> 区别在于 <code>UDP</code> 更简单，并且不提供任何使 <code>TCP</code> 如此有用的特殊保证。</p>
+<p><code>UDP</code> 消息被发送到目的地，没有保证的传递，也没有关于传递顺序的保证，也不提供拥塞控制。另一方面，<code>UDP</code> 更简单高效，这使得它非常适合那些需要非常短的消息交换才能工作的协议(<code>DNS</code> 是一个很好的例子)，或者不需要相同的交付保证。</p>
+<h4 id="4-HTTP协议"><a href="#4-HTTP协议" class="headerlink" title="4. HTTP协议"></a>4. HTTP协议</h4><p><code>HTTP</code> 是超文本传输协议，是一个应用程序协议，旨在为客户端提供检索和操作超文本对象和组件(包括 <code>HTML</code> 页面、<code>PNG</code> 图像等)的方法。</p>
+<p><code>HTTP</code> 运行在 <code>TCP</code> 之上，而 <code>TCP</code> 又运行在 <code>IP</code> 之上，与 <code>IP</code> (一种网络协议)和 <code>TCP</code> (一种传输协议)相比，<code>HTTP</code> 是一种应用协议——这意味着它被应用程序直接使用。</p>
+<h3 id="三、HTTP发展"><a href="#三、HTTP发展" class="headerlink" title="三、HTTP发展"></a>三、HTTP发展</h3><h4 id="1-HTTP-0-9"><a href="#1-HTTP-0-9" class="headerlink" title="1. HTTP/0.9"></a>1. HTTP/0.9</h4><p><code>HTTP/0.9</code> 在 <code>1991</code> 第一次被提出，是一种无头 (没有请求头)，只允许发送 <code>GET</code> 请求且返回值只能是 <code>HTML</code> 内容的请求方式。</p>
+<p>假设客户端发出了下述一个简单的请求：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">GET /index.html
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>则上述请求对应的返回响应如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">(</span>response body<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>connection closed<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-HTTP-1-0"><a href="#2-HTTP-1-0" class="headerlink" title="2. HTTP/1.0"></a>2. HTTP/1.0</h4><p>在 <code>1996</code> 年 <code>HTTP/1.0</code> 问世，扩展提高了 <code>HTTP/0.9</code> 协议，引入了请求头并新增了 <code>POST</code> 和 <code>HEAD</code> 接口协议。</p>
+<p>不同于 <code>HTTP/0.9</code> 在 <code>1.0</code> 中允许了多种数据返回内容，此时不再只运行返回 <code>HTML</code> 内容，还可返回图片、文件、视频等等。</p>
+<p>如下为一个简易的 <code>1.0</code> 协议请求示例：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">GET / HTTP/1.0
+Host: cs.fyi
+User-Agent: Mozilla/5.0 <span class="token punctuation">(</span>Macintosh<span class="token punctuation">;</span> Intel Mac OS X 10_10_5<span class="token punctuation">)</span>
+Accept: */*
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述请求对应的响应体格式则如下，可以看到不仅有了请求头，还多了现今人们熟悉的状态码如 <code>200</code>。也正是引入了请求头，即可通过 <code>Content-Type</code> 控制返回的数据内容格式，使其不再局限于 <code>0.9</code> 中的 <code>HTML</code> 内容格式。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">HTTP/1.0 200 OK 
+Content-Type: text/plain
+Content-Length: 137582
+Expires: Thu, 05 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+Server: Apache 0.84
 
-
-<h3 id="二、消息通信"><a href="#二、消息通信" class="headerlink" title="二、消息通信"></a>二、消息通信</h3><h4 id="1-三次握手"><a href="#1-三次握手" class="headerlink" title="1. 三次握手"></a>1. 三次握手</h4><p>客户端和服务端通信前要进行连接，<code>3次握手</code> 的作用就是双方都能明确自己和对方的收、发能力是正常的。</p>
-<h5 id="1-第一次握手"><a href="#1-第一次握手" class="headerlink" title="(1) 第一次握手"></a>(1) 第一次握手</h5><p>客户端发送一个 <code>SYN</code> 段，并指明客户端的初始序列号，即 <code>ISN(c)</code>。</p>
-<h5 id="2-第二次握手"><a href="#2-第二次握手" class="headerlink" title="(2) 第二次握手"></a>(2) 第二次握手</h5><p>服务端收到客户端的 <code>SYN</code> 段后，发送自己的 <code>SYN</code> 段作为应答，同样指明自己的 <code>ISN(c)</code>，为了确认客户端的 <code>SYN</code>，将 <code>ISN(c) + 1</code> 作为 <code>ACK</code> 数值。这样，每发送一个 <code>SYN</code> 序列号就会加 <code>1</code>，如果丢失则会重传。</p>
-<h5 id="3-第三次握手"><a href="#3-第三次握手" class="headerlink" title="(3) 第三次握手"></a>(3) 第三次握手</h5><p>为了确认服务器端的 <code>SYN</code> ，客户端将 <code>ISN(s)+1</code> 作为返回的 <code>ACK</code> 数值。</p>
-<h4 id="2-四次挥手"><a href="#2-四次挥手" class="headerlink" title="2. 四次挥手"></a>2. 四次挥手</h4><p>挥手之前主动释放连接的客户端结束 <code>ESTABLISHED</code> 阶段。随后开始 <code>四次挥手</code>。</p>
+<span class="token punctuation">(</span>response body<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>connection closed<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-HTTP-1-1"><a href="#3-HTTP-1-1" class="headerlink" title="3. HTTP/1.1"></a>3. HTTP/1.1</h4><p>仅在三年后的 <code>1999</code> 年 <code>HTTP/1.1</code> 即正式发布，引入了下述新特性：</p>
+<blockquote>
+<ul>
+<li>新增了 <code>PUT</code>, <code>PATCH</code>, <code>OPTIONS</code>, <code>DELETE</code> 请求方式。</li>
+<li>在 <code>1.0</code> 中请求头并非必选项，但在 <code>1.1</code> 中任意请求或响应都需包含请求头。</li>
+<li>在 <code>1.0</code> 中支持了长连接从而大大提高的服务请求效率。</li>
+<li>引入了管道 <code>(Pipelining)</code> 实现了并发请求而无需阻塞等待请求响应。</li>
+</ul>
+</blockquote>
+<p>除了上述几类，同时还涵括了缓存 <code>(Caching)</code>、编码 <code>(Character sets)</code> 以及新的状态码 <code>(status codes)</code> 等等特性，此处不一一列出。</p>
+<p>在 <code>HTTP/1.1</code> 中的一大核心改变即长连接的提出，在此前的协议中，请求与响应都是一次性，意味着每当客户端需要请求服务端其都需要创建一个新的连接完成后再关闭。而由于三次握手的存在，重复的连接创建关闭将会大大降低传输的效率，因此长连接的引入极大提高了传输效率。</p>
+<h4 id="4-HTTP-2-0"><a href="#4-HTTP-2-0" class="headerlink" title="4. HTTP/2.0"></a>4. HTTP/2.0</h4><p>在 <code>HTTP/1.1</code> 持续应用了相当长的一段时间后，<code>2015</code> 年 <code>HTTP/2.0</code> 才被提出并沿用至今。</p>
+<p>在 <code>2.0</code> 中针对传输的内容提出进一步的优化，此时传输的内容转为 <code>byte</code> 数据传输，同时将数据压缩为一个或多个帧 <code>(Frame)</code>，每一个帧即 <code>byte</code> 块，而多个帧组合即成为流 <code>(Stream)</code>，提高了效率但也导致了数据人眼不可读。同时在 <code>2.0</code> 中针对请求与响应的请求头进行压缩进一步提高效率和降低延迟。</p>
+<h3 id="四、消息通信"><a href="#四、消息通信" class="headerlink" title="四、消息通信"></a>四、消息通信</h3><h4 id="1-三次握手"><a href="#1-三次握手" class="headerlink" title="1. 三次握手"></a>1. 三次握手</h4><p>客户端和服务端通信前要进行连接，<code>3次握手</code> 的作用就是双方都能明确自己和对方的收、发能力是正常的。</p>
+<h5 id="1-第一次握手"><a href="#1-第一次握手" class="headerlink" title="(1) 第一次握手"></a>(1) 第一次握手</h5><p>客户端发送一个 <code>SYN</code> 段，其包含一个随机数 <code>ISN(c)</code>，指明客户端的初始序列号。</p>
+<h5 id="2-第二次握手"><a href="#2-第二次握手" class="headerlink" title="(2) 第二次握手"></a>(2) 第二次握手</h5><p>服务端收到客户端的 <code>SYN</code> 段后，发送自己的 <code>SYN</code> 段作为应答，同样指明自己的 <code>ISN(c)</code>，为了确认客户端的 <code>SYN</code>，将客户端发送的 <code>ISN(c) + 1</code> 作为 <code>ACK</code> 数值。这样每发送一个 <code>SYN</code> 序列号就加 <code>1</code>，如果丢失则会重传。</p>
+<h5 id="3-第三次握手"><a href="#3-第三次握手" class="headerlink" title="(3) 第三次握手"></a>(3) 第三次握手</h5><p>为了确认服务器端的 <code>SYN</code> ，客户端将 <code>ISN(s)+1</code> 作为返回的 <code>ACK</code> 数值。<br><img src="/album/loading.gif" data-original="/album/article/network/1.png"></p>
+<h4 id="2-四次挥手"><a href="#2-四次挥手" class="headerlink" title="2. 四次挥手"></a>2. 四次挥手</h4><p>挥手之前主动释放连接的客户端结束 <code>ESTABLISHED</code> 阶段，随后开始 <code>四次挥手</code>。</p>
 <h5 id="1-第一次挥手"><a href="#1-第一次挥手" class="headerlink" title="(1) 第一次挥手"></a>(1) 第一次挥手</h5><p>首先客户端想要释放连接，向服务器端发送一段 <code>TCP</code> 报文，其中：</p>
 <ul>
 <li>标记位为 <code>FIN</code>，表示请求释放连接；</li>
@@ -665,6 +721,12 @@
 <li>确认号为 <code>Ack=W+1</code> ；表示是在收到了服务器端报文的基础上，将其序号 <code>Seq</code> 值作为本段报文确认号的值。</li>
 <li>随后客户端开始在 <code>TIME-WAIT</code> 阶段等待 <code>2MSL</code>。</li>
 </ul>
+<p><strong>参考链接</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/osi-model/">OSI Model</a></li>
+<li><a target="_blank" rel="noopener" href="https://cs.fyi/guide/how-does-internet-work">How does the Internet Work?</a></li>
+<li><a target="_blank" rel="noopener" href="https://cs.fyi/guide/http-in-depth">Everything you need to know about HTTP</a></li>
+</ol>
 
                 
             </div>
@@ -1239,7 +1301,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">232.4k</span>
+                <span class="white-color">233.5k</span>
             
             
             
