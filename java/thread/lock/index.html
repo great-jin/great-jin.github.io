@@ -548,7 +548,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-23
+                    2024-03-30
                 </div>
                 
 
@@ -562,7 +562,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    35 分
+                    36 分
                 </div>
                 
 
@@ -1216,7 +1216,14 @@ Writer-2 sleep over.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、RedissonLock"><a href="#六、RedissonLock" class="headerlink" title="六、RedissonLock"></a>六、RedissonLock</h3><p>在实际生产开发中，为了实现高可用我们通过将服务通过集群部署在不同节点上，而此时用户的单个操作可能就会被集群中的多个节点重复执行。针对这种情况，上面的两类锁显然就不太适用，因为二者都是针对单节点的服务而言，因此这时候就需要用到分布式锁。</p>
 <p>用简单一点的大白话来讲，可以把整个集群环境当成一个主线程，而每个节点就是一个线程，分布式锁就是用于控制不同节点间的操作原子性。</p>
-<h4 id="1-Redis连接"><a href="#1-Redis连接" class="headerlink" title="1. Redis连接"></a>1. Redis连接</h4><p><code>RedissonLock</code> 是一款基于 <code>Redis</code> 实现的分布式锁，下面详细介绍一下其使用，因为是基于 <code>Redis</code> 实现所以需要提前创建服务连接。</p>
+<h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p><code>RedissonLock</code> 是一款基于 <code>Redis</code> 实现的分布式锁，因此需要导入对应的依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.redisson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>redisson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.17.5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-服务连接"><a href="#2-服务连接" class="headerlink" title="2. 服务连接"></a>2. 服务连接</h4><p>下面详细介绍一下其基本使用，由于是基于 <code>Redis</code> 实现所以需要提前创建服务连接。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Config config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     config<span class="token punctuation">.</span><span class="token function">useSingleServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -1230,7 +1237,7 @@ Writer-2 sleep over.
     redissonClient <span class="token operator">=</span> Redisson<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2. 基本使用"></a>2. 基本使用</h4><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，这里就不再具体举例，仅介绍一下其常用方法。</p>
+<h4 id="3-基本使用"><a href="#3-基本使用" class="headerlink" title="3. 基本使用"></a>3. 基本使用</h4><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，这里就不再具体举例，仅介绍一下其常用方法。</p>
 <p>需要注意一点如果在加锁时未设置过期时间则默认为 <code>30s</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">infoDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1260,8 +1267,8 @@ Writer-2 sleep over.
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"lock count: "</span> <span class="token operator">+</span> lock<span class="token punctuation">.</span><span class="token function">getHoldCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-看门狗机制"><a href="#3-看门狗机制" class="headerlink" title="3. 看门狗机制"></a>3. 看门狗机制</h4><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
-<p>默认的看门狗时间为 <code>30s</code>，即每隔 <code>10s</code> 会读取当前锁的状态，若锁仍为持有状态则自动延长加锁时间 <code>30s</code> 。当然你也可以在创建连接时通过 <code>setLockWatchdogTimeout()</code> 指定看门狗程序时间，如设置为 <code>60s</code> 则每隔 <code>60/3=20s</code> 会检查锁的状态，若锁未释放则延长 `60s``。</p>
+<h4 id="4-看门狗机制"><a href="#4-看门狗机制" class="headerlink" title="4. 看门狗机制"></a>4. 看门狗机制</h4><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
+<p>默认的看门狗时间为 <code>30s</code>，即每隔 <code>10s</code> 会读取当前锁的状态，若锁仍为持有状态则自动延长加锁时间 <code>30s</code> 。当然你也可以在创建连接时通过 <code>setLockWatchdogTimeout()</code> 指定看门狗程序时间，如设置为 <code>60s</code> 则每隔 <code>60/3=20s</code> 会检查锁的状态，若锁未释放则延长 <code>60s</code>。</p>
 <p>下面看一个具体示例，在 <code>线程 1</code> 中创建锁时并没有指定过期时间，因此默认过期时间为 <code>30s</code> ，但是因为看门狗机制将会每隔 <code>10s</code> 读取一次锁状态，这里通过 <code>sleep()</code> 模拟任务耗时 <code>60s</code> ，因此当 <code>30s</code> 后锁过期时间又会自动续期到 <code>30s</code>，因此 <code>线程 2</code> 将无法获取锁。只有当休眠结束后释放锁看门狗机制失效后 <code>线程 2</code> 才能获取锁。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">watchDogDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -2112,7 +2119,7 @@ Writer-2 sleep over.
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">233.5k</span>
+                <span class="white-color">235.2k</span>
             
             
             

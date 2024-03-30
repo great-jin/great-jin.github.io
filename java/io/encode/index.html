@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-26
+                    2024-03-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    14 分
                 </div>
                 
 
@@ -701,7 +701,14 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、哈希算法"><a href="#二、哈希算法" class="headerlink" title="二、哈希算法"></a>二、哈希算法</h3><h4 id="1-MD5"><a href="#1-MD5" class="headerlink" title="1. MD5"></a>1. MD5</h4><p><code>MD5</code> 是最为常用的数据验证方式之一，通过特定算法为目标数据计算生成唯一的标识码，一旦数据遭到恶意篡改通过比对标识码即可快速确认。</p>
+<h3 id="二、加密算法"><a href="#二、加密算法" class="headerlink" title="二、加密算法"></a>二、加密算法</h3><h4 id="1-哈希算法"><a href="#1-哈希算法" class="headerlink" title="1. 哈希算法"></a>1. 哈希算法</h4><p>哈希算法即通过一定的算法规则为目标数据生成一串指定的哈希编码，最常见的即 <code>MD5</code> 与 <code>SHA-256</code>，在许多网站下载文件时通常会标注文件对应的 <code>MD5</code> 等信息，可供检验文件是否被恶意篡改。</p>
+<p>其核心在于相同数据文件经过哈希算法得到的哈希值一定是固定的，当应用发行商发布文件时同时公布其文件的哈希值，用户下载后可通过哈希加密工具执行计算得到一串哈希值，若与发行商的不一致则代表文件数据可能被人为篡改不安全。</p>
+<h4 id="2-对称加密"><a href="#2-对称加密" class="headerlink" title="2. 对称加密"></a>2. 对称加密</h4><p>对称加密即传统意义上的数据加密，对称加密中的对称即代表加密和解密的密钥是一致，即存在一份密钥同时用于数据加密和解密，如常见的 <code>AES</code> 和 <code>DES</code> 算法等等。</p>
+<p>对称加密的缺点在于数据虽然实现了加密，但如何让加解密双方都安全的获取密钥成了难题。由于对称的关系，一旦密钥遭到泄露，安全性即土崩瓦解。</p>
+<h4 id="3-非对称加密"><a href="#3-非对称加密" class="headerlink" title="3. 非对称加密"></a>3. 非对称加密</h4><p>非对称加密相较于对称加密的提升在于存在两套密钥：公开密钥 <code>(public)</code> 和私有密钥 <code>(private)</code>，公钥用于加密，私钥用于解密。</p>
+<p>假设存在两个人 <code>User-A</code> 和 <code>User-B</code>，各自生成了其对应的公钥和私钥，二人将自己的公钥分别给对方。即 <code>User-A</code> 拥有 <code>User-B</code> 的公钥，而 <code>User-B</code> 拥有 <code>User-A</code> 的公钥，二者的私钥仍由自己保管。当 <code>User-A</code> 要向 <code>User-B</code> 发送数据时，通过 <code>User-B</code> 的公钥进行加密然后发送给 <code>User-B</code>，而 <code>User-B</code> 收到后用自己的私钥解密得到内容。由于公钥仅用于加密数据因此即便泄露也不影响，解密只能由私钥进行，而私钥由自身保管不经有网络传输因此大大提高了安全性。</p>
+<h4 id="4-数字签名"><a href="#4-数字签名" class="headerlink" title="4. 数字签名"></a>4. 数字签名</h4><p>在使用非对称加密时通常会加上数字签名，其效果类似于哈希用于验证数据的完整性。</p>
+<h3 id="三、哈希算法"><a href="#三、哈希算法" class="headerlink" title="三、哈希算法"></a>三、哈希算法</h3><h4 id="1-MD5"><a href="#1-MD5" class="headerlink" title="1. MD5"></a>1. MD5</h4><p><code>MD5</code> 是最为常用的数据验证方式之一，通过特定算法为目标数据计算生成唯一的标识码，一旦数据遭到恶意篡改通过比对标识码即可快速确认。</p>
 <p>在 <code>Java</code> 中通过 <code>JDK</code> 自带类库 <code>MessageDigest</code> 即可实现 <code>MD5</code> 算法，示例代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     String message <span class="token operator">=</span> <span class="token string">"Hello, world!"</span><span class="token punctuation">;</span>
@@ -760,7 +767,7 @@
     <span class="token keyword">return</span> result<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、SM4算法"><a href="#三、SM4算法" class="headerlink" title="三、SM4算法"></a>三、SM4算法</h3><p>国密四加密是中国国家密码管理局发布的一种密码算法标准，是一种对称加密算法，相较于旧的国密标准，国密四加密更加安全、高效、易于实现。</p>
+<h3 id="四、SM4算法"><a href="#四、SM4算法" class="headerlink" title="四、SM4算法"></a>四、SM4算法</h3><p>国密四加密是中国国家密码管理局发布的一种密码算法标准，是一种对称加密算法，相较于旧的国密标准，国密四加密更加安全、高效、易于实现。</p>
 <h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在使用之前需要先引入相应 <code>Maven</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.bouncycastle<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -859,7 +866,7 @@
     <span class="token keyword">private</span> String type<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、AES算法"><a href="#四、AES算法" class="headerlink" title="四、AES算法"></a>四、AES算法</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>在 <code>maven</code> 工程中引入下列依赖：</p>
+<h3 id="五、AES算法"><a href="#五、AES算法" class="headerlink" title="五、AES算法"></a>五、AES算法</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>在 <code>maven</code> 工程中引入下列依赖：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>commons-codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -921,6 +928,12 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="六、分组加密"><a href="#六、分组加密" class="headerlink" title="六、分组加密"></a>六、分组加密</h3><h4 id="1-实现机制"><a href="#1-实现机制" class="headerlink" title="1. 实现机制"></a>1. 实现机制</h4><p>在之前的场景中，无论是通过对称加密还是非对称加密，执行后的数据的都是直观不可读的，在存储时也将导致一个问题：不可模糊查询。</p>
+<p>分组加密解决的一大痛点即保证加密的同时仍保留了模糊查询，通过对目标数据的拆分分组后单独加密存储，牺牲一定空间的前提下实现模糊查询的效果。</p>
+<h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>让我们通过一个示例更直观的了解分组加密的实现原理。</p>
+<p>假设我需要存储 <code>布袋青年</code> 四个字，在密钥为 <code>123456</code> 的前提经过 <code>AES</code> 加密后得到 <code>U2FsdGVkX19Sj4XRoc3rsbJS7VisiCR2fyUW+7e9gow=</code>，但将该值作为目标数据进行存储时，若输入 <code>布袋</code> 并无法模糊匹配命中，也就导致了无法对加密数据模糊查询。</p>
+<p>分组加密的核心在于数据拆词，同样针对 <code>布袋青年</code> 数据，将其拆分为 <code>布袋</code> 和 <code>青年</code>，并将拆分后的数据进行同样的加密得到 <code>U2FsdGVkX1/joWAz2Ti/m1HutDLbWW/oVSE6PyxisNY=</code> 与 <code>U2FsdGVkX1+NBvJIYl2r40mXgNSmUBc8jvZuEn3EUIA=</code>，将得到的两个数值拼接作为 <code>布袋青年</code> 的加密值。此时若需要执行模糊查询，同样以输入 <code>布袋</code> 为例，其条件即为 <code>where data like %encode(&#39;布袋&#39;)%</code>，即保证数据加密的前提下实现模糊查询。</p>
+<p>这样处理当然也存在一定的弊端，拆词需要多次加密相较一次性加密更耗性能，且拼接的结果也更占存储空间，但其实现了加密的前提下仍然能模糊查询。为了达到更好的性能，通常一个数据的进行拆分时单个词组的长度控制在 <code>2 ~ 4</code> 个长度。</p>
 
                 
             </div>
@@ -1522,7 +1535,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">233.5k</span>
+                <span class="white-color">235.2k</span>
             
             
             

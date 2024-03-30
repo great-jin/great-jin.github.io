@@ -531,7 +531,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-25
+                    2024-03-30
                 </div>
                 
 
@@ -899,41 +899,48 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-快速排序"><a href="#2-快速排序" class="headerlink" title="(2) 快速排序"></a>(2) 快速排序</h5><ul>
-<li>选择一个元毒作为枢轴，确定它最终位置(即左边元素都小于它.右边都大于它)。</li>
+<li>选择一个元素作为枢轴，确定它最终位置(即左边元素都小于它.右边都大于它)。</li>
 <li>取 <code>low</code> 指头， <code>high</code> 指尾，两个指针依次向中间扫。</li>
-<li><code>low</code> 为框轴,定义临时变量存枢轴，让表中枢袖位置空出来。</li>
+<li><code>low</code> 为枢轴，定义临时变量存枢轴，让表中枢袖位置空出来。</li>
 <li><code>low</code> 空: <code>high-1</code> ;  <code>high</code> 空: <code>low+1</code> (空的那端动)。</li>
-<li>小于枢轴放到 <code>low</code> ，大于放 <code>high  </code>,柜袖在 <code>low high</code> 重合。</li>
-<li>每一轮排结来枢轴左端元素都比期小，右端比大。</li>
+<li>小于枢轴放到 <code>low</code> ，大于放 <code>high</code> ，枢轴在 <code>low high</code> 重合。</li>
+<li>每一轮之后枢轴都比其左端元素小，比右端元素比大。</li>
 <li>重复上述步骤。</li>
 </ul>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">QuickSort</span><span class="token punctuation">(</span>ElemType Arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> low<span class="token punctuation">,</span> <span class="token keyword">int</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">quickSort</span><span class="token punctuation">(</span>ElemType Arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> low<span class="token punctuation">,</span> <span class="token keyword">int</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">//将表 Arr[low, high] 划分为满足上述条件的两个子表</span>
-        <span class="token keyword">int</span> pivotPos<span class="token operator">=</span><span class="token function">Partition</span> <span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//划分</span>
+        <span class="token comment" spellcheck="true">// 将表 Arr[low, high] 划分为满足上述条件的两个子表</span>
+        <span class="token keyword">int</span> pivotPos <span class="token operator">=</span> <span class="token function">partition</span> <span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> high<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//划分</span>
 
         <span class="token comment" spellcheck="true">// 依次对两个子表进行递归排序</span>
-        <span class="token function">QuickSort</span> <span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> pivotPos <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
-        <span class="token function">QuickSort</span> <span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> pivotPos <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> high<span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token function">quickSort</span><span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> low<span class="token punctuation">,</span> pivotPos <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token function">quickSort</span><span class="token punctuation">(</span>Arr<span class="token punctuation">,</span> pivotPos <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> high<span class="token punctuation">)</span> <span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">int</span> <span class="token function">Partition</span> <span class="token punctuation">(</span>ElemType Arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token keyword">int</span> low<span class="token punctuation">,</span> <span class="token keyword">int</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
-    <span class="token comment" spellcheck="true">//将表中第一个元素设为枢轴，对表进行划分</span>
+<span class="token keyword">int</span> <span class="token function">partition</span> <span class="token punctuation">(</span>ElemType Arr<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token keyword">int</span> low<span class="token punctuation">,</span> <span class="token keyword">int</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+    <span class="token comment" spellcheck="true">// 将表中第一个元素设为枢轴，对表进行划分</span>
     ElemType pivot <span class="token operator">=</span> Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span><span class="token punctuation">;</span> 
 
     <span class="token keyword">while</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high <span class="token operator">&amp;&amp;</span> Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">>=</span> pivot<span class="token punctuation">)</span> <span class="token operator">--</span>high<span class="token punctuation">;</span>
-        Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">=</span> Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">//将比枢轴小的元素移动到左端</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high <span class="token operator">&amp;&amp;</span> Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">>=</span> pivot<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token operator">--</span>high<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 将比枢轴小的元素移动到左端</span>
+        Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">=</span> Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">while</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high <span class="token operator">&amp;&amp;</span> Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> pivot<span class="token punctuation">)</span> <span class="token operator">++</span>low<span class="token punctuation">;</span>
-        Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span><span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">//将比枢轴大的元素移动到右端</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>low <span class="token operator">&lt;</span> high <span class="token operator">&amp;&amp;</span> Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> pivot<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token operator">++</span>low<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 将比枢轴大的元素移动到右端</span>
+        Arr<span class="token punctuation">[</span>high<span class="token punctuation">]</span> <span class="token operator">=</span> Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">=</span> pivot<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">//枢轴元素存放到最终位置</span>
+    <span class="token comment" spellcheck="true">//枢轴元素存放到最终位置</span>
+    Arr<span class="token punctuation">[</span>low<span class="token punctuation">]</span> <span class="token operator">=</span> pivot<span class="token punctuation">;</span>
     <span class="token keyword">return</span> low<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-选择排序"><a href="#3-选择排序" class="headerlink" title="3. 选择排序"></a>3. 选择排序</h4><h5 id="1-简单选择排序"><a href="#1-简单选择排序" class="headerlink" title="(1) 简单选择排序"></a>(1) 简单选择排序</h5><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">SelectSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token number">-1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         <span class="token keyword">int</span> min <span class="token operator">=</span> i<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// 记录最小元素</span>
@@ -1544,7 +1551,7 @@ L<span class="token punctuation">.</span>date <span class="token operator">=</sp
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">233.5k</span>
+                <span class="white-color">235.2k</span>
             
             
             

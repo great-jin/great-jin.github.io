@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-29
+                    2024-03-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    9 分
                 </div>
                 
 
@@ -660,19 +660,114 @@
 <h4 id="4-索引删除"><a href="#4-索引删除" class="headerlink" title="4. 索引删除"></a>4. 索引删除</h4><p>通过 DELETE 请求删除索引，删除索引会同步删除其对应下的数据，请求格式如下：</p>
 <pre class="line-numbers language-js"><code class="language-js">DELETE http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="三、数据查询"><a href="#三、数据查询" class="headerlink" title="三、数据查询"></a>三、数据查询</h3><h4 id="1-查询得分"><a href="#1-查询得分" class="headerlink" title="1. 查询得分"></a>1. 查询得分</h4><p>在 <code>Elasticsearch</code> 中，每个文档的匹配程度可以通过一个称为 “分数”（<code>score</code>）的值来表示。分数反映了文档与查询条件的匹配程度，越匹配的文档得分越高。</p>
+<h3 id="三、数据增改"><a href="#三、数据增改" class="headerlink" title="三、数据增改"></a>三、数据增改</h3><h4 id="1-数据插入"><a href="#1-数据插入" class="headerlink" title="1. 数据插入"></a>1. 数据插入</h4><p>数据插入的请求模板示例如下，其中 <code>&lt;type&gt;</code> 的可选值为：<code>_doc</code>，且 <code>&lt;id&gt;</code> 若未指定则回自动分配。</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>type<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>id<span class="token operator">></span>
+
+<span class="token punctuation">{</span> 
+    <span class="token string">"field1"</span><span class="token punctuation">:</span> <span class="token string">"value1"</span><span class="token punctuation">,</span> 
+    <span class="token string">"field2"</span><span class="token punctuation">:</span> <span class="token string">"value2"</span><span class="token punctuation">,</span> 
+    <span class="token string">"field3"</span><span class="token punctuation">:</span> <span class="token string">"value3"</span> 
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-数据更新"><a href="#2-数据更新" class="headerlink" title="2. 数据更新"></a>2. 数据更新</h4><p>数据更新的请求模板示例如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">PUT http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>type<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>id<span class="token operator">></span>
+
+<span class="token punctuation">{</span> 
+    <span class="token string">"field1"</span><span class="token punctuation">:</span> <span class="token string">"value1_1"</span><span class="token punctuation">,</span> 
+    <span class="token string">"field2"</span><span class="token punctuation">:</span> <span class="token string">"value2_1"</span><span class="token punctuation">,</span> 
+    <span class="token string">"field3"</span><span class="token punctuation">:</span> <span class="token string">"value3_1"</span> 
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-数据删除"><a href="#3-数据删除" class="headerlink" title="3. 数据删除"></a>3. 数据删除</h4><p>数据删除的请求模板示例如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">DELETE http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>type<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>id<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="四、批量操作"><a href="#四、批量操作" class="headerlink" title="四、批量操作"></a>四、批量操作</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">action</td>
+        <th style="text-align: center;">参数</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">create</td>
+        <td style="text-align: center;">创建新的一条记录。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">update</td>
+        <td style="text-align: center;">更新已有一条记录。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">index</td>
+        <td style="text-align: center;">若记录存在，则进行覆盖。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">delete</td>
+        <td style="text-align: center;">删除一条数据记录。</td>
+    </tr>
+</table>
+
+<p>需要注意的是每一行数据要以换行符结束，同时内容必须空出最后一行空白行。</p>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"action"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token string">"metadata"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span>content<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>完成 <code>JSON</code> 文件的创建后可通过下图 <code>PostMan</code> 中入口设置。<br><img src="/album/loading.gif" data-original="/album/article/db/es/8.png"></p>
+<h4 id="2-批量插入"><a href="#2-批量插入" class="headerlink" title="2. 批量插入"></a>2. 批量插入</h4><h5 id="1-索引不存在"><a href="#1-索引不存在" class="headerlink" title="(1) 索引不存在"></a>(1) 索引不存在</h5><p>批量插入数据，索引不存在时新建。</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span>_bulk
+
+<span class="token comment" spellcheck="true">// 文件内容</span>
+<span class="token punctuation">{</span><span class="token string">"create"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_index"</span><span class="token punctuation">:</span> <span class="token string">"&lt;index_name>"</span><span class="token punctuation">,</span><span class="token string">"_type"</span><span class="token punctuation">:</span> <span class="token string">"_doc"</span><span class="token punctuation">,</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"alex"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"create"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_index"</span><span class="token punctuation">:</span> <span class="token string">"&lt;index_name>"</span><span class="token punctuation">,</span><span class="token string">"_type"</span><span class="token punctuation">:</span> <span class="token string">"_doc"</span><span class="token punctuation">,</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"beth"</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-索引存在"><a href="#2-索引存在" class="headerlink" title="(2) 索引存在"></a>(2) 索引存在</h5><p>批量插入数据，索引必须已存在。</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_doc<span class="token operator">/</span>_bulk
+
+<span class="token comment" spellcheck="true">// 文件内容</span>
+<span class="token punctuation">{</span><span class="token string">"create"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"alex"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"create"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"beth"</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-增量插入"><a href="#2-增量插入" class="headerlink" title="(2) 增量插入"></a>(2) 增量插入</h5><p>批量插入数据，若数据已存在则覆盖。</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_doc<span class="token operator">/</span>_bulk
+
+<span class="token comment" spellcheck="true">// 文件内容</span>
+<span class="token punctuation">{</span><span class="token string">"index"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"alex"</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"index"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"beth"</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-批量更新"><a href="#3-批量更新" class="headerlink" title="3. 批量更新"></a>3. 批量更新</h4><p>批量更新的请求模板示例如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_doc<span class="token operator">/</span>_bulk
+
+<span class="token comment" spellcheck="true">// 文件内容</span>
+<span class="token punctuation">{</span><span class="token string">"update"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span> 
+<span class="token punctuation">{</span><span class="token string">"doc"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span> 
+<span class="token punctuation">{</span><span class="token string">"update"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span> 
+<span class="token punctuation">{</span><span class="token string">"doc"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token string">"id"</span><span class="token punctuation">:</span><span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-批量删除"><a href="#4-批量删除" class="headerlink" title="4. 批量删除"></a>4. 批量删除</h4><p>批量删除的请求模板示例如下：</p>
+<pre class="line-numbers language-js"><code class="language-js">POST http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_doc<span class="token operator">/</span>_bulk
+
+<span class="token comment" spellcheck="true">// 文件内容</span>
+<span class="token punctuation">{</span><span class="token string">"delete"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">"delete"</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token string">"2"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、数据查询"><a href="#五、数据查询" class="headerlink" title="五、数据查询"></a>五、数据查询</h3><h4 id="1-结构查询"><a href="#1-结构查询" class="headerlink" title="1. 结构查询"></a>1. 结构查询</h4><p>通过 <code>_mapping</code> 查询当前索引下的数据字段结构。</p>
+<pre class="line-numbers language-js"><code class="language-js">GET http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_mapping
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-查询得分"><a href="#2-查询得分" class="headerlink" title="2. 查询得分"></a>2. 查询得分</h4><p>在 <code>Elasticsearch</code> 中，每个文档的匹配程度可以通过一个称为 “分数”（<code>score</code>）的值来表示。分数反映了文档与查询条件的匹配程度，越匹配的文档得分越高。</p>
 <p>当执行查询时，<code>Elasticsearch</code> 计算每个文档的得分，然后按照得分排序返回结果。这个得分是由查询条件中的每个子句（例如，匹配关键词的 <code>must</code> 子句）的相关性计算得出的。</p>
 <p>对于 <code>bool</code> 查询中的 <code>must</code> 子句，其中的每个条件都会影响文档的得分。如果一个文档满足多个 <code>must</code> 子句的条件，那么它的得分会相应增加。这样，得分可以用来衡量文档与查询条件的匹配程度。</p>
 <p>而对于 <code>filter</code> 子句，其中的条件也用于筛选文档，但它们不会影响文档的得分。<code>filter</code> 子句主要用于对文档进行精确匹配和过滤，而不涉及相关性计算。由于不计算得分，<code>filter</code> 子句的查询更轻量，对于一些不需要计算相关性的场景，这可以提高性能。</p>
 <p>因此，当使用 <code>filter</code> 子句时，查询的主要目的是过滤文档，而不是影响查询结果的排序和相关性。这对于一些特定的过滤条件（如范围查询、精确匹配等）非常有用，因为它们可以更高效地执行，而无需计算和排序相关性得分。</p>
-<h4 id="2-全量查询"><a href="#2-全量查询" class="headerlink" title="2. 全量查询"></a>2. 全量查询</h4><p>通过 <code>Get</code> 查询目标数据，效果等价于 <code>select * from &lt;table&gt;</code>。</p>
+<h4 id="3-全量查询"><a href="#3-全量查询" class="headerlink" title="3. 全量查询"></a>3. 全量查询</h4><p>通过 <code>Get</code> 查询目标数据，效果等价于 <code>select * from &lt;table&gt;</code>。</p>
 <p>默认查询仅返回十条数据，若查看多数据需分页进行，同时通过 <code>pretty=true</code> 可格式化返回的结果数据。</p>
 <pre class="line-numbers language-js"><code class="language-js">GET http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token operator">/</span>_search
 
 
 GET http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token operator">/</span>_search<span class="token operator">?</span>pretty<span class="token operator">=</span><span class="token boolean">true</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-分页查询"><a href="#3-分页查询" class="headerlink" title="3. 分页查询"></a>3. 分页查询</h4><p>分页查询同理，在请求体内通过 <code>from</code> 与 <code>size</code> 指定分页参数，作用类似 <code>MySQL</code> 中的 <code>limit</code> 和 <code>offset</code>。</p>
+<h4 id="4-分页查询"><a href="#4-分页查询" class="headerlink" title="4. 分页查询"></a>4. 分页查询</h4><p>分页查询同理，在请求体内通过 <code>from</code> 与 <code>size</code> 指定分页参数，作用类似 <code>MySQL</code> 中的 <code>limit</code> 和 <code>offset</code>。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// paging query data</span>
 GET http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token operator">/</span>_search
 
@@ -684,7 +779,7 @@ GET http<span class="token punctuation">:</span><span class="token operator">/</
   <span class="token string">"size"</span><span class="token punctuation">:</span> <span class="token number">10</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、条件查询"><a href="#四、条件查询" class="headerlink" title="四、条件查询"></a>四、条件查询</h3><h4 id="1-精准查询"><a href="#1-精准查询" class="headerlink" title="1. 精准查询"></a>1. 精准查询</h4><p>精准查询即与常见关系型中 <code>where</code> 条件中的 <code>=</code> 作用等价。</p>
+<h3 id="六、条件查询"><a href="#六、条件查询" class="headerlink" title="六、条件查询"></a>六、条件查询</h3><h4 id="1-精准查询"><a href="#1-精准查询" class="headerlink" title="1. 精准查询"></a>1. 精准查询</h4><p>精准查询即与常见关系型中 <code>where</code> 条件中的 <code>=</code> 作用等价。</p>
 <p>下述示例的作用效果即等价于 <code>select * from &lt;table&gt; where &lt;column_name&gt; = &lt;column_name&gt;</code>。</p>
 <pre class="line-numbers language-js"><code class="language-js">GET http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token operator">/</span>_search
 
@@ -770,6 +865,96 @@ GET http<span class="token punctuation">:</span><span class="token operator">/</
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="七、聚合查询"><a href="#七、聚合查询" class="headerlink" title="七、聚合查询"></a>七、聚合查询</h3><h4 id="1-统计查询"><a href="#1-统计查询" class="headerlink" title="1. 统计查询"></a>1. 统计查询</h4><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中 <code>count_num_rows</code> 为自定义名称，<code>value_count</code> 等价于 <code>count(*)</code>，<code>aggregations</code> 可简写为 <code>aggs</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js">GET  http<span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token operator">&lt;</span>ip<span class="token operator">></span><span class="token punctuation">:</span><span class="token operator">&lt;</span>port<span class="token operator">></span><span class="token operator">/</span><span class="token operator">&lt;</span>index<span class="token operator">></span><span class="token operator">/</span>_search
+
+<span class="token punctuation">{</span>
+  <span class="token string">"size"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token string">"aggregations"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"count_num_rows"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">"value_count"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"field"</span><span class="token punctuation">:</span> <span class="token string">"_index"</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-分组查询"><a href="#2-分组查询" class="headerlink" title="2. 分组查询"></a>2. 分组查询</h4><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    DATE_FORMAT<span class="token punctuation">(</span><span class="token string">'&lt;time_field>'</span><span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d %H:00:00'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time<span class="token punctuation">,</span>
+    <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> num
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    time
+<span class="token keyword">having</span> 
+    num <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意字段 <code>&lt;time_field&gt;</code> 的类型 <code>type</code> 必须为 <code>date</code>，其中 <code>interval</code> 的可选值如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">year</td>
+        <td style="text-align: center;">年</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">quarter</td>
+        <td style="text-align: center;">季度</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">month</td>
+        <td style="text-align: center;">月</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">week</td>
+        <td style="text-align: center;">周</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">day</td>
+        <td style="text-align: center;">日</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">hour</td>
+        <td style="text-align: center;">小时</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">minute</td>
+        <td style="text-align: center;">分钟</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">second</td>
+        <td style="text-align: center;">秒</td>
+    </tr>
+</table>
+
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
+  <span class="token string">"size"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token string">"aggs"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"group_date"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">"date_histogram"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"field"</span><span class="token punctuation">:</span> <span class="token string">"&lt;time_field>"</span><span class="token punctuation">,</span>
+        <span class="token string">"interval"</span><span class="token punctuation">:</span> <span class="token string">"hour"</span><span class="token punctuation">,</span>
+        <span class="token string">"time_zone"</span><span class="token punctuation">:</span> <span class="token string">"+08:00"</span><span class="token punctuation">,</span>
+        <span class="token string">"format"</span><span class="token punctuation">:</span> <span class="token string">"yyyy-MM-dd HH:mm:ss"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token string">"aggs"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"num_filter"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+          <span class="token string">"bucket_selector"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            <span class="token string">"buckets_path"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+              <span class="token string">"count"</span><span class="token punctuation">:</span> <span class="token string">"_count"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token string">"script"</span><span class="token punctuation">:</span> <span class="token string">"params.count > 0"</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1367,7 +1552,7 @@ GET http<span class="token punctuation">:</span><span class="token operator">/</
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">233.5k</span>
+                <span class="white-color">235.2k</span>
             
             
             
