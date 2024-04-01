@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-04-01
                 </div>
                 
 
@@ -578,13 +578,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h3><p><img src="/album/loading.gif" data-original="/album/article/db/kafka/2.png" alt="结构示意图"></p>
-<h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p>消息的发送者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
+                <h3 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h3><h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p>消息的发送者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
 <h4 id="2-Broker"><a href="#2-Broker" class="headerlink" title="2. Broker"></a>2. Broker</h4><p><code>Kafka</code> 集群中有很多台 <code>Server</code>，其中每一台 <code>Server</code> 都可以存储消息，将每一台 <code>Server</code> 称为一个实例，也称为 <code>Broker</code>。</p>
 <p>当部署 <code>Kafka</code> 集群时则存在多个 <code>Broker</code> 节点，通常将主节点称之为 <code>Leader</code> 节点，其它 <code>Broker</code> 节点称为 <code>Follwer</code> 节点。</p>
 <h4 id="3-Topic"><a href="#3-Topic" class="headerlink" title="3. Topic"></a>3. Topic</h4><p>一个 <code>Topic</code> 里保存的是同类消息，相当于对消息的分类，每个 <code>Producer</code> 将消息发送到 <code>kafka</code> 中都需要指明 <code>Topic</code> ，即指明这个消息属于哪一类。</p>
 <h4 id="4-Partition"><a href="#4-Partition" class="headerlink" title="4. Partition"></a>4. Partition</h4><p>每个 <code>Topic</code> 都可以分成多个 <code>Partition</code>，每个 <code>Partition</code> 在存储层面是 <code>append log</code> 文件，任何发布到此 <code>Partition</code> 的消息都会被直接追加到 <code>log</code> 文件的尾部。</p>
-<p>为什么要进行分区呢？最根本的原因就是 <code>Kafka</code> 基于文件存储，当文件内容大到一定程度时，很容易达到单个磁盘的上限，因此采用分区的办法，即一个分区对应一个文件，这样就可以将数据分别存储到不同的 <code>Server</code> 上去，同时也可以实现负载均衡从而容纳更多的消费者。</p>
+<p>为什么要进行分区呢？最根本的原因就是 <code>Kafka</code> 基于文件存储，当文件内容大到一定程度时，很容易达到单个磁盘的上限，因此采用分区的办法，即一个分区对应一个文件，这样就可以将数据分别存储到不同的 <code>Server</code> 上去，同时也可以实现负载均衡从而容纳更多的消费者。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/2.png"></p>
 <h5 id="1-Replica"><a href="#1-Replica" class="headerlink" title="(1) Replica"></a>(1) Replica</h5><p>分区 <code>Partition</code> 中的数据是以文件的形式存在，而为了实现故障高可用，<code>Kafka</code> 中引入了副本概念 <code>(Replica)</code>。</p>
 <p>即在集群模式下，每个 <code>Partition</code> 下的消息文件将按照一定规则均匀分布到各个节点，因此当存在某个故障节点仍可从其它节点读取从而保证数据的安全性。</p>
 <ul>
@@ -1254,7 +1253,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">235.2k</span>
+                <span class="white-color">235.9k</span>
             
             
             

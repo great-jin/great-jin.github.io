@@ -544,14 +544,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-23
+                    2024-04-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    9.8k
+                    9.9k
                 </div>
                 
 
@@ -602,25 +602,15 @@
 <li>本地内存耗尽将抛出 <code>java.lang.OutOfMemoryError: Metadata space</code> 异常。</li>
 </ul>
 <p>在 <code>JDK 8</code> 之前方法区中数据存储于 <code>JVM</code> 的堆内存中，因此其内存空间局限于 <code>JVM</code> 堆的内存空间，而元空间改为使用本地内存 <code>(Native memory)</code>，即物理内存，意味着只要本地内存足够就不会出现 <code>OOM</code> 错误。</p>
-<h3 id="二、对象管理"><a href="#二、对象管理" class="headerlink" title="二、对象管理"></a>二、对象管理</h3><h4 id="1-对象创建"><a href="#1-对象创建" class="headerlink" title="1. 对象创建"></a>1. 对象创建</h4><p>当 <code>JVM</code> 加载至一条 <code>new</code> 指令时将会为对象分配相应内存空间，常见的分配方式有以下两类。</p>
-<h5 id="1-指针碰撞"><a href="#1-指针碰撞" class="headerlink" title="(1) 指针碰撞"></a>(1) 指针碰撞</h5><p>假设 <code>Java</code> 堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞“（<code>Bump The Pointer</code>）。</p>
-<h5 id="2-空闲列表"><a href="#2-空闲列表" class="headerlink" title="(2) 空闲列表"></a>(2) 空闲列表</h5><p>如果 <code>Java</code> 堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为空闲列表<code>（Free List）</code>。</p>
-<h4 id="2-分配方式"><a href="#2-分配方式" class="headerlink" title="2. 分配方式"></a>2. 分配方式</h4><p>在为 <code>Java</code> 对象分配内存时存在指针碰撞和空闲列表两种方式，而具体的划分实现上存在下述两种方式。</p>
-<h5 id="1-同步处理"><a href="#1-同步处理" class="headerlink" title="(1) 同步处理"></a>(1) 同步处理</h5><p>在为对象分配内存空间时采用 <code>CAS</code> 配置，通过失败重试的方式保证更新操作的原子性。</p>
-<h5 id="2-本地线程分配缓冲"><a href="#2-本地线程分配缓冲" class="headerlink" title="(2) 本地线程分配缓冲"></a>(2) 本地线程分配缓冲</h5><p>将内存分配的动作按照线程划分在不同的空间之中，即每个线程在 <code>Java</code> 堆中预先分配一小块内存，称为本地线程分配缓冲 <code>(Thread Local Allocation Buffer，TLAB)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定本地线程分配缓冲。</p>
-<h4 id="3-对象头"><a href="#3-对象头" class="headerlink" title="3. 对象头"></a>3. 对象头</h4><p><code>Java</code> 的对象头中定义了两个重要字段：运行时数据 <code>(Mark Word)</code> 与类型指针 <code>(Klass)</code>，若为数组对象则还会额外包含一个字段存储数组大小。</p>
+<h3 id="二、对象布局"><a href="#二、对象布局" class="headerlink" title="二、对象布局"></a>二、对象布局</h3><h4 id="1-对象头"><a href="#1-对象头" class="headerlink" title="1. 对象头"></a>1. 对象头</h4><p><code>Java</code> 的对象头中定义了两个重要字段：运行时数据 <code>(Mark Word)</code> 与类型指针 <code>(Klass)</code>，若为数组对象则还会额外包含一个字段存储数组大小。</p>
 <h5 id="1-Mark-Word"><a href="#1-Mark-Word" class="headerlink" title="(1) Mark Word"></a>(1) Mark Word</h5><p><code>Mark Word</code> 字段存储了如哈希码 <code>(HashCode)</code> 、<code>GC</code> 分代年龄、锁状态标志、线程持有的锁、偏向线程 <code>ID</code>、偏向时间戳等信息，官方称它为 <code>Mark Word</code>。</p>
 <p><code>Mark Word</code> 占用大小为 <code>32bit</code>，其中 <code>25bit</code> 用于存储对象哈希码，<code>4bit</code> 用于存储对象分代年龄，<code>2bit</code> 用于存储锁标志位，<code>1bit</code> 固定为 <code>0</code>，这部分的数据在 <code>32</code> 位和 <code>64</code> 位的虚拟机（未开启压缩指针）中分别为 <code>32bit</code> 和 <code>64bit</code>。</p>
 <h5 id="2-Klass"><a href="#2-Klass" class="headerlink" title="(2) Klass"></a>(2) Klass</h5><p><code>Klass</code> 字段存储了指向对象所属类的元数据的指针，也称为类的元数据指针（通过这个指针来确定该对象是哪个类的实例），允许 <code>Java</code> 虚拟机在运行时获取对象的类信息，并进行相应的操作。</p>
 <p>在 <code>HotSpot</code> 虚拟机中的 <code>Java</code> 对象头中 <code>Klass</code> 字段是指对象的元数据信息，用于管理对象的信息，存储指向该对象类的元数据指针。对象的元数据指针大小同载体的机器指针大小，如 <code>32</code> 位虚拟机指针大小即为 <code>32bit</code>，<code>64</code> 位虚拟机对应大小为 <code>64bit</code>，可通过指针压缩实现 <code>64bit</code> 对象的指针压缩。</p>
-<h4 id="4-对象布局"><a href="#4-对象布局" class="headerlink" title="4. 对象布局"></a>4. 对象布局</h4><p>一个 <code>Java</code> 对象除了对象头之外还包括 <code>实例数据</code> 与 <code>对齐填充</code> 两个部分。</p>
-<ul>
-<li><h5 id="实例数据"><a href="#实例数据" class="headerlink" title="实例数据"></a>实例数据</h5><p>  存储在程序代码里面所定义的各种类型的字段内容，无论是从父类继承下来的，还是在子类中定义的字段都必须记录起来。</p>
-</li>
-<li><h5 id="对齐填充"><a href="#对齐填充" class="headerlink" title="对齐填充"></a>对齐填充</h5><p>  这并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。</p>
-</li>
-</ul>
-<p>在为对象分配完内存之后，虚拟机必须将分配到的内存空间（但不包括对象头）都初始化为零值，如果使用了 <code>TLAB</code> 的话，这一项工作也可以提前至 <code>TLAB</code> 分配时顺便进行。这步操作保证了对象的实例字段在 <code>Java</code> 代码中可以不赋初始值就直接使用，使程序能访问到这些字段的数据类型所对应的零值。</p>
+<h5 id="3-数组长度"><a href="#3-数组长度" class="headerlink" title="(3) 数组长度"></a>(3) 数组长度</h5><p>当对象为 <code>Java</code> 数组时，则对象头必须多一块空间存储数组长度，若为普通对象则可省略。</p>
+<h4 id="2-实例数据"><a href="#2-实例数据" class="headerlink" title="2. 实例数据"></a>2. 实例数据</h4><p>实例数据部分是对象真正存储的有效信息，即存储在程序代码里面所定义的各种类型的字段内容，无论是从父类继承下来的，还是在子类中定义的字段都必须记录起来。</p>
+<h4 id="3-对齐填充"><a href="#3-对齐填充" class="headerlink" title="3. 对齐填充"></a>3. 对齐填充</h4><p>这并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/10.png"></p>
+<h4 id="4-初始对象"><a href="#4-初始对象" class="headerlink" title="4. 初始对象"></a>4. 初始对象</h4><p>在为对象分配完内存之后，虚拟机必须将分配到的内存空间（但不包括对象头）都初始化为零值，如果使用了 <code>TLAB</code> 的话，这一项工作也可以提前至 <code>TLAB</code> 分配时顺便进行。这步操作保证了对象的实例字段在 <code>Java</code> 代码中可以不赋初始值就直接使用，使程序能访问到这些字段的数据类型所对应的零值。</p>
 <p><code>Java</code> 虚拟机还要对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希码（真正调用 <code>hashCode()</code> 方法时才计算）、对象的 <code>GC</code> 分代年龄等信息。</p>
 <h4 id="5-指针压缩"><a href="#5-指针压缩" class="headerlink" title="5. 指针压缩"></a>5. 指针压缩</h4><p>在上面的对象布局中提到了为了在 <code>64</code> 位虚拟机中实现更高效的存储因此引入了指针压缩，通过指针压缩可实现在 <code>64</code> 位虚拟机上同 <code>32</code> 位虚拟机一样仅占用 <code>32bit</code>，从而节省了一半空间。</p>
 <blockquote>
@@ -640,7 +630,13 @@
 </ul>
 </blockquote>
 <p>若程序加载引用对象过多并未能通过 <code>GC</code> 释放可能会抛出：<code>java.lang.OutOfMemoryError: Compressed class space</code> 异常。</p>
-<h3 id="三、对象引用"><a href="#三、对象引用" class="headerlink" title="三、对象引用"></a>三、对象引用</h3><h4 id="1-引用算法"><a href="#1-引用算法" class="headerlink" title="1. 引用算法"></a>1. 引用算法</h4><p>在执行垃圾回收通俗的讲就是判断哪些对象已经没用应该进行资源释放，而判断一个对象是否可用存在两种算法实现：<code>引用计数法</code> 与 <code>可达性分析法</code>。</p>
+<h3 id="三、对象管理"><a href="#三、对象管理" class="headerlink" title="三、对象管理"></a>三、对象管理</h3><h4 id="1-对象创建"><a href="#1-对象创建" class="headerlink" title="1. 对象创建"></a>1. 对象创建</h4><p>当 <code>JVM</code> 加载至一条 <code>new</code> 指令时将会为对象分配相应内存空间，常见的分配方式有以下两类。</p>
+<h5 id="1-指针碰撞"><a href="#1-指针碰撞" class="headerlink" title="(1) 指针碰撞"></a>(1) 指针碰撞</h5><p>假设 <code>Java</code> 堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞 <code>(Bump The Pointer)</code>。</p>
+<h5 id="2-空闲列表"><a href="#2-空闲列表" class="headerlink" title="(2) 空闲列表"></a>(2) 空闲列表</h5><p>如果 <code>Java</code> 堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为空闲列表 <code>(Free List)</code>。</p>
+<h4 id="2-分配方式"><a href="#2-分配方式" class="headerlink" title="2. 分配方式"></a>2. 分配方式</h4><p>在为 <code>Java</code> 对象分配内存时存在指针碰撞和空闲列表两种方式，而具体的划分实现上存在下述两种方式。</p>
+<h5 id="1-同步处理"><a href="#1-同步处理" class="headerlink" title="(1) 同步处理"></a>(1) 同步处理</h5><p>在为对象分配内存空间时采用 <code>CAS</code> 配置，通过失败重试的方式保证更新操作的原子性。</p>
+<h5 id="2-本地线程分配缓冲"><a href="#2-本地线程分配缓冲" class="headerlink" title="(2) 本地线程分配缓冲"></a>(2) 本地线程分配缓冲</h5><p>将内存分配的动作按照线程划分在不同的空间之中，即每个线程在 <code>Java</code> 堆中预先分配一小块内存，称为本地线程分配缓冲 <code>(Thread Local Allocation Buffer，TLAB)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定本地线程分配缓冲。</p>
+<h4 id="3-引用算法"><a href="#3-引用算法" class="headerlink" title="3. 引用算法"></a>3. 引用算法</h4><p>在执行垃圾回收通俗的讲就是判断哪些对象已经没用应该进行资源释放，而判断一个对象是否可用存在两种算法实现：<code>引用计数法</code> 与 <code>可达性分析法</code>。</p>
 <h5 id="2-引用计数法"><a href="#2-引用计数法" class="headerlink" title="(2) 引用计数法"></a>(2) 引用计数法</h5><p>在对象中添加一个引用计数器，每当有一个地方引用它时计数器值就加一，当引用失效时计数器值就减一，任何时刻计数器为零的对象就是不可能再被使用的。</p>
 <p>但是引用计数法存在一个问题即当对象之间相互循环引用时将无法及时回收。</p>
 <h5 id="2-可达性分析法"><a href="#2-可达性分析法" class="headerlink" title="(2) 可达性分析法"></a>(2) 可达性分析法</h5><p>通过一系列称为 <code>GC Roots</code> 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走过的路径称为“引用链” <code>(Reference Chain)</code>，如果某个对象到 <code>GC Roots</code> 间没有任何引用链相连，或者用图论的话来说就是从 <code>GC Roots</code> 到这个对象不可达时，则证明此对象是不可能再被使用的。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/2.png"></p>
@@ -656,7 +652,7 @@
 <li>反映 <code>JVM</code> 内部情况的 <code>JMXBean</code> 、 <code>JVMTI</code> 中注册的回调、本地代码缓存等。</li>
 </ul>
 </blockquote>
-<h4 id="2-引用类型"><a href="#2-引用类型" class="headerlink" title="2. 引用类型"></a>2. 引用类型</h4><p>在 <code>Java</code> 中一个对象的引用情况分为三类：强引用 <code>(Strong Reference)</code>、软引用 <code>(Soft Reference)</code> 和弱应用 <code>(Weak Reference)</code>。</p>
+<h4 id="4-引用类型"><a href="#4-引用类型" class="headerlink" title="4. 引用类型"></a>4. 引用类型</h4><p>在 <code>Java</code> 中一个对象的引用情况分为三类：强引用 <code>(Strong Reference)</code>、软引用 <code>(Soft Reference)</code> 和弱应用 <code>(Weak Reference)</code>。</p>
 <h5 id="1-强引用"><a href="#1-强引用" class="headerlink" title="(1) 强引用"></a>(1) 强引用</h5><p>强引用是日常使用中最常见的引用方式，当通过 <code>new</code> 关键字或基础类型赋值时即创建一个强引用。</p>
 <p>如下示例中即创建了两个强引用对象，在执行 <code>GC</code> 垃圾回收时强引用对象资源不会被系统回收。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
@@ -1495,7 +1491,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">235.2k</span>
+                <span class="white-color">235.9k</span>
             
             
             
