@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Kafka基础概念详解, 布袋青年">
+    <meta name="keywords" content="Kafka消息队列详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Kafka基础概念详解 | 布袋青年</title>
+    <title>Kafka消息队列详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -377,7 +377,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Kafka基础概念详解</h1>
+                    <h1 class="description center-align post-title">Kafka消息队列详解</h1>
                 </div>
             </div>
         </div>
@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-01
+                    2024-04-02
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.3k
+                    5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    17 分
                 </div>
                 
 
@@ -578,33 +578,37 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h3><h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p>消息的发送者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
-<h4 id="2-Broker"><a href="#2-Broker" class="headerlink" title="2. Broker"></a>2. Broker</h4><p><code>Kafka</code> 集群中有很多台 <code>Server</code>，其中每一台 <code>Server</code> 都可以存储消息，将每一台 <code>Server</code> 称为一个实例，也称为 <code>Broker</code>。</p>
-<p>当部署 <code>Kafka</code> 集群时则存在多个 <code>Broker</code> 节点，通常将主节点称之为 <code>Leader</code> 节点，其它 <code>Broker</code> 节点称为 <code>Follwer</code> 节点。</p>
-<h4 id="3-Topic"><a href="#3-Topic" class="headerlink" title="3. Topic"></a>3. Topic</h4><p>一个 <code>Topic</code> 里保存的是同类消息，相当于对消息的分类，每个 <code>Producer</code> 将消息发送到 <code>kafka</code> 中都需要指明 <code>Topic</code> ，即指明这个消息属于哪一类。</p>
+                <h3 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h3><h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p><code>Kafka</code> 中存在两类用户：生产者和消费者。消息的生产者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
+<h4 id="2-Broker"><a href="#2-Broker" class="headerlink" title="2. Broker"></a>2. Broker</h4><p><code>Kafka</code> 集群中可能存在多台 <code>Server</code>，其中每一台 <code>Server</code> 都可以存储消息，将每一台 <code>Server</code> 称为一个实例，也称为 <code>Broker</code>。</p>
+<p>当部署 <code>Kafka</code> 集群时则存在多个 <code>Broker</code> 节点，通常将主节点称之为 <code>Leader</code> 节点，其它 <code>Broker</code> 节点称为 <code>Follwer</code> 节点。
+　</p>
+<h4 id="3-Topic"><a href="#3-Topic" class="headerlink" title="3. Topic"></a>3. Topic</h4><p><code>Topic</code> 是 <code>Kafka</code> 中的逻辑存储概念，一个 <code>Topic</code> 里保存的是同类消息，相当于对消息的分类。每个 <code>Producer</code> 将消息发送到 <code>kafka</code> 中都需要指明 <code>Topic</code>，即指明这个消息属于哪一类。</p>
 <h4 id="4-Partition"><a href="#4-Partition" class="headerlink" title="4. Partition"></a>4. Partition</h4><p>每个 <code>Topic</code> 都可以分成多个 <code>Partition</code>，每个 <code>Partition</code> 在存储层面是 <code>append log</code> 文件，任何发布到此 <code>Partition</code> 的消息都会被直接追加到 <code>log</code> 文件的尾部。</p>
-<p>为什么要进行分区呢？最根本的原因就是 <code>Kafka</code> 基于文件存储，当文件内容大到一定程度时，很容易达到单个磁盘的上限，因此采用分区的办法，即一个分区对应一个文件，这样就可以将数据分别存储到不同的 <code>Server</code> 上去，同时也可以实现负载均衡从而容纳更多的消费者。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/2.png"></p>
+<p>为什么要进行分区呢？最根本的原因就是 <code>Kafka</code> 基于文件存储，当文件内容大到一定程度时，很容易达到单个磁盘的上限，因此采用分区的办法，即一个分区对应一个文件，这样就可以将数据分别存储到不同的 <code>Server</code> 上去，同时也可以实现负载均衡从而容纳更多的消费者。</p>
 <h5 id="1-Replica"><a href="#1-Replica" class="headerlink" title="(1) Replica"></a>(1) Replica</h5><p>分区 <code>Partition</code> 中的数据是以文件的形式存在，而为了实现故障高可用，<code>Kafka</code> 中引入了副本概念 <code>(Replica)</code>。</p>
-<p>即在集群模式下，每个 <code>Partition</code> 下的消息文件将按照一定规则均匀分布到各个节点，因此当存在某个故障节点仍可从其它节点读取从而保证数据的安全性。</p>
+<p>当生产者发送数据时，主节点接收到消息后会先将数据写入自身节点的 <code>append log</code> 文件，并将消息复制给其它的所有的子节点。同时子节点也会定时从主节点同步数据，从而保证与主节点的消息一致性。即在集群模式下，每个 <code>Partition</code> 下的消息文件将按照一定规则均匀复制分布到各个节点，因此当存在某个故障节点仍可从其它节点读取从而保证数据的安全性。</p>
+<blockquote>
 <ul>
 <li><code>Kafka</code> 的 <code>Replica</code> 包含主节点 <code>(leader)</code> 与子节点 <code>(follower)</code>。</li>
-<li><code>Partition</code> 的 <code>Replica</code> 默认情况会均匀分布到所有 <code>Broker</code> 上。</li>
+<li><code>Partition</code> 的 <code>Replica</code> 默认情况会均匀复制分布到所有 <code>Broker</code> 上。</li>
 <li>当 <code>Topic</code> 的 <code>replication-factor</code> 为 <code>N(N&gt;1)</code> 时，则每个 <code>Partition</code> 都会有 <code>N</code> 个副本。</li>
 <li>当 <code>Replica</code> 的个数小于或等于 <code>Broker</code> 的个数，对于每个 <code>Partition</code> 而言，每个 <code>Broker</code> 上最多只会有一个 <code>Replica</code>，因此可以使用 <code>Broker id</code> 指定 <code>Partition</code> 的 <code>Replica</code>。</li>
 </ul>
+</blockquote>
 <h4 id="5-Offset"><a href="#5-Offset" class="headerlink" title="5. Offset"></a>5. Offset</h4><p>一个分区对应一个磁盘上的文件，而消息在文件中的位置就称为偏移量 <code>(Offset)</code>，<code>Offset</code> 为一个 <code>long</code> 型数字，它可以唯一标记条消息。</p>
 <p>由于 <code>Kafka</code> 并没有提供基他额外的索引机制来存储 <code>Offset</code> ，文件只能顺序的读写，所以在 <code>Kafka</code> 中几乎不允许对消息进行”随机读写”。</p>
 <h3 id="二、传输过程"><a href="#二、传输过程" class="headerlink" title="二、传输过程"></a>二、传输过程</h3><h4 id="1-生产者"><a href="#1-生产者" class="headerlink" title="1. 生产者"></a>1. 生产者</h4><p>对于生产者要写入的条记录，可以指定四个参数：分别是 <code>Topic, Partition, Key, Value(需存入的数据)</code>，其中 <code>Topic</code> 和 <code>Value</code> 是必须要指定的，而 <code>Key</code> 和 <code>Partition</code> 是可选的。</p>
+<p>对于一条记录，先对其进行序列化，按照 <code>Topic</code> 和 <code>Partition</code> 放进对应的发送队列中，若 <code>Partition</code> 未填，则分为两类情况：</p>
 <blockquote>
-<p>对于一条记录，先对其进行序列化，按照 <code>Topic</code> 和 <code>Partition</code> 放进对应的发送队列中；</p>
 <ul>
-<li>若 <code>Partition</code> 没填，则分为两类情况：</li>
-<li>(1) 若 <code>Key</code> 没填，通过 <code>Round-Robin</code> 来选 <code>Partition</code>；</li>
-<li>(2) 若 <code>Key</code> 有填，按照 <code>Key</code> 进行哈希，相同 <code>Key</code> 去一个 <code>Partition</code>；</li>
+<li>若 <code>Key</code> 没填，通过 <code>Round-Robin</code> 算法确定 <code>Partition</code>；</li>
+<li>若 <code>Key</code> 有填，按照 <code>Key</code> 进行哈希，相同 <code>Key</code> 去一个 <code>Partition</code>；</li>
 </ul>
 </blockquote>
 <p><img src="/album/loading.gif" data-original="/album/article/db/kafka/5.png"></p>
-<h4 id="2-消费者"><a href="#2-消费者" class="headerlink" title="2. 消费者"></a>2. 消费者</h4><p>消费者不是以单独的形式存在的，每一个消费者属于一个 <code>Consumer Group</code> ，一个 <code>Group</code> 可以包含多个 <code>Consumer</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/3.png"></p>
+<p>当完成 <code>Patition</code> 的确定并将数据存入分区后，每一条消息以 <code>&lt;Topic, Partition&gt;</code> 实现定位，并且每个分区都会为其的消息分配一个递增的偏移量，注意同一个 <code>Topic</code> 中不同分区的消息偏移量是相互独立的。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/6.png"></p>
+<h4 id="2-消费者"><a href="#2-消费者" class="headerlink" title="2. 消费者"></a>2. 消费者</h4><p>消费者不是以单独的形式存在的，每一个消费者属于一个 <code>Consumer Group</code> ，一个 <code>Group</code> 可以包含多个 <code>Consumer</code>。当执行数据消费时， <code>Consumer</code> 会不断的拉取 <code>Partition</code> 中的数据，并记录一份当前 <code>&lt;Topic, Partition&gt;</code> 消费的数据偏移量 <code>(offset)</code>，注意这份偏移量数据是记录在消费者中。</p>
+<p>当一个 <code>Topic</code> 存在多个分区时，消费者在拉取消息会通过一定的算法轮询读取每个分区数据。注意消费者为不同的分区维护不同的偏移量，即为每个分区都单独记录一份偏移量标识当前读取的位置。因此，在 <code>Topic</code> 层面其数据是无序的，而在同一个 <code>Topic</code> 的同一个分区下数据是有序的并且可通过偏移量表示。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/3.png"></p>
 <p>特别需要注意的是：订阅 <code>Topic</code> 是以一个消费组来订阅的，发送到 <code>Topic</code> 的消息只会被订阅此 <code>Topic</code> 的每个 <code>Group</code> 中的一个 <code>Consumer</code> 消费，即同一个消费组的两个消费者不会同时消费一个 <code>Partition</code>。如果所有的 <code>Consumer</code> 都具有相同的 <code>Group</code>，那么就像是一个点对点的消息系统；如果每个 <code>Consumer</code> 都具有不同的 <code>Group</code>，那么消息会广播给所有的消费者。</p>
 <p>具体说来，这实际上是根据 <code>Partition</code> 来分的，一个 <code>Partition</code> 只被消费组里的一个消费者消费，但是可以同时被多个消费组消费，消费组里的每个消费者是关联到一个 <code>Partition</code> 的，因此对于一个 <code>Topic</code> 而言，同一个 <code>Group</code> 中不能有多于 <code>Partition</code> 个数的 <code>Consumer</code> 同时消费，否则将意味着某些 <code>Consumer</code> 将无法得到消息。</p>
 <h3 id="三、数据同步"><a href="#三、数据同步" class="headerlink" title="三、数据同步"></a>三、数据同步</h3><h4 id="1-ISR机制"><a href="#1-ISR机制" class="headerlink" title="1. ISR机制"></a>1. ISR机制</h4><p><code>Kafka</code> 中通过 <code>ISR(in-sync replica set)</code> 机制管理集群节点，其机制如下：</p>
@@ -631,27 +635,63 @@
 <h4 id="3-故障转移"><a href="#3-故障转移" class="headerlink" title="3. 故障转移"></a>3. 故障转移</h4><h5 id="1-Leader故障"><a href="#1-Leader故障" class="headerlink" title="(1) Leader故障"></a>(1) Leader故障</h5><p><code>Leader</code> 发生故障后，会从 <code>ISR</code> 中选出一个新的 <code>Leader</code>，同时为保证多个副本之间的数据一致性，其余的 <code>Follower</code> 会先将各自的 <code>log</code> 文件高于 <code>HW(High Watermark, 消费者的消费进度)</code> 的部分截掉，然后从新的 <code>Leader</code> 同步数据。</p>
 <p>这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。</p>
 <h5 id="2-Follower故障"><a href="#2-Follower故障" class="headerlink" title="(2) Follower故障"></a>(2) Follower故障</h5><p><code>Follower</code> 发生故障后会被临时踢出 <code>ISR</code> 集合，待该 <code>Follower</code> 恢复后，将会读取本地磁盘记录的上次的 <code>HW</code>，并将 <code>log</code> 文件高于 <code>HW</code> 的部分截取掉，从 <code>HW</code> 开始向 <code>Leader</code> 进行同步数据操作，等该 <code>Follower</code> 的 <code>LEO(Log End Offset，日志的末尾偏移量)</code> 大于等于该 <code>Partition</code> 的 <code>HW</code>，即 <code>Follower</code> 追上 <code>Leader</code> 后，就可以重新加入 <code>ISR</code> 了。</p>
-<h4 id="4-幂等性"><a href="#4-幂等性" class="headerlink" title="4. 幂等性"></a>4. 幂等性</h4><p><code>Producer</code> 不论向 <code>Server</code> 发送多少重复数据，<code>Server</code> 端都只会持久化一条，<code>Producer</code> 的参数中 <code>enable.idompotence</code> 设置为 <code>true</code> 即可。</p>
-<p>开启幂等性的 <code>Producer</code> 在初始化时会被分配一个 <code>PID</code>，发往同一 <code>Partition</code> 的消息会附带 <code>Sequence Number</code>，而 <code>Broker</code> 端会对 <code>&lt;PID,Partition,SeqNumber&gt;</code> 做缓存，当具有相同主键的消息提交时，<code>Broker</code> 只会持久化一条。  但是 <code>PID</code> 重启后就会变化，同时不同的 <code>Partition</code> 也具有不同主键，所以幂等性无法保证跨分区会话的 <code>Exactly Once</code>。</p>
-<h3 id="四、Broker"><a href="#四、Broker" class="headerlink" title="四、Broker"></a>四、Broker</h3><h4 id="1-IO多路复用"><a href="#1-IO多路复用" class="headerlink" title="1. IO多路复用"></a>1. IO多路复用</h4><p><code>Kafka</code> 采用 <code>Reactor</code> 网络通信模型实现复用以提高效率。</p>
+<h3 id="四、数据幂等"><a href="#四、数据幂等" class="headerlink" title="四、数据幂等"></a>四、数据幂等</h3><h4 id="1-重复消费"><a href="#1-重复消费" class="headerlink" title="1. 重复消费"></a>1. 重复消费</h4><p>在 <code>Kafka</code> 中提供了消息幂等从而避免消息的重复消息，即 <code>Exactly once</code>。</p>
+<p>上述介绍 <code>ack</code> 时提到在设置为 <code>-1</code> 时，当生产者发送消息时会等待所有 <code>broker</code> 返回确认信息，若未生产者未接受到返回确认值则会重发，保证了至少消息会成功一次。</p>
+<p>在理想的情况下，<code>broker</code> 在接收到生产者发送的数据之后会添加到分区文件末端，然后返回一个 <code>ack</code> 值标识我已经成功获取消息，过程如下图：<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/7.png"></p>
+<p>但 <code>Broker</code> 返回的 <code>ack</code> 值并非每次都能成功，假设由于网络波动等异常导致返回失败，由于生产者未收到确定值因此将尝试重发，但 <code>Broker</code> 已接收并保存过数据，此时将会导致同一消息保存了两次。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/8.png"></p>
+<p>根据上述所描述，若 <code>acks</code> 设置为 <code>-1</code> 虽保证了数据不丢失但却存在重复消息的问题。在现代的多数系统设计中，都需要保证数据的幂等性，即在相同情景下的执行的操作结果一定也是相同的。</p>
+<p>例如在查询用户信息时，当请求过滤 <code>ID</code> 为 <code>123</code> 的记录时，在后台数据未发生变更的前提，不论执行了多少次查询，每次返回的结果都应该相同，即操作的幂等性。同理，当 <code>Kafka</code> 发送的消息发生重复保存时，显然也就会导致消费者的重复消费，如果消费者不执行额外的过滤流程，显然同一业务逻辑将会被执行多次。</p>
+<h4 id="2-实现机制"><a href="#2-实现机制" class="headerlink" title="2. 实现机制"></a>2. 实现机制</h4><p>因此，<code>Kafka</code> 在 <code>0.11</code> 版本之后加入了消息的幂等，解决重复数据的问题，即实现了数据的 <code>Exactly Once</code>。</p>
+<p>在开启幂等后，<code>Producer</code> 在初始化时会被分配一个 <code>PID</code>，同时发往同一 <code>Partition</code> 的消息会附带 <code>Sequence Number</code>，其为是一个递增的偏移量。当 <code>Broker</code> 在接收到数据进行保存时，会在分区中比对消息 <code>PID</code> 和 <code>SN</code>，接收消息的 <code>SN</code> 比分区数据中的 <code>SN</code> 值大于 <code>1</code> 时该消息将会被丢弃。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/9.png"></p>
+<p>若需要开启消息幂等，生产者需要将 <code>enable.idempotence</code> 设置为 <code>true</code>，搭配 <code>acks = -1</code> 项从而实现 <code>Producer</code> 不论向 <code>Broker</code> 发送多少重复数据，<code>Broker</code> 端都只会持久化一条。</p>
+<h4 id="3-失效场景"><a href="#3-失效场景" class="headerlink" title="3. 失效场景"></a>3. 失效场景</h4><p>虽然通过 <code>enable.idempotence</code> 可以开启幂等，但并非所有情况下都能保证消息的幂等。</p>
+<p>由于一个 <code>Topic</code> 可能存在多个 <code>Partition</code>，而幂等消息每个 <code>&lt;Partiton, PID, SN&gt;</code> 在不同 <code>Partition</code> 中是独立存在的，若重复消息发送至了不同 <code>Partition</code> 幂等也将失效。如下图示例中，若存在一个 <code>Topic</code> 两个分区，第一次发送数据存入 <code>Partition-1</code> 后若 <code>ack</code> 返回失败导致重发，而第二次发送数据存入了 <code>Partition-2</code>，而 <code>Partition-2</code> 中比对 <code>PID</code> 与 <code>SN</code> 后未读取到对应数据则仍会执行保存，此时数据仍然被重复保存。</p>
+<p>因此，幂等性只能保证在同一个分区 <code>(Partition)</code> 下的消息去重，即无法保证跨分区会话的 <code>Exactly Once</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/10.png"></p>
+<h3 id="五、消息事务"><a href="#五、消息事务" class="headerlink" title="五、消息事务"></a>五、消息事务</h3><h4 id="1-事务介绍"><a href="#1-事务介绍" class="headerlink" title="1. 事务介绍"></a>1. 事务介绍</h4><p>在介绍幂等时提到了其无法实现了跨分区的原子性，而事务正是解决了这个问题。事务可以保证对多个分区写入操作的原子性。操作的原子性是指多个操作要么全部成功，要么全部失败，不存在部分成功、部分失败的可能。</p>
+<p>若需要开启事务，生产者通过配置 <code>transactional.id</code> 值开启事务，且必须同时开启幂等。生产者启动后同时还会获取一个单调递增的 <code>producer epoch</code>，如果使用同一个 <code>transactional.id</code> 开启两个生产者，<code>Kafka</code> 收到事务提交请求时检查当前事务提交者的 <code>epoch</code> 不是最新的，那么就会拒绝该 <code>Producer</code> 的请求。</p>
+<h4 id="2-事务机制"><a href="#2-事务机制" class="headerlink" title="2. 事务机制"></a>2. 事务机制</h4><p>从生产者的角度分析，通过事务 <code>Kafka</code> 可以保证跨生产者会话的消息幂等发送，以及跨生产者会话的事务恢复。前者表示具有相同 <code>transactional.id</code> 的新生产者实例被创建且工作的时候，旧的且拥有相同 <code>transactional.id</code> 的生产者实例将不再工作。后者指当某个生产者实例宕机后，新的生产者实例可以保证任何未完成的旧事务要么被提交 <code>(Commit)</code>，要么被中止 <code>(Abort)</code>，如此可以使新的生产者实例从一个正常的状态开始工作。</p>
+<h4 id="3-事务方法"><a href="#3-事务方法" class="headerlink" title="3. 事务方法"></a>3. 事务方法</h4><p>在 <code>KafkaProducer</code> 中提供了 <code>5</code> 个与事务相关的方法，详细如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 初始化事务</span>
+<span class="token keyword">void</span> <span class="token function">initTransactions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 开启事务</span>
+<span class="token keyword">void</span> <span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 为 Consumer 提供的在事务内 Commit Offsets 的操作</span>
+<span class="token keyword">void</span> <span class="token function">sendOffsetsToTransaction</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>TopicPartition<span class="token punctuation">,</span> OffsetAndMetadata<span class="token operator">></span> offsets<span class="token punctuation">,</span>
+                              String consumerGroupId<span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 提交事务</span>
+<span class="token keyword">void</span> <span class="token function">commitTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 放弃事务，类似于回滚事务的操作</span>
+<span class="token keyword">void</span> <span class="token function">abortTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-事务隔离"><a href="#4-事务隔离" class="headerlink" title="4. 事务隔离"></a>4. 事务隔离</h4><p>在消费端有一个参数 <code>isolation.level</code> 与事务有关，这个参数的默认值为 <code>read_uncommitted</code>，即表明说消费者可以读到未提交的事务，当然对于已提交的事务也是可见的。这个参数还可以设置为 <code>read_committed</code>，表示消费者不可以读取尚未提交的事务内的消息。另外，需设置 <code>enable.auto.commit = false</code> 关闭自动提交 <code>Offset</code> 功能。</p>
+<h3 id="六、优点特性"><a href="#六、优点特性" class="headerlink" title="六、优点特性"></a>六、优点特性</h3><h4 id="1-Broker"><a href="#1-Broker" class="headerlink" title="1. Broker"></a>1. Broker</h4><h5 id="1-IO多路复用"><a href="#1-IO多路复用" class="headerlink" title="(1) IO多路复用"></a>(1) IO多路复用</h5><p><code>Kafka</code> 采用 <code>Reactor</code> 网络通信模型实现复用以提高效率。</p>
 <p><code>Acceptor</code>线程负责监听新的连接，<code>Processor</code>线程都有自己的 <code>selector</code>，负责从 <code>Socket</code> 中读写数据。<code>KafkaRequestHandler</code>业务处理线程进行业务处理，然后生成 <code>Response</code>，再交由给 <code>Processor</code> 线程。  </p>
-<h4 id="2-磁盘顺序写"><a href="#2-磁盘顺序写" class="headerlink" title="2. 磁盘顺序写"></a>2. 磁盘顺序写</h4><p><code>Kafka</code> 本质上就是一个队列，是先进先出的，而且消息一旦生产了就不可变，这种有序性和不可变性使得 <code>Kafka</code> 完全可以「<strong>顺序写</strong>」日志文件。</p>
+<h5 id="2-磁盘顺序写"><a href="#2-磁盘顺序写" class="headerlink" title="(2) 磁盘顺序写"></a>(2) 磁盘顺序写</h5><p><code>Kafka</code> 本质上就是一个队列，是先进先出的，而且消息一旦生产了就不可变，这种有序性和不可变性使得 <code>Kafka</code> 完全可以「<strong>顺序写</strong>」日志文件。</p>
 <p>对于普通的机械磁盘，如果是随机写入性能确实极差，但如果是顺序写入，则大大节省磁盘寻道和盘片旋转的时间，因此性能提升了 <code>3</code> 个数量级。</p>
-<h4 id="3-Page-Cache"><a href="#3-Page-Cache" class="headerlink" title="3. Page Cache"></a>3. Page Cache</h4><p>在读写磁盘日志文件时，利用了操作系统本身的缓存技术，其实操作的都是内存，然后由操作系统决定什么时候将 <code>Page Cache</code> 里的数据真正刷入磁盘，类似于 <code>MySQL</code> 中的 <code>Change Buffer</code>。</p>
-<h4 id="4-分区分段"><a href="#4-分区分段" class="headerlink" title="4. 分区分段"></a>4. 分区分段</h4><p>当面对海量消息时，单机的存储容量和读写性能有限，对数据进行分区存储，可以更好的利用不同机器的读写能力，应对海量数据的存储。</p>
+<h5 id="3-Page-Cache"><a href="#3-Page-Cache" class="headerlink" title="(3) Page Cache"></a>(3) Page Cache</h5><p>在读写磁盘日志文件时，利用了操作系统本身的缓存技术，其实操作的都是内存，然后由操作系统决定什么时候将 <code>Page Cache</code> 里的数据真正刷入磁盘，类似于 <code>MySQL</code> 中的 <code>Change Buffer</code>。</p>
+<h5 id="4-分区分段"><a href="#4-分区分段" class="headerlink" title="(4) 分区分段"></a>(4) 分区分段</h5><p>当面对海量消息时，单机的存储容量和读写性能有限，对数据进行分区存储，可以更好的利用不同机器的读写能力，应对海量数据的存储。</p>
 <p><code>Kafka</code> 通过水平拆分方案，对数据进行拆分，拆分后的数据子集叫做 <code>Partition</code>，各个分区的数据合集即全量数据。每个 <code>Partition</code> 又被分成了多个 <code>Segment</code>，引入 <code>Segment</code> 可以防止 <code>Partition</code> 过大m，同时做历史消息删除时，常见的操作时需要将文件前面的内容删除，这有悖顺序写的设计。而 <code>Segment</code> 的引入，只需将旧的 <code>Segment</code> 文件删除即可，保证了每个<code>Segment</code> 的顺序写。</p>
-<h3 id="五、生产者"><a href="#五、生产者" class="headerlink" title="五、生产者"></a>五、生产者</h3><h4 id="1-批量发送"><a href="#1-批量发送" class="headerlink" title="1. 批量发送"></a>1. 批量发送</h4><p><code>Kafka</code> 采用了批量发送消息的方式，通过将多条消息按照分区进行分组，然后每次发送一个消息集合，从而大大减少了网络传输的 <code>overhead</code>。</p>
-<h4 id="2-消息压缩"><a href="#2-消息压缩" class="headerlink" title="2. 消息压缩"></a>2. 消息压缩</h4><p>消息压缩的目的是为了进一步减少网络传输带宽，但其不仅仅减少了网络 <code>IO</code>，它还大大降低了磁盘 <code>IO</code>。因为批量消息在持久化到 <code>Broker</code> 中的磁盘时保持的仍是压缩状态，最终是在 <code>Consumer</code> 端做了解压缩操作。</p>
-<h4 id="3-高效序列化"><a href="#3-高效序列化" class="headerlink" title="3. 高效序列化"></a>3. 高效序列化</h4><p>只需要提供相应的序列化和反序列化器，用户可以根据实际情况选用快速且紧凑的序列化方式来减少实际的网络传输量以及磁盘存储量，进一步提高吞吐量。</p>
-<h4 id="4-内存池复用"><a href="#4-内存池复用" class="headerlink" title="4. 内存池复用"></a>4. 内存池复用</h4><p><code>Producer</code> 一上来就会占用一个固定大小的内存块，比如 <code>64MB</code>，然后将 <code>64 MB</code> 划分成 <code>M</code> 个小内存块(比如一个小内存块大小是 <code>16KB</code>)。</p>
+<h4 id="2-生产者"><a href="#2-生产者" class="headerlink" title="2. 生产者"></a>2. 生产者</h4><h5 id="1-批量发送"><a href="#1-批量发送" class="headerlink" title="(1) 批量发送"></a>(1) 批量发送</h5><p><code>Kafka</code> 采用了批量发送消息的方式，通过将多条消息按照分区进行分组，然后每次发送一个消息集合，从而大大减少了网络传输的 <code>overhead</code>。</p>
+<h5 id="2-消息压缩"><a href="#2-消息压缩" class="headerlink" title="(2) 消息压缩"></a>(2) 消息压缩</h5><p>消息压缩的目的是为了进一步减少网络传输带宽，但其不仅仅减少了网络 <code>IO</code>，它还大大降低了磁盘 <code>IO</code>。因为批量消息在持久化到 <code>Broker</code> 中的磁盘时保持的仍是压缩状态，最终是在 <code>Consumer</code> 端做了解压缩操作。</p>
+<h5 id="3-高效序列化"><a href="#3-高效序列化" class="headerlink" title="(3) 高效序列化"></a>(3) 高效序列化</h5><p>只需要提供相应的序列化和反序列化器，用户可以根据实际情况选用快速且紧凑的序列化方式来减少实际的网络传输量以及磁盘存储量，进一步提高吞吐量。</p>
+<h5 id="4-内存池复用"><a href="#4-内存池复用" class="headerlink" title="(4) 内存池复用"></a>(4) 内存池复用</h5><p><code>Producer</code> 一上来就会占用一个固定大小的内存块，比如 <code>64MB</code>，然后将 <code>64 MB</code> 划分成 <code>M</code> 个小内存块(比如一个小内存块大小是 <code>16KB</code>)。</p>
 <p>当需要创建一个新的 <code>Batch</code> 时，直接从内存池中取出一个 <code>16 KB</code> 的内存块即可，然后往里面不断写入消息，但最大写入量就是 <code>16 KB</code>，接着将 <code>Batch</code> 发送给 <code>Broker</code> ，此时该内存块就可以还回到缓冲池中继续复用了，根本不涉及垃圾回收。  </p>
-<h3 id="六、消费者"><a href="#六、消费者" class="headerlink" title="六、消费者"></a>六、消费者</h3><h4 id="1-稀疏索引"><a href="#1-稀疏索引" class="headerlink" title="1. 稀疏索引"></a>1. 稀疏索引</h4><p><code>Kafka</code> 查询的场景主要是能按照 <code>offset</code> 或者 <code>timestamp</code> 查到消息即可。因此 <code>Kafka</code> 消息的 <code>offset</code> 设计成有序的，将消息划分成若干个 <code>block</code>，而稀疏索引记录每个 <code>block</code> 第一条消息的 <code>offset</code>，查找的时候便可以便捷的使用二分查找高效定位。</p>
+<h4 id="3-消费者"><a href="#3-消费者" class="headerlink" title="3. 消费者"></a>3. 消费者</h4><h5 id="1-稀疏索引"><a href="#1-稀疏索引" class="headerlink" title="(1) 稀疏索引"></a>(1) 稀疏索引</h5><p><code>Kafka</code> 查询的场景主要是能按照 <code>offset</code> 或者 <code>timestamp</code> 查到消息即可。因此 <code>Kafka</code> 消息的 <code>offset</code> 设计成有序的，将消息划分成若干个 <code>block</code>，而稀疏索引记录每个 <code>block</code> 第一条消息的 <code>offset</code>，查找的时候便可以便捷的使用二分查找高效定位。</p>
 <p>稀疏索引不会为 <strong>每个搜索关键字创建索引记录</strong>，此处的索引记录包含搜索键和指向磁盘上数据的实际指针，搜索记录时首先按索引记录进行操作，然后到达数据的实际位置再进行顺序搜索，直到找到所需的数据为止。<code>B+</code> 树随着记录插入需要频繁的页分裂效率较低，而 <code>Hash</code> 索引的常驻内存，若高达几百万的消息写入，会将内存撑爆。</p>
-<h4 id="2-零拷贝"><a href="#2-零拷贝" class="headerlink" title="2. 零拷贝"></a>2. 零拷贝</h4><p>零拷贝是指数据直接从磁盘文件复制到网卡设备，而无需经过应用程序，减少了内核和用户模式之间的上下文切换，从而提高了消息消费效率。</p>
-<h4 id="3-批量拉取"><a href="#3-批量拉取" class="headerlink" title="3. 批量拉取"></a>3. 批量拉取</h4><p>和生产者批量发送消息类似，消息者也是批量拉取消息的，每次拉取一个消息集合以降低了频次，从而大大减少了网络传输的 <code>overhead</code>。</p>
-<h4 id="4-MMAP"><a href="#4-MMAP" class="headerlink" title="4. MMAP"></a>4. MMAP</h4><p><code>kafka</code> 在 <strong>索引文件的读写</strong> 中用到了 <code>MMAP(memory mapped files)</code>。</p>
+<h5 id="2-零拷贝"><a href="#2-零拷贝" class="headerlink" title="(2) 零拷贝"></a>(2) 零拷贝</h5><p>零拷贝是指数据直接从磁盘文件复制到网卡设备，而无需经过应用程序，减少了内核和用户模式之间的上下文切换，从而提高了消息消费效率。</p>
+<h5 id="3-批量拉取"><a href="#3-批量拉取" class="headerlink" title="(3) 批量拉取"></a>(3) 批量拉取</h5><p>和生产者批量发送消息类似，消息者也是批量拉取消息的，每次拉取一个消息集合以降低了频次，从而大大减少了网络传输的 <code>overhead</code>。</p>
+<h5 id="4-MMAP"><a href="#4-MMAP" class="headerlink" title="(4) MMAP"></a>(4) MMAP</h5><p><code>kafka</code> 在 <strong>索引文件的读写</strong> 中用到了 <code>MMAP(memory mapped files)</code>。</p>
 <p><code>MMAP</code> 是一种内存映射文件的方法，即将一个文件或者其它对象映射到进程的地址空间，实现文件磁盘地址和进程虚拟地址空间中一段虚拟地址的一一对映关系。实现这样的映射关系后，进程就可以采用指针的方式读写操作这一段内存，而系统会自动回 <strong>写脏页面</strong> 到对应的文件磁盘上，即完成了对文件的操作而不必再调用read,write等系统调用函数。  </p>
 <p><code>Kafka</code> 的 <code>log</code> 文件为什么不使用 <code>MMAP</code>？<code>MMAP</code> 有多少字节可以映射到内存中与地址空间有关，<code>32</code> 位的体系结构只能处理 <code>4GB</code> 甚至更小的文件。<code>Kafka</code> 日志通常足够大，可能一次只能映射部分，因此读取它们将变得非常复杂。然而，索引文件是稀疏的，它们相对较小，将它们映射到内存中可以加快查找过程，这是内存映射文件提供的主要好处。</p>
+<hr>
+<p><strong>参考链接</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://it-blog-cn.com/blogs/qmq/transaction.html">Kafka事务</a></li>
+</ol>
 
                 
             </div>
@@ -1253,7 +1293,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">235.9k</span>
+                <span class="white-color">237.5k</span>
             
             
             
