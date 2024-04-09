@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-01
+                    2024-04-09
                 </div>
                 
 
@@ -637,7 +637,7 @@
 <h5 id="1-同步处理"><a href="#1-同步处理" class="headerlink" title="(1) 同步处理"></a>(1) 同步处理</h5><p>在为对象分配内存空间时采用 <code>CAS</code> 配置，通过失败重试的方式保证更新操作的原子性。</p>
 <h5 id="2-本地线程分配缓冲"><a href="#2-本地线程分配缓冲" class="headerlink" title="(2) 本地线程分配缓冲"></a>(2) 本地线程分配缓冲</h5><p>将内存分配的动作按照线程划分在不同的空间之中，即每个线程在 <code>Java</code> 堆中预先分配一小块内存，称为本地线程分配缓冲 <code>(Thread Local Allocation Buffer，TLAB)</code>，哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完了，分配新的缓存区时才需要同步锁定本地线程分配缓冲。</p>
 <h4 id="3-引用算法"><a href="#3-引用算法" class="headerlink" title="3. 引用算法"></a>3. 引用算法</h4><p>在执行垃圾回收通俗的讲就是判断哪些对象已经没用应该进行资源释放，而判断一个对象是否可用存在两种算法实现：<code>引用计数法</code> 与 <code>可达性分析法</code>。</p>
-<h5 id="2-引用计数法"><a href="#2-引用计数法" class="headerlink" title="(2) 引用计数法"></a>(2) 引用计数法</h5><p>在对象中添加一个引用计数器，每当有一个地方引用它时计数器值就加一，当引用失效时计数器值就减一，任何时刻计数器为零的对象就是不可能再被使用的。</p>
+<h5 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="(1) 引用计数法"></a>(1) 引用计数法</h5><p>在对象中添加一个引用计数器，每当有一个地方引用它时计数器值就加一，当引用失效时计数器值就减一，任何时刻计数器为零的对象就是不可能再被使用的。</p>
 <p>但是引用计数法存在一个问题即当对象之间相互循环引用时将无法及时回收。</p>
 <h5 id="2-可达性分析法"><a href="#2-可达性分析法" class="headerlink" title="(2) 可达性分析法"></a>(2) 可达性分析法</h5><p>通过一系列称为 <code>GC Roots</code> 的根对象作为起始节点集，从这些节点开始，根据引用关系向下搜索，搜索过程所走过的路径称为“引用链” <code>(Reference Chain)</code>，如果某个对象到 <code>GC Roots</code> 间没有任何引用链相连，或者用图论的话来说就是从 <code>GC Roots</code> 到这个对象不可达时，则证明此对象是不可能再被使用的。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/2.png"></p>
 <blockquote>
@@ -1491,7 +1491,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.5k</span>
+                <span class="white-color">237.7k</span>
             
             
             
