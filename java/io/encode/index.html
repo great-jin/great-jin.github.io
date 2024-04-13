@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-30
+                    2024-04-13
                 </div>
                 
 
@@ -932,7 +932,7 @@
 <p>分组加密解决的一大痛点即保证加密的同时仍保留了模糊查询，通过对目标数据的拆分分组后单独加密存储，牺牲一定空间的前提下实现模糊查询的效果。</p>
 <h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>让我们通过一个示例更直观的了解分组加密的实现原理。</p>
 <p>假设我需要存储 <code>布袋青年</code> 四个字，在密钥为 <code>123456</code> 的前提经过 <code>AES</code> 加密后得到 <code>U2FsdGVkX19Sj4XRoc3rsbJS7VisiCR2fyUW+7e9gow=</code>，但将该值作为目标数据进行存储时，若输入 <code>布袋</code> 并无法模糊匹配命中，也就导致了无法对加密数据模糊查询。</p>
-<p>分组加密的核心在于数据拆词，同样针对 <code>布袋青年</code> 数据，将其拆分为 <code>布袋</code> 和 <code>青年</code>，并将拆分后的数据进行同样的加密得到 <code>U2FsdGVkX1/joWAz2Ti/m1HutDLbWW/oVSE6PyxisNY=</code> 与 <code>U2FsdGVkX1+NBvJIYl2r40mXgNSmUBc8jvZuEn3EUIA=</code>，将得到的两个数值拼接作为 <code>布袋青年</code> 的加密值。此时若需要执行模糊查询，同样以输入 <code>布袋</code> 为例，其条件即为 <code>where data like %encode(&#39;布袋&#39;)%</code>，即保证数据加密的前提下实现模糊查询。</p>
+<p>分组加密的核心在于数据拆词，同样针对 <code>布袋青年</code> 数据，将其拆分为 <code>布袋</code> 和 <code>青年</code>，并将拆分后的数据进行同样的加密得到 <code>U2FsdGVkX1/joWAz2Ti/m1HutDLbWW/oVSE6PyxisNY=</code> 与 <code>U2FsdGVkX1+NBvJIYl2r40mXgNSmUBc8jvZuEn3EUIA=</code>，将得到的两个数值拼接作为 <code>布袋青年</code> 的加密值。此时若需要执行模糊查询，同样以输入 <code>布袋</code> 为例，其条件即为 <code>where data like %encode(&#39;布袋&#39;)%</code>，即保证数据加密的前提下实现模糊查询。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/encode.png"></p>
 <p>这样处理当然也存在一定的弊端，拆词需要多次加密相较一次性加密更耗性能，且拼接的结果也更占存储空间，但其实现了加密的前提下仍然能模糊查询。为了达到更好的性能，通常一个数据的进行拆分时单个词组的长度控制在 <code>2 ~ 4</code> 个长度。</p>
 
                 
@@ -1132,7 +1132,7 @@
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1535,7 +1535,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             

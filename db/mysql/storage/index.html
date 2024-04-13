@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MySQL存储机制详解, 布袋青年">
+    <meta name="keywords" content="MySQL存储结构详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MySQL存储机制详解 | 布袋青年</title>
+    <title>MySQL存储结构详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -377,7 +377,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MySQL存储机制详解</h1>
+                    <h1 class="description center-align post-title">MySQL存储结构详解</h1>
                 </div>
             </div>
         </div>
@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-09
+                    2024-04-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.7k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    13 分
+                    11 分
                 </div>
                 
 
@@ -641,6 +641,11 @@
 <h4 id="2-Undo-log"><a href="#2-Undo-log" class="headerlink" title="2. Undo log"></a>2. Undo log</h4><p><code>Undo log</code> 用于处理事务数据回滚，将修改前数据存入 <code>Undo log</code> ，此时若发生事务即可直接从 <code>Undo log</code> 中读取变化前数据实现事务数据回滚。</p>
 <h4 id="3-Bin-log"><a href="#3-Bin-log" class="headerlink" title="3. Bin log"></a>3. Bin log</h4><p><code>Bin log</code> 是 <code>MySQL</code> 的一种服务器日志，用于记录 <code>SQL</code> 层面的数据更新操作，包括数据定义语句 <code>(DDL)</code> 和数据操作语句 <code>(DML)</code> 等。</p>
 <p>与 <code>Redo log</code> 不同，<code>Bin log</code> 是在 <code>MySQL Server</code> 层产生的，记录的是 <code>SQL</code> 语句或者语句的逻辑，而不是物理的数据变更操作。<code>Bin log</code> 可以用于数据恢复、数据复制和数据同步等操作，也可以用于查询和数据分析等工作，例如常见的 <code>CDC</code> 即利用 <code>bin log</code> 机制实现。</p>
+<blockquote>
+<p><code>bin log</code> 记录的数据存在下述两类级别：</p>
+</blockquote>
+<h5 id="1-Row-Level"><a href="#1-Row-Level" class="headerlink" title="(1) Row Level"></a>(1) Row Level</h5><p>在此级别下即记录的是具体的变更数据，如通过 <code>update</code> 更新了 <code>5</code> 条数据，则记录下这五条真实数据内容。即详细记录下每一条数据的变更内容，但缺点也很明显就存储资源占用更高。</p>
+<h5 id="2-Statement-Level"><a href="#2-Statement-Level" class="headerlink" title="(2) Statement Level"></a>(2) Statement Level</h5><p>在 <code>Statement Level</code> 级别下记录的是对应的执行语句，同样为通过 <code>update</code> 更新了 <code>5</code> 条数据，此时 <code>bin log</code> 记录存储下的则为 <code>update</code> 语句而非具体的数据记录。</p>
 <h3 id="四、存储机制"><a href="#四、存储机制" class="headerlink" title="四、存储机制"></a>四、存储机制</h3><h4 id="1-读写机制"><a href="#1-读写机制" class="headerlink" title="1. 读写机制"></a>1. 读写机制</h4><p>在 <code>MySQL</code> 中数据存储包含 <code>内存</code> 与 <code>磁盘</code> 两个部分，增删改操作首先会被写入到 <code>redo log</code> 中，保证数据的持久性。同时为了提高写入性能，<code>MySQL</code> 还引入了 <code>Change Buffer</code> 机制，将写入的数据先暂存在 <code>Change Buffer</code> 中，再由后台线程定时将其刷入磁盘。</p>
 <p>在执行查询操作时，先从 <code>Change Buffer</code> 中读取数据，如果数据已经被修改，会将修改后的数据写回磁盘，然后再返回给查询请求。如果数据没有被修改，则直接返回内存中的数据。这样可以避免频繁地从磁盘读取数据，提高查询性能。</p>
 <blockquote>
@@ -670,39 +675,6 @@
 <p>下图中以数据插入为例，若为更新等操作在 <code>Change Buffer</code> 与 <code>Redo log</code> 之间通常存在 <code>Undo log</code> 操作用于数据的事务回滚。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/9.png"></p>
 <p>但上述的存在一种特殊情况，即 <code>Redo log</code> 写入是正常但由于某些原因使得 <code>Bin log</code> 没有正常更新，也就导致了 <code>Redo log</code> 与 <code>Bin log</code> 二者数据出现不一致的情况。</p>
 <p>为此 <code>MySQL</code> 中引入了二阶段提交操作，将 <code>Redo log</code> 操作拆分为准备（<code>prepare</code>）与提交（<code>commit</code>），若 <code>Bin log</code> 出现异常则 <code>Redo log</code> 状态将停止于 <code>prepare</code>，当通过 <code>Redo log</code> 恢复数据时读取状态为 <code>prepare</code> 将通过事务回滚读取 <code>Bin log</code> 的值，即发生变更之前的数据，从而保证了数据的一致性。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/10.png"></p>
-<h3 id="五、MVCC介绍"><a href="#五、MVCC介绍" class="headerlink" title="五、MVCC介绍"></a>五、MVCC介绍</h3><p>多版本并发控制 <code>MVCC</code> 是一种无锁读取的优化策略，它的无锁是特指读取时不需要加锁。</p>
-<p>基本思路是对数据库的任何修改都不会直接覆盖之前的数据，而是产生一个新版副本与老版本共存，以此达到读取时可以完全不加锁的目的。</p>
-<h4 id="1-实现机制"><a href="#1-实现机制" class="headerlink" title="1. 实现机制"></a>1. 实现机制</h4><p><code>MVCC</code> 用来解决读写冲突的无锁并发控制，就是为事务分配单向增长的时间戳，为每个数据修改保存一个版本，版本与事务时间戳相关联。</p>
-<p><code>MVCC</code> 的实现原理主要是基于版本链、<code>undo</code> 日志与 <code>Read View</code> 实现，<code>InnoDB</code> 在每行数据都增加三个隐藏字段，一个唯一行号，一个记录创建的版本号，一个记录删除的版本号。</p>
-<blockquote>
-<ul>
-<li>创建版本号：<code>insert</code> 操作时事务的 <code>id</code>。</li>
-<li>删除版本号：<code>insert</code> 时为 <code>null</code>，删除时为当前事务的 <code>id</code>。  </li>
-</ul>
-</blockquote>
-<p>当读操作时，读取的是删除版本号为 <code>null</code> 或创建版本号最大的数据，保证我们读取的是最新的数据。</p>
-<h4 id="2-版本链"><a href="#2-版本链" class="headerlink" title="2. 版本链"></a>2. 版本链</h4><p>数据库中的每行数据除了肉眼看见的数据，还有几个隐藏字段，分别是 <code>db_trx_id</code>、<code>db_roll_pointer</code>、<code>db_row_id</code>。</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">字段</td>
-        <th style="text-align: center;">描述</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">db_row_id</td>
-        <td style="text-align: center;">隐含一个大小为 6byte 的自增 ID，如果数据表没有主键，则自动以 db_row_id 产生一个聚簇索引。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">db_trx_id</td>
-        <td style="text-align: center;">记录创建这条记录/最后一次修改该记录的事务 ID，大小为 6byte。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">db_roll_pointer</td>
-        <td style="text-align: center;">回滚指针(版本链关键，大小为 7byte)，指向这条记录的上一个版本(存储于 rollback segment 里)。</td>
-    </tr>
-</table>
-<br/>
-
-<p>实际还有一个删除 <code>flag</code> 隐藏字段，记录被更新或删除并不代表真的删除，而是删除 <code>flag</code> 变了。当通过 <code>delete</code> 关键字执行删除命令时，系统并不是真正意义上的进行删除，而是将对应记录的占用的空间标记为可用。</p>
 <hr>
 <p><strong>参考文档</strong></p>
 <ol>
@@ -907,7 +879,7 @@
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1306,7 +1278,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             

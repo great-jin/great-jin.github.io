@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-02
+                    2024-04-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5k
+                    5.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
+                    18 分
                 </div>
                 
 
@@ -647,6 +647,9 @@
 <h4 id="3-失效场景"><a href="#3-失效场景" class="headerlink" title="3. 失效场景"></a>3. 失效场景</h4><p>虽然通过 <code>enable.idempotence</code> 可以开启幂等，但并非所有情况下都能保证消息的幂等。</p>
 <p>由于一个 <code>Topic</code> 可能存在多个 <code>Partition</code>，而幂等消息每个 <code>&lt;Partiton, PID, SN&gt;</code> 在不同 <code>Partition</code> 中是独立存在的，若重复消息发送至了不同 <code>Partition</code> 幂等也将失效。如下图示例中，若存在一个 <code>Topic</code> 两个分区，第一次发送数据存入 <code>Partition-1</code> 后若 <code>ack</code> 返回失败导致重发，而第二次发送数据存入了 <code>Partition-2</code>，而 <code>Partition-2</code> 中比对 <code>PID</code> 与 <code>SN</code> 后未读取到对应数据则仍会执行保存，此时数据仍然被重复保存。</p>
 <p>因此，幂等性只能保证在同一个分区 <code>(Partition)</code> 下的消息去重，即无法保证跨分区会话的 <code>Exactly Once</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/10.png"></p>
+<h4 id="4-注意事项"><a href="#4-注意事项" class="headerlink" title="4. 注意事项"></a>4. 注意事项</h4><p>通过上述的描述可以看到 <code>Kafka</code> 提供了一定场景下的数据去重功能，但在真实的生产开发中，仍会出现某些异常场景导致重复消费。</p>
+<p>即幂等乃至事务的确保证了数据的不重复保存，但若消费者在完成消费后提交 <code>offset</code> 失败，则在下次服务恢复时这条消息将会被再次重复消费。因此，在需要严格保证的幂等场景下，更为合适的方式即将业务系统设计为幂等。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/11.png"></p>
+<p>同样以最常见消息发送消费为例，在 <code>Producer</code> 端发送数据中添加一个唯一标识符字段，消费端 <code>Consumer</code> 在接收到数据时基于该字段验证数据是否已经被消费过，此时不论是 <code>Producer</code> 端重复发送亦或是 <code>Consumer</code> 重复拉取消息，我们都能够保证业务的执行唯一性。针对唯一字段的验证方式，对于单体应用可利用各类本地缓存框架，而对于分布式应用而言，也可通过 <code>Redis</code> 等中间件实现命中判断。</p>
 <h3 id="五、消息事务"><a href="#五、消息事务" class="headerlink" title="五、消息事务"></a>五、消息事务</h3><h4 id="1-事务介绍"><a href="#1-事务介绍" class="headerlink" title="1. 事务介绍"></a>1. 事务介绍</h4><p>在介绍幂等时提到了其无法实现了跨分区的原子性，而事务正是解决了这个问题。事务可以保证对多个分区写入操作的原子性。操作的原子性是指多个操作要么全部成功，要么全部失败，不存在部分成功、部分失败的可能。</p>
 <p>若需要开启事务，生产者通过配置 <code>transactional.id</code> 值开启事务，且必须同时开启幂等。生产者启动后同时还会获取一个单调递增的 <code>producer epoch</code>，如果使用同一个 <code>transactional.id</code> 开启两个生产者，<code>Kafka</code> 收到事务提交请求时检查当前事务提交者的 <code>epoch</code> 不是最新的，那么就会拒绝该 <code>Producer</code> 的请求。</p>
 <h4 id="2-事务机制"><a href="#2-事务机制" class="headerlink" title="2. 事务机制"></a>2. 事务机制</h4><p>从生产者的角度分析，通过事务 <code>Kafka</code> 可以保证跨生产者会话的消息幂等发送，以及跨生产者会话的事务恢复。前者表示具有相同 <code>transactional.id</code> 的新生产者实例被创建且工作的时候，旧的且拥有相同 <code>transactional.id</code> 的生产者实例将不再工作。后者指当某个生产者实例宕机后，新的生产者实例可以保证任何未完成的旧事务要么被提交 <code>(Commit)</code>，要么被中止 <code>(Abort)</code>，如此可以使新的生产者实例从一个正常的状态开始工作。</p>
@@ -890,7 +893,7 @@
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1293,7 +1296,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             

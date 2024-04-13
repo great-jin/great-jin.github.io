@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-09
+                    2024-04-13
                 </div>
                 
 
@@ -582,15 +582,11 @@
 <p>Talk is cheap, show me you code. 完整工程代码，<a target="_blank" rel="noopener" href="https://github.com/great-jin/web-demo">GitHub仓库直达</a>。</p>
 </blockquote>
 <h3 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h3><p>先通过下面这张图确定我们需实现的目标，主要分为两条主线： <code>登录验证</code> 与 <code>权限认证</code> 。</p>
-<ul>
-<li><h5 id="登录验证"><a href="#登录验证" class="headerlink" title="登录验证"></a>登录验证</h5><p>  通过 <code>JWT</code> 为每个用户生成唯一且指定期限的 <code>Token</code> ，每次用户请求都将会重新生成重置过期时间，当在指定时间内该用户没有进行操作时 <code>Token</code> 将会过期。此时用户再次请求将会重定向至登录流程，至于 <code>Token</code> 过期时间应该根据业务场景而定。</p>
-<p>  顺便一提，如果需要实现 <code>N</code> 天免登录可以在接口额外添加一个标记用于表明用户是否勾选了 <code>N</code> 天免登录，然后在生成 <code>Token</code> 即可延迟过期时效。</p>
-</li>
-<li><h5 id="权限认证"><a href="#权限认证" class="headerlink" title="权限认证"></a>权限认证</h5><p>  权限认证通过 <code>Spring Security</code> 框架实现，当用户登录之后进行资源访问，对于服务端而言即接口调用，根据用户的角色判断是否有权限进行访问，若没有则应该予以相应的提示。</p>
-</li>
-</ul>
+<h4 id="1-登录验证"><a href="#1-登录验证" class="headerlink" title="1. 登录验证"></a>1. 登录验证</h4><p>通过 <code>JWT</code> 为每个用户生成唯一且指定期限的 <code>Token</code> ，每次用户请求都将会重新生成重置过期时间，当在指定时间内该用户没有进行操作时 <code>Token</code> 将会过期。此时用户再次请求将会重定向至登录流程，至于 <code>Token</code> 过期时间应该根据业务场景而定。</p>
+<p>顺便一提，如果需要实现 <code>N</code> 天免登录可以在接口额外添加一个标记用于表明用户是否勾选了 <code>N</code> 天免登录，然后在生成 <code>Token</code> 即可延迟过期时效。</p>
+<h4 id="2-权限认证"><a href="#2-权限认证" class="headerlink" title="2. 权限认证"></a>2. 权限认证</h4><p>权限认证通过 <code>Spring Security</code> 框架实现，当用户登录之后进行资源访问，对于服务端而言即接口调用，根据用户的角色判断是否有权限进行访问，若没有则应该予以相应的提示。</p>
 <p><img src="/album/loading.gif" data-original="/album/article/java/spring/security.png"></p>
-<h3 id="二、数据准备"><a href="#二、数据准备" class="headerlink" title="二、数据准备"></a>二、数据准备</h3><h4 id="1-Table"><a href="#1-Table" class="headerlink" title="1 Table"></a>1 Table</h4><p>新建角色用户数据表 <code>auth_user</code>，用户存储用户的角色详情，建表语句如下：</p>
+<h3 id="二、数据准备"><a href="#二、数据准备" class="headerlink" title="二、数据准备"></a>二、数据准备</h3><h4 id="1-用户表"><a href="#1-用户表" class="headerlink" title="1. 用户表"></a>1. 用户表</h4><p>新建角色用户数据表 <code>auth_user</code>，用户存储用户的角色详情，建表语句如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>auth_user<span class="token punctuation">`</span>
 <span class="token punctuation">(</span>
     <span class="token punctuation">`</span>id<span class="token punctuation">`</span>                      <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">36</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
@@ -1063,7 +1059,7 @@
     response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="八、跨域处理"><a href="#八、跨域处理" class="headerlink" title="八、跨域处理"></a>八、跨域处理</h3><p>因为采用的是 <code>Vue</code> + <code>Spring Boot</code> 前后端分离的形式，因此可能存在跨域处理。</p>
+<h3 id="八、跨域处理"><a href="#八、跨域处理" class="headerlink" title="八、跨域处理"></a>八、跨域处理</h3><h4 id="1-工程配置"><a href="#1-工程配置" class="headerlink" title="1. 工程配置"></a>1. 工程配置</h4><p>因为采用的是 <code>Vue</code> + <code>Spring Boot</code> 前后端分离的形式，因此可能存在跨域处理。</p>
 <p>在工程中新建 <code>CorsConfig</code> 类实现 <code>WebMvcConfigurer</code> 接口并重写 <code>addCorsMappings()</code> 方法配置跨域信息。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CorsConfig</span> <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">{</span>
@@ -1095,7 +1091,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="九、前端工程"><a href="#九、前端工程" class="headerlink" title="九、前端工程"></a>九、前端工程</h3><p>完成上述操作之后就正式完成后端的所有操作，下面介绍前端应该配置哪些信息。</p>
-<h4 id="1-认证存储"><a href="#1-认证存储" class="headerlink" title="1. 认证存储"></a>1. 认证存储</h4><p>在之前已经提到过了当通过认证之后后端会将 <code>JWT Token</code> 和 <code>Authentication</code> 信息写入响应的请求头中回传，这里前端我通过 <code>localStorage</code> 方式实现信息存储。</p>
+<h4 id="1-信息存储"><a href="#1-信息存储" class="headerlink" title="1. 信息存储"></a>1. 信息存储</h4><p>在之前已经提到过了当通过认证之后后端会将 <code>JWT Token</code> 和 <code>Authentication</code> 信息写入响应的请求头中回传，这里前端我通过 <code>localStorage</code> 方式实现信息存储。</p>
 <p>下述为登录按钮事件的核心实现，其中 <code>authVerify()</code> 调用的接口即之前配置的 <code>/api/auth/verify</code> 后端接口，需要传入两个参数 <code>username</code> 和 <code>password</code>。 </p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token function">authVerify</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>data<span class="token punctuation">.</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1110,7 +1106,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-请求头添加"><a href="#2-请求头添加" class="headerlink" title="2. 请求头添加"></a>2. 请求头添加</h4><p>完成登录之后，在后续的所有请求中我们需要将 <code>Token</code> 和 <code>Authorization</code> 参数写入请求的请求头中以供后端进行登录和权限认证。</p>
+<h4 id="2-请求认证"><a href="#2-请求认证" class="headerlink" title="2. 请求认证"></a>2. 请求认证</h4><p>完成登录之后，在后续的所有请求中我们需要将 <code>Token</code> 和 <code>Authorization</code> 参数写入请求的请求头中以供后端进行登录和权限认证。</p>
 <p>在前端的 <code>Axios</code> 的配置文件中添加如下代码，在每次发送请求之前都会从 <code>localStorage</code> 中读取存储的认证信息并写入请求头，通过监控后端返回结果，对于未授权或登录过期用户重定向至登录页面。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>config <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -1376,7 +1372,7 @@
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1775,7 +1771,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             

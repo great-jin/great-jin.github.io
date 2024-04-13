@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-31
+                    2024-04-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.2k
+                    3.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    14 分
                 </div>
                 
 
@@ -829,42 +829,7 @@
 <span class="token keyword">where</span>
     id <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、事务管理"><a href="#四、事务管理" class="headerlink" title="四、事务管理"></a>四、事务管理</h3><p>在实际应用场景中，许多操作我们并无法保证一定会正确执行，当一个完整的操作链路在某处因特殊原因断开导致后续业务失败，通常即需要实现业务的回滚操作，而这个过程即事务的过程。</p>
-<h4 id="1-事务创建"><a href="#1-事务创建" class="headerlink" title="1. 事务创建"></a>1. 事务创建</h4><p>在 <code>MySQL</code> 中可以使用 <code>begin</code> 或 <code>start transaction</code> 显式的开启事务，通过 <code>commit</code> 提交事务。若没有显式开启默认则会提交隐式事务，在语句执行结束之后会自动提交，无法实现回滚。</p>
-<p>如最常用的增删改查等语句都是默认开始事务并在语句执行结束时自动提交。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>上述的插入命令默认是开始事务并自动提交的，但是通常我们感知不强，其等价于下述操作。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
-
-<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">commit</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-事务回滚"><a href="#2-事务回滚" class="headerlink" title="2. 事务回滚"></a>2. 事务回滚</h4><p>当任务执行异常时需要执行回滚通过 <code>rollback</code> 即可。</p>
-<p>例如下述事务中若在第一个插入完成后执行第二个失败，此时通过 <code>rollback</code> 即可撤销第一个插入语句的效果。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
-
-<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">456</span><span class="token punctuation">,</span> <span class="token string">'beth'</span><span class="token punctuation">,</span> <span class="token string">'female'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- rollback transaction</span>
-<span class="token keyword">rollback</span><span class="token punctuation">;</span>
-
-<span class="token keyword">commit</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-保存点"><a href="#3-保存点" class="headerlink" title="3. 保存点"></a>3. 保存点</h4><p>在一个事务中可以创建多个 <code>savepoint</code> 标记点，并可通过 <code>rollback to</code> 回滚至指定保存点，通过 <code>release savepoint</code> 关键字删除创建的保存点。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create </span>
-<span class="token keyword">savepoint</span> sp1<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- rollback</span>
-<span class="token keyword">rollback</span> <span class="token keyword">to</span> sp1<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- delete</span>
-<span class="token keyword">release</span> <span class="token keyword">savepoint</span> sp1<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、触发器"><a href="#五、触发器" class="headerlink" title="五、触发器"></a>五、触发器</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>数据库触发器是一种数据库对象，它与表相关联，能够在表上的特定事件（如插入、更新、删除）发生时自动执行一些预定义的操作。</p>
+<h3 id="四、触发器"><a href="#四、触发器" class="headerlink" title="四、触发器"></a>四、触发器</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>数据库触发器是一种数据库对象，它与表相关联，能够在表上的特定事件（如插入、更新、删除）发生时自动执行一些预定义的操作。</p>
 <blockquote>
 <p>触发器通常用于实现以下几个方面的功能：</p>
 </blockquote>
@@ -904,7 +869,7 @@ BEFORE <span class="token keyword">INSERT</span> <span class="token keyword">ON<
 <span class="token comment" spellcheck="true">-- delete trigger if existed</span>
 <span class="token keyword">DROP</span> <span class="token keyword">TRIGGER</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> <span class="token operator">&lt;</span>trigger_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、存储过程"><a href="#六、存储过程" class="headerlink" title="六、存储过程"></a>六、存储过程</h3><h4 id="1-创建示例"><a href="#1-创建示例" class="headerlink" title="1. 创建示例"></a>1. 创建示例</h4><p>如下述示例中创建了一个存储过程用于执行两个插入命令，当其中任意一条命令执行失败都将执行事务回滚操作。</p>
+<h3 id="五、存储过程"><a href="#五、存储过程" class="headerlink" title="五、存储过程"></a>五、存储过程</h3><h4 id="1-创建示例"><a href="#1-创建示例" class="headerlink" title="1. 创建示例"></a>1. 创建示例</h4><p>如下述示例中创建了一个存储过程用于执行两个插入命令，当其中任意一条命令执行失败都将执行事务回滚操作。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create the procedure</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> <span class="token operator">&lt;</span>procedure_name<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">BEGIN</span>
@@ -949,22 +914,19 @@ BEFORE <span class="token keyword">INSERT</span> <span class="token keyword">ON<
 <span class="token comment" spellcheck="true">-- 例如 `CONDITION 2`。</span>
 GET DIAGNOSTICS CONDITION <span class="token number">1</span>
 
-
 <span class="token comment" spellcheck="true">-- 是将获取到的错误码和错误消息分别赋值给相应的变量。</span>
 errorCode <span class="token operator">=</span> MYSQL_ERRNO<span class="token punctuation">,</span> errorMessage <span class="token operator">=</span> MESSAGE_TEXT
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-基本操作-1"><a href="#3-基本操作-1" class="headerlink" title="3. 基本操作"></a>3. 基本操作</h4><p>存储过程其他相关命令如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- list all procedure</span>
 <span class="token keyword">SHOW</span> <span class="token keyword">PROCEDURE</span> <span class="token keyword">STATUS</span><span class="token punctuation">;</span>
 
-
 <span class="token comment" spellcheck="true">-- drop the procedure </span>
 <span class="token keyword">DROP</span> <span class="token keyword">PROCEDURE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> <span class="token operator">&lt;</span>procedure_name<span class="token operator">></span><span class="token punctuation">;</span>
 
-
 <span class="token comment" spellcheck="true">-- trigger the procedure</span>
 <span class="token keyword">CALL</span> <span class="token operator">&lt;</span>procedure_name<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1163,7 +1125,7 @@ errorCode <span class="token operator">=</span> MYSQL_ERRNO<span class="token pu
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -1562,7 +1524,7 @@ errorCode <span class="token operator">=</span> MYSQL_ERRNO<span class="token pu
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             

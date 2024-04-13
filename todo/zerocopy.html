@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MySQL锁详细介绍, 布袋青年">
+    <meta name="keywords" content="Kafka零拷贝详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MySQL锁详细介绍 | 布袋青年</title>
+    <title>Kafka零拷贝详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/mysql/8.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/kafka/5.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MySQL锁详细介绍</h1>
+                    <h1 class="description center-align post-title">Kafka零拷贝详解</h1>
                 </div>
             </div>
         </div>
@@ -510,25 +510,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/MySQL/">
-                                <span class="chip bg-color">MySQL</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -537,28 +524,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-12-11
+                    2024-04-13
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-04-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    0
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    1 分
                 </div>
                 
 
@@ -578,80 +565,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、表锁"><a href="#一、表锁" class="headerlink" title="一、表锁"></a>一、表锁</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>表锁分为两大类：<code>读锁</code> 与 <code>写锁</code> ，当一个会话对某张表加锁后（无论是加 <code>读锁</code> 还是 <code>写锁</code>），其都无法对其它表执行任何操作。</p>
-<ul>
-<li>当前会话给表加 <code>读锁</code> ，当前会话可对加锁表执行 <code>查询</code> 操作，其它会话能 <code>读取</code> 加锁表的数据，但 <code>增改</code> 操作需要等待加锁会话释放表锁。</li>
-<li>当前会话给表加 <code>写锁</code> ，当前会话可对加锁表执行任意操作，其它会话对加锁表执行 <code>增删改查</code> 需要等待加锁会话释放表锁。</li>
-</ul>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- lock all table</span>
-FLUSH <span class="token keyword">TABLES</span> <span class="token keyword">with</span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token keyword">lock</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- lock single table, default lock 50s(innodb_lock_wait_timeout).</span>
-<span class="token keyword">lock</span> <span class="token keyword">TABLES</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span> 
-
-<span class="token comment" spellcheck="true">-- unlock all table</span>
-unlock <span class="token keyword">TABLES</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- view lock table</span>
-<span class="token keyword">show</span> <span class="token keyword">open</span> <span class="token keyword">TABLES</span> <span class="token keyword">where</span> In_Use <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-元数据锁"><a href="#2-元数据锁" class="headerlink" title="2. 元数据锁"></a>2. 元数据锁</h4><p><code>Metadata lock</code> 是表级锁，行锁中的读写操作对应在 <code>Metadata lock</code> 中都属于读锁。</p>
-<ul>
-<li>所有的 <code>DML</code> 操作都会在表上加一个 <code>Metadata</code> 读锁；</li>
-<li>所有的 <code>DDL</code> 操作都会在表上加一个 <code>Metadata</code> 写锁；</li>
-</ul>
-<p>通过查看 <code>performance_schema.metadata_locks</code> 元数据表可查看当前激活的元数据锁。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
-   <span class="token operator">*</span>
-<span class="token keyword">from</span>
-   performance_schema<span class="token punctuation">.</span>metadata_locks<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、行锁"><a href="#二、行锁" class="headerlink" title="二、行锁"></a>二、行锁</h3><p>表锁虽然能够保证数据的原子性但其带来的性能损耗也是显而易见的，因此 <code>MYSQL</code> 中同时引入了行锁实现更细粒度的操作，即锁的作用域是表中的单条记录，对于表中其它数据并不影响。</p>
-<p><code>InnoDB</code> 行锁是通过给记录的 <code>索引项加锁</code> 来实现的，只有通过索引条件检索数据才会生效，否则 <code>InnoDB</code> 将使用表锁。</p>
-<h4 id="1-分类介绍"><a href="#1-分类介绍" class="headerlink" title="1. 分类介绍"></a>1. 分类介绍</h4><p><code>MySQL</code> 中的行锁分为两类：共享锁与排他锁，二者的作用类似于表锁中的读锁与写锁。</p>
-<ul>
-<li><strong>共享锁</strong>：共享锁允许一个事务读数据，不允许修改数据，如果其他事务要再对该行加锁，只能加共享锁。</li>
-<li><strong>排他锁</strong>：排他锁是修改数据时加的锁，可以读取和修改数据，一旦一个事务对该行数据加锁，其他事务将不能再对该数据加任务锁。</li>
-</ul>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 共享锁</span>
-<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">LOCK</span> <span class="token operator">IN</span> <span class="token keyword">SHARE MODE</span>
-
-<span class="token comment" spellcheck="true">-- 排他锁</span>
-<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">FOR</span> <span class="token keyword">UPDATE</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-实现算法"><a href="#2-实现算法" class="headerlink" title="2. 实现算法"></a>2. 实现算法</h4><p><code>MySQL</code> 中 <code>InnoDB</code> 存储引擎支持三种行锁的算法，默认行锁模式为 <code>Next-Key Lock</code>，各自的作用效果如下：</p>
-<blockquote>
-<p><strong>(Ⅰ) Record Lock</strong></p>
-</blockquote>
-<ul>
-<li>记录锁，仅针对单个记录上的锁。</li>
-<li>如一个索引有 <code>2、4、5</code> 则锁的范围即为：<code>&#123;2, 4, 5&#125;</code>。</li>
-</ul>
-<blockquote>
-<p><strong>(Ⅱ) Gap Lock</strong></p>
-</blockquote>
-<ul>
-<li>间隙锁，锁定一个范围，但不包含记录本身。</li>
-<li>如一个索引有 <code>2、4、5</code> ，那该索引可能被间隙锁锁的范围为 <code>(-∞, 2), (2, 4), (4, 5), (5, +∞)</code>。</li>
-</ul>
-<blockquote>
-<p><strong>(Ⅲ) Next-Key Lock</strong></p>
-</blockquote>
-<ul>
-<li>作用效果等价于 <code>Record Lock</code> + <code>Gap Lock</code>，锁定范围以及记录本身。</li>
-<li>如一个索引有 <code>2、4、5</code> ，那该索引可能被邻键锁锁的范围为 <code>(-∞, 2], (2, 4], (4, 5], (5, +∞)</code> 。</li>
-</ul>
-<h3 id="三、意向锁"><a href="#三、意向锁" class="headerlink" title="三、意向锁"></a>三、意向锁</h3><h4 id="1-介绍描述"><a href="#1-介绍描述" class="headerlink" title="1. 介绍描述"></a>1. 介绍描述</h4><p><code>MySQL</code> 数据库中的意向锁是一种辅助锁定机制，用于协助 <code>InnoDB</code> 引擎在表级别和行级别之间进行切换，可以帮助提高事务的并发性能和效率，特别是在处理表级锁时，避免了不必要的等待和锁冲突。</p>
-<p>意向锁并不真正锁定任何数据，它们只是向其他事务提供了一个有关当前事务在将表或行锁定时的意向。如果事务已经持有了一个适当的意向锁，它可以请求一个与其兼容的锁，否则它必须等待直到适当类型的意向锁可用。</p>
-<h4 id="2-基本分类"><a href="#2-基本分类" class="headerlink" title="2. 基本分类"></a>2. 基本分类</h4><p>意向锁分为 <code>意向共享锁(IS)</code> 和 <code>意向排它锁(IX)</code> ，它们的作用是向其他事务表明当前事务在将表或行锁定时的意向，当一个事务请求表或行级锁时，它必须先获得适当类型的意向锁。</p>
-<p>当一个事务需要在某个表中的某些行上设置 <code>排它锁(X锁)</code> 或 <code>共享锁(S锁)</code> 时，它必须首先请求 <code>表级意向锁</code> ，以便其他事务知道该表已被锁定，如果意向锁已被其他事务申请，那么当前事务会阻塞等待，直到获取到该锁。</p>
-<blockquote>
-<ul>
-<li>若一个事务请求对表中的某些行进行 <code>共享锁</code> 时，它会请求 <code>意向共享锁(IS)</code>。</li>
-<li>若一个事务请求对表中的某些行进行 <code>排它锁</code> 时，它会请求 <code>意向排它锁(IX)</code>。</li>
-</ul>
-</blockquote>
-
+                
                 
             </div>
             <hr/>
@@ -677,7 +591,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/db/mysql/lock/">https://great-jin.github.io/db/mysql/lock/</a>
+                    <a href="https://great-jin.github.io/todo/zerocopy.html">https://great-jin.github.io/todo/zerocopy.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -714,11 +628,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/MySQL/">
-                                    <span class="chip bg-color">MySQL</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -849,7 +759,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                         <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
                     </div>
                     <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
                     </div>
                 </div>
             </div>
@@ -888,48 +798,38 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/db/hadoop/hive/">
+                <a href="/todo/zerocopy.html">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/hadoop/6.png" class="responsive-img" alt="Hive数据库基础">
+                        <img src="/album/banner/db/kafka/5.png" class="responsive-img" alt="Kafka零拷贝详解">
                         
-                        <span class="card-title">Hive数据库基础</span>
+                        <span class="card-title">Kafka零拷贝详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Hive数据库基础知识介绍。
+                            一文带你扒光Kafka零拷贝的底裤。
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-11
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-13
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            烽火戏诸诸诸侯
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Hive/">
-                        <span class="chip bg-color">Hive</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -937,47 +837,36 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/java/advance/annotation/">
+                <a href="/todo/zerocopy.html">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/43.png" class="responsive-img" alt="Java注解介绍与应用">
+                        <img src="/album/banner/db/kafka/5.png" class="responsive-img" alt="Kafka零拷贝详解">
                         
-                        <span class="card-title">Java注解介绍与应用</span>
+                        <span class="card-title">Kafka零拷贝详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java注解定义使用详解。
+                            一文带你扒光Kafka零拷贝的底裤。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-13
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
-                                    JAVA进阶
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            烽火戏诸诸诸侯
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -1248,7 +1137,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">237.7k</span>
+                <span class="white-color">239.1k</span>
             
             
             
