@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-04-14
                 </div>
                 
 
@@ -578,7 +578,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>我们都知道在 <code>Java</code> 的 <code>JDBC</code> 中定义了一套标准规范，例如 <code>ResultSet</code> 用于接口语句的结果集，如果点开 <code>ResultSet</code> 内你可以看到其中定义了一系列标准接口，仅接口代码行数即达到了四千多行，当然其中一大半是注释文档，但数量依然客观。<br><img src="/album/loading.gif" data-original="/album/article/java/jdbc/1.png" alt="ResultSet接口类"></p>
+                <h3 id="一、模式介绍"><a href="#一、模式介绍" class="headerlink" title="一、模式介绍"></a>一、模式介绍</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>我们都知道在 <code>Java</code> 的 <code>JDBC</code> 中定义了一套标准规范，例如 <code>ResultSet</code> 用于接口语句的结果集，如果点开 <code>ResultSet</code> 内你可以看到其中定义了一系列标准接口，仅接口代码行数即达到了四千多行，当然其中一大半是注释文档，但数量依然客观。<br><img src="/album/loading.gif" data-original="/album/article/java/jdbc/1.png" alt="ResultSet接口类"></p>
 <p>如果你想要定义自己的查询结构集，实现也相当简单，自定义你的结果集类并实现 <code>ResultSet</code> 接口，并按照按照标准重写其中接口即可。</p>
 <p>但通过实现 <code>ResultSet</code> 接口会带来一个问题，你需要重写其中的上百个标准接口，当然你可以仅定义一个空实现，但仍然会造成大量无用代码。当然这是基于仅需要 <code>ResultSet</code> 部分功能的情况下，如果你要设计完善的数据规范，还是需要通过实现 <code>ResultSet</code> 接口来实现。</p>
 <p>假如我们只想要实现一个类似 <code>ResultSet</code> 中通过游标逐行读取的方式，最简单的方式的方式即自定义一个结果集规范，只定义你所需的接口，从而提高代码的简洁度。</p>
@@ -600,7 +600,7 @@
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-接口实现"><a href="#3-接口实现" class="headerlink" title="3. 接口实现"></a>3. 接口实现</h4><p>定义完接口之后就简单了，创建实现类 <code>DataResultSet</code> 实现具体的细节。</p>
+<h3 id="二、模式实现"><a href="#二、模式实现" class="headerlink" title="二、模式实现"></a>二、模式实现</h3><h4 id="1-接口实现"><a href="#1-接口实现" class="headerlink" title="1. 接口实现"></a>1. 接口实现</h4><p>定义完接口之后就简单了，创建实现类 <code>DataResultSet</code> 实现具体的细节。</p>
 <p>具体设计参考了 <code>com.sun.rowset.CachedRowSetImpl</code> 类中的实现思路，将数据通过 <code>Map</code> 塞到内存中，再通过游标逐行读取内容，当然这种情况就没法针对大数据量，容易造成内存溢出的风险。</p>
 <p>这里定义三个成员变量 <code>cursorRow</code>, <code>rowCount</code> 与 <code>rowContainer</code>，对应信息参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -637,7 +637,7 @@
     <span class="token comment" spellcheck="true">// 略去具体接口实现</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-数据填充"><a href="#4-数据填充" class="headerlink" title="4. 数据填充"></a>4. 数据填充</h4><p>在上面已经提到了是通过 <code>Map</code> 容器用于接收目标数据用于后续读取，因此在 <code>DataResultSet</code> 类中新增 <code>fill()</code> 方法用于接收数据。</p>
+<h4 id="2-数据填充"><a href="#2-数据填充" class="headerlink" title="2. 数据填充"></a>2. 数据填充</h4><p>在上面已经提到了是通过 <code>Map</code> 容器用于接收目标数据用于后续读取，因此在 <code>DataResultSet</code> 类中新增 <code>fill()</code> 方法用于接收数据。</p>
 <p>方法入参为 <code>List</code> 容器，容器中的每个元素代表一行数据，注意这里容器中需要指定为 <code>LinkedHashMap</code>，这样后续通过 <code>getString()</code> 才能保证通过序号访问的确定性。</p>
 <p>因为 <code>List</code> 与 <code>LinkedHashMap</code> 皆为有序容器，因此 <code>fill()</code> 只需简单遍历目标数据按照 <code>List</code> 存放顺序存入 <code>rowContainer</code> 即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>LinkedHashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">>></span> theData<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -650,7 +650,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-数据验证"><a href="#5-数据验证" class="headerlink" title="5. 数据验证"></a>5. 数据验证</h4><p>在定义具体的接口实现之前这里定义了几个数据验证，用于验证读取的行标与字段下标的合法性。</p>
+<h4 id="3-数据验证"><a href="#3-数据验证" class="headerlink" title="3. 数据验证"></a>3. 数据验证</h4><p>在定义具体的接口实现之前这里定义了几个数据验证，用于验证读取的行标与字段下标的合法性。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">checkCursor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>cursorRow <span class="token operator">&lt;</span> <span class="token number">1</span> <span class="token operator">||</span> cursorRow <span class="token operator">></span> rowCount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Cursor is illegal"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -671,7 +671,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="6-具体实现"><a href="#6-具体实现" class="headerlink" title="6. 具体实现"></a>6. 具体实现</h4><blockquote>
+<h4 id="4-具体实现"><a href="#4-具体实现" class="headerlink" title="4. 具体实现"></a>4. 具体实现</h4><blockquote>
 <p><strong>(Ⅰ) next() 实现</strong></p>
 </blockquote>
 <p><code>next()</code> 实现的较为简单，即每次执行 <code>next()</code> 时判断当前行标 <code>(cursorRow)</code> 是否已经超过行数 <code>(rowCount)</code>，若否则行标加一。</p>
@@ -739,7 +739,7 @@
     rowCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="7-示例演示"><a href="#7-示例演示" class="headerlink" title="7. 示例演示"></a>7. 示例演示</h4><p>完成上述步骤之后基本就完成了所有工作，对应的测试实例如下。</p>
+<h3 id="三、演示示例"><a href="#三、演示示例" class="headerlink" title="三、演示示例"></a>三、演示示例</h3><h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p>完成上述步骤之后基本就完成了所有工作，对应的测试实例如下。</p>
 <p>这里通过 <code>generateMockData()</code> 生成了一个五行四列的测试数据，在通过 <code>fill()</code> 填充数据之后利用 <code>next()</code> 与 <code>getString()</code> 模拟数据读取。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ResultTest</span> <span class="token punctuation">{</span>
 
@@ -1372,7 +1372,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">239.1k</span>
+                <span class="white-color">240.9k</span>
             
             
             

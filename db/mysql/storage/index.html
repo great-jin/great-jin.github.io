@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-13
+                    2024-04-14
                 </div>
                 
 
@@ -558,7 +558,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    12 分
                 </div>
                 
 
@@ -641,11 +641,15 @@
 <h4 id="2-Undo-log"><a href="#2-Undo-log" class="headerlink" title="2. Undo log"></a>2. Undo log</h4><p><code>Undo log</code> 用于处理事务数据回滚，将修改前数据存入 <code>Undo log</code> ，此时若发生事务即可直接从 <code>Undo log</code> 中读取变化前数据实现事务数据回滚。</p>
 <h4 id="3-Bin-log"><a href="#3-Bin-log" class="headerlink" title="3. Bin log"></a>3. Bin log</h4><p><code>Bin log</code> 是 <code>MySQL</code> 的一种服务器日志，用于记录 <code>SQL</code> 层面的数据更新操作，包括数据定义语句 <code>(DDL)</code> 和数据操作语句 <code>(DML)</code> 等。</p>
 <p>与 <code>Redo log</code> 不同，<code>Bin log</code> 是在 <code>MySQL Server</code> 层产生的，记录的是 <code>SQL</code> 语句或者语句的逻辑，而不是物理的数据变更操作。<code>Bin log</code> 可以用于数据恢复、数据复制和数据同步等操作，也可以用于查询和数据分析等工作，例如常见的 <code>CDC</code> 即利用 <code>bin log</code> 机制实现。</p>
-<blockquote>
-<p><code>bin log</code> 记录的数据存在下述两类级别：</p>
-</blockquote>
-<h5 id="1-Row-Level"><a href="#1-Row-Level" class="headerlink" title="(1) Row Level"></a>(1) Row Level</h5><p>在此级别下即记录的是具体的变更数据，如通过 <code>update</code> 更新了 <code>5</code> 条数据，则记录下这五条真实数据内容。即详细记录下每一条数据的变更内容，但缺点也很明显就存储资源占用更高。</p>
-<h5 id="2-Statement-Level"><a href="#2-Statement-Level" class="headerlink" title="(2) Statement Level"></a>(2) Statement Level</h5><p>在 <code>Statement Level</code> 级别下记录的是对应的执行语句，同样为通过 <code>update</code> 更新了 <code>5</code> 条数据，此时 <code>bin log</code> 记录存储下的则为 <code>update</code> 语句而非具体的数据记录。</p>
+<h5 id="1-Log-level"><a href="#1-Log-level" class="headerlink" title="(1) Log level"></a>(1) Log level</h5><p><code>bin log</code> 记录的数据存在三种类型，通过参数 <code>binlog_format</code> 控制，其可选值如下：</p>
+<ul>
+<li><p><strong>ROW</strong><br>在 <code>ROW</code> 级别下即记录的是具体的变更数据，如通过 <code>update</code> 更新了 <code>5</code> 条数据，则记录下这五条真实数据内容。即详细记录下每一条数据的变更内容，但缺点也很明显就存储资源占用更高。</p>
+</li>
+<li><p><strong>STATEMENT</strong><br>在 <code>STATEMENT</code> 级别下记录的是对应的执行语句，同样为通过 <code>update</code> 更新了 <code>5</code> 条数据，此时 <code>bin log</code> 记录存储下的则为 <code>update</code> 语句而非具体的数据记录。</p>
+</li>
+<li><p><strong>MIXWD</strong><br>在此级别下默认采用 <code>STATEMENT</code> 记录，但对应临时表以及一些自定义函数会采用 <code>ROW</code> 方式记录。</p>
+</li>
+</ul>
 <h3 id="四、存储机制"><a href="#四、存储机制" class="headerlink" title="四、存储机制"></a>四、存储机制</h3><h4 id="1-读写机制"><a href="#1-读写机制" class="headerlink" title="1. 读写机制"></a>1. 读写机制</h4><p>在 <code>MySQL</code> 中数据存储包含 <code>内存</code> 与 <code>磁盘</code> 两个部分，增删改操作首先会被写入到 <code>redo log</code> 中，保证数据的持久性。同时为了提高写入性能，<code>MySQL</code> 还引入了 <code>Change Buffer</code> 机制，将写入的数据先暂存在 <code>Change Buffer</code> 中，再由后台线程定时将其刷入磁盘。</p>
 <p>在执行查询操作时，先从 <code>Change Buffer</code> 中读取数据，如果数据已经被修改，会将修改后的数据写回磁盘，然后再返回给查询请求。如果数据没有被修改，则直接返回内存中的数据。这样可以避免频繁地从磁盘读取数据，提高查询性能。</p>
 <blockquote>
@@ -1278,7 +1282,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">239.1k</span>
+                <span class="white-color">240.9k</span>
             
             
             
