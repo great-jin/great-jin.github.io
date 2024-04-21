@@ -548,7 +548,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-01-14
+                    2024-04-20
                 </div>
                 
 
@@ -668,7 +668,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、数据索引"><a href="#二、数据索引" class="headerlink" title="二、数据索引"></a>二、数据索引</h3><h4 id="1-索引创建"><a href="#1-索引创建" class="headerlink" title="1. 索引创建"></a>1. 索引创建</h4><p>根据 <code>mapping</code> 内容创建相应的索引，若未指定将会自动根据数据内容匹配。</p>
+<h3 id="三、数据索引"><a href="#三、数据索引" class="headerlink" title="三、数据索引"></a>三、数据索引</h3><h4 id="1-索引创建"><a href="#1-索引创建" class="headerlink" title="1. 索引创建"></a>1. 索引创建</h4><p>根据 <code>mapping</code> 内容创建相应的索引，若未指定将会自动根据数据内容匹配。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> String <span class="token function">mapping</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token string">"{\n"</span> <span class="token operator">+</span>
             <span class="token string">"  \"properties\": {\n"</span> <span class="token operator">+</span>
@@ -746,7 +746,7 @@
     <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">isAcknowledged</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、数据操作"><a href="#三、数据操作" class="headerlink" title="三、数据操作"></a>三、数据操作</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>这里除了需要引入 <code>ES</code> 连接客户端还引入 <code>Jackson</code> 的 <code>ObjectMapper</code> 用于 <code>Json</code> 数据转化。</p>
+<h3 id="四、数据操作"><a href="#四、数据操作" class="headerlink" title="四、数据操作"></a>四、数据操作</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>这里除了需要引入 <code>ES</code> 连接客户端还引入 <code>Jackson</code> 的 <code>ObjectMapper</code> 用于 <code>Json</code> 数据转化。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Autowired</span>
 <span class="token keyword">private</span> ObjectMapper objectMapper<span class="token punctuation">;</span>
 
@@ -814,7 +814,7 @@
     <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">getResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLowercase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、数据插叙"><a href="#四、数据插叙" class="headerlink" title="四、数据插叙"></a>四、数据插叙</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>通过 <code>SearchSourceBuilder</code> 构造查询条件，设置为 <code>QueryBuilders.matchAllQuery()</code> 则不执行任何过滤。</p>
+<h3 id="五、数据插叙"><a href="#五、数据插叙" class="headerlink" title="五、数据插叙"></a>五、数据插叙</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>通过 <code>SearchSourceBuilder</code> 构造查询条件，设置为 <code>QueryBuilders.matchAllQuery()</code> 则不执行任何过滤。</p>
 <p>默认查询返回的数据仅 <code>10</code> 条，因此需要通过设置 <code>builder.trackTotalHits(true)</code> 取消该限制。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">list</span><span class="token punctuation">(</span>String index<span class="token punctuation">,</span> Integer size<span class="token punctuation">,</span> Integer from<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     SearchRequest request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SearchRequest</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1579,7 +1579,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">240.9k</span>
+                <span class="white-color">241.8k</span>
             
             
             
