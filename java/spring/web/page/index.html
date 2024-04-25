@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring配置读取注解, 布袋青年">
+    <meta name="keywords" content="Spring Page分页查询实现, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring配置读取注解 | 布袋青年</title>
+    <title>Spring Page分页查询实现 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/30.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/11.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring配置读取注解</h1>
+                    <h1 class="description center-align post-title">Spring Page分页查询实现</h1>
                 </div>
             </div>
         </div>
@@ -537,28 +537,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-04-03
+                    2023-02-04
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-24
+                    2024-04-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    792
+                    661
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    2 分
                 </div>
                 
 
@@ -578,143 +578,95 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在项目的许多开发场景下，为了提高的可维护性，通过会将一些属性参数配置于项目的 <code>YML</code> 文件中， <code>Spring</code> 中一共提供两种方式用于读取配置文件中的数据，下面将分别展开介绍。</p>
-<h3 id="一、-Value"><a href="#一、-Value" class="headerlink" title="一、@Value"></a>一、@Value</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>当我们将一些参数配置在项目配置文件中时，即可通过 <code>@Value</code> 注解获取值。</p>
-<p>如在 <code>application.yml</code> 中添加如下配置:</p>
-<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">info</span><span class="token punctuation">:</span>
-    <span class="token key atrule">msg1</span><span class="token punctuation">:</span> <span class="token number">123</span>
-    <span class="token key atrule">msg2</span><span class="token punctuation">:</span> <span class="token number">456</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>在代码中获取参数方式如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTest</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${info.msg1}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String msg1<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${info.msg2}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String msg2<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 打印 123</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 打印 456</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>msg2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <h4 id="1-模拟分页"><a href="#1-模拟分页" class="headerlink" title="1. 模拟分页"></a>1. 模拟分页</h4><p>假分页即全量从数据库读取，再利用前端组件进行分页展示。这么做虽然最简单粗暴，但面对大数据量不仅对数据库压力大，而且前端一次性将大量数据载入内存中会大大降低页面响应速度。</p>
+<p>如 <code>Antd</code> 中的 <code>a-table</code> 默认就是假分页，后端数据一次性加载到前端页面再由前端实现渲染，适合数据量不大的常见，这里就不具体举例了。</p>
+<h4 id="2-分页查询"><a href="#2-分页查询" class="headerlink" title="2. 分页查询"></a>2. 分页查询</h4><p>相应对假分页即真分页，故顾名思义即通过如 <code>MySQL</code> 中 <code>limit</code> 关键字降低数据库压力，在大数据量时能够有更高的效率但是实现相对更为复杂。</p>
+<p>在数据库查询时通过 <code>limit</code> 关键字实现分页查询，不同数据库的关键字不同这里以 <code>MySQL</code> 举例，如下将查询的数据区间为 <code>[2, 5]</code>，即第 <code>2</code> 条数据至第 <code>5</code> 条。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
+    id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> gender<span class="token punctuation">,</span> create_time
+<span class="token keyword">from</span> sys_user
+<span class="token keyword">limit</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-数据封装"><a href="#3-数据封装" class="headerlink" title="3. 数据封装"></a>3. 数据封装</h4><h5 id="1-Service"><a href="#1-Service" class="headerlink" title="(1) Service"></a>(1) Service</h5><p><code>Spring Boot</code> 中自带了 <code>Page</code> 对象提供了数据分页服务，实现分页数据的对象封装。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"sysUserService"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SysUserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">SysUserService</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> Page<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryByPage</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> limit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 构造分页条件</span>
+        PageRequest request <span class="token operator">=</span> PageRequest<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>offset<span class="token punctuation">,</span> limit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 分页查询数据</span>
+        <span class="token keyword">long</span> total <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sysUserDao<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> data <span class="token operator">=</span> sysUserDao<span class="token punctuation">.</span><span class="token function">queryAllByLimit</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">,</span> request<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">// 构造分页对象</span>
+        Page<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> pageInfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PageImpl</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> request<span class="token punctuation">,</span> total<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> pageInfo<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-默认填充"><a href="#2-默认填充" class="headerlink" title="2. 默认填充"></a>2. 默认填充</h4><p>但如果设置了配置文件中不存的值时很显然在读取时会出现空值异常，因此我们也可以根据需要配置默认值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTest</span> <span class="token punctuation">{</span>
 
-    <span class="token comment" spellcheck="true">// 设置默认值为 123</span>
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${info.msg1:123}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String msg1<span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 设置默认值为 456</span>
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${info.msg2:456}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String msg2<span class="token punctuation">;</span>
+<span class="token annotation punctuation">@Mapper</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">SysUserDao</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryAllByLimit</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"pageable"</span><span class="token punctuation">)</span> Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-配置应用"><a href="#3-配置应用" class="headerlink" title="3. 配置应用"></a>3. 配置应用</h4><p>在通过 <code>@Value</code> 获取配置信息时，若需要在类成员变量中直接使用是无法正常读取数据。</p>
-<p>如下述示例中即便 <code>YML</code> 文件配置了 <code>latch.size</code> 的值，在初始化 <code>latch</code> 读取的 <code>size</code> 仍然为 <code>int</code> 默认初始化值 <code>0</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${latch.size}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// size 无法读取，仍为 0</span>
-    <span class="token keyword">public</span> CountDownLatch latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>因此，在使用 <code>@Value</code> 若搭配成员变量时，可以通过实现 <code>InitializingBean</code> 的 <code>afterPropertiesSet()</code> 设置读取的值，其会在 <code>Spring</code> 容器首次初始化 <code>Bean</code> 对象时触发。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token keyword">implements</span> <span class="token class-name">InitializingBean</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${latch.size}"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> CountDownLatch latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterPropertiesSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        latch <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、-ConfigurationProperties"><a href="#二、-ConfigurationProperties" class="headerlink" title="二、@ConfigurationProperties"></a>二、@ConfigurationProperties</h3><h4 id="1-基础配置-1"><a href="#1-基础配置-1" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>上面介绍了使用 <code>@Value</code> 获取配置文件参数，但如果需要获取大量的参数时重复的前缀显然有些冗余， <code>@ConfigurationProperties</code> 即用于解决此类情况。</p>
-<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">ibudai</span><span class="token punctuation">:</span>
-    <span class="token key atrule">info</span><span class="token punctuation">:</span>
-        <span class="token key atrule">msg1</span><span class="token punctuation">:</span> <span class="token number">111</span>
-        <span class="token key atrule">msg2</span><span class="token punctuation">:</span> <span class="token number">222</span>
-        <span class="token key atrule">msg3</span><span class="token punctuation">:</span> <span class="token number">333</span>
-        <span class="token key atrule">msg4</span><span class="token punctuation">:</span> <span class="token number">444</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-SQL"><a href="#2-SQL" class="headerlink" title="(2) SQL"></a>(2) SQL</h5><p>在 <code>SQL</code> 命令中通过 <code>limit</code> 关键字实现分页查询。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>queryAllByLimit<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>SysUserMap<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    select *
+    from sys_user
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>where</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sysUser.id !<span class="token punctuation">=</span> null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            and id = #{id}
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sysUser.username !<span class="token punctuation">=</span> null and sysUser.username !<span class="token punctuation">=</span> <span class="token punctuation">'</span><span class="token punctuation">'</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            and username = #{username}
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>if</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>sysUser.password !<span class="token punctuation">=</span> null and sysUser.password !<span class="token punctuation">=</span> <span class="token punctuation">'</span><span class="token punctuation">'</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            and password = #{password}
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>if</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>where</span><span class="token punctuation">></span></span>
+    limit #{pageable.offset}, #{pageable.pageSize}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-前端设计"><a href="#4-前端设计" class="headerlink" title="4. 前端设计"></a>4. 前端设计</h4><p>这里以 <code>Antd</code> 表格为例，在标签内添加 <code>pagination</code> 属性。</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a-table</span>
+    <span class="token attr-name">:columns</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>columns<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:data-source</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>data<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:pagination</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>pagination<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:bordered</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span>
+<span class="token punctuation">/></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="1-方式一"><a href="#1-方式一" class="headerlink" title="(1) 方式一"></a>(1) 方式一</h5><p>需要注意的一点是类中的变量名必须和配置文件中的名字一致，且每个变量必须有 <code>set</code> 方法，这个我用 <code>@Data</code> 自动提供。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
-<span class="token annotation punctuation">@Component</span>
-<span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"ibudai.info"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestEntity</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> String msg1<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg2<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg3<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg4<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-方式二"><a href="#2-方式二" class="headerlink" title="(2) 方式二"></a>(2) 方式二</h5><p>和方式一不同的是类上无需使用 <code>@Component</code> 注解，而是交给 <code>Spring Boot</code> 自动管理，即在项目启动类上添加注解 <code>@EnableConfigurationProperties</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 测试类</span>
-<span class="token annotation punctuation">@Data</span>
-<span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"ibudai.info"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestEntity</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> String msg1<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg2<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg3<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg4<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment" spellcheck="true">// 项目启动类</span>
-<span class="token annotation punctuation">@SpringBootApplication</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Application</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        SpringApplication<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span>Application<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p><code>pagination</code> 具体定义参数如下，在 <code>onShowSizeChange()</code> 与 <code>onChange()</code> 事件中调用之前定义的后端分页查询接口即可。</p>
+<p>其中 <code>updatePage()</code> 方法即根据前端变更的页数调用后端中定义的分页查询接口。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        data<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        tableData<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        pageRequest<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            offset<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            limit<span class="token punctuation">:</span> <span class="token number">5</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        pagination<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            total<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 总数，必须先有</span>
+            defaultCurrent<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 默认当前页数</span>
+            defaultPageSize<span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 默认当前页显示数据的大小</span>
+            showSizeChanger<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            showQuickJumper<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            pageSizeOptions<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"5"</span><span class="token punctuation">,</span> <span class="token string">"10"</span><span class="token punctuation">,</span> <span class="token string">"15"</span><span class="token punctuation">,</span> <span class="token string">"20"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            showTotal<span class="token punctuation">:</span> <span class="token punctuation">(</span>total<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`共 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>total<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> 条`</span></span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 显示总数</span>
+            <span class="token comment" spellcheck="true">// 改变每页数量触发</span>
+            onShowSizeChange<span class="token punctuation">:</span> <span class="token punctuation">(</span>current<span class="token punctuation">,</span> pageSize<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>defaultCurrent <span class="token operator">=</span> <span class="token number">1</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>defaultPageSize <span class="token operator">=</span> pageSize
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updatePage</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> pageSize<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 点击页数触发</span>
+            onChange<span class="token punctuation">:</span> <span class="token punctuation">(</span>current<span class="token punctuation">,</span> size<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>defaultCurrent <span class="token operator">=</span> current
+                <span class="token keyword">this</span><span class="token punctuation">.</span>pagination<span class="token punctuation">.</span>defaultPageSize <span class="token operator">=</span> size
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updatePage</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> size<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-默认填充-1"><a href="#2-默认填充-1" class="headerlink" title="2. 默认填充"></a>2. 默认填充</h4><p>与 <code>@Value</code> 类似，<code>@ConfigurationProperties</code> 也可为参数设置默认值。</p>
-<p>即为成员变量直接赋值，若 <code>YML</code> 中不存在对应配置时则读取变量赋值，否则读取配置文件值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 测试类</span>
-<span class="token annotation punctuation">@Data</span>
-<span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"ibudai.info"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestEntity</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> String msg1 <span class="token operator">=</span> <span class="token string">"111"</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg2 <span class="token operator">=</span> <span class="token string">"222"</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg3 <span class="token operator">=</span> <span class="token string">"333"</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String msg4 <span class="token operator">=</span> <span class="token string">"444"</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-配置应用-1"><a href="#3-配置应用-1" class="headerlink" title="3. 配置应用"></a>3. 配置应用</h4><p>完成属性注入之后即可直接在项目中通过 <code>@Autowired</code> 注解获取属性值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
-    
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token keyword">private</span> TestEntity testEntity<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>testEntity<span class="token punctuation">.</span><span class="token function">getMsg1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>testEntity<span class="token punctuation">.</span><span class="token function">getMsg2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>testEntity<span class="token punctuation">.</span><span class="token function">getMsg3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>testEntity<span class="token punctuation">.</span><span class="token function">getMsg4</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -741,7 +693,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/spring/annotation/config/">https://great-jin.github.io/java/spring/annotation/config/</a>
+                    <a href="https://great-jin.github.io/java/spring/web/page/">https://great-jin.github.io/java/spring/web/page/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -956,78 +908,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/spring/annotation/basic/">
+                <a href="/java/io/encode/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/spring/6.jpg" class="responsive-img" alt="Spring常用注解介绍">
+                        <img src="/album/banner/java/40.png" class="responsive-img" alt="Java编码与加解密实现">
                         
-                        <span class="card-title">Spring常用注解介绍</span>
+                        <span class="card-title">Java编码与加解密实现</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Boot常用注解介绍。
+                            Java 数据的编码与加解密实现。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-02-05
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    Spring框架
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/java/thread/multiple/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/17.jpg" class="responsive-img" alt="Java多线程编程">
-                        
-                        <span class="card-title">Java多线程编程</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java多线程及并发知识梳理。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="post-category">
-                                    并发编程
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
                                 </a>
                             
                             
@@ -1041,8 +945,56 @@
                         <span class="chip bg-color">JAVA</span>
                     </a>
                     
-                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                        <span class="chip bg-color">多线程</span>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/app/idea/git/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/idea/5.png" class="responsive-img" alt="如何在IDEA中优雅使用GIT？">
+                        
+                        <span class="card-title">如何在IDEA中优雅使用GIT？</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            一篇文章教会你如何在IDEA中优雅使用GIT。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-01-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    开发工具
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Git/">
+                        <span class="chip bg-color">Git</span>
+                    </a>
+                    
+                    <a href="/tags/IDEA/">
+                        <span class="chip bg-color">IDEA</span>
                     </a>
                     
                 </div>

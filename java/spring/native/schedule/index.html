@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Debezium CDC捕获介绍, 布袋青年">
+    <meta name="keywords" content="Spring定时任务介绍, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Debezium CDC捕获介绍 | 布袋青年</title>
+    <title>Spring定时任务介绍 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/38.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/spring/16.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Debezium CDC捕获介绍</h1>
+                    <h1 class="description center-align post-title">Spring定时任务介绍</h1>
                 </div>
             </div>
         </div>
@@ -510,12 +510,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Spring-Boot/">
+                                <span class="chip bg-color">Spring Boot</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
+                                Spring框架
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -524,28 +537,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-12-30
+                    2023-05-14
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-12-28
+                    2024-04-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    5 分
                 </div>
                 
 
@@ -565,7 +578,145 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>在程序应用中常常会涉及到一些定时任务，如在凌晨等服务低峰期定时执行一些耗时任务，让资源利用实现最大化。在 <code>Spring Boot</code> 中同样也提供定时任务的管理能力，通过注解方式即可实现便捷的定时任务配置。</p>
+<h3 id="一、定时任务"><a href="#一、定时任务" class="headerlink" title="一、定时任务"></a>一、定时任务</h3><h4 id="1-注解介绍"><a href="#1-注解介绍" class="headerlink" title="1. 注解介绍"></a>1. 注解介绍</h4><p>通过 <code>@Scheduled</code> 注解即可实现定时任务开启，其作用于方法上，将会根据配置的周期定时执行目标方法，注意需要在项目启动类上添加 <code>@EnableScheduling</code> 注解才能生效。</p>
+<p>如下示例中开始了一个定时任务每间隔 <code>10</code> 秒打印一次当前系统时间。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ScheduleTask</span> <span class="token punctuation">{</span>
+    
+    <span class="token keyword">private</span> <span class="token keyword">final</span> Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>ScheduleTask<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 定时任务，每 10 秒打印一次时间
+     */</span>
+    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">reportCurrentTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-注解参数"><a href="#2-注解参数" class="headerlink" title="2. 注解参数"></a>2. 注解参数</h4><p>在上述的示例中在注解中通过参数 <code>fixedRate</code> 设置了任务间隔周期，下面介绍一下其它常用参数。 </p>
+<h5 id="1-fixedRate"><a href="#1-fixedRate" class="headerlink" title="(1) fixedRate"></a>(1) fixedRate</h5><p><code>fixedRate</code> 用于指定定时任务的间隔时间，如之前的示例中每间隔 <code>10</code> 秒打印一次时间。</p>
+<h5 id="2-fixedDelay"><a href="#2-fixedDelay" class="headerlink" title="(2) fixedDelay"></a>(2) fixedDelay</h5><p><code>fixedDelay</code> 的类似于 <code>fixedRate</code>，但其计时方式是从上次任务结束后开始。</p>
+<p>举个简单的例子，我们创建了一个任务执行完毕需要耗时五分钟，分别使用 <code>fixedRate</code> 和 <code>fixedDelay</code> 创建了两个定时设置每两分钟执行一次。在第一次定时任务触发之后，当过去两分钟后使用 <code>fixedRate</code> 创建的任务将会再次触发，而使用 <code>fixedDelay</code> 创建的任务则需要等待上一次任务执行即三分钟后，然后再等待两分钟后才会触发下一轮。</p>
+<h5 id="3-timeUnit"><a href="#3-timeUnit" class="headerlink" title="(3) timeUnit"></a>(3) timeUnit</h5><p><code>fixedRate</code> 与 <code>fixedDelay</code> 默认的时间单位都是毫秒，可通过 <code>timeUnit</code> 指定单位从而提高代码的可读性。</p>
+<p>如下面的示例中通过 <code>fixedRate</code> 搭配 <code>timeUnit</code> 设置每隔 <code>10</code> 秒打印一次时间。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span> timeUnit <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">reportTime1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、Cron解析"><a href="#二、Cron解析" class="headerlink" title="二、Cron解析"></a>二、Cron解析</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>cron</code> 参数是最常用的参数，通过配置 <code>cron</code> 表达式可实现灵活的周期配置，其通过七个 <code>*</code> 用于控制执行频率。</p>
+<blockquote>
+<p>不同位置 <code>*</code> 代表含义如下：</p>
+<ul>
+<li>第一个 <code>*</code> 表示秒：取值范围 <code>0-59</code> 。</li>
+<li>第二个 <code>*</code> 表示分钟：取值范围 <code>0-59</code> 。</li>
+<li>第三个 <code>*</code> 表示小时：取值范围 <code>0-23</code> 。</li>
+<li>第四个 <code>*</code> 表示天数：取值范围 <code>1-31</code> 。</li>
+<li>第五个 <code>*</code> 表示月份：取值范围 <code>1-12</code> 。</li>
+<li>第六个 <code>*</code> 表示每周：取值范围 <code>0-6</code> 。</li>
+<li>第七个 <code>*</code> 表示每年，非必填通常省略。</li>
+</ul>
+</blockquote>
+<p>如下示例中通过 <code>cron</code> 表达式设置了每隔 <code>10</code> 秒打印一次时间。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 每隔 10 秒打印时间</span>
+<span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0/10 * * * * *"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">reportCurrentTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>cron</code> 表达式同时其支持使用 <code>$&#123;&#125;</code> 方式从 <code>YML</code> 文件读取配置，示例如下:</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 从配置文件读取配置</span>
+<span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"${scheduled.time}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">reportCurrentTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<!-- #### 2. 解析方式
+```java
+
+
+```
+
+
+
+### 三、源码解读
+#### 1. 实现方式
+
+
+
+#### 2. 线程配置 -->
+
+
+
+
+
+<h3 id="三、任务启停"><a href="#三、任务启停" class="headerlink" title="三、任务启停"></a>三、任务启停</h3><p>除了上述提到的定时注解，在 Spring Boot 中同时提供了其它一系列类实现一次性的任务执行。</p>
+<p>在 <code>Spring</code> 中提供了 <code>ApplicationRunner</code> 与 <code>CommandLineRunner</code> 两个类可实现系统启动时触发任务，在项目启动时将会触发二者的 <code>run</code> 方法，通常用于系统的热点数据预加载与数据缓存载入。同理也提供了 <code>ApplicationListener</code> 类可项目停止时触发，常用于资源或缓存的释放与清除。</p>
+<h4 id="1-ApplicationRunner"><a href="#1-ApplicationRunner" class="headerlink" title="1. ApplicationRunner"></a>1. ApplicationRunner</h4><p>新建类并实现 <code>ApplicationRunner</code> 接口，当 <code>Spring</code> 工程启动时将会执行 <code>run()</code> 方法体的内容，方法体内容仅会触发一次。</p>
+<p>通常在项目中利用其实现数据预热功能，或者加载缓存数据至内存之中。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RunnerTask1</span> <span class="token keyword">implements</span> <span class="token class-name">ApplicationRunner</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span>ApplicationArguments args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">">>> Start from ApplicationRunner, Current time: "</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-CommandLineRunner"><a href="#2-CommandLineRunner" class="headerlink" title="2. CommandLineRunner"></a>2. CommandLineRunner</h4><p><code>CommandLineRunner</code> 的使用方式与作用效果与 <code>ApplicationRunner</code> 类似，都是在项目启动时执行。</p>
+<p>二者区别在于 <code>run()</code> 方法参数不同，<code>ApplicationRunner</code> 的对应参数是对象，其信息更为详尽，而 <code>CommandLineRunner</code> 的参数则为字符数组。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RunnerTask2</span> <span class="token keyword">implements</span> <span class="token class-name">CommandLineRunner</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">">>> Start from CommandLineRunner, Current time: "</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-DisposableBean"><a href="#3-DisposableBean" class="headerlink" title="3. DisposableBean"></a>3. DisposableBean</h4><p>一个类若实现了 <code>DisposableBean</code> 接口，则当其 <code>bean</code> 对象销毁之前则会触发 <code>destroy()</code> 方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestClass</span> <span class="token keyword">implements</span> <span class="token class-name">DisposableBean</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">">>> Destroy from DisposableBean, Current time: "</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-ApplicationListener"><a href="#4-ApplicationListener" class="headerlink" title="4. ApplicationListener"></a>4. ApplicationListener</h4><p><code>ApplicationListener</code> 作用与 <code>ApplicationRunner</code> 相反，其在程序关闭之前将会触发 <code>onApplicationEvent()</code> 方法体中的内容，同样也仅执行一次，通常在其中实现资源的释放与对象的销毁工作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ShutdownTask</span> <span class="token keyword">implements</span> <span class="token class-name">ApplicationListener</span><span class="token operator">&lt;</span>ContextClosedEvent<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onApplicationEvent</span><span class="token punctuation">(</span>ContextClosedEvent event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">">>>Shutdown from ApplicationListener, Current time: "</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -591,7 +742,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/todo/java/debezium.html">https://great-jin.github.io/todo/java/debezium.html</a>
+                    <a href="https://great-jin.github.io/java/spring/native/schedule/">https://great-jin.github.io/java/spring/native/schedule/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -628,7 +779,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Spring-Boot/">
+                                    <span class="chip bg-color">Spring Boot</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -798,38 +953,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/todo/java/debezium.html">
+                <a href="/java/advance/jvm/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Debezium CDC捕获介绍">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Java JVM虚拟机详解">
                         
-                        <span class="card-title">Debezium CDC捕获介绍</span>
+                        <span class="card-title">Java JVM虚拟机详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Debezium CDC捕获介绍。
+                            Java 虚拟机 JVM 基本介绍。
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-30
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-14
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -837,36 +1002,51 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/todo/java/debezium.html">
+                <a href="/db/zk/cluster/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Debezium CDC捕获介绍">
+                        <img src="/album/banner/db/zk/1.png" class="responsive-img" alt="Zookeeper集群管理详解">
                         
-                        <span class="card-title">Debezium CDC捕获介绍</span>
+                        <span class="card-title">Zookeeper集群管理详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Debezium CDC捕获介绍。
+                            通过Zookeeper实现工程的集群化管理。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-12-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-13
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                    <a href="/tags/Zookeeper/">
+                        <span class="chip bg-color">Zookeeper</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
