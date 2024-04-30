@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-25
+                    2024-04-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    8 分
                 </div>
                 
 
@@ -606,7 +606,7 @@
     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、Cron解析"><a href="#二、Cron解析" class="headerlink" title="二、Cron解析"></a>二、Cron解析</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>cron</code> 参数是最常用的参数，通过配置 <code>cron</code> 表达式可实现灵活的周期配置，其通过七个 <code>*</code> 用于控制执行频率。</p>
+<h3 id="二、Cron解析"><a href="#二、Cron解析" class="headerlink" title="二、Cron解析"></a>二、Cron解析</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>@Scheduled</code> 注解中除了上述的参数外，还支持通过 <code>cron</code> 表达式来配置周期，通过配置 <code>cron</code> 表达式可实现灵活的周期配置，其通过七个 <code>*</code> 用于控制执行频率。</p>
 <blockquote>
 <p>不同位置 <code>*</code> 代表含义如下：</p>
 <ul>
@@ -633,26 +633,90 @@
     logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"定时任务 - 当前时间："</span> <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<!-- #### 2. 解析方式
-```java
+<h4 id="2-解析方式"><a href="#2-解析方式" class="headerlink" title="2. 解析方式"></a>2. 解析方式</h4><p>当通过 <code>@Schdule</code> 注解配置后任务将有 <code>Spring</code> 执行统一调度，在 <code>Spring</code> 中提供了 <code>CronTrigger</code> 用于解析 <code>cron</code> 表达式，其通过 <code>nextExecutionTime()</code> 获取下一次执行的时间。</p>
+<p>其中 <code>SimpleTriggerContext</code> 用于定义任务的上下文，其包含三个参数 <code>lastScheduledExecutionTime</code>， <code>lastActualExecutionTime</code> 与 <code>lastCompletionTime</code>，分别标识上次执行时间、实际执行时间与完成时间。若需要解析计算 <code>cron</code> 表达式两个时间点之间的间隔，可通过连续触发 <code>nextExecutionTime()</code> 计算二者的差值即可。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    String express <span class="token operator">=</span> <span class="token string">"0 0/5 * * * *"</span><span class="token punctuation">;</span>
+    CronTrigger trigger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CronTrigger</span><span class="token punctuation">(</span>express<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+    Date now <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Current time"</span> <span class="token operator">+</span> now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    SimpleTriggerContext context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleTriggerContext</span><span class="token punctuation">(</span>now<span class="token punctuation">,</span> now<span class="token punctuation">,</span> now<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 计算下次触发时间</span>
+    Date nextDate <span class="token operator">=</span> trigger<span class="token punctuation">.</span><span class="token function">nextExecutionTime</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Next execution time: "</span> <span class="token operator">+</span> nextDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、源码解读"><a href="#三、源码解读" class="headerlink" title="三、源码解读"></a>三、源码解读</h3><h4 id="1-实现方式"><a href="#1-实现方式" class="headerlink" title="1. 实现方式"></a>1. 实现方式</h4><p>为了更详细的了解 <code>@Scheduled</code> 注解的底层实现，下面通过一个简单的示例来分析其实现原理。这边通过 <code>@Scheduled</code> 注解配置一个每间隔 <code>3000</code> 毫秒打印一次当前时间的定时任务，并在 <code>log.info()</code> 输出该任务执行断点并启动项目。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestSchedule</span> <span class="token punctuation">{</span>
 
-```
+    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> 3_000L<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成后启动项目在 <code>IDEA</code> 控制台查看堆栈日志，可以看到项目启动后通过 <code>ScheduledAnnotationBeanPostProcessor</code> 的 <code>finishRegistration()</code> 注册并执行的配置了的定时任务。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/1.png"> </p>
+<p>为了更清楚的了解的代码执行栈，这里先画了一个简易的流程图。当应用启动时，通过 <code>finishRegistration()</code> 方法调用 <code>resolveSchedulerBean()</code> 获取并注册线程池 <code>taskScheduler</code> 实例，然后随后在 <code>afterPropertiesSet()</code> 中调用 <code>scheduleTasks()</code> 方法执行定时任务。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/2.png"> </p>
+<p>在 <code>finishRegistration()</code> 中执行线程池实例的获取注册，并调用 <code>afterPropertiesSet()</code> 触发定时任务执行。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/3.png" alt="finishRegistration()"> </p>
+<p><code>resolveSchedulerBean()</code> 核心逻辑即获取定时任务线程池实例，通过传入的 <code>TaskScheduler.class</code> 类型从 <code>IOC</code> 容器中获取 <code>taskScheduler</code> 实例，并将该 <code>bean</code> 实例封装为 <code>NamedBeanHolder</code> 对象。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/4.png" alt="resolveSchedulerBean()"> </p>
+<p>众所周知，<code>IOC</code> 实现核心即为缓存 <code>Map</code> 记录不同 <code>bean</code> 实例，而 <code>resolveNamedBean()</code> 通过 <code>getBeanNamesForType()</code> 获取 <code>bean</code> 实例名称再有 <code>resolveNamedBean()</code> 实例化对象，需要注意 <code>DefaultListableBeanFactory</code> 中对 <code>resolveNamedBean()</code> 实现了重载要进行区别。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/5.png"><br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/6.png"></p>
+<h4 id="2-线程配置"><a href="#2-线程配置" class="headerlink" title="2. 线程配置"></a>2. 线程配置</h4><p>在上述提到的实例化线程池实例时，其通过 <code>AbstractBeanFactory</code> 的 <code>doGetBean()</code> 获取已经缓存的实例化对。通过断点可以看到返回实例其核心线程数为 <code>1</code>，也就意味着其为单线程执行任务。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/7.png"></p>
+<p>下面通过示例进行验证，创建两个定时任务，在任务一通过 <code>while(true)</code> 循环执行模拟任务耗时，任务二则每间隔一秒执行简单的日志输出。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestSchedule</span> <span class="token punctuation">{</span>
 
+    <span class="token keyword">private</span> <span class="token keyword">final</span> AtomicInteger i <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AtomicInteger</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> 3_000L<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token keyword">int</span> data <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>data <span class="token operator">></span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span>1000L<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        i<span class="token punctuation">.</span><span class="token function">incrementAndGet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-### 三、源码解读
-#### 1. 实现方式
+    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>fixedRate <span class="token operator">=</span> 1000L<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启动程序后查看日志可以看到，<code>demo2</code> 在执行一次之后再无任务输出，表明此时的线程资源已被 <code>demo1</code> 所占用，也验证了上述的单线程的结果。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/8.png"></p>
+<p>在之前解析源码的时候提到了定时任务的线程池所用的实例名为 <code>taskScheduler</code>，因此，当程序中涉及到定时任务时，通常手动注入 <code>taskScheduler</code> 线程池实例对象防止线程资源占用的情况。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExecutorConfig</span> <span class="token punctuation">{</span>
 
-
-
-#### 2. 线程配置 -->
-
-
-
-
-
-<h3 id="三、任务启停"><a href="#三、任务启停" class="headerlink" title="三、任务启停"></a>三、任务启停</h3><p>除了上述提到的定时注解，在 Spring Boot 中同时提供了其它一系列类实现一次性的任务执行。</p>
+    <span class="token annotation punctuation">@Bean</span><span class="token punctuation">(</span><span class="token string">"taskScheduler"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ThreadPoolTaskScheduler <span class="token function">taskScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ThreadPoolTaskScheduler scheduler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolTaskScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        scheduler<span class="token punctuation">.</span><span class="token function">setThreadNamePrefix</span><span class="token punctuation">(</span><span class="token string">"test-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 核心线程数</span>
+        scheduler<span class="token punctuation">.</span><span class="token function">setPoolSize</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 空闲线程等待时间</span>
+        scheduler<span class="token punctuation">.</span><span class="token function">setAwaitTerminationSeconds</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 取消任务时是否将其从队列中删除</span>
+        scheduler<span class="token punctuation">.</span><span class="token function">setRemoveOnCancelPolicy</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 关闭线程池时等待任务执行完毕后</span>
+        scheduler<span class="token punctuation">.</span><span class="token function">setWaitForTasksToCompleteOnShutdown</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> scheduler<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样以刚才的代码为例，在添加 <code>taskScheduler</code> 实例后重启程序，可以看到此时的日志输出已经正常打印两个定时任务的信息。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/schdule/9.png"></p>
+<h3 id="四、任务启停"><a href="#四、任务启停" class="headerlink" title="四、任务启停"></a>四、任务启停</h3><p>除了上述提到的定时注解，在 Spring Boot 中同时提供了其它一系列类实现一次性的任务执行。</p>
 <p>在 <code>Spring</code> 中提供了 <code>ApplicationRunner</code> 与 <code>CommandLineRunner</code> 两个类可实现系统启动时触发任务，在项目启动时将会触发二者的 <code>run</code> 方法，通常用于系统的热点数据预加载与数据缓存载入。同理也提供了 <code>ApplicationListener</code> 类可项目停止时触发，常用于资源或缓存的释放与清除。</p>
 <h4 id="1-ApplicationRunner"><a href="#1-ApplicationRunner" class="headerlink" title="1. ApplicationRunner"></a>1. ApplicationRunner</h4><p>新建类并实现 <code>ApplicationRunner</code> 接口，当 <code>Spring</code> 工程启动时将会执行 <code>run()</code> 方法体的内容，方法体内容仅会触发一次。</p>
 <p>通常在项目中利用其实现数据预热功能，或者加载缓存数据至内存之中。</p>
@@ -1317,7 +1381,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">241.9k</span>
+                <span class="white-color">245.8k</span>
             
             
             

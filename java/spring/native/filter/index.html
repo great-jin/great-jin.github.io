@@ -544,14 +544,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-25
+                    2024-04-30
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.5k
                 </div>
                 
 
@@ -578,7 +578,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、过滤器"><a href="#一、过滤器" class="headerlink" title="一、过滤器"></a>一、过滤器</h3><h4 id="1-自定义"><a href="#1-自定义" class="headerlink" title="1. 自定义"></a>1. 自定义</h4><p>过滤器是 <code>Servlet</code> 规范中的一种组件，它可以在请求被处理之前或之后对请求和响应进行预处理和后处理，可以用于实现一些通用的功能，例如：请求编码转换、登录验证、权限控制、性能监控等。</p>
+                <h3 id="一、过滤器"><a href="#一、过滤器" class="headerlink" title="一、过滤器"></a>一、过滤器</h3><h4 id="1-定义方式"><a href="#1-定义方式" class="headerlink" title="1. 定义方式"></a>1. 定义方式</h4><p>过滤器是 <code>Servlet</code> 规范中的一种组件，它可以在请求被处理之前或之后对请求和响应进行预处理和后处理，可以用于实现一些通用的功能，例如：请求编码转换、登录验证、权限控制、性能监控等。</p>
 <p>过滤器可以通过注解方式或者 <code>bean</code> 实例注入的方式创建，但不管哪种方式都需要自定义创建过滤器实现类。</p>
 <p>新建自定义过滤器类并实现 <code>Filter</code> 类，过滤器的核心业务逻辑即在 <code>doFilter()</code> 方法中。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter1</span> <span class="token keyword">implements</span> <span class="token class-name">Filter</span> <span class="token punctuation">{</span>
@@ -613,11 +613,13 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-注解实现"><a href="#2-注解实现" class="headerlink" title="2. 注解实现"></a>2. 注解实现</h4><p>通过注解实现即在自定义过滤器类上添加 <code>@WebFilter</code> 并在启动类上添加 <code>@ServletComponentScan</code> 即可。</p>
+<h4 id="2-注入方式"><a href="#2-注入方式" class="headerlink" title="2. 注入方式"></a>2. 注入方式</h4><h5 id="1-注解实现"><a href="#1-注解实现" class="headerlink" title="(1) 注解实现"></a>(1) 注解实现</h5><p>通过注解实现即在自定义过滤器类上添加 <code>@WebFilter</code> 并在启动类上添加 <code>@ServletComponentScan</code> 即可。</p>
 <p>若同时创建了多个过滤器，可通过 <code>@Order</code> 注解设置优先值，值越高优先级则越高。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@WebFilter</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@WebFilter</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter1</span> <span class="token keyword">implements</span> <span class="token class-name">Filter</span> <span class="token punctuation">{</span>
 
+    <span class="token comment" spellcheck="true">// 略去实现逻辑</span>
 <span class="token punctuation">}</span>
 
 <span class="token annotation punctuation">@ServletComponentScan</span>
@@ -627,10 +629,9 @@
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         SpringApplication<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span>DemoFilterApplication<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-配置实现"><a href="#3-配置实现" class="headerlink" title="3. 配置实现"></a>3. 配置实现</h4><p>除了通过注解实现另一种方式就是通过注入 <code>bean</code> 对象实现，我更推荐这种方法，配置调整更为方便。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-配置实现"><a href="#2-配置实现" class="headerlink" title="(2) 配置实现"></a>(2) 配置实现</h5><p>除了通过注解实现另一种方式就是通过注入 <code>bean</code> 对象实现，我更推荐这种方法，配置调整更为方便。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FilterConfig</span> <span class="token punctuation">{</span>
 
@@ -652,11 +653,10 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-过滤忽略"><a href="#4-过滤忽略" class="headerlink" title="4. 过滤忽略"></a>4. 过滤忽略</h4><p>在上面的示例中通过 <code>setUrlPatterns()</code> 配置了拦截作用域，但拦截器并没有提供提供显式的白名单配置接口。</p>
+<h4 id="3-资源忽略"><a href="#3-资源忽略" class="headerlink" title="3. 资源忽略"></a>3. 资源忽略</h4><p>在上面的示例中通过 <code>setUrlPatterns()</code> 配置了拦截作用域，但拦截器并没有提供提供显式的白名单配置接口。</p>
 <p>因此为了只能另辟蹊径实现白名单效果，你可以在过滤器的 <code>doFilter()</code> 中通过 <code>req.getRequestURI()</code> 获取请求的资源实现判断过滤，从而实现白名单效果。</p>
 <p>下面介绍另一种方法，自定义过滤器类并继承 <code>OncePerRequestFilter</code> 类，将白名单配置策略配置于 <code>shouldNotFilter()</code> 中。</p>
-<pre class="line-numbers language-java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter2</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter2</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doFilterInternal</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span> HttpServletResponse response<span class="token punctuation">,</span> FilterChain filterChain<span class="token punctuation">)</span> <span class="token keyword">throws</span> ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
@@ -673,7 +673,7 @@
         <span class="token keyword">return</span> Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>excludes<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、拦截器"><a href="#二、拦截器" class="headerlink" title="二、拦截器"></a>二、拦截器</h3><p>拦截器是 <code>Spring</code> 框架中的一个组件，它可以在请求处理前后和异常处理时进行预处理和后处理。拦截器和过滤器类似，但它是 <code>Spring</code> 框架中的一部分，可以更方便地使用 <code>Spring</code> 中的功能。</p>
 <p>通过 <code>request</code> 与 <code>response</code> 这两个参数，拦截器可以获取请求的相关信息，如请求 <code>URL</code> 、请求参数等，并可以修改响应的相关信息，如设置响应头、设置响应编码等。</p>
 <h4 id="1-业务定义"><a href="#1-业务定义" class="headerlink" title="1. 业务定义"></a>1. 业务定义</h4><p>通过实现 <code>HandlerInterceptor</code> 接口类即可自定义拦截器功能。</p>
@@ -1340,7 +1340,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">241.9k</span>
+                <span class="white-color">245.8k</span>
             
             
             
