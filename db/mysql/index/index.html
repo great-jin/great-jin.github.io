@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="数据结构详解——树, 布袋青年">
+    <meta name="keywords" content="MYSQL 数据索引详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>数据结构详解——树 | 布袋青年</title>
+    <title>MYSQL 数据索引详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -377,7 +377,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">数据结构详解——树</h1>
+                    <h1 class="description center-align post-title">MYSQL 数据索引详解</h1>
                 </div>
             </div>
         </div>
@@ -512,8 +512,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-                                <span class="chip bg-color">数据结构</span>
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
                             </a>
                         
                     </div>
@@ -524,8 +524,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
-                                算法
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
                             </a>
                         
                     </div>
@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-09
+                    2024-05-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    943
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    11 分
                 </div>
                 
 
@@ -578,7 +578,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><code>B</code>树、 <code>B+</code>树和红黑树都是常见的平衡查找树数据结构，用于在大规模数据集中高效地进行查找、插入和删除操作。它们的设计目标是通过平衡树的结构来保证在最坏情况下的时间复杂度接近于 <code>O(log n)</code> ，其中 <code>n</code> 表示数据集的大小。</p>
+                <h3 id="一、数据结构"><a href="#一、数据结构" class="headerlink" title="一、数据结构"></a>一、数据结构</h3><p><code>B</code>树、 <code>B+</code>树和红黑树都是常见的平衡查找树数据结构，用于在大规模数据集中高效地进行查找、插入和删除操作。它们的设计目标是通过平衡树的结构来保证在最坏情况下的时间复杂度接近于 <code>O(log n)</code> ，其中 <code>n</code> 表示数据集的大小。</p>
 <h4 id="1-B树"><a href="#1-B树" class="headerlink" title="1. B树"></a>1. B树</h4><p><code>B</code> 树是一种自平衡的树型数据结构，其叶子节点与非叶子节点都可用于存储数据。</p>
 <p>如存在一组数据 <code>[2, 4, 6, 8, 10]</code> 则其对应的 <code>B</code> 树形式之一为下图所示。<br><img src="/album/loading.gif" data-original="/album/article/algo/tree/1.png" alt="B树"></p>
 <blockquote>
@@ -611,6 +611,143 @@
 <p>红黑树通过保持上述特性来保持平衡。这使得红黑树在插入和删除节点时能够保持树的平衡性，并且可以在最坏情况下保证 <code>O(log n)</code> 的查找、插入和删除操作。</p>
 <h4 id="4-差异点"><a href="#4-差异点" class="headerlink" title="4. 差异点"></a>4. 差异点</h4><p><code>B</code> 树和 <code>B+</code> 树适用于存储大规模数据的场景，特别是磁盘上的数据存储，它们具有高度的扇出性能，可以减少磁盘 <code>I/O</code> 次数，提高数据访问效率。而 <code>B+</code> 树相对于 <code>B</code> 树在范围查询和顺序访问方面有更好的性能。</p>
 <p>红黑树则适用于内存中的数据结构，它通过颜色属性的调整来保持树的平衡性，具有更快的插入和删除操作。</p>
+<h3 id="二、聚簇索引"><a href="#二、聚簇索引" class="headerlink" title="二、聚簇索引"></a>二、聚簇索引</h3><h4 id="1-索引分类"><a href="#1-索引分类" class="headerlink" title="1. 索引分类"></a>1. 索引分类</h4><p>常用的数据库索引分类如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>  
+        <th style="text-align: center;">作用</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>B-Tree索引</strong></td>  
+        <td style="text-align: center;">B-Tree 索引是最常见的一种索引，也是默认索引类型，适用于等值查询、范围查询、排序等场景。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>哈希索引</strong></td>  
+        <td style="text-align: center;">哈希索引是将关键字通过哈希算法转化为哈希值，然后根据哈希值进行查找。哈希索引适用于等值查询，但不适用于范围查询和排序。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>全文索引</strong></td>  
+        <td style="text-align: center;">全文索引适用于对文本内容进行检索的场景。全文索引可以解决 like 查询效率低下的问题。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>空间索引</strong></td>  
+        <td style="text-align: center;">空间索引是在空间数据类型(例如点、线、多边形等) 上建立的索引，适用于 GIS (地理信息系统) 应用。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>全文空间索引</strong></td>  
+        <td style="text-align: center;">全文空间索引是全文索引和空间索引的结合，适用于 GIS 应用中的文本检索场景。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>唯一索引</strong></td>  
+        <td style="text-align: center;">唯一索引要求每个索引值都是唯一的，适用于不允许出现重复值的字段。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>聚簇索引</strong></td>  
+        <td style="text-align: center;">聚簇索引是按照表中数据物理存储的顺序建立的索引，聚簇索引的叶子节点存储的是整个数据行，适用于基于范围查询的场景。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;"><strong>非聚簇索引</strong></td>  
+        <td style="text-align: center;">非聚簇索引是独立于数据存储的一种索引类型，非聚簇索引的叶子节点存储的是索引值和一个指向对应数据行的指针，适用于基于等值查询的场景。</td>  
+    </tr>
+</table>
+
+
+<h4 id="2-结构介绍"><a href="#2-结构介绍" class="headerlink" title="2. 结构介绍"></a>2. 结构介绍</h4><p>聚簇索引是将索引与数据存储进行共同存储，以 <code>Innodb</code> 中的 <code>B-Tree</code> 结构为例，其叶子节点存储的即为真实记录数据。如存在存在一张表其包含四条记录，则其对应的逻辑索引结构如下图所示。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/1.png"></p>
+<h4 id="3-辅助索引"><a href="#3-辅助索引" class="headerlink" title="3. 辅助索引"></a>3. 辅助索引</h4><p>聚簇索引具有唯一性即一张表仅允许存在一个聚簇索引，通常使用主键作为索引键构建，若表未手动声明主键则会使用默认生成的 <code>db_row_id</code> 作为索引键。由于一张表仅有一个聚簇索引，因此其它索引都基于聚簇索引，通常称此类索引为 <code>辅助索引</code>。</p>
+<p>辅助索引的叶子节点末端不再存储完整的真实数据，取而代之存储的是对应记录的主键值。因此，针对辅助索引的查询会涉及到两步骤，首先根据辅助索引树查询到目标记录主键，再根据该主键查询聚簇索引最终查询到目标记录，这个过程也称之为回表。</p>
+<p>同样以上述数据为例，在聚簇索引的基础上创建一个以 <code>name</code> 为索引列的索引，当查询 <code>where name = &#39;Alex&#39;</code>，其查询路径为下图中黄色路径。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/2.png"></p>
+<h4 id="4-结构优点"><a href="#4-结构优点" class="headerlink" title="4. 结构优点"></a>4. 结构优点</h4><p>在 <code>Innodb</code> 中数据的存储单位是页，即当查询时数据时将同一页的数据刷入内存中，又因为聚簇索引数据是直接存储于叶子节点，此时内容中已经包含了具体数据。同时 <code>MySQL</code> 中提供了一系列缓存 <code>(buffer)</code> 机制，当再次访问时内存中数据命中率将会提高从而减少 <code>IO</code> 操作提高查询效率。</p>
+<p>在聚簇索引中，其物理存储结构使得相邻的数据行存储于相邻的物理磁盘中，因此对于范围查询此类涉及到大量数据的操作而言，可减少数据磁盘的 <code>IO</code> 次数，从而提高查询效率。</p>
+<h4 id="5-结构缺点"><a href="#5-结构缺点" class="headerlink" title="5. 结构缺点"></a>5. 结构缺点</h4><p>聚簇索引同样也存在一些不足之处，由于叶子节点存储的为真实数据，当发生插入与更新操作时导致存储结构自平衡引发的数据读写移动，可能会涉及到较为频繁的磁盘 <code>IO</code> 操作。而非聚簇索引叶子节点存储的指定数据的指针索引，其相对应的效率更高。</p>
+<p>此外，在聚簇索引中对应主键字段的取值并不建议使用随机数或 <code>UUID</code>，而更建议使用自增或雪花 <code>ID</code> 以保证数据的连贯性，从而减少磁盘 <code>IO</code> 次数提高存储效率。</p>
+<h3 id="三、非聚簇索引"><a href="#三、非聚簇索引" class="headerlink" title="三、非聚簇索引"></a>三、非聚簇索引</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>非聚簇索引是独立于数据存储的一种索引类型，非聚簇索引的叶子节点存储的是索引值和一个指向对应数据行的指针，在 <code>MyISAM</code> 中采用的即该数据结构。</p>
+<p>还是以上述的数据为例，其对应的非聚簇索引逻辑结构如下图所示：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/3.png"></p>
+<h3 id="四、索引创建"><a href="#四、索引创建" class="headerlink" title="四、索引创建"></a>四、索引创建</h3><h4 id="1-主键索引"><a href="#1-主键索引" class="headerlink" title="1. 主键索引"></a>1. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
+<p>主键索引创建较为简单，当一个字段被表示为主键时会自动为其创建索引，注意主键字段必须设置为非空字段。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>
+  <span class="token punctuation">`</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">ADD</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-唯一索引"><a href="#2-唯一索引" class="headerlink" title="2. 唯一索引"></a>2. 唯一索引</h4><p>唯一索引与主键索引不同是其列的值可以包含空值，在指定多列时只有在这多个列的值都不相同时才互斥。</p>
+<p>如果表中已经存在重复数据，则创建唯一索引时会失败。在这种情况下，需要先删除重复数据，或者使用 <code>IGNORE</code> 关键字来忽略重复数据并创建唯一索引。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建多列唯一索引</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- 方式二，作用同上</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">ADD</span> <span class="token keyword">UNIQUE</span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- 忽略重复数据创建唯一索引</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span> <span class="token keyword">IGNORE</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-外键索引"><a href="#3-外键索引" class="headerlink" title="3. 外键索引"></a>3. 外键索引</h4><p>当两种表存在关联关系时通常可以为表创建外键索引从而提高查询效率，如 <code>学生表</code> 与 <code>成绩表</code> 之间存在明显的关联关系即可为其创建外键索引。</p>
+<p>创建外键之前需要先为 <code>主表</code> 和 <code>从表</code> 先创建索引，否则无法为 <code>从表</code> 创建外键。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span>  
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> 
+<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需要注意针对已经存在的表添加外键索引时，若 <code>从表</code> 中存在没有与 <code>主表</code> 的关联的记录需要先删除，否则将会异常创建失败。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 建表指定</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> parent <span class="token punctuation">(</span> 
+    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> 
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> child <span class="token punctuation">(</span> 
+    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
+    parent_id <span class="token keyword">INT</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
+    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>parent_id<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> parent<span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- 存在表新增</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span>
+<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> <span class="token operator">&lt;</span>foreign_name<span class="token operator">></span>
+<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span> 
+<span class="token keyword">REFERENCES</span> <span class="token operator">&lt;</span>master_table<span class="token operator">></span><span class="token punctuation">(</span><span class="token operator">&lt;</span>master_column<span class="token operator">></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-联合索引"><a href="#4-联合索引" class="headerlink" title="4. 联合索引"></a>4. 联合索引</h4><p>联合索引查询条件中涉及到的列的顺序需要与索引中建立的列的顺序一致，才能充分利用索引的优势。否则即使该列已经建立了索引，也无法发挥优化效果。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、索引应用"><a href="#五、索引应用" class="headerlink" title="五、索引应用"></a>五、索引应用</h3><h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p>通过 <code>show index</code> 关键字可以查看对应表已经存在的索引。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> <span class="token keyword">index</span>
+<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>通过 <code>force</code> 关键字可以强制语句使用索引。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
+    <span class="token operator">*</span>
+<span class="token keyword">from</span>
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">force</span> 
+    <span class="token keyword">index</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-失效场景"><a href="#2-失效场景" class="headerlink" title="2. 失效场景"></a>2. 失效场景</h4><p>在实际应用场景中，创建的索引不一定每次都能都能生效，在一些特定的情况下索引可能失效。</p>
+<blockquote>
+<p>索引失效场景包含如下几类：</p>
+<ul>
+<li>对索引列进行运算，一定会导致索引失效。</li>
+<li>在索引列上使用内置函数，一定会导致索引失效。</li>
+<li><code>where</code> 语句中包含 <code>or</code> 时，可能会导致索引失效。</li>
+<li><code>where</code> 语句中索引列使用了负向查询 <code>(NOT、!=、&lt;&gt;、!&lt;、!&gt;、NOT IN、NOT LIKE)</code>，可能会导致索引失效。</li>
+<li><code>like</code> 通配符可能会导致索引失效，未满足最左匹配原则。</li>
+<li>隐式类型转换导致的索引失效，如索引列 <code>user_id</code> 为 <code>varchar</code> 类型，使用 <code>int</code> 做条件关联，或者关联表字符集编码不一致。</li>
+<li>索引字段可以为 <code>null</code> ，使用 <code>is null</code> 或 <code>is not null</code> 时，可能会导致索引失效。</li>
+<li>联合索引未满足最左匹配原则，<code>(k1,k2,k3)</code> 相当于创建了 <code>(k1)、(k1,k2)</code> 和 <code>(k1,k2,k3)</code> 三个索引。</li>
+</ul>
+</blockquote>
 
                 
             </div>
@@ -637,7 +774,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/algo/tree/">https://great-jin.github.io/algo/tree/</a>
+                    <a href="https://great-jin.github.io/db/mysql/index/">https://great-jin.github.io/db/mysql/index/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -675,8 +812,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-                                    <span class="chip bg-color">数据结构</span>
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
                                 </a>
                             
                         </div>
@@ -1208,7 +1345,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">245.8k</span>
+                <span class="white-color">246.5k</span>
             
             
             

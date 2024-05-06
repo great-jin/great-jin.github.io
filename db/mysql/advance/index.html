@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-13
+                    2024-05-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.8k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    9 分
                 </div>
                 
 
@@ -596,136 +596,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-视图更新"><a href="#3-视图更新" class="headerlink" title="3. 视图更新"></a>3. 视图更新</h4><p>视图表是虚拟表，通常是由一个或多个基本表导出的表，其内容是基于基本表的数据计算、组合或筛选的结果。</p>
 <p>因为其数据源是基于其他表的，所以视图表的数据是不能直接修改的，视图表也被称为只读表，如果需要修改视图表中数据只需操作其基表即可，若需要删除视图表则与普通表一致通过 <code>delete</code> 关键字即可。</p>
-<h3 id="二、数据索引"><a href="#二、数据索引" class="headerlink" title="二、数据索引"></a>二、数据索引</h3><p>索引可以理解为数据记录提供快速定位的手段，就像一本书的开篇一定是目录让人能够快速实现信息查阅，索引存在的目的与之类似。</p>
-<p>除主键索引外使用其它索引会有回表操作，即先根据定义的索引定位到数据，再读取该数据的主键值利用主键索引进行二次查询，这个过程称为回表。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- view table index info</span>
-<span class="token keyword">show</span> <span class="token keyword">index</span>
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>通过 <code>force</code> 关键字可以强制语句使用索引。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
-    <span class="token operator">*</span>
-<span class="token keyword">from</span>
-    <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">force</span> 
-    <span class="token keyword">index</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>常用的数据库索引分类如下：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">方法</td>  
-        <th style="text-align: center;">作用</td> 
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>B-Tree索引</strong></td>  
-        <td style="text-align: center;">B-Tree 索引是最常见的一种索引，也是默认索引类型，适用于等值查询、范围查询、排序等场景。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>哈希索引</strong></td>  
-        <td style="text-align: center;">哈希索引是将关键字通过哈希算法转化为哈希值，然后根据哈希值进行查找。哈希索引适用于等值查询，但不适用于范围查询和排序。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>全文索引</strong></td>  
-        <td style="text-align: center;">全文索引适用于对文本内容进行检索的场景。全文索引可以解决like查询效率低下的问题。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>空间索引</strong></td>  
-        <td style="text-align: center;">空间索引是在空间数据类型(例如点、线、多边形等) 上建立的索引。空间索引适用于 GIS (地理信息系统) 应用。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>全文空间索引</strong></td>  
-        <td style="text-align: center;">全文空间索引是全文索引和空间索引的结合，适用于 GIS 应用中的文本检索场景。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>唯一索引</strong></td>  
-        <td style="text-align: center;">唯一索引要求每个索引值都是唯一的，适用于不允许出现重复值的字段。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>聚簇索引</strong></td>  
-        <td style="text-align: center;">聚簇索引是按照表中数据物理存储的顺序建立的索引，聚簇索引的叶子节点存储的是整个数据行，适用于基于范围查询的场景。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;"><strong>非聚簇索引</strong></td>  
-        <td style="text-align: center;">非聚簇索引是独立于数据存储的一种索引类型，非聚簇索引的叶子节点存储的是索引值和一个指向对应数据行的指针，适用于基于等值查询的场景。</td>  
-    </tr>
-</table>
-
-
-<h4 id="1-失效场景"><a href="#1-失效场景" class="headerlink" title="1. 失效场景"></a>1. 失效场景</h4><p>在实际应用场景中，创建的索引不一定每次都能都能生效，在一些特定的情况下索引可能失效。</p>
-<blockquote>
-<p>索引失效场景包含如下几类：</p>
-<ul>
-<li>对索引列进行运算，一定会导致索引失效。</li>
-<li>在索引列上使用内置函数，一定会导致索引失效。</li>
-<li><code>where</code> 语句中包含 <code>or</code> 时，可能会导致索引失效。</li>
-<li><code>where</code> 语句中索引列使用了负向查询 <code>(NOT、!=、&lt;&gt;、!&lt;、!&gt;、NOT IN、NOT LIKE)</code>，可能会导致索引失效。</li>
-<li><code>like</code> 通配符可能会导致索引失效，未满足最左匹配原则。</li>
-<li>隐式类型转换导致的索引失效，如索引列 <code>user_id</code> 为 <code>varchar</code> 类型，使用 <code>int</code> 做条件关联，或者关联表字符集编码不一致。</li>
-<li>索引字段可以为 <code>null</code> ，使用 <code>is null</code> 或 <code>is not null</code> 时，可能会导致索引失效。</li>
-<li>联合索引未满足最左匹配原则，<code>(k1,k2,k3)</code> 相当于创建了 <code>(k1)、(k1,k2)</code> 和 <code>(k1,k2,k3)</code> 三个索引。</li>
-</ul>
-</blockquote>
-<h4 id="2-主键索引"><a href="#2-主键索引" class="headerlink" title="2. 主键索引"></a>2. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
-<p>主键索引创建较为简单，当一个字段被表示为主键时会自动为其创建索引，注意主键字段必须设置为非空字段。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>
-  <span class="token punctuation">`</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-唯一索引"><a href="#3-唯一索引" class="headerlink" title="3. 唯一索引"></a>3. 唯一索引</h4><p>唯一索引与主键索引不同是其列的值可以包含空值，在指定多列时只有在这多个列的值都不相同时才互斥。</p>
-<p>如果表中已经存在重复数据，则创建唯一索引时会失败。在这种情况下，需要先删除重复数据，或者使用 <code>IGNORE</code> 关键字来忽略重复数据并创建唯一索引。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建多列唯一索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 方式二，作用同上</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">ADD</span> <span class="token keyword">UNIQUE</span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 忽略重复数据创建唯一索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span> <span class="token keyword">IGNORE</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-外键索引"><a href="#4-外键索引" class="headerlink" title="4. 外键索引"></a>4. 外键索引</h4><p>当两种表存在关联关系时通常可以为表创建外键索引从而提高查询效率，如 <code>学生表</code> 与 <code>成绩表</code> 之间存在明显的关联关系即可为其创建外键索引。</p>
-<p>创建外键之前需要先为 <code>主表</code> 和 <code>从表</code> 先创建索引，否则无法为 <code>从表</code> 创建外键。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span>  
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> 
-<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>需要注意针对已经存在的表添加外键索引时，若 <code>从表</code> 中存在没有与 <code>主表</code> 的关联的记录需要先删除，否则将会异常创建失败。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 建表指定</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> parent <span class="token punctuation">(</span> 
-    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
-    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> 
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> child <span class="token punctuation">(</span> 
-    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
-    parent_id <span class="token keyword">INT</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
-    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
-    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>parent_id<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> parent<span class="token punctuation">(</span>id<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 存在表新增</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> <span class="token operator">&lt;</span>foreign_name<span class="token operator">></span>
-<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span> 
-<span class="token keyword">REFERENCES</span> <span class="token operator">&lt;</span>master_table<span class="token operator">></span><span class="token punctuation">(</span><span class="token operator">&lt;</span>master_column<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-联合索引"><a href="#5-联合索引" class="headerlink" title="5. 联合索引"></a>5. 联合索引</h4><p>联合索引查询条件中涉及到的列的顺序需要与索引中建立的列的顺序一致，才能充分利用索引的优势。否则即使该列已经建立了索引，也无法发挥优化效果。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、数据分区"><a href="#三、数据分区" class="headerlink" title="三、数据分区"></a>三、数据分区</h3><h4 id="1-存储介绍"><a href="#1-存储介绍" class="headerlink" title="1. 存储介绍"></a>1. 存储介绍</h4><p><code>MySQL</code> 中默认存储引擎是 <code>InnoDB</code>，其创建一张表会在库名目录下创建对应的 <code>表名.frm</code> 和 <code>表名.ibd</code> 两个文件，二者文件无法直接打开。</p>
+<h3 id="二、数据分区"><a href="#二、数据分区" class="headerlink" title="二、数据分区"></a>二、数据分区</h3><h4 id="1-存储介绍"><a href="#1-存储介绍" class="headerlink" title="1. 存储介绍"></a>1. 存储介绍</h4><p><code>MySQL</code> 中默认存储引擎是 <code>InnoDB</code>，其创建一张表会在库名目录下创建对应的 <code>表名.frm</code> 和 <code>表名.ibd</code> 两个文件，二者文件无法直接打开。</p>
 <ul>
 <li><code>frm</code> 文件存储的是 <code>表结构</code> 信息。</li>
 <li><code>ibd</code> 文件存储的是 <code>表数据</code> 内容。</li>
@@ -829,7 +700,7 @@
 <span class="token keyword">where</span>
     id <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、触发器"><a href="#四、触发器" class="headerlink" title="四、触发器"></a>四、触发器</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>数据库触发器是一种数据库对象，它与表相关联，能够在表上的特定事件（如插入、更新、删除）发生时自动执行一些预定义的操作。</p>
+<h3 id="三、触发器"><a href="#三、触发器" class="headerlink" title="三、触发器"></a>三、触发器</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>数据库触发器是一种数据库对象，它与表相关联，能够在表上的特定事件（如插入、更新、删除）发生时自动执行一些预定义的操作。</p>
 <blockquote>
 <p>触发器通常用于实现以下几个方面的功能：</p>
 </blockquote>
@@ -869,7 +740,7 @@ BEFORE <span class="token keyword">INSERT</span> <span class="token keyword">ON<
 <span class="token comment" spellcheck="true">-- delete trigger if existed</span>
 <span class="token keyword">DROP</span> <span class="token keyword">TRIGGER</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> <span class="token operator">&lt;</span>trigger_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、存储过程"><a href="#五、存储过程" class="headerlink" title="五、存储过程"></a>五、存储过程</h3><h4 id="1-创建示例"><a href="#1-创建示例" class="headerlink" title="1. 创建示例"></a>1. 创建示例</h4><p>如下述示例中创建了一个存储过程用于执行两个插入命令，当其中任意一条命令执行失败都将执行事务回滚操作。</p>
+<h3 id="四、存储过程"><a href="#四、存储过程" class="headerlink" title="四、存储过程"></a>四、存储过程</h3><h4 id="1-创建示例"><a href="#1-创建示例" class="headerlink" title="1. 创建示例"></a>1. 创建示例</h4><p>如下述示例中创建了一个存储过程用于执行两个插入命令，当其中任意一条命令执行失败都将执行事务回滚操作。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create the procedure</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> <span class="token operator">&lt;</span>procedure_name<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">BEGIN</span>
@@ -1524,7 +1395,7 @@ errorCode <span class="token operator">=</span> MYSQL_ERRNO<span class="token pu
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">245.8k</span>
+                <span class="white-color">246.5k</span>
             
             
             
