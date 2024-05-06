@@ -29,9 +29,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+</head>
 
 
 
@@ -548,7 +548,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-26
+                    2024-05-06
                 </div>
                 
 
@@ -1167,7 +1167,7 @@
 </blockquote>
 <h5 id="1-熔断器"><a href="#1-熔断器" class="headerlink" title="(1) 熔断器"></a>(1) 熔断器</h5><p>熔断器 <code>(Circuit Breaker)</code> 是服务熔断的核心组件，它监控对服务的调用情况，并根据一定的条件 (例如错误率、超时率等) 来决定是否开启熔断。一旦开启熔断，熔断器将拒绝对服务的调用，并在一段时间内直接返回预先定义的降级响应。</p>
 <h5 id="2-熔断状态"><a href="#2-熔断状态" class="headerlink" title="(2) 熔断状态"></a>(2) 熔断状态</h5><p>熔断器有两种状态，分别是开启状态 <code>(Open)</code> 和关闭状态 <code>(Closed)</code>。当熔断器处于开启状态时，所有对服务的请求都会被直接拒绝，而不会发送到服务端。当熔断器处于关闭状态时，对服务的请求将正常发送到服务端。</p>
-<h5 id="2-熔断器状态转换"><a href="#2-熔断器状态转换" class="headerlink" title="(2) 熔断器状态转换"></a>(2) 熔断器状态转换</h5><p>熔断器会根据一定的条件进行状态转换 <code>(Tripping/Fixed)</code>。当服务调用失败或超时达到一定阈值时，熔断器会从关闭状态转换为开启状态 <code>(Tripping)</code>。</p>
+<h5 id="3-熔断器状态转换"><a href="#3-熔断器状态转换" class="headerlink" title="(3) 熔断器状态转换"></a>(3) 熔断器状态转换</h5><p>熔断器会根据一定的条件进行状态转换 <code>(Tripping/Fixed)</code>。当服务调用失败或超时达到一定阈值时，熔断器会从关闭状态转换为开启状态 <code>(Tripping)</code>。</p>
 <p>一段时间后，熔断器会自动进入半开启状态 <code>(Half-Open)</code>，允许部分请求通过以测试服务是否已经恢复。如果服务恢复正常，则熔断器将转换为关闭状态 <code>(Fixed)</code>，否则继续保持开启状态。</p>
 <h5 id="4-降级机制"><a href="#4-降级机制" class="headerlink" title="(4) 降级机制"></a>(4) 降级机制</h5><p>当熔断器开启时，它会直接返回预先定义的降级响应 <code>(Fallback)</code>，而不是发送请求到服务端。降级响应通常是一些预先定义的固定值或者简单的错误信息，用于告知调用方服务不可用或者出现异常。</p>
 <h4 id="2-依赖引入"><a href="#2-依赖引入" class="headerlink" title="2. 依赖引入"></a>2. 依赖引入</h4><p><code>Hystrix</code> 是 <code>Netflix</code> 开发的一款服务熔断框架，与之前依赖类似额外引入下述依赖。</p>
