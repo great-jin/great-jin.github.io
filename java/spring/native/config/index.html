@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-25
+                    2024-05-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    792
+                    994
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -638,6 +638,37 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-文件读取"><a href="#4-文件读取" class="headerlink" title="4. 文件读取"></a>4. 文件读取</h4><p>在 <code>Spring</code> 中提供了 <code>Resource</code> 类可用于读取 <code>resources</code> 目录下的资源文件，搭配 <code>@Value</code> 注解即可实现动态的文件读取。</p>
+<p>其中 <code>classpath</code> 即相当于 <code>resources</code> 目录层级，如在项目的 <code>resources</code> 目录下存在文件 <code>files/hello.txt</code>，即可通过 <code>@Value(&quot;classpath:files/hello.txt&quot;)</code> 获取资源文件。在获取资源对象文件后，若需要初始化 <code>File</code> 对象可通过 <code>getURI()</code> 获取 <code>URI</code> 对象，对于其它操作推荐 <code>getInputStream()</code> 获取数据流对象进行管理。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileComponent</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"classpath:files/hello.txt"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Resource txtResource<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"classpath:files/hello.json"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Resource jsonResource<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> ObjectMapper objectMapper<span class="token punctuation">;</span>
+
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 通过 URI 初始化文件</span>
+        File file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>txtResource<span class="token punctuation">.</span><span class="token function">getURI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取文件 IO 流</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>InputStream inputStream <span class="token operator">=</span> jsonResource<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            JsonNode node <span class="token operator">=</span> objectMapper<span class="token punctuation">.</span><span class="token function">readTree</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、-ConfigurationProperties"><a href="#二、-ConfigurationProperties" class="headerlink" title="二、@ConfigurationProperties"></a>二、@ConfigurationProperties</h3><h4 id="1-基础配置-1"><a href="#1-基础配置-1" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>上面介绍了使用 <code>@Value</code> 获取配置文件参数，但如果需要获取大量的参数时重复的前缀显然有些冗余， <code>@ConfigurationProperties</code> 即用于解决此类情况。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">ibudai</span><span class="token punctuation">:</span>
     <span class="token key atrule">info</span><span class="token punctuation">:</span>
@@ -1316,7 +1347,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">246.5k</span>
+                <span class="white-color">246.7k</span>
             
             
             
