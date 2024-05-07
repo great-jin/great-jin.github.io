@@ -544,14 +544,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-05-06
+                    2024-05-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.1k
+                    3.3k
                 </div>
                 
 
@@ -662,6 +662,9 @@
 <p>此外，在聚簇索引中对应主键字段的取值并不建议使用随机数或 <code>UUID</code>，而更建议使用自增或雪花 <code>ID</code> 以保证数据的连贯性，从而减少磁盘 <code>IO</code> 次数提高存储效率。</p>
 <h3 id="三、非聚簇索引"><a href="#三、非聚簇索引" class="headerlink" title="三、非聚簇索引"></a>三、非聚簇索引</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>非聚簇索引是独立于数据存储的一种索引类型，非聚簇索引的叶子节点存储的是索引值和一个指向对应数据行的指针，在 <code>MyISAM</code> 中采用的即该数据结构。</p>
 <p>还是以上述的数据为例，其对应的非聚簇索引逻辑结构如下图所示：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/3.png"></p>
+<h4 id="2-插入缓冲"><a href="#2-插入缓冲" class="headerlink" title="2. 插入缓冲"></a>2. 插入缓冲</h4><p>在非聚簇索引中涉及到一个重要概念 —— 插入缓冲 <code>(Insert Buffer)</code>，其为 <code>Change Buffer</code> 中的一部分。</p>
+<p>对于非聚簇索引结构而言，其检索的依据是根据辅助索引与聚簇索引二者共同构成，但对于辅助索引而言其物理磁盘数据可能是相邻的，但其对应的 <code>B+</code> 树索引结构却是离散的。</p>
+<p>因此，在执行插入或更新时，并不是每一次都会直接插入到索引页中，而是先判断插人的非聚集索引页是否在缓冲池中，若在则执行插入操作，否则先放入 <code>Insert Buffer</code> 中，再由另一线程异步定期根据缓存和索引页数据执行 <code>merge</code> 操作，提高了对于非聚簇索引插入的性能。</p>
 <h3 id="四、索引创建"><a href="#四、索引创建" class="headerlink" title="四、索引创建"></a>四、索引创建</h3><h4 id="1-主键索引"><a href="#1-主键索引" class="headerlink" title="1. 主键索引"></a>1. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
 <p>主键索引创建较为简单，当一个字段被表示为主键时会自动为其创建索引，注意主键字段必须设置为非空字段。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>
@@ -1345,7 +1348,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">246.7k</span>
+                <span class="white-color">247k</span>
             
             
             

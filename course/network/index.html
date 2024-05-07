@@ -531,21 +531,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-09
+                    2024-05-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.3k
+                    3.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    13 分
                 </div>
                 
 
@@ -721,6 +721,19 @@ Server: Apache 0.84
 <li>确认号为 <code>Ack=W+1</code> ；表示是在收到了服务器端报文的基础上，将其序号 <code>Seq</code> 值作为本段报文确认号的值。</li>
 <li>随后客户端开始在 <code>TIME-WAIT</code> 阶段等待 <code>2MSL</code>。</li>
 </ul>
+<h4 id="3-网络粘包"><a href="#3-网络粘包" class="headerlink" title="3. 网络粘包"></a>3. 网络粘包</h4><p>在 <code>TCP</code> 传输中会涉及到一个概念 —— 网络粘包，但其并非真正意义上 <code>TCP</code> 层的问题。</p>
+<p>首先我们需要了解什么是粘包，在上面提到了 <code>TCP</code> 是传输层协议，以流的形式即负责数据的传输。而为了取得更高的传输性能，通常会采用 <code>Nagle</code> 算法将多个数据包合并后执行发送，从而减少网络传输的次数以提高效率。但合并操作也就带来一个问题，发送端本应是多条消息由于合并为单条导致接收方收到的数据包是也就只有单条。</p>
+<p>举个简单示例，客户端发送了 <code>2</code> 条消息，由于 <code>Nagle</code> 算法的存在数据包被合并为了一条，此时服务端本应该接受 <code>2</code> 条信息但却只接收到一条。若服务端没有针对接受的数据包执行重新拆包处理，那么服务端将无法正确处理接收到的数据包，这个过程也是就粘包。</p>
+<p>那为什么又称粘包并非 <code>TCP</code> 问题，正是因为上述提到的 <code>TCP</code> 为传输层协议，只负责数据流的点对点传输。对于传输层而言，其只负责数据的完整传输送达，而粘包问题应在应用层执行拆包解决而非由 <code>TCP</code> 协议处理。</p>
+<p>如果接收端没有单独的拆包处理，又想避免粘包问题的出现，可以在发送端配置开启 <code>TCP_NODELAY</code> 从而禁用 <code>Nagle</code> 算法，如在 <code>Netty</code> 中即可通过 <code>option(ChannelOption.TCP_NODELAY, true)</code> 禁用 <code>Nagle</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Bootstrap bootstrap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// 禁用 Nagle 算法，发送数据包时都会立即发送，不会等待数据包的合并发送。</span>
+            <span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span>ChannelOption<span class="token punctuation">.</span>TCP_NODELAY<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">handler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">SimpleClientInitializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
 <p><strong>参考链接</strong></p>
 <ol>
 <li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/osi-model/">OSI Model</a></li>
@@ -1301,7 +1314,7 @@ Server: Apache 0.84
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">246.7k</span>
+                <span class="white-color">247k</span>
             
             
             
