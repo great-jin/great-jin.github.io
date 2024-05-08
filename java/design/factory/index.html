@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring Boot 工厂模式实现, 布袋青年">
+    <meta name="keywords" content="Spring 实现优雅的工厂模式, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring Boot 工厂模式实现 | 布袋青年</title>
+    <title>Spring 实现优雅的工厂模式 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -377,7 +377,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring Boot 工厂模式实现</h1>
+                    <h1 class="description center-align post-title">Spring 实现优雅的工厂模式</h1>
                 </div>
             </div>
         </div>
@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-09
+                    2024-05-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    235
+                    628
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -578,7 +578,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="1-常量定义"><a href="#1-常量定义" class="headerlink" title="1. 常量定义"></a>1. 常量定义</h4><p>为了提供程序的可读性与可维护性，此处将后续涉及的常量统一外置定义。</p>
+                <h3 id="一、模式结构"><a href="#一、模式结构" class="headerlink" title="一、模式结构"></a>一、模式结构</h3><h4 id="1-工厂模式"><a href="#1-工厂模式" class="headerlink" title="1. 工厂模式"></a>1. 工厂模式</h4><p>在开始之前，让我们了解一下什么是工厂模式?</p>
+<p>在程序开发中，通常会涉及到相似对象的实例创建，而没有统一的关联却很难对程序进行维护管理。举个简单例子，系统中存在 <code>Dog</code> 与 <code>Cat</code> 两个类，且二者都包含了 <code>roar()</code> 方法，不同之处仅方法内部实现。随着系统需求的增长，后续需求中可能新增其它动物类，从而将导致在实例化时需要关注具体的类实现。</p>
+<p>在工厂模式中，通过定义一个公共接口来创建对象，然后由子类决定实例化哪个类，即可使用工厂类来创建对象而不需要了解具体实现类的细节。同样以上述的示例为准，通过定义抽象接口类 <code>Animal</code> 并定义接口方法 <code>roar()</code>，子类只需实现并重写接口方法即可。在实例化对象时，通过传入的类型决定具体的实例化类，而不必关注具体的业务实现。<br><img src="/album/loading.gif" data-original="/album/article/java/design/factory.png"></p>
+<h4 id="2-目标效果"><a href="#2-目标效果" class="headerlink" title="2. 目标效果"></a>2. 目标效果</h4><p>在 <code>Spring Boot</code> 中的一大核心即全局的 <code>Bean</code> 对象容器管理，因此可以将工厂模式与之进一步结合。</p>
+<p>其核心在于利用 <code>Spring</code> 的 <code>Bean</code> 容器分组效果，将工厂类的不同实例化对象注入 <code>Bean</code> 容器，当需要创建对象时，直接通过 <code>Bean</code> 容器获取即可。</p>
+<h3 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h3><h4 id="1-常量定义"><a href="#1-常量定义" class="headerlink" title="1. 常量定义"></a>1. 常量定义</h4><p>为了提供程序的可读性与可维护性，此处将后续涉及的常量统一外置定义。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Const</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String ANIMAL_DOG <span class="token operator">=</span> <span class="token string">"dog"</span><span class="token punctuation">;</span>
 
@@ -616,13 +621,15 @@
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// --> Dog roar</span>
-        animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_DOG<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Animal dog <span class="token operator">=</span> animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_DOG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dog<span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token comment" spellcheck="true">// --> Cat roar</span>
-        animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_CAT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Animal cat <span class="token operator">=</span> animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_CAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cat<span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -912,18 +919,18 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/spring/tool/sql-interceptor/">
+                <a href="/java/spring/tool/datasource/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/spring/26.jpg" class="responsive-img" alt="Spring SQL 拦截器实现">
+                        <img src="/album/banner/java/spring/25.png" class="responsive-img" alt="Spring 动态数据源教程">
                         
-                        <span class="card-title">Spring SQL 拦截器实现</span>
+                        <span class="card-title">Spring 动态数据源教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring SQL 拦截器实现教程。
+                            Spring Boot 动态数据源教程。
                         
                     </div>
                     <div class="publish-info">
@@ -1220,7 +1227,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">247k</span>
+                <span class="white-color">247.6k</span>
             
             
             
