@@ -372,7 +372,7 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/linux/docker/4.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/1.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -548,21 +548,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-07
+                    2024-05-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    7 分
                 </div>
                 
 
@@ -582,12 +582,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>作为一个开发人员，平日里难免会与各种数据库进行打交道，但如果每次使用都在本机从头部署，难免过于繁杂， <code>Docker</code> 此时无疑成为最优解。</p>
+                <p>作为一个开发人员，平日里难免会与各种数据库进行打交道，但如果每次使用都在本机从头部署，难免过于繁杂，<code>Docker</code> 此时无疑成为最优解。</p>
 <p>只需在本机安装一个虚拟机，通过 <code>Docker</code> 容器便可实现快速部署，无需繁琐的环境依赖，而一旦出现问题，直接删除容器重新创建即可，仅用于开发测试绰绰有余。</p>
 <blockquote>
 <p>下面即介绍常用数据库通过 <code>Docker</code> 容器部署教程。</p>
 </blockquote>
-<h3 id="一、MySQL"><a href="#一、MySQL" class="headerlink" title="一、MySQL"></a>一、MySQL</h3><h4 id="1-配置管理"><a href="#1-配置管理" class="headerlink" title="1. 配置管理"></a>1. 配置管理</h4><p>创建 <code>my.cnf</code> 配置文件用于管理 <code>MySQL</code> 相关的配置。</p>
+<h3 id="一、MySQL5"><a href="#一、MySQL5" class="headerlink" title="一、MySQL5"></a>一、MySQL5</h3><h4 id="1-配置管理"><a href="#1-配置管理" class="headerlink" title="1. 配置管理"></a>1. 配置管理</h4><p>创建 <code>my.cnf</code> 配置文件用于管理 <code>MySQL</code> 相关的配置。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/dockerdata/mysql/conf 
 
 vim my.cnf
@@ -668,7 +668,51 @@ use mysql<span class="token punctuation">;</span>                              <
 <span class="token comment" spellcheck="true"># 修改密码</span>
 update mysql.user <span class="token keyword">set</span> authentication_string <span class="token operator">=</span> password<span class="token punctuation">(</span><span class="token string">"xxxx"</span><span class="token punctuation">)</span> where user<span class="token operator">=</span><span class="token string">"root"</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、Oracle"><a href="#二、Oracle" class="headerlink" title="二、Oracle"></a>二、Oracle</h3><h4 id="1-容器启动"><a href="#1-容器启动" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
+<h3 id="二、MySQL8"><a href="#二、MySQL8" class="headerlink" title="二、MySQL8"></a>二、MySQL8</h3><h4 id="1-配置管理-1"><a href="#1-配置管理-1" class="headerlink" title="1. 配置管理"></a>1. 配置管理</h4><p><code>MySQL 8</code> 配置与 <code>MySQL 5</code> 不同是在 8 版本 <code>sql_mode</code> 中移除了 <code>NO_AUTO_CREATE_USER</code>，其对应配置如下：</p>
+<pre class="line-numbers language-cnf"><code class="language-cnf">[mysqld]
+pid-file    = /var/run/mysqld/mysqld.pid
+socket        = /var/run/mysqld/mysqld.sock
+datadir        = /var/lib/mysql
+# log-error    = /var/log/mysql/error.log
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+    
+# turn on the bin-log
+server-id = 1
+log_bin = mysql-bin
+binlog_format = row
+binlog_row_image = full
+expire_logs_days = 10
+gtid_mode = on
+enforce_gtid_consistency = on
+    
+max_connections = 2000
+max_user_connections = 1900
+max_connect_errors = 100000
+max_allowed_packet = 50M
+lower_case_table_names=1
+[mysqld]
+skip-name-resolve
+
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-启动命令"><a href="#2-启动命令" class="headerlink" title="2. 启动命令"></a>2. 启动命令</h4><p><code>MySQL 8</code> 与 <code>MySQL 5</code> 的启动命令上其实并没有什么太大差别，这里略去的映射目录创建的步骤。</p>
+<p>启动服务后通过工具或应用链接提示 <code> </code> 则在连接串上添加 <code>allowPublicKeyRetrieval=True</code> 参数。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
+--privileged<span class="token operator">=</span>true \
+-p 3306:3306 \
+-p 33060:33060 \
+--name mysql8 \
+-m 500m \
+-v /home/budai/dockerdata/mysql8/data:/var/lib/mysql \
+-v /home/budai/dockerdata/mysql8/config:/etc/mysql/conf.d \
+-e MYSQL_ROOT_PASSWORD<span class="token operator">=</span>123456 \
+-e TZ<span class="token operator">=</span>Asia/Shanghai \
+--lower_case_table_names<span class="token operator">=</span>1 \
+mysql:8.0.21
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、Oracle"><a href="#三、Oracle" class="headerlink" title="三、Oracle"></a>三、Oracle</h3><h4 id="1-容器启动"><a href="#1-容器启动" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><p><code>Oracle</code> 镜像拉取和服务启动命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
 docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g 
 
 <span class="token comment" spellcheck="true"># 启动容器</span>
@@ -678,6 +722,7 @@ docker run -d \
 registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-新增用户"><a href="#2-新增用户" class="headerlink" title="2. 新增用户"></a>2. 新增用户</h4><p>完成容器创建后还需要进行用户的创建和授权操作。</p>
+<p>通过下述步骤连接至数据库控制台：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
 docker <span class="token function">exec</span> -it oracle /bin/bash
 
@@ -689,28 +734,29 @@ sqlplus /nolog
 conn /as sysdba  
 
 startup <span class="token function">mount</span>
-
-<span class="token comment" spellcheck="true"># 修改用户 system 的密码为 system</span>
-alter user system identified by system<span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下述步骤创建用户并授权，这里创建了账号密码为 <code>root/123456</code> 的管理员用户，可根据自身需求场景替换。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true"># 修改用户 system 的密码为 system</span>
+<span class="token keyword">alter</span> <span class="token keyword">user</span> system identified <span class="token keyword">by</span> system<span class="token punctuation">;</span> 
 
 <span class="token comment" spellcheck="true"># 修改用户 sys 的密码为 system</span>
-alter user sys identified by system<span class="token punctuation">;</span> 
+<span class="token keyword">alter</span> <span class="token keyword">user</span> sys identified <span class="token keyword">by</span> system<span class="token punctuation">;</span> 
 
 <span class="token comment" spellcheck="true"># 创建用户 root 的密码为 123456</span>
-create user root identified by 123456<span class="token punctuation">;</span> 
+<span class="token keyword">create</span> <span class="token keyword">user</span> root identified <span class="token keyword">by</span> <span class="token number">123456</span><span class="token punctuation">;</span> 
 
 <span class="token comment" spellcheck="true"># 授权 root 为管理员</span>
-grant connect, resource, dba to root<span class="token punctuation">;</span> 
+<span class="token keyword">grant</span> <span class="token keyword">connect</span><span class="token punctuation">,</span> resource<span class="token punctuation">,</span> <span class="token number">dba</span> <span class="token keyword">to</span> root<span class="token punctuation">;</span> 
 
-alter profile default limit password_life_time unlimited<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> profile <span class="token keyword">default</span> <span class="token keyword">limit</span> password_life_time unlimited<span class="token punctuation">;</span>
 
-alter system <span class="token keyword">set</span> processes<span class="token operator">=</span>2000 scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> system <span class="token keyword">set</span> processes<span class="token operator">=</span><span class="token number">2000</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true"># 解锁用户 root</span>
-alter user root account unlock<span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务连接"><a href="#3-服务连接" class="headerlink" title="3. 服务连接"></a>3. 服务连接</h4><p>需要注意上面选择的 <code>Oracle</code> 镜像为阿里云镜像，因而连接时服务名并不是 <code>ORCL</code> 而是 <code>hlowin</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/oracle/1.png"></p>
-<h3 id="三、PostgreSQL"><a href="#三、PostgreSQL" class="headerlink" title="三、PostgreSQL"></a>三、PostgreSQL</h3><p>搭建 <code>PostgreSQL</code> 环境同样也只需拉取镜像启动即可。</p>
+<span class="token keyword">alter</span> <span class="token keyword">user</span> root account unlock<span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-服务连接"><a href="#3-服务连接" class="headerlink" title="3. 服务连接"></a>3. 服务连接</h4><p>需要注意上面选择的 <code>Oracle</code> 镜像为阿里云镜像，因而连接时服务名并不是 <code>ORCL</code> 而是 <code>helowin</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/oracle/1.png"></p>
+<h3 id="四、PostgreSQL"><a href="#四、PostgreSQL" class="headerlink" title="四、PostgreSQL"></a>四、PostgreSQL</h3><h4 id="1-服务启动"><a href="#1-服务启动" class="headerlink" title="1. 服务启动"></a>1. 服务启动</h4><p>搭建 <code>PostgreSQL</code> 环境同样也只需拉取镜像启动即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
 docker pull postgres
   
@@ -721,10 +767,10 @@ docker run -d \
 -e POSTGRES_PASSWORD<span class="token operator">=</span>123456 \
 postgres
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、MongoDB"><a href="#四、MongoDB" class="headerlink" title="四、MongoDB"></a>四、MongoDB</h3><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>创建相应的目录用于存储映射文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /home/dockerdata/mongodb/db
+<h3 id="五、MongoDB"><a href="#五、MongoDB" class="headerlink" title="五、MongoDB"></a>五、MongoDB</h3><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>首先创建相应的目录用于存储映射文件。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/mongodb/db
 
-<span class="token function">mkdir</span> -p /home/dockerdata/mongodb/configdb
+<span class="token function">mkdir</span> -p /usr/local/dockerdata/mongodb/configdb
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-容器启动"><a href="#2-容器启动" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>创建目录之后即可拉取容器并通过 <code>docker run</code> 启动，这里同样将内容的目录映射到物理机。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
@@ -734,8 +780,8 @@ docker pull mongo
 docker run -d \
 --name mongodb \
 -p 27017:27017 \
--v /home/dockerdata/mongodb/configdb:/data/configdb \
--v /home/dockerdata/mongodb/db:/data/db \
+-v /usr/local/dockerdata/mongodb/configdb:/data/configdb \
+-v /usr/local/dockerdata/mongodb/db:/data/db \
 docker.io/mongo --auth
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-用户创建"><a href="#3-用户创建" class="headerlink" title="3. 用户创建"></a>3. 用户创建</h4><p><code>MongoDB</code> 创建用户的相关命令如下：</p>
@@ -743,53 +789,12 @@ docker.io/mongo --auth
 
 db.createUser<span class="token punctuation">(</span><span class="token punctuation">{</span> user: <span class="token string">'root'</span>, pwd: <span class="token string">'123456'</span>, roles: <span class="token punctuation">[</span> <span class="token punctuation">{</span> role: <span class="token string">"userAdminAnyDatabase"</span>, db: <span class="token string">"admin"</span> <span class="token punctuation">}</span> <span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、FTP"><a href="#五、FTP" class="headerlink" title="五、FTP"></a>五、FTP</h3><h4 id="1-创建目录"><a href="#1-创建目录" class="headerlink" title="1. 创建目录"></a>1. 创建目录</h4><p>创建 <code>FTP</code> 目录用于后续容器目录映射。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建目录</span>
-<span class="token function">mkdir</span> -p /home/docker/ftp
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="2-容器启动-1"><a href="#2-容器启动-1" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>拉取 <code>FTP</code> 镜像并根据下载的镜像启动容器。</p>
-<p>其中的 <code>192.168.0.20</code> 需替换为你的服务器 <code>IP</code>， <code>FTP_USER</code> 为登录的用户名， <code>FTP_PASS</code> 为登录密码。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
-docker pull fauria/vsftpd
-
-<span class="token comment" spellcheck="true"># 启动容器</span>
-docker run -d --privileged<span class="token operator">=</span>true \
--p 20:20 -p 21:21 \
--p 21100-21110:21100-21110 \
--v /home/docker/ftp:/home/vsftpd \
--e FTP_USER<span class="token operator">=</span>budai \
--e FTP_PASS<span class="token operator">=</span>123456 \
--e PASV_ADDRESS<span class="token operator">=</span>192.168.0.20 \
--e PASV_MIN_PORT<span class="token operator">=</span>21100 \
--e PASV_MAX_PORT<span class="token operator">=</span>21110 \
---name vsftpd \
-fauria/vsftpd
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-测试连接"><a href="#3-测试连接" class="headerlink" title="3. 测试连接"></a>3. 测试连接</h4><p>在 <code>Windows</code> 下打开文件资源管理器，地址栏输入 <code>ftp://192.168.0.20</code> 后在弹出的提示框输入账号密码即可。<br><img src="/album/loading.gif" data-original="/album/article/db/ftp/1.png"></p>
-<p>如果使用上述方法连接失败，则进入 <code>Internet属性</code> 高级设置中开启被动 <code>FTP</code> 连接设置。<br><img src="/album/loading.gif" data-original="/album/article/db/ftp/2.png"></p>
-<h3 id="六、HBase"><a href="#六、HBase" class="headerlink" title="六、HBase"></a>六、HBase</h3><h4 id="1-容器启动-1"><a href="#1-容器启动-1" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><p>通过 <code>Docker</code> 搭建 <code>HBase</code> 测试环境比较简单，直接拉取镜像启动即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
---name hbase \
--p 2181:2181 \
--p 16010:16010 \
--p 16020:16020 \
--p 16030:16030 \
-harisekhon/hbase
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-页面访问"><a href="#2-页面访问" class="headerlink" title="2. 页面访问"></a>2. 页面访问</h4><p>启动容器之后，访问页面查看是否启动成功，访问 <code>&lt;IP:16010&gt;</code> ，出现如下内容表明启动成功。<br><img src="/album/loading.gif" data-original="/album/article/db/hbase/1.png"></p>
-<h4 id="3-服务访问"><a href="#3-服务访问" class="headerlink" title="3. 服务访问"></a>3. 服务访问</h4><p>若需要访问 <code>HBase</code> 数据库服务，可直接通过命令行进入，之后就可以直接运行相关的 <code>SQL</code> 命令。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
-docker <span class="token function">exec</span> -it hbase <span class="token function">bash</span>
-
-<span class="token comment" spellcheck="true"># 进入命令行模式</span>
-bin/hbase shell
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、Vertica"><a href="#七、Vertica" class="headerlink" title="七、Vertica"></a>七、Vertica</h3><h4 id="1-容器启动-2"><a href="#1-容器启动-2" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> /home/dockerdata/vertica          <span class="token comment" spellcheck="true"># 创建映射目录</span>
+<h3 id="六、Vertica"><a href="#六、Vertica" class="headerlink" title="六、Vertica"></a>六、Vertica</h3><h4 id="1-容器启动-1"><a href="#1-容器启动-1" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> /usr/local/dockerdata/vertica          <span class="token comment" spellcheck="true"># 创建映射目录</span>
 
 docker run -d \
 --name vertica \
 -p 5433:5433 \
--v /home/dockerdata/vertica:/home/dbadmin/docker \
+-v /usr/local/dockerdata/vertica:/home/dbadmin/docker \
 jbfavre/vertica:latest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-用户管理"><a href="#3-用户管理" class="headerlink" title="3. 用户管理"></a>3. 用户管理</h4><p>通过 <code>create user</code> 关键字创建新用户。</p>
@@ -801,26 +806,23 @@ jbfavre/vertica:latest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完成用户创建之后通过 <code>grant</code> 关键字授予用户权限，其中 <code>&lt;rolename&gt;</code> 取值如下：</p>
 <ul>
-<li><p><strong>dbduser</strong>: 允许非 <code>dba</code> 用户访问 <code>database designer</code> 使用命令行函数。</p>
-</li>
-<li><p><strong>dbadmin</strong>: 可以创建删除用户，角色以及模式；查询系统表；结束用户进程；修改配置文件等操作；但是不能启停数据库。</p>
-</li>
-<li><p><strong>pseudosuperuser</strong>: 可以认为几乎可以干所有的事，类似 <code>oracle</code> 的 <code>dba</code>。</p>
+<li><strong>dbduser</strong>: 允许非 <code>dba</code> 用户访问 <code>database designer</code> 使用命令行函数。</li>
+<li><strong>dbadmin</strong>: 可以创建删除用户，角色以及模式；查询系统表；结束用户进程；修改配置文件等操作；但是不能启停数据库。</li>
+<li><strong>pseudosuperuser</strong>: 可以认为几乎可以干所有的事，类似 <code>oracle</code> 的 <code>dba</code>。</li>
+</ul>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- grant privilege</span>
 <span class="token keyword">grant</span> <span class="token operator">&lt;</span>rolename<span class="token operator">></span> <span class="token keyword">to</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">-- remove privilege</span>
 <span class="token keyword">REVOKE</span> <span class="token operator">&lt;</span>rolename<span class="token operator">></span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h4 id="2-模式管理"><a href="#2-模式管理" class="headerlink" title="2. 模式管理"></a>2. 模式管理</h4><ul>
-<li><h5 id="Schema创建"><a href="#Schema创建" class="headerlink" title="Schema创建"></a>Schema创建</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">;</span>
+<h4 id="2-模式管理"><a href="#2-模式管理" class="headerlink" title="2. 模式管理"></a>2. 模式管理</h4><h5 id="1-Schema创建"><a href="#1-Schema创建" class="headerlink" title="(1) Schema创建"></a>(1) Schema创建</h5><p><code>Schema</code> 模式创建语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">;</span>
 
 <span class="token keyword">GRANT</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token keyword">schema</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="表授权"><a href="#表授权" class="headerlink" title="表授权"></a>表授权</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- grant all table to user</span>
+<h5 id="2-表授权"><a href="#2-表授权" class="headerlink" title="(2) 表授权"></a>(2) 表授权</h5><p>表授权语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- grant all table to user</span>
 <span class="token keyword">GRANT</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token keyword">ALL</span> <span class="token keyword">TABLES</span> <span class="token operator">IN</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">-- grant single table to user</span>
@@ -829,86 +831,6 @@ jbfavre/vertica:latest
 <span class="token comment" spellcheck="true">-- remove table privilege</span>
 <span class="token keyword">REVOKE</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">FROM</span> linewell<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h3 id="八、ElasticSearch"><a href="#八、ElasticSearch" class="headerlink" title="八、ElasticSearch"></a>八、ElasticSearch</h3><h4 id="1-目录创建-1"><a href="#1-目录创建-1" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>创建数据存储目录用于后续存储映射文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建映射目录</span>
-<span class="token function">mkdir</span> -p /home/dockerdata/elasticsearch/data
-<span class="token function">mkdir</span> -p /home/dockerdata/elasticsearch/config
-<span class="token function">mkdir</span> -p /home/dockerdata/elasticsearch/plugins
-
-<span class="token comment" spellcheck="true"># 创建配置文件并写入</span>
-<span class="token keyword">echo</span> <span class="token string">"http.host: 0.0.0.0"</span> <span class="token operator">>></span> /home/dockerdata/elasticsearch/config/elasticsearch.yml
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-容器启动-2"><a href="#2-容器启动-2" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>通过拉取的镜像启动容器，并将配置文件与数据目录等映射出来。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
-docker pull elasticsearch:7.6.2
-
-<span class="token comment" spellcheck="true"># 启动容器</span>
-docker run --privileged<span class="token operator">=</span>true \
---name elasticsearch \
--p 9200:9200 -p 9300:9300 \
--e <span class="token string">"discovery.type=single-node"</span> \
--e ES_JAVA_OPTS<span class="token operator">=</span><span class="token string">"-Xms128m -Xmx512m"</span> \
--v /home/dockerdata/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/congif/elasticsearch.yml \
--v /home/dockerdata/elasticsearch/data:/usr/share/elasticsearch/data \
--v /home/dockerdata/elasticsearch/plugins:/usr/share/elasticsearch/plugins \
--d elasticsearch:7.6.2
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如果容器启动失败查看日志是否未开启文件读写权限。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看日志</span>
-docker logs elasticsearch
-
-<span class="token comment" spellcheck="true"># 设置读写目权限</span>
-<span class="token function">chmod</span> 777 /home/dockerdata/elasticsearch/data
-<span class="token function">chmod</span> 777 /home/dockerdata/elasticsearch/config
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-访问测试"><a href="#3-访问测试" class="headerlink" title="3. 访问测试"></a>3. 访问测试</h4><p>打开浏览器输入 <code>&lt;IP&gt;:9200</code> 显示以下信息说明安装成功。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-  <span class="token string">"name"</span> <span class="token punctuation">:</span> <span class="token string">"67f95596567a"</span><span class="token punctuation">,</span>
-  <span class="token string">"cluster_name"</span> <span class="token punctuation">:</span> <span class="token string">"docker-cluster"</span><span class="token punctuation">,</span>
-  <span class="token string">"cluster_uuid"</span> <span class="token punctuation">:</span> <span class="token string">"3aiqqdPITX-y1SL3Yn0ngQ"</span><span class="token punctuation">,</span>
-  <span class="token string">"version"</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token string">"number"</span> <span class="token punctuation">:</span> <span class="token string">"7.6.2"</span><span class="token punctuation">,</span>
-    <span class="token string">"build_flavor"</span> <span class="token punctuation">:</span> <span class="token string">"default"</span><span class="token punctuation">,</span>
-    <span class="token string">"build_type"</span> <span class="token punctuation">:</span> <span class="token string">"docker"</span><span class="token punctuation">,</span>
-    <span class="token string">"build_hash"</span> <span class="token punctuation">:</span> <span class="token string">"ef48eb35cf30adf4db14086e8aabd07ef6fb113f"</span><span class="token punctuation">,</span>
-    <span class="token string">"build_date"</span> <span class="token punctuation">:</span> <span class="token string">"2020-03-26T06:34:37.794943Z"</span><span class="token punctuation">,</span>
-    <span class="token string">"build_snapshot"</span> <span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
-    <span class="token string">"lucene_version"</span> <span class="token punctuation">:</span> <span class="token string">"8.4.0"</span><span class="token punctuation">,</span>
-    <span class="token string">"minimum_wire_compatibility_version"</span> <span class="token punctuation">:</span> <span class="token string">"6.8.0"</span><span class="token punctuation">,</span>
-    <span class="token string">"minimum_index_compatibility_version"</span> <span class="token punctuation">:</span> <span class="token string">"6.0.0-beta1"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token string">"tagline"</span> <span class="token punctuation">:</span> <span class="token string">"You Know, for Search"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-开启认证"><a href="#4-开启认证" class="headerlink" title="4. 开启认证"></a>4. 开启认证</h4><ul>
-<li><h5 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h5><p>  进入 <code>Dokcer</code> 容器修改配置文件开启用户认证。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it elasticsearch <span class="token function">bash</span>
-
-<span class="token function">vi</span> config/elasticsearch.yml
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>  在文件中修改如下内容，完成后保存退出。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启加密</span>
-http.cors.enabled: <span class="token boolean">true</span>
-http.cors.allow-origin: <span class="token string">"*"</span>
-http.cors.allow-headers: Authorization
-xpack.security.enabled: <span class="token boolean">true</span>
-xpack.security.transport.ssl.enabled: <span class="token boolean">true</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><h5 id="设置密码"><a href="#设置密码" class="headerlink" title="设置密码"></a>设置密码</h5><p>  修改完配置文件后需要重启生效，然后才能设置用户密码。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 重启容器</span>
-docker restart elasticsearch
-
-<span class="token comment" spellcheck="true"># 进入容器</span>
-docker <span class="token function">exec</span> -it elasticsearch <span class="token function">bash</span>
-
-<span class="token comment" spellcheck="true"># 设置密码</span>
-elasticsearch-setup-passwords interactive
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 
                 
             </div>
@@ -935,7 +857,7 @@ elasticsearch-setup-passwords interactive
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/db/deploy/">https://great-jin.github.io/db/deploy/</a>
+                    <a href="https://great-jin.github.io/db/install/relative/">https://great-jin.github.io/db/install/relative/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1154,30 +1076,30 @@ elasticsearch-setup-passwords interactive
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/network/tools/">
+                <a href="/db/install/midware/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/13.png" class="responsive-img" alt="Java 网络操作示例">
+                        <img src="/album/banner/linux/docker/4.png" class="responsive-img" alt="常用中间件部署教程">
                         
-                        <span class="card-title">Java 网络操作示例</span>
+                        <span class="card-title">常用中间件部署教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java 网络常用工具类操作示例
+                            常用数据库 Docker 环境部署教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-25
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-23
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" class="post-category">
-                                    网络通信
+                            <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    服务部署
                                 </a>
                             
                             
@@ -1187,8 +1109,12 @@ elasticsearch-setup-passwords interactive
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
+                    </a>
+                    
+                    <a href="/tags/CentOS/">
+                        <span class="chip bg-color">CentOS</span>
                     </a>
                     
                 </div>
@@ -1514,7 +1440,7 @@ elasticsearch-setup-passwords interactive
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">247.7k</span>
+                <span class="white-color">250.2k</span>
             
             
             

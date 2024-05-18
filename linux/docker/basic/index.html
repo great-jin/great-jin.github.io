@@ -512,12 +512,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Docker/">
-                                <span class="chip bg-color">Docker</span>
-                            </a>
-                        
                             <a href="/tags/Linux/">
                                 <span class="chip bg-color">Linux</span>
+                            </a>
+                        
+                            <a href="/tags/Docker/">
+                                <span class="chip bg-color">Docker</span>
                             </a>
                         
                     </div>
@@ -548,21 +548,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-25
+                    2024-05-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    2.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    8 分
                 </div>
                 
 
@@ -586,27 +586,78 @@
 <p>Docker 是近些年来被广泛使用的一项技术，是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux 或 Windows 操作系统的机器上，也可以实现虚拟化。</p>
 </blockquote>
 <p>对于编程工作者而言，当临时需要用到某个环境即可快速通过容器构建服务，简单且又高效。下面将简单介绍 <code>Docker</code> 的基本操作。</p>
-<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>默认安装路径：<code>/var/lib/docker</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下载关于docker的依赖环境 </span>
+<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-服务安装"><a href="#1-服务安装" class="headerlink" title="1. 服务安装"></a>1. 服务安装</h4><p>通过 <code>yum</code> 工具实现快速安装，默认安装路径：<code>/var/lib/docker</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 下载依赖环境 </span>
 yum -y <span class="token function">install</span> yum-utils device-mapper-persistent-data lvm2
 
-<span class="token comment" spellcheck="true"># 设置下载 Docker 的镜像源</span>
+<span class="token comment" spellcheck="true"># 设置下载镜像源</span>
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-<span class="token comment" spellcheck="true"># 安装Docker的服务 </span>
+<span class="token comment" spellcheck="true"># 安装服务 </span>
 yum -y <span class="token function">install</span> docker-ce
 
 <span class="token comment" spellcheck="true"># 启动服务</span>
 systemctl start docker                 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务更新"><a href="#2-服务更新" class="headerlink" title="2. 服务更新"></a>2. 服务更新</h4><p>在执行 <code>curl -fsSL https://get.docker.com/ | sh</code> 可能会提示超时，多试几次就可以了。</p>
+<h4 id="2-镜像配置"><a href="#2-镜像配置" class="headerlink" title="2. 镜像配置"></a>2. 镜像配置</h4><p>默认 <code>Docker</code> 镜像从其官网进行拉取，国内网络在拉取镜像时可能存在延迟。</p>
+<p>因此，通常会为 <code>Docker</code> 服务设置镜像地址，修改 <code>daemon.json</code> 配置文件执行指定。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑配置文件</span>
+<span class="token function">vi</span> /etc/docker/daemon.json
+
+<span class="token comment" spellcheck="true"># 设置镜像为网易源</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"registry-mirrors"</span><span class="token keyword">:</span> <span class="token punctuation">[</span><span class="token string">"http://hub-mirror.c.163.com"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment" spellcheck="true"># 修改文件后需重启服务</span>
+systemctl restart docker
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-基本操作"><a href="#3-基本操作" class="headerlink" title="3. 基本操作"></a>3. 基本操作</h4><p><code>Docker</code> 服务基本操作命令格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">systemctl <span class="token operator">&lt;</span>params<span class="token operator">></span> docker
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>其中 <code>params</code> 可选值及其对应作用参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">status</td>
+        <td style="text-align: center;">查看 Docker 服务运行状态。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">start</td>
+        <td style="text-align: center;">启动 Docker 服务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">stop</td>
+        <td style="text-align: center;">停止 Docker 服务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">restart</td>
+        <td style="text-align: center;">重启 Docker 服务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">enable</td>
+        <td style="text-align: center;">设置 Docker 服务开机自启</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">disable</td>
+        <td style="text-align: center;">关闭 Docker 服务开机自启</td>
+    </tr>
+</table>
+
+
+
+<h3 id="二、服务管理"><a href="#二、服务管理" class="headerlink" title="二、服务管理"></a>二、服务管理</h3><h4 id="1-服务更新"><a href="#1-服务更新" class="headerlink" title="1. 服务更新"></a>1. 服务更新</h4><p>在执行 <code>curl -fsSL https://get.docker.com/ | sh</code> 可能会提示超时，多试几次就可以了。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                          <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
 
 yum -y remove <span class="token operator">&lt;</span>xxx<span class="token operator">></span>                          <span class="token comment" spellcheck="true"># 删除上一步查询的文件包</span>
 
 curl -fsSL https://get.docker.com/ <span class="token operator">|</span> sh      <span class="token comment" spellcheck="true"># 安装最新版本</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务卸载"><a href="#3-服务卸载" class="headerlink" title="3. 服务卸载"></a>3. 服务卸载</h4><p><code>Docker</code> 服务卸载步骤如下：</p>
+<h4 id="2-服务卸载"><a href="#2-服务卸载" class="headerlink" title="2. 服务卸载"></a>2. 服务卸载</h4><p><code>Docker</code> 服务卸载步骤如下，先删除已经安装的服务包最后删除 <code>/var/lib/docker</code> 目录的数据文件。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">yum list installed<span class="token operator">|</span><span class="token function">grep</span> docker          <span class="token comment" spellcheck="true"># 查看安装的 docker 文件包</span>
 
 rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                     <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
@@ -617,36 +668,65 @@ rpm -qa<span class="token operator">|</span><span class="token function">grep</s
 
 <span class="token function">rm</span> -rf /var/lib/docker                  <span class="token comment" spellcheck="true"># 删除 docker 镜像文件</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-服务启停"><a href="#4-服务启停" class="headerlink" title="4. 服务启停"></a>4. 服务启停</h4><p><code>Docker</code> 服务启停命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">systemctl status docker             <span class="token comment" spellcheck="true"># 查看状态</span>
+<h3 id="三、镜像管理"><a href="#三、镜像管理" class="headerlink" title="三、镜像管理"></a>三、镜像管理</h3><h4 id="1-镜像拉取"><a href="#1-镜像拉取" class="headerlink" title="1. 镜像拉取"></a>1. 镜像拉取</h4><p>在拉取镜像前可通过 <code>docker search</code> 先搜索已存在的镜像及其版本信息。</p>
+<p>当搜索完成后即可通过 <code>pull</code> 命令拉取镜像，需要注意若未指定版本则默认拉取 <code>latest</code> 即最新的版本。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker search <span class="token operator">&lt;</span>name<span class="token operator">></span>                     <span class="token comment" spellcheck="true"># 搜索镜像</span>
 
-systemctl start docker              <span class="token comment" spellcheck="true"># 启动服务</span>
+docker pull <span class="token operator">&lt;</span>name<span class="token operator">></span>:<span class="token operator">&lt;</span>version<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 拉取镜像</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-镜像查看"><a href="#2-镜像查看" class="headerlink" title="2. 镜像查看"></a>2. 镜像查看</h4><p>通过 <code>images</code> 参数查看已经 <code>pull</code> 下来的容器镜像，并可通过 <code>rmi</code> 参数删除。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker images                      <span class="token comment" spellcheck="true"># 查看所有镜像</span>
 
-systemctl stop docker               <span class="token comment" spellcheck="true"># 停止服务</span>
+docker rmi <span class="token operator">&lt;</span>images_id<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 删除对应镜像</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-导入导出"><a href="#3-导入导出" class="headerlink" title="3. 导入导出"></a>3. 导入导出</h4><p>当通过 <code>pull</code> 命令拉取镜像到本地后可将其导出为 <code>tar</code> 文件，该文件可导入至任意拥有 <code>docker</code> 服务的机器上。</p>
+<p><code>Docker</code> 通过 <code>save</code> 和 <code>load</code> 导出导入镜像文件，命令格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 导出镜像文件</span>
+docker save <span class="token operator">&lt;</span>save_path<span class="token operator">></span>.tar <span class="token operator">&lt;</span>image_id<span class="token operator">></span>
 
-systemctl restart docker            <span class="token comment" spellcheck="true"># 重启服务</span>
+<span class="token comment" spellcheck="true"># 导入镜像文件</span>
+docker load -i <span class="token operator">&lt;</span>save_path<span class="token operator">></span>.tar
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、卷列管理"><a href="#四、卷列管理" class="headerlink" title="四、卷列管理"></a>四、卷列管理</h3><h4 id="1-卷的创建"><a href="#1-卷的创建" class="headerlink" title="1. 卷的创建"></a>1. 卷的创建</h4><p>在 <code>Docker</code> 中提供了数据持久化的能力，可以将容器内文件或目录映射至外部文件系统，这样即便在容器服务宕机的情况下仍然访问数据文件。</p>
+<p>通过 <code>volume create</code> 参数可用于创建卷，在 <code>/var/lib/docker/volumes</code> 下会生成一个同名目录。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建 volume 卷</span>
+docker volume create <span class="token operator">&lt;</span>volume_name<span class="token operator">></span>
 
-systemctl <span class="token function">enable</span> docker             <span class="token comment" spellcheck="true"># 设置开机自启</span>
+<span class="token comment" spellcheck="true"># 查看 volume 卷信息</span>
+docker volume inspect <span class="token operator">&lt;</span>volume_name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当完成卷的创建后，在启动容器时即可通过 <code>-v</code> 将容器内文件映射至外部卷，如下述中即将容器内 <code>/data</code> 目录映射到外部创建的卷中。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run \
+-v <span class="token operator">&lt;</span>volume_name<span class="token operator">></span>:/data
+test_image
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-卷的删除"><a href="#2-卷的删除" class="headerlink" title="2. 卷的删除"></a>2. 卷的删除</h4><p><code>Docker</code> 的 <code>volume</code> 卷通过 <code>rm</code> 参数执行删除，格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 删除 volume 卷</span>
+docker volume <span class="token function">rm</span> <span class="token operator">&lt;</span>name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="五、网络管理"><a href="#五、网络管理" class="headerlink" title="五、网络管理"></a>五、网络管理</h3><h4 id="1-网络创建"><a href="#1-网络创建" class="headerlink" title="1. 网络创建"></a>1. 网络创建</h4><p>在 <code>Docker</code> 中启动服务时，<code>--network</code> 选项用于指定容器应连接到的网络，通过 <code>docker network create</code> 用于创建网络。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker network create <span class="token operator">&lt;</span>network_name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在自定义网络中，<code>Docker</code> 提供内置的 <code>DNS</code> 服务，使用同一个网络的容器可以通过容器名互相访问，而不需要使用 <code>IP</code> 地址。</p>
+<p>如下述命令中创建了两个容器 <code>service1</code> 与 <code>service2</code> 并设置共用 <code>test_network</code> 网络，当 <code>service1</code> 需要访问 <code>service2</code> 的服务时，即可通过 <code>service2</code> 作为 <code>hostname</code> 代替 <code>IP</code> 访问。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker network create test_network
 
-systemctl disable docker            <span class="token comment" spellcheck="true"># 关闭开机启动</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-镜像配置"><a href="#5-镜像配置" class="headerlink" title="5. 镜像配置"></a>5. 镜像配置</h4><p>默认 <code>Docker</code> 下载容器从其官网进行拉取，可通过修改配置文件手动指定镜像地址。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑配置文件</span>
-<span class="token function">vi</span> /etc/docker/daemon.json
-
-<span class="token comment" spellcheck="true"># 设置镜像为网易源</span>
-<span class="token punctuation">{</span>
-    <span class="token string">"registry-mirrors"</span><span class="token keyword">:</span> <span class="token punctuation">[</span><span class="token string">"http://hub-mirror.c.163.com"</span><span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment" spellcheck="true"># 修改文件后需重启服务</span>
-systemctl restart docker
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、启动参数"><a href="#二、启动参数" class="headerlink" title="二、启动参数"></a>二、启动参数</h3><h4 id="1-系统参数"><a href="#1-系统参数" class="headerlink" title="1. 系统参数"></a>1. 系统参数</h4><p><code>Docker</code> 容器启动常见配置参数如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 后台运行</span>
--d
-
-<span class="token comment" spellcheck="true"># 自启服务</span>
+docker run -d --network test_network --name service1 test_image
+docker run -d --network test_network --name service2 test_image
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不使用 <code>--network</code> 选项，<code>Docker</code> 会将容器连接到默认的 <code>bridge</code> 网络，其未 <code>Docker</code> 引擎默认创建的一个网络，此时多个容器服务之间则只能通过 <code>IP</code> 进行访问。</p>
+<h4 id="2-容器网络"><a href="#2-容器网络" class="headerlink" title="2. 容器网络"></a>2. 容器网络</h4><p><code>Docker</code> 网络存在三种模式：<code>bridge</code>，<code>overlay</code> 与 <code>macvlan</code>，在创建时通过 <code>--driver</code> 指定，缺省时默认为 <code>bridge</code> 桥接模式。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># mode: bridge, overlay, macvlan</span>
+docker network create --driver <span class="token operator">&lt;</span>mode<span class="token operator">></span> <span class="token operator">&lt;</span>network_name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="1-Bridge"><a href="#1-Bridge" class="headerlink" title="(1) Bridge"></a>(1) Bridge</h5><p><code>Bridge</code> 网络是 <code>Docker</code> 默认创建的网络类型，主要用于单机容器间的通信。</p>
+<p>此模式下默认情况下没有内置 <code>DNS</code> 服务发现，支持通过 <code>-p</code> 进行端口映射，可以将容器的端口映射到主机端口，适用于在不需要跨主机通信的单个 <code>Docker</code> 主机上运行的简单应用。</p>
+<h5 id="2-Overlay"><a href="#2-Overlay" class="headerlink" title="(2) Overlay"></a>(2) Overlay</h5><p><code>Overlay</code> 网络用于跨多个 <code>Docker</code> 主机（通常是 <code>Swarm</code> 集群）连接容器，实现分布式网络。</p>
+<p>此模式支持跨主机的容器通信，通过内部的 <code>VXLAN</code> 技术实现。内置 <code>DNS</code> 服务发现，容器可以通过名称相互解析，适用于需要跨多个主机的分布式应用。</p>
+<h5 id="3-Macvlan"><a href="#3-Macvlan" class="headerlink" title="(3) Macvlan"></a>(3) Macvlan</h5><p><code>Macvlan</code> 网络将容器直接连接到宿主机网络，并分配宿主机网络的 <code>MAC</code> 地址，使每个容器看起来像网络上的一个物理设备。</p>
+<p>此模式容器具有独立的 <code>MAC</code> 地址和 <code>IP</code> 地址，可以直接访问宿主机的网络，提供高性能网络通信，因为数据包不需要通过主机的网络堆栈，适用于需要与物理网络直接通信的高性能应用。</p>
+<h3 id="六、启动参数"><a href="#六、启动参数" class="headerlink" title="六、启动参数"></a>六、启动参数</h3><h4 id="1-系统参数"><a href="#1-系统参数" class="headerlink" title="1. 系统参数"></a>1. 系统参数</h4><p>在启动 <code>Docker</code> 容器时除常见的 <code>-d</code> 设置后台运行之外，还存在下述常见参数：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 自启服务</span>
 --restart<span class="token operator">=</span>always  
 
 <span class="token comment" spellcheck="true"># 赋予权限</span>
@@ -654,56 +734,55 @@ systemctl restart docker
 
 <span class="token comment" spellcheck="true"># 配置机器类型 </span>
 --platform linux/amd64                          
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-端口映射"><a href="#2-端口映射" class="headerlink" title="2. 端口映射"></a>2. 端口映射</h4><p>通过 <code>-p</code> 实现容器端口与外部服务端口映射通讯，如下行命令中即将容器 <code>8080</code> 端口映射到外部的 <code>8081</code>，因此访问对应服务时应设置端口为 <code>4306</code> 。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>除了在执行 <code>docker run</code> 时指定上述参数，当容器创建启动之后，同理也可使用 <code>docker update</code> 命令执行修改，其对应的格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启容器自启，设置为 no 则表示关闭自启</span>
+docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>always
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-端口映射"><a href="#2-端口映射" class="headerlink" title="2. 端口映射"></a>2. 端口映射</h4><p>通过 <code>-p</code> 参数实现容器端口与外部服务端口映射通讯。</p>
+<p>如下行命令中即将容器 <code>8080</code> 端口映射到外部的 <code>8081</code>，因此访问对应服务时应设置端口为 <code>4306</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run \
 -p 8081:8080 \
 test_image
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-文件映射"><a href="#3-文件映射" class="headerlink" title="3. 文件映射"></a>3. 文件映射</h4><p>通过 <code>-v</code> 实现容器内外的文件映射，如下即将容器 <code>/etc/conf</code> 目录映射到外部的 <code>/data/test/conf</code> 目录下。</p>
-<p>当我们构建的服务需要修改配置文件时只需修改映射出来的文件即可。</p>
+<h4 id="3-文件映射"><a href="#3-文件映射" class="headerlink" title="3. 文件映射"></a>3. 文件映射</h4><p>通过 <code>-v</code> 参数实现容器内外的文件映射，当需要修改配置文件时只需修改映射出来的文件即可。</p>
+<p>如下即将容器 <code>/etc/conf</code> 目录映射到外部的 <code>/data/test/conf</code> 目录下。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run \
 -v /data/test/conf:/etc/conf \ 
 test_image
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、容器管理"><a href="#三、容器管理" class="headerlink" title="三、容器管理"></a>三、容器管理</h3><h4 id="1-容器查看"><a href="#1-容器查看" class="headerlink" title="1. 容器查看"></a>1. 容器查看</h4><p>通过 <code>ps</code> 命令参数显示当前创建的容器。</p>
+<h4 id="4-环境变量"><a href="#4-环境变量" class="headerlink" title="4. 环境变量"></a>4. 环境变量</h4><p>通过 <code>-e</code> 参数实现容器服务的变量配置，如为服务设置内存占用等信息。</p>
+<p>如在启动 <code>Elasticsearch</code> 服务是通常会为其设置最大的内存使用量，命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run \
+-e ES_JAVA_OPTS<span class="token operator">=</span><span class="token string">"-Xms512m -Xmx2048m"</span> \ 
+elasticsearch:7.6.2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="七、容器管理"><a href="#七、容器管理" class="headerlink" title="七、容器管理"></a>七、容器管理</h3><h4 id="1-容器查看"><a href="#1-容器查看" class="headerlink" title="1. 容器查看"></a>1. 容器查看</h4><p>通过 <code>ps</code> 命令参数显示当前创建的容器。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">ps</span>                              <span class="token comment" spellcheck="true"># 查看运行中容器</span>
 
 docker <span class="token function">ps</span> -a                           <span class="token comment" spellcheck="true"># 查看所有容器</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-自启停"><a href="#2-自启停" class="headerlink" title="2. 自启停"></a>2. 自启停</h4><p>当 <code>Docker</code> 服务重启后，默认容器并不会自动启动，可通过下述命令设置容器自启动。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启容器自启</span>
-docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>always
-
-<span class="token comment" spellcheck="true"># 关闭容器自启</span>
-docker update <span class="token operator">&lt;</span>container_id<span class="token operator">></span> --restart<span class="token operator">=</span>no
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-容器删除"><a href="#3-容器删除" class="headerlink" title="3. 容器删除"></a>3. 容器删除</h4><p>通过 <code>rm</code> 命令删除容器，格式如下：</p>
+<h4 id="2-容器删除"><a href="#2-容器删除" class="headerlink" title="2. 容器删除"></a>2. 容器删除</h4><p>通过 <code>rm</code> 命令删除容器，格式如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">rm</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 删除对应容器</span>
 
 docker <span class="token function">rm</span> -f <span class="token operator">&lt;</span>container_id<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 删除运行中容器</span>
 
 docker <span class="token function">rm</span> <span class="token variable"><span class="token variable">$(</span>docker <span class="token function">ps</span> -a -q<span class="token variable">)</span></span>           <span class="token comment" spellcheck="true"># 删除所有容器(慎用)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-文件拷贝"><a href="#4-文件拷贝" class="headerlink" title="4. 文件拷贝"></a>4. 文件拷贝</h4><p>通过 <code>cp</code> 命令可实现容器与本机间的文件拷贝，格式如下：</p>
+<h4 id="3-文件拷贝"><a href="#3-文件拷贝" class="headerlink" title="3. 文件拷贝"></a>3. 文件拷贝</h4><p>通过 <code>docker cp</code> 命令可实现容器与本机间的文件拷贝，格式如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 复制容器文件至本机环境</span>
-docker <span class="token function">cp</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span>:/<span class="token operator">&lt;</span>container_inside_path<span class="token operator">></span> <span class="token operator">&lt;</span>container_outside_path<span class="token operator">></span>
+docker <span class="token function">cp</span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span>:/<span class="token operator">&lt;</span>inside_path<span class="token operator">></span> <span class="token operator">&lt;</span>outside_path<span class="token operator">></span>
 
 <span class="token comment" spellcheck="true"># 复制本机文件至容器环境</span>
-docker <span class="token function">cp</span> <span class="token operator">&lt;</span>container_outside_path<span class="token operator">></span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span>:/<span class="token operator">&lt;</span>container_inside_path<span class="token operator">></span> 
+docker <span class="token function">cp</span> <span class="token operator">&lt;</span>outside_path<span class="token operator">></span> <span class="token operator">&lt;</span>container_id<span class="token operator">></span>:/<span class="token operator">&lt;</span>inside_path<span class="token operator">></span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-常用命令"><a href="#5-常用命令" class="headerlink" title="5. 常用命令"></a>5. 常用命令</h4><p>其余容器常见操作命令如下：</p>
+<h4 id="4-常用命令"><a href="#4-常用命令" class="headerlink" title="4. 常用命令"></a>4. 常用命令</h4><p>其余容器常见操作命令如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker logs <span class="token operator">&lt;</span>container_id<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 查看运行日志</span>
 
 docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token function">bash</span>            <span class="token comment" spellcheck="true"># 进入容器</span>
 
 docker <span class="token function">rename</span> <span class="token operator">&lt;</span>oldname<span class="token operator">></span> <span class="token operator">&lt;</span>newname<span class="token operator">></span>      <span class="token comment" spellcheck="true"># 重命名</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、镜像管理"><a href="#四、镜像管理" class="headerlink" title="四、镜像管理"></a>四、镜像管理</h3><h4 id="1-镜像操作"><a href="#1-镜像操作" class="headerlink" title="1. 镜像操作"></a>1. 镜像操作</h4><p>常用的镜像操作命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker images                      <span class="token comment" spellcheck="true"># 查看所有镜像</span>
-
-docker rmi <span class="token operator">&lt;</span>Images ID<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 删除对应镜像</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -768,12 +847,12 @@ docker rmi <span class="token operator">&lt;</span>Images ID<span class="token o
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Docker/">
-                                    <span class="chip bg-color">Docker</span>
-                                </a>
-                            
                                 <a href="/tags/Linux/">
                                     <span class="chip bg-color">Linux</span>
+                                </a>
+                            
+                                <a href="/tags/Docker/">
+                                    <span class="chip bg-color">Docker</span>
                                 </a>
                             
                         </div>
@@ -982,12 +1061,12 @@ docker rmi <span class="token operator">&lt;</span>Images ID<span class="token o
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Nginx/">
-                        <span class="chip bg-color">Nginx</span>
-                    </a>
-                    
                     <a href="/tags/Linux/">
                         <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                    <a href="/tags/Nginx/">
+                        <span class="chip bg-color">Nginx</span>
                     </a>
                     
                 </div>
@@ -1313,7 +1392,7 @@ docker rmi <span class="token operator">&lt;</span>Images ID<span class="token o
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">247.7k</span>
+                <span class="white-color">250.2k</span>
             
             
             
