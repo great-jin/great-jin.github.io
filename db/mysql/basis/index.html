@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-20
+                    2024-05-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -820,6 +820,18 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token operator">|</span>    <span class="token number">4321</span>    <span class="token operator">|</span>     <span class="token number">12</span>     <span class="token operator">|</span>     <span class="token boolean">Null</span>      <span class="token operator">|</span>   <span class="token boolean">Null</span>    <span class="token operator">|</span>
 <span class="token comment" spellcheck="true">-------------------------------------------------------</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="5-EXISTS"><a href="#5-EXISTS" class="headerlink" title="5. EXISTS"></a>5. EXISTS</h4><p><code>EXISTS</code> 运算符用于判断查询子句是否有记录，如果有一条或多条记录存在返回 <code>True</code>，否则返回 <code>False</code>。</p>
+<p>与上述 <code>join</code> 连表查询的不同之处在于当子查询记录集合大于父查询集合时，通过 <code>join</code> 方式查询可能存在笛卡尔积的问题，导致查询效率低下，而 <code>EXISTS</code> 则并无此问题。</p>
+<p>下面通过一个具体示例演示 <code>EXISTS</code> 的效果，如下述语句即查询 <code>tb_user</code> 中 <code>username</code> 重复的记录。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> 
+    username
+<span class="token keyword">FROM</span> 
+    tb_user
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span>
+<span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> username <span class="token keyword">FROM</span> tb_user 
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、常用函数"><a href="#五、常用函数" class="headerlink" title="五、常用函数"></a>五、常用函数</h3><h4 id="1-时间函数"><a href="#1-时间函数" class="headerlink" title="1. 时间函数"></a>1. 时间函数</h4><h5 id="1-date-format"><a href="#1-date-format" class="headerlink" title="(1) date_format()"></a>(1) date_format()</h5><p>通过 <code>date_format()</code> 函数实现时间格式化。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token string">'2022-06-10 02:17:54'</span><span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d %H:00:00'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time1<span class="token punctuation">;</span>
    
@@ -1489,7 +1501,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">250.2k</span>
+                <span class="white-color">251.2k</span>
             
             
             
