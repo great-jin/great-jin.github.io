@@ -548,14 +548,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-25
+                    2024-06-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.9k
+                    3.8k
                 </div>
                 
 
@@ -683,14 +683,8 @@ nginx -s stop
 <span class="token comment" spellcheck="true"># 平稳关闭，保存相关信息，有安排的结束服务</span>
 nginx -s quit
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、请求代理"><a href="#二、请求代理" class="headerlink" title="二、请求代理"></a>二、请求代理</h3><h4 id="1-正向代理"><a href="#1-正向代理" class="headerlink" title="1. 正向代理"></a>1. 正向代理</h4><p>在正向代理模式下， <code>代理服务器</code> 代表 <code>客户端</code> 请求 <code>目标服务器</code> 上的内容。客户端通过向代理服务器发送请求来访问目标服务器上的资源，而目标服务器并不知道客户端的存在，只知道代理服务器的存在。</p>
-<p>正向代理常用于需要访问外部网络资源的网络环境中，例如访问 <code>Google</code> 等被屏蔽的网站，其典型示意图如下：</p>
-<pre class="line-numbers language-rust"><code class="language-rust">客户端  <span class="token operator">-</span><span class="token punctuation">-></span>  正向代理服务器  <span class="token operator">-</span><span class="token punctuation">-></span>  目标服务器
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="2-反向代理"><a href="#2-反向代理" class="headerlink" title="2. 反向代理"></a>2. 反向代理</h4><p>在反向代理模式下， <code>代理服务器</code> 代表 <code>目标服务器</code> 响应 <code>客户端</code> 的请求。客户端向代理服务器发送请求，代理服务器根据请求内容选择相应的目标服务器，并将请求转发到目标服务器。目标服务器将响应返回给代理服务器，代理服务器再将响应返回给客户端。</p>
-<p>反向代理常用于负载均衡和高可用性场景中，其典型示意图如下：</p>
-<pre class="line-numbers language-rust"><code class="language-rust">客户端  <span class="token operator">&lt;</span><span class="token operator">-</span><span class="token operator">-</span>  反向代理服务器  <span class="token operator">&lt;</span><span class="token operator">-</span><span class="token operator">-</span>  目标服务器
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="二、请求代理"><a href="#二、请求代理" class="headerlink" title="二、请求代理"></a>二、请求代理</h3><h4 id="1-正向代理"><a href="#1-正向代理" class="headerlink" title="1. 正向代理"></a>1. 正向代理</h4><p>在正向代理模式下，客户端知道需要访问的服务器信息，通过向代理服务器发送请求来访问目标服务器上的资源，而目标服务器并不知道客户端的存在，只知道代理服务器的存在。<br><img src="/album/loading.gif" data-original="/album/article/linux/nginx/1.png"></p>
+<h4 id="2-反向代理"><a href="#2-反向代理" class="headerlink" title="2. 反向代理"></a>2. 反向代理</h4><p>在反向代理模式下，客户端不再知晓具体的目标服务器信息，而是将请求发送至代理服务器，由代理服务通过一定的规则确定具体的目标服务器节点，进而执行请求并访问响应。<br><img src="/album/loading.gif" data-original="/album/article/linux/nginx/2.png"></p>
 <h3 id="三、服务代理"><a href="#三、服务代理" class="headerlink" title="三、服务代理"></a>三、服务代理</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>Nginx</code> 配置文件中主要包含三大模块：<code>http</code>、<code>server</code> 与 <code>location</code>，三者分别对应一个网络地址的 <code>IP</code>、<code>端口</code> 与 <code>接口地址</code>。</p>
 <p>三个模块其基本的配置格式如下，当配置冲突时 <code>location</code> 模块优先级最高，其次为 <code>server</code>，<code>http</code> 优先级最低，即内层优先级越高但作用范围越小。</p>
 <pre class="line-numbers language-conf"><code class="language-conf">http {
@@ -1579,7 +1573,7 @@ nginx -s quit
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">251.2k</span>
+                <span class="white-color">251.8k</span>
             
             
             
