@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-03-20
+                    2024-06-12
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    828
+                    872
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -578,41 +578,41 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、Cookies"><a href="#一、Cookies" class="headerlink" title="一、Cookies"></a>一、Cookies</h3><h4 id="1-特性"><a href="#1-特性" class="headerlink" title="1. 特性"></a>1. 特性</h4><ul>
+                <h3 id="一、Cookies"><a href="#一、Cookies" class="headerlink" title="一、Cookies"></a>一、Cookies</h3><h4 id="1-基础特性"><a href="#1-基础特性" class="headerlink" title="1. 基础特性"></a>1. 基础特性</h4><ul>
 <li>数据信息存放在客户端浏览器上。</li>
 <li>单个保存的数据小于 <code>4KB</code> ，一个站点最多保存 20 个 <code>Cookie</code> 。</li>
 <li>对客户端是可见的，所以它是不安全的。</li>
 <li>可以通过设置 <code>cookie</code> 的属性，达到长期有效的效果。</li>
 <li>保管在客户端，不占用服务器资源，适合并发用户十分多的网站。</li>
 </ul>
-<h4 id="2-存入"><a href="#2-存入" class="headerlink" title="2. 存入"></a>2. 存入</h4><pre class="line-numbers language-java"><code class="language-java">String userName <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-Cookie cookie1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cookie</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span> userName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-response<span class="token punctuation">.</span><span class="token function">addCookie</span><span class="token punctuation">(</span>cookie1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-读取"><a href="#3-读取" class="headerlink" title="3. 读取"></a>3. 读取</h4><pre class="line-numbers language-java"><code class="language-java">String name <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<h4 id="2-数据读存"><a href="#2-数据读存" class="headerlink" title="2. 数据读存"></a>2. 数据读存</h4><h5 id="1-数据写入"><a href="#1-数据写入" class="headerlink" title="(1) 数据写入"></a>(1) 数据写入</h5><pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 写入数据，以键值对形式</span>
+Cookie cookie <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cookie</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+response<span class="token punctuation">.</span><span class="token function">addCookie</span><span class="token punctuation">(</span>cookie<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-数据读取"><a href="#2-数据读取" class="headerlink" title="(2) 数据读取"></a>(2) 数据读取</h5><pre class="line-numbers language-java"><code class="language-java">String name <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// cookies 类似于一个 Map，存在多组键值对</span>
 Cookie<span class="token punctuation">[</span><span class="token punctuation">]</span> cookies <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getCookies</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">if</span> <span class="token punctuation">(</span>cookies <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>Cookie cookie1 <span class="token operator">:</span> cookies<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>cookie1<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            name <span class="token operator">=</span> cookie1<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>Cookie ck <span class="token operator">:</span> cookies<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ck<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            name <span class="token operator">=</span> ck<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h3><h4 id="1-特性-1"><a href="#1-特性-1" class="headerlink" title="1. 特性"></a>1. 特性</h4><ul>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h3><h4 id="1-基础特性-1"><a href="#1-基础特性-1" class="headerlink" title="1. 基础特性"></a>1. 基础特性</h4><ul>
 <li>数据信息存放在服务器上。</li>
 <li>存储并没有上限，但出于对服务器端的性能考虑，不要存放过多的东西。</li>
 <li>依赖于名为 <code>JSESSIONID</code> 的 <code>cookie</code> ，而 <code>JSESSIONID</code> 的过期时间默认为 -1 ，当关闭窗口就会失效。</li>
 <li>保管在服务器端的，每个用户都会产生一个 <code>session</code> 。假如并发访问的用户十分多，会产生十分多的 <code>session</code>耗费大量的内存。</li>
 </ul>
-<h4 id="2-写入"><a href="#2-写入" class="headerlink" title="2. 写入"></a>2. 写入</h4><p>通过 <code>getSession()</code> 获取对象并存入数据。</p>
+<h4 id="2-数据读存-1"><a href="#2-数据读存-1" class="headerlink" title="2. 数据读存"></a>2. 数据读存</h4><h5 id="1-数据写入-1"><a href="#1-数据写入-1" class="headerlink" title="(1) 数据写入"></a>(1) 数据写入</h5><p>通过 <code>getSession()</code> 获取对象并存入数据。</p>
 <pre class="line-numbers language-java"><code class="language-java">User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token string">"male"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 HttpSession session <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 session<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-读取-1"><a href="#3-读取-1" class="headerlink" title="3. 读取"></a>3. 读取</h5><p>通过<code>getAttribute()</code>读取到实体。</p>
+<h5 id="2-数据读取-1"><a href="#2-数据读取-1" class="headerlink" title="(2) 数据读取"></a>(2) 数据读取</h5><p>通过 <code>getAttribute()</code> 读取到实体。</p>
 <pre class="line-numbers language-java"><code class="language-java">User user <span class="token operator">=</span> <span class="token punctuation">(</span>User<span class="token punctuation">)</span> session<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">if</span> <span class="token punctuation">(</span>entity <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Name："</span> <span class="token operator">+</span> user<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"&lt;br>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -665,7 +665,7 @@ session<span class="token punctuation">.</span><span class="token function">setA
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、JSP、JSTL"><a href="#四、JSP、JSTL" class="headerlink" title="四、JSP、JSTL"></a>四、JSP、JSTL</h3><h4 id="1-动作标签"><a href="#1-动作标签" class="headerlink" title="1. 动作标签"></a>1. 动作标签</h4><p>通过标签实现在当前页面一显示其余页面内容。</p>
+<h3 id="四、标签应用"><a href="#四、标签应用" class="headerlink" title="四、标签应用"></a>四、标签应用</h3><h4 id="1-动作标签"><a href="#1-动作标签" class="headerlink" title="1. 动作标签"></a>1. 动作标签</h4><p>通过标签实现在当前页面一显示其余页面内容。</p>
 <h5 id="1-页面一"><a href="#1-页面一" class="headerlink" title="(1) 页面一"></a>(1) 页面一</h5><pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
     This is main page !
     &lt;%
@@ -1313,7 +1313,7 @@ session<span class="token punctuation">.</span><span class="token function">setA
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">253.1k</span>
+                <span class="white-color">253.2k</span>
             
             
             
