@@ -548,14 +548,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-06-15
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    765
+                    770
                 </div>
                 
 
@@ -582,13 +582,13 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h4><p>在之前的文章已经具体介绍了如何通过封装 <code>Axios</code> 请求接口，本篇主要讲解一下接口传参中需要注意的一些问题。如果你还没看过之前的文章，可以先回顾一下: <a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Vue-Axios/">Axios二次封装</a>。</p>
+                <h3 id="一、接口请求"><a href="#一、接口请求" class="headerlink" title="一、接口请求"></a>一、接口请求</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在之前的文章已经具体介绍了如何通过封装 <code>Axios</code> 请求接口，本篇主要讲解一下接口传参中需要注意的一些问题。如果你还没看过之前的文章，可以先回顾一下: <a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Vue-Axios/">Axios二次封装</a>。</p>
 <blockquote>
 <p>废话不多说，下面我们直奔主题。</p>
 </blockquote>
 <p>我们都知道接口请求最基本的就是两种就是 <code>Get</code> 和 <code>Post</code>。两种请求方式最直观的就是前者是将参数拼在 <code>URL</code> 中，如： <code>http://localhost:8080?id=1 </code>。对于敏感数据显然这么做是不合理的，而 <code>Post</code> 是将参数封装在请求体中，一定程度上避免了数据泄露问题。</p>
 <p>接下来我们了解一下 <code>Axios</code> 是如何发起请求的。</p>
-<h4 id="二、Axios传参"><a href="#二、Axios传参" class="headerlink" title="二、Axios传参"></a>二、Axios传参</h4><p>我们先看一下 <code>Axios</code> 请求方法的格式，主要有以下两种：</p>
+<h4 id="2-Axios传参"><a href="#2-Axios传参" class="headerlink" title="2. Axios传参"></a>2. Axios传参</h4><p>我们先看一下 <code>Axios</code> 请求方法的格式，主要有以下两种：</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token operator">&lt;</span><span class="token keyword">function</span> name<span class="token operator">></span> <span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
     url<span class="token punctuation">:</span> <span class="token string">'&lt;request url>'</span><span class="token punctuation">,</span>
@@ -615,7 +615,7 @@
   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Get请求"><a href="#三、Get请求" class="headerlink" title="三、Get请求"></a>三、Get请求</h3><h4 id="1-后端接口"><a href="#1-后端接口" class="headerlink" title="1. 后端接口"></a>1. 后端接口</h4><p>当接口参数未添加注解时参数允许传入空值，若使用 <code>@RequestParam</code> 则参数不能为空，若需为空需设定 <code>require=false</code> 。</p>
+<h3 id="二、Get请求"><a href="#二、Get请求" class="headerlink" title="二、Get请求"></a>二、Get请求</h3><h4 id="1-后端接口"><a href="#1-后端接口" class="headerlink" title="1. 后端接口"></a>1. 后端接口</h4><p>当接口参数未添加注解时参数允许传入空值，若使用 <code>@RequestParam</code> 则参数不能为空，若需为空需设定 <code>require=false</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> User <span class="token function">get</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">)</span> String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// do something</span>
@@ -671,7 +671,7 @@
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-前端请求-1"><a href="#2-前端请求-1" class="headerlink" title="2. 前端请求"></a>2. 前端请求</h5><p>封装的请求如下，需要注意传输方式指定为 <code>data</code> 。</p>
+<h4 id="2-前端请求-1"><a href="#2-前端请求-1" class="headerlink" title="2. 前端请求"></a>2. 前端请求</h4><p>封装的请求如下，需要注意传输方式指定为 <code>data</code> 。</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
         url<span class="token punctuation">:</span> <span class="token string">'/users/add'</span><span class="token punctuation">,</span>
