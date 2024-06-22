@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-25
+                    2024-06-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    661
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    6 分
                 </div>
                 
 
@@ -578,18 +578,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="1-模拟分页"><a href="#1-模拟分页" class="headerlink" title="1. 模拟分页"></a>1. 模拟分页</h4><p>假分页即全量从数据库读取，再利用前端组件进行分页展示。这么做虽然最简单粗暴，但面对大数据量不仅对数据库压力大，而且前端一次性将大量数据载入内存中会大大降低页面响应速度。</p>
+                <h3 id="一、分页查询"><a href="#一、分页查询" class="headerlink" title="一、分页查询"></a>一、分页查询</h3><h4 id="1-实现机制"><a href="#1-实现机制" class="headerlink" title="1. 实现机制"></a>1. 实现机制</h4><p>假分页即全量从数据库读取，再利用前端组件进行分页展示。这么做虽然最简单粗暴，但面对大数据量不仅对数据库压力大，而且前端一次性将大量数据载入内存中会大大降低页面响应速度。</p>
 <p>如 <code>Antd</code> 中的 <code>a-table</code> 默认就是假分页，后端数据一次性加载到前端页面再由前端实现渲染，适合数据量不大的常见，这里就不具体举例了。</p>
-<h4 id="2-分页查询"><a href="#2-分页查询" class="headerlink" title="2. 分页查询"></a>2. 分页查询</h4><p>相应对假分页即真分页，故顾名思义即通过如 <code>MySQL</code> 中 <code>limit</code> 关键字降低数据库压力，在大数据量时能够有更高的效率但是实现相对更为复杂。</p>
+<p>相应对假分页即真分页，故顾名思义即通过如 <code>MySQL</code> 中 <code>limit</code> 关键字降低数据库压力，在大数据量时能够有更高的效率但是实现相对更为复杂。</p>
 <p>在数据库查询时通过 <code>limit</code> 关键字实现分页查询，不同数据库的关键字不同这里以 <code>MySQL</code> 举例，如下将查询的数据区间为 <code>[2, 5]</code>，即第 <code>2</code> 条数据至第 <code>5</code> 条。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
     id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> gender<span class="token punctuation">,</span> create_time
 <span class="token keyword">from</span> sys_user
 <span class="token keyword">limit</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于前端表格分页通常存在两个重要参数：<code>PageIndex</code> 与 <code>PageLimit</code>，分别代表当前页数与每页展示的数量。如 <code>PageIndex = 2, PageLimit = 10</code> 的情况下，查询的数据条数应该为第 <code>11 ~ 20</code> 条数据，即上述 <code>SQL</code> 中 <code>limit</code> 的两个参数计算公式如下：</p>
+<ul>
+<li>参数一：<code>(PageIndex - 1) * PageLimit + 1</code></li>
+<li>参数二：<code>PageLimit</code></li>
+</ul>
+<h4 id="2-依赖引入"><a href="#2-依赖引入" class="headerlink" title="2. 依赖引入"></a>2. 依赖引入</h4><p>为了实现数据分页功能在工程中引入下述依赖：</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.data<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-data-commons<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-数据封装"><a href="#3-数据封装" class="headerlink" title="3. 数据封装"></a>3. 数据封装</h4><h5 id="1-Service"><a href="#1-Service" class="headerlink" title="(1) Service"></a>(1) Service</h5><p><code>Spring Boot</code> 中自带了 <code>Page</code> 对象提供了数据分页服务，实现分页数据的对象封装。</p>
+<p>注意一点的是我们无需手动根据之前提到的计算公式换算 <code>offset</code> 与 <code>limit</code> 的值，框架已经替我们进行处理。同时在 <code>PageRequest</code> 中 <code>offset</code> 即上述提到 <code>PageIndex</code> 其对应的初始下标为 <code>0</code>，即 <code>offset = 0, limit = 10</code> 查询的数据条数应该为第 <code>1 ~ 10</code> 条数据。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"sysUserService"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SysUserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">SysUserService</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> Page<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryByPage</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> limit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 构造分页条件</span>
         PageRequest request <span class="token operator">=</span> PageRequest<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>offset<span class="token punctuation">,</span> limit<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -606,7 +619,7 @@
 <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">SysUserDao</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryAllByLimit</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"pageable"</span><span class="token punctuation">)</span> Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-SQL"><a href="#2-SQL" class="headerlink" title="(2) SQL"></a>(2) SQL</h5><p>在 <code>SQL</code> 命令中通过 <code>limit</code> 关键字实现分页查询。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>queryAllByLimit<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>SysUserMap<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     select *
@@ -667,6 +680,106 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、分页插件"><a href="#二、分页插件" class="headerlink" title="二、分页插件"></a>二、分页插件</h3><h4 id="1-插件介绍"><a href="#1-插件介绍" class="headerlink" title="1. 插件介绍"></a>1. 插件介绍</h4><p>除了 <code>Spring</code> 提供的分页功能外，<code>Pagehelper</code> 同样也是一样使用广泛的分页插件。</p>
+<p>同样需要在工程中 <code>pom</code> 文件引入其对应的依赖信息。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.github.pagehelper<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>pagehelper-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.1.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-插件配置"><a href="#2-插件配置" class="headerlink" title="2. 插件配置"></a>2. 插件配置</h4><p>除了引入对应的 <code>maven</code> 依赖外还需要再工程中 <code>application.yml</code> 文件中配置下述属性：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">pagehelper</span><span class="token punctuation">:</span>
+  <span class="token key atrule">helperDialect</span><span class="token punctuation">:</span> mysql
+  <span class="token key atrule">reasonable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">supportMethodsArguments</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">params</span><span class="token punctuation">:</span> count=countSql
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-使用实例"><a href="#3-使用实例" class="headerlink" title="3. 使用实例"></a>3. 使用实例</h4><p><code>PageHelper</code> 使用十分简单，只需通过 <code>PageHelper.startPage()</code> 设置分页参数即可，这里的 <code>list()</code> 查询语句中则无需再手动拼接 <code>limit</code> 关键字。</p>
+<p><code>PageHelper</code> 实现原理即通过拦截器识别查询语句，当为查询语句且配置了 <code>startPage()</code> 则会自动为语句拼接 <code>limit</code> 查询。同时 <code>PageHelper.startPage()</code> 基于 <code>ThreadLocal</code> 实现，即每次查询后都将清空 <code>startPage()</code> 配置的值，因此每次分页查询前都需配置 <code>startPage()</code> 属性。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>pagehelper<span class="token punctuation">.</span>PageInfo<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"sysUserService"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SysUserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">SysUserService</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> PageInfo<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryByPageHelper</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> PageDetails pageDetails<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取分页参数</span>
+        <span class="token keyword">int</span> offset <span class="token operator">=</span> pageDetails<span class="token punctuation">.</span><span class="token function">getOffset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> limit <span class="token operator">=</span> pageDetails<span class="token punctuation">.</span><span class="token function">getLimit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 开启分页查询，执行查询后失效</span>
+        PageHelper<span class="token punctuation">.</span><span class="token function">startPage</span><span class="token punctuation">(</span>offset<span class="token punctuation">,</span> limit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sysUserDao<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">PageInfo</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>默认 <code>PageHelper.startPage()</code> 在执行分页查询时会执行 <code>count</code> 统计总数用于构建 <code>PageInfo</code> 对象，若不需要总行数统计可设置关闭，当设置为 <code>false</code> 时 <code>PageInfo</code> 实例的 <code>count</code> 属性为 <code>-1</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>pagehelper<span class="token punctuation">.</span>PageInfo<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"sysUserService"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SysUserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">SysUserService</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> PageInfo<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> <span class="token function">queryByPageHelper</span><span class="token punctuation">(</span>SysUser sysUser<span class="token punctuation">,</span> PageDetails pageDetails<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取分页参数</span>
+        <span class="token keyword">int</span> offset <span class="token operator">=</span> pageDetails<span class="token punctuation">.</span><span class="token function">getOffset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> limit <span class="token operator">=</span> pageDetails<span class="token punctuation">.</span><span class="token function">getLimit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 不执行 count 查询</span>
+        PageHelper<span class="token punctuation">.</span><span class="token function">startPage</span><span class="token punctuation">(</span>offset<span class="token punctuation">,</span> limit<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        List<span class="token operator">&lt;</span>SysUser<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sysUserDao<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span>sysUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">PageInfo</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如测试表 <code>sys_user</code> 中有 <code>25</code> 条数据，则当 <code>offset=1，limit=3</code> 执行分页查询后返回的数据格式如下：</p>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"total"</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+  <span class="token property">"list"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Adel"</span><span class="token punctuation">,</span>
+      <span class="token property">"gender"</span><span class="token operator">:</span> <span class="token string">"Male"</span><span class="token punctuation">,</span>
+      <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token string">"2007-12-17T14:20:42.000+00:00"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>
+      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Tiffany"</span><span class="token punctuation">,</span>
+      <span class="token property">"gender"</span><span class="token operator">:</span> <span class="token string">"Female"</span><span class="token punctuation">,</span>
+      <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token string">"2018-11-10T11:49:46.000+00:00"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"3"</span><span class="token punctuation">,</span>
+      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Steve"</span><span class="token punctuation">,</span>
+      <span class="token property">"gender"</span><span class="token operator">:</span> <span class="token string">"Male"</span><span class="token punctuation">,</span>
+      <span class="token property">"createTime"</span><span class="token operator">:</span> <span class="token string">"1992-03-09T11:01:56.000+00:00"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"pageNum"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">"pageSize"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token property">"size"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token property">"startRow"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">"endRow"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token property">"pages"</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+  <span class="token property">"prePage"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token property">"nextPage"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token property">"isFirstPage"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"isLastPage"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token property">"hasPreviousPage"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token property">"hasNextPage"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"navigatePages"</span><span class="token operator">:</span> <span class="token number">8</span><span class="token punctuation">,</span>
+  <span class="token property">"navigatepageNums"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token number">6</span><span class="token punctuation">,</span>
+    <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token number">8</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"navigateFirstPage"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token property">"navigateLastPage"</span><span class="token operator">:</span> <span class="token number">8</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1268,7 +1381,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">255k</span>
+                <span class="white-color">256.6k</span>
             
             
             

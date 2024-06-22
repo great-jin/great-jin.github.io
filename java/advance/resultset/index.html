@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-14
+                    2024-06-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    7 分
                 </div>
                 
 
@@ -600,6 +600,19 @@
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过上述方式定义使得代码更为简洁，但也存在弊端即 <code>AbstractResultSet</code> 并不继承于 <code>ResultSet</code> 则也就无法通过其定义对象实例类型。如需要保证该特性，可以将 <code>AbstractResultSet</code> 同时继承于 <code>ResultSet</code> 并在接口类中将不涉及的方法同 <code>default</code> 重写并标记为 <code>UnsupportedOperationException</code> 如下述 <code>updateNull</code> 定义所示：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">AbstractResultSet</span> <span class="token keyword">extends</span> <span class="token class-name">ResultSet</span><span class="token punctuation">,</span> AutoCloseable <span class="token punctuation">{</span>
+
+    <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>LinkedHashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">>></span> theData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">default</span> <span class="token keyword">void</span> <span class="token function">updateNull</span><span class="token punctuation">(</span><span class="token keyword">int</span> columnIndex<span class="token punctuation">)</span> <span class="token keyword">throws</span> SQLException <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnsupportedOperationException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment" spellcheck="true">// 其它方法同上，忽略具体内容</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过此定义方式，后续在创建 <code>AbstractResultSet</code> 实现类时即可根据需要自定义选择重写接口，而不用一股脑全局重写，从而提高代码的简洁性。</p>
 <h3 id="二、模式实现"><a href="#二、模式实现" class="headerlink" title="二、模式实现"></a>二、模式实现</h3><h4 id="1-接口实现"><a href="#1-接口实现" class="headerlink" title="1. 接口实现"></a>1. 接口实现</h4><p>定义完接口之后就简单了，创建实现类 <code>DataResultSet</code> 实现具体的细节。</p>
 <p>具体设计参考了 <code>com.sun.rowset.CachedRowSetImpl</code> 类中的实现思路，将数据通过 <code>Map</code> 塞到内存中，再通过游标逐行读取内容，当然这种情况就没法针对大数据量，容易造成内存溢出的风险。</p>
 <p>这里定义三个成员变量 <code>cursorRow</code>, <code>rowCount</code> 与 <code>rowContainer</code>，对应信息参考下表：</p>
@@ -1372,7 +1385,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">255k</span>
+                <span class="white-color">256.6k</span>
             
             
             

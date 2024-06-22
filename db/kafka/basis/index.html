@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-15
+                    2024-06-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.3k
+                    5.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    18 分
+                    19 分
                 </div>
                 
 
@@ -635,6 +635,9 @@
 <h4 id="3-故障转移"><a href="#3-故障转移" class="headerlink" title="3. 故障转移"></a>3. 故障转移</h4><h5 id="1-Leader故障"><a href="#1-Leader故障" class="headerlink" title="(1) Leader故障"></a>(1) Leader故障</h5><p><code>Leader</code> 发生故障后，会从 <code>ISR</code> 中选出一个新的 <code>Leader</code>，同时为保证多个副本之间的数据一致性，其余的 <code>Follower</code> 会先将各自的 <code>log</code> 文件高于 <code>HW(High Watermark, 消费者的消费进度)</code> 的部分截掉，然后从新的 <code>Leader</code> 同步数据。</p>
 <p>这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。</p>
 <h5 id="2-Follower故障"><a href="#2-Follower故障" class="headerlink" title="(2) Follower故障"></a>(2) Follower故障</h5><p><code>Follower</code> 发生故障后会被临时踢出 <code>ISR</code> 集合，待该 <code>Follower</code> 恢复后，将会读取本地磁盘记录的上次的 <code>HW</code>，并将 <code>log</code> 文件高于 <code>HW</code> 的部分截取掉，从 <code>HW</code> 开始向 <code>Leader</code> 进行同步数据操作，等该 <code>Follower</code> 的 <code>LEO(Log End Offset，日志的末尾偏移量)</code> 大于等于该 <code>Partition</code> 的 <code>HW</code>，即 <code>Follower</code> 追上 <code>Leader</code> 后，就可以重新加入 <code>ISR</code> 了。</p>
+<h4 id="4-消息堆积"><a href="#4-消息堆积" class="headerlink" title="4. 消息堆积"></a>4. 消息堆积</h4><p>在实际的消息生产传输中，有可能还会遇到一个较为棘手的问题——消息堆积。所谓消息堆积即生产者发送消息之后消费者却没有及时的进行数据消费，导致大量的消息数据堆积于队列之中。</p>
+<p>应对消息堆积的策略主要思路即确定堆积的原因，是下游消费者服务宕机还是数据过多消费者无法及时处理。</p>
+<p>对于宕机的情况，如果是紧急数据最简单的方法是再部署一台消费服务应用实例先保证数据的流程，再回头定位具体服务消费异常宕机的原因。而若是由于消费者服务数量不够的情况，则是通过部署多台消费服务同时进行数据消费，从而解决堆积的问题。</p>
 <h3 id="四、数据幂等"><a href="#四、数据幂等" class="headerlink" title="四、数据幂等"></a>四、数据幂等</h3><h4 id="1-重复消费"><a href="#1-重复消费" class="headerlink" title="1. 重复消费"></a>1. 重复消费</h4><p>在 <code>Kafka</code> 中提供了消息幂等从而避免消息的重复消息，即 <code>Exactly once</code>。</p>
 <p>上述介绍 <code>ack</code> 时提到在设置为 <code>-1</code> 时，当生产者发送消息时会等待所有 <code>broker</code> 返回确认信息，若未生产者未接受到返回确认值则会重发，保证了至少消息会成功一次。</p>
 <p>在理想的情况下，<code>broker</code> 在接收到生产者发送的数据之后会添加到分区文件末端，然后返回一个 <code>ack</code> 值标识我已经成功获取消息，过程如下图：<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/7.png"></p>
@@ -1296,7 +1299,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">255k</span>
+                <span class="white-color">256.6k</span>
             
             
             
