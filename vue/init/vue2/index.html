@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Vue3 项目创建教程, 布袋青年">
+    <meta name="keywords" content="Vue 项目搭建教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Vue3 项目创建教程 | 布袋青年</title>
+    <title>Vue 项目搭建教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -372,12 +372,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/front/vue/5.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/front/axios.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Vue3 项目创建教程</h1>
+                    <h1 class="description center-align post-title">Vue 项目搭建教程</h1>
                 </div>
             </div>
         </div>
@@ -516,6 +516,10 @@
                                 <span class="chip bg-color">Vue</span>
                             </a>
                         
+                            <a href="/tags/Axios/">
+                                <span class="chip bg-color">Axios</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -537,28 +541,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-20
+                    2022-01-02
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-06-23
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    397
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -578,28 +582,134 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>本篇文件将详细介绍在 <code>Windows</code> 环境下如何通过命令行新建 <code>Vue3</code> 项目。</p>
-<h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-Node-安装"><a href="#1-Node-安装" class="headerlink" title="1. Node 安装"></a>1. Node 安装</h4><p><code>node</code> 环境依赖相对简单，进入官网下载的对应的安装包无脑下一步即可，<a target="_blank" rel="noopener" href="https://nodejs.org/en/">官网直达</a><br><img src="/album/loading.gif" data-original="/album/article/vue/create/12.png"></p>
-<h4 id="2-环境验证"><a href="#2-环境验证" class="headerlink" title="2. 环境验证"></a>2. 环境验证</h4><p>安装完成后在命令窗口输入如下命令查看版本，若能正确显示则说明安装成功。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">node -v         <span class="token comment" spellcheck="true"># 查看 Node 版本</span>
+                <p>本文将介绍如何创建 <code>Vue 2</code> 项目，并实现 <code>Axios</code> 进行二次封装，从而实现更简单的网络请求操作。</p>
+<blockquote>
+<p>Axios 是一个基于 promise 网络请求库，作用于 node.js 和浏览器，使用简单，小巧且提供了易于扩展的接口。</p>
+</blockquote>
+<h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><h4 id="1-Node安装"><a href="#1-Node安装" class="headerlink" title="1. Node安装"></a>1. Node安装</h4><p>先检查自己是否已经安装了 <code>node</code> ，没有的话先到<a target="_blank" rel="noopener" href="http://nodejs.cn/">官网</a>下载之后无脑下一步即可。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">node -v     <span class="token comment" spellcheck="true"># 查看Node版本</span>
 
-<span class="token function">npm</span> -v          <span class="token comment" spellcheck="true"># 查看 NPM 版本</span>
+<span class="token function">npm</span> -v      <span class="token comment" spellcheck="true"># 查看NPM版本</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/vue/create/13.png"></p>
-<h4 id="3-依赖安装"><a href="#3-依赖安装" class="headerlink" title="3. 依赖安装"></a>3. 依赖安装</h4><p>完成 <code>node</code> 安装之后，在新建工程之前我们还需要安装 <code>vue-cli</code> 依赖。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> vue-cli -g
+<h4 id="2-cnpm安装"><a href="#2-cnpm安装" class="headerlink" title="2. cnpm安装"></a>2. cnpm安装</h4><p><code>cnpm</code> 是阿里的 <code>npm</code>镜像， <code>npm</code> 有时候会抽风，安装一个备用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> -g cnpm --registry<span class="token operator">=</span>http://registry.npm.taobao.org    
+
+cnpm -v     <span class="token comment" spellcheck="true"># 查看cnpm版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、项目创建"><a href="#二、项目创建" class="headerlink" title="二、项目创建"></a>二、项目创建</h3><h4 id="1-新建工程"><a href="#1-新建工程" class="headerlink" title="1. 新建工程"></a>1. 新建工程</h4><p>根据你的喜好选择对应目录，新建命令行窗体运行如下命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> vue-demo    
+<span class="token function">cd</span> vue-demo                     <span class="token comment" spellcheck="true"># 新建文件夹并进入</span>
+
+vue init webpack my-project     <span class="token comment" spellcheck="true"># 初始化项目</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-配置信息"><a href="#2-配置信息" class="headerlink" title="2. 配置信息"></a>2. 配置信息</h4><p>回车之后就会下载项目模板，期间会让你输入项目描述，注意选择 <code>ESLint</code> 的时候记得选 <code>no</code> ，否则后续格式会出现奇奇怪怪的格式错误。</p>
+<p>具体提示信息如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">Project name <span class="token operator">&lt;</span>你的项目名<span class="token operator">></span>
+Project description <span class="token operator">&lt;</span>你的项目描述<span class="token operator">></span>
+Author <span class="token operator">&lt;</span>作者<span class="token operator">></span>
+Vue build standalone
+<span class="token comment" spellcheck="true"># 是否生成 router 目录</span>
+Install vue-router? Yes
+<span class="token comment" spellcheck="true"># 是否引入 ESlint</span>
+Use ESLint to lint your code? No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Set up unit tests No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Setup e2e tests with Nightwatch? No
+<span class="token comment" spellcheck="true"># 是否在项目创建后运行 npm install</span>
+Should we run <span class="token variable"><span class="token variable">`</span><span class="token function">npm</span> <span class="token function">install</span><span class="token variable">`</span></span> <span class="token keyword">for</span> you after the project has been created? <span class="token punctuation">(</span>recommended<span class="token punctuation">)</span> <span class="token function">npm</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、样式引入"><a href="#三、样式引入" class="headerlink" title="三、样式引入"></a>三、样式引入</h3><h4 id="1-依赖安装"><a href="#1-依赖安装" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>这边我选择的是阿里的 <code>Ant Design</code> ，布局样式更方便，当然你可以选择原生样式或者其它 UI 框架。</p>
+<p>在新建的工程目录下新建命令窗口运行如下命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> i --save ant-design-vue 
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="二、创建步骤"><a href="#二、创建步骤" class="headerlink" title="二、创建步骤"></a>二、创建步骤</h3><p>完成上述环境准备后下面就可以正式开始创建项目了。</p>
-<h4 id="1-新建工程"><a href="#1-新建工程" class="headerlink" title="1. 新建工程"></a>1. 新建工程</h4><p>在你的本地工作目录下进入命令行窗口，通过 <code>vue create &lt;工程名&gt;</code> 创建工程。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/1.png"></p>
-<h4 id="2-模块选择"><a href="#2-模块选择" class="headerlink" title="2. 模块选择"></a>2. 模块选择</h4><p><img src="/album/loading.gif" data-original="/album/article/vue/create/2.png"></p>
-<h4 id="3-自定义模块"><a href="#3-自定义模块" class="headerlink" title="3. 自定义模块"></a>3. 自定义模块</h4><p>通过上下键切换对象，空格键选择对应功能，完成后回车进入下一步。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/3.png"></p>
-<h4 id="4-版本选择"><a href="#4-版本选择" class="headerlink" title="4. 版本选择"></a>4. 版本选择</h4><p>这里选择版本选择 <code>Vue3</code> 。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/4.png"></p>
-<h4 id="5-路由模式"><a href="#5-路由模式" class="headerlink" title="5. 路由模式"></a>5. 路由模式</h4><p>设置路由模式为 <code>history</code> ，这里选择 <code>yes</code>。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/5.png"></p>
-<h4 id="6-Eslint配置"><a href="#6-Eslint配置" class="headerlink" title="6. Eslint配置"></a>6. Eslint配置</h4><p>选择 <code>Eslint</code> 配置，选择默认回车即可。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/6.png"><br><img src="/album/loading.gif" data-original="/album/article/vue/create/7.png"></p>
-<h4 id="7-依赖管理"><a href="#7-依赖管理" class="headerlink" title="7. 依赖管理"></a>7. 依赖管理</h4><p>选择依赖管理方式，这里选择 <code>package.json</code>。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/8.png"></p>
-<h4 id="8-设置保存"><a href="#8-设置保存" class="headerlink" title="8. 设置保存"></a>8. 设置保存</h4><p>即保存上述我们的选项下次即可快速创建项目。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/9.png"><br><img src="/album/loading.gif" data-original="/album/article/vue/create/10.png"></p>
-<h3 id="三、完成创建"><a href="#三、完成创建" class="headerlink" title="三、完成创建"></a>三、完成创建</h3><p>完成上述步骤最后等待项目文件生产完毕即可。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/11.png"></p>
-<p>创建结束之后打开目录即可看见已经生成如下内容：<br><img src="/album/loading.gif" data-original="/album/article/vue/create/14.png"></p>
+<h4 id="2-导入配置"><a href="#2-导入配置" class="headerlink" title="2. 导入配置"></a>2. 导入配置</h4><p>找到 <code>src/main.js</code> 文件，添加如下代码全局导入样式，当然你也可以在对应的页面里选择的单独引入。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 全局引入样式</span>
+<span class="token keyword">import</span> Antd <span class="token keyword">from</span> <span class="token string">'ant-design-vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'ant-design-vue/dist/antd.css'</span><span class="token punctuation">;</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Antd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、Axios配置"><a href="#四、Axios配置" class="headerlink" title="四、Axios配置"></a>四、Axios配置</h3><h4 id="1-依赖安装-1"><a href="#1-依赖安装-1" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>打开之前新建的工程根目录，新建命令行窗口运行如下命令安装 <code>Axios </code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> axios
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-Axios配置"><a href="#2-Axios配置" class="headerlink" title="2. Axios配置"></a>2. Axios配置</h4><p>这里用到的的接口是用的是 <code>Spring Boot</code> 编写，可以参考教程：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Spring-Boot/">Spring Boot接口开发</a>。</p>
+<p>然后在 <code>src</code> 目录下新建文件夹 <code>api</code> ，文件夹内新建文件 <code>axios.js</code> 用于对 <code>axios</code> 进行基本封装以及对相应进行简单处理，代码如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        baseURL<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+        timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>                       <span class="token comment" spellcheck="true">// 设置统一的超时时长, 单位毫秒</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>config <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> config
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 响应拦截</span>
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>response<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> res
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 请求信息弹窗提示</span>
+        <span class="token keyword">const</span> errorBody <span class="token operator">=</span> err<span class="token punctuation">.</span>response<span class="token punctuation">.</span>data
+        Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$notification<span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            message<span class="token punctuation">:</span> <span class="token string">'Internal Server Error'</span><span class="token punctuation">,</span>
+            description<span class="token punctuation">:</span> errorBody<span class="token punctuation">.</span>error<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token function">service</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> request<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、Axios封装"><a href="#五、Axios封装" class="headerlink" title="五、Axios封装"></a>五、Axios封装</h3><h4 id="1-接口封装"><a href="#1-接口封装" class="headerlink" title="1. 接口封装"></a>1. 接口封装</h4><p>在api目录下新建文件 <code>user.js</code> ，在该文件内利用二次封装的 <code>axios</code> 对进行接口方法封装，这样在页面代码中我们只需引入相应的方法即可。</p>
+<p>相应的配置示例代码如下：</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> request <span class="token keyword">from</span> <span class="token string">'./axios'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getUser</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/get'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'get'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Update</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/update'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'post'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-接口调用"><a href="#2-接口调用" class="headerlink" title="2. 接口调用"></a>2. 接口调用</h4><p>具体的调用封装的接口方法可以参考另一篇文章，这里不详细展开：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Vue-Request/">Vue接口请求详解</a></p>
+<h3 id="六、跨域处理"><a href="#六、跨域处理" class="headerlink" title="六、跨域处理"></a>六、跨域处理</h3><p>找到项目下的 <code>config/index.js</code> 文件，在 <code>proxyTable: &#123;&#125;</code> 括号里添加如下内容，需要注意若后端配置了 <code>servlet.context-path</code> 前缀，这里对应的 <code>&#39;/&#39;</code> 需要改成其对应的值。</p>
+<p>将其中的名称 <code>your-name</code> 替换为你需要前缀，最终的接口请求地址样式即为：<code>http://localhost:8080/your-name/backend-api-path/</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token string">"/your-name"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
+    target<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>
+    changeOrigin<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    pathRewrite<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'^/your-name'</span><span class="token punctuation">:</span> <span class="token string">'/'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后回到第四步的 <code>axios.js</code> 文件中将 <code>baseURL</code> 的值替换成 <code>/your-name</code>。</p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseURL<span class="token punctuation">:</span> <span class="token string">'/your-name'</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+    timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>           <span class="token comment" spellcheck="true">// 设置统一的超时时长</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>源码：</strong><a target="_blank" rel="noopener" href="https://github.com/great-jin/Blog-Code/tree/master/Vue/Axios-Seal">Axios封装</a></p>
+<p><strong>参考链接：</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6968630178163458084">Axios二次封装</a></li>
+</ol>
 
                 
             </div>
@@ -626,7 +736,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/vue/basis/create/">https://great-jin.github.io/vue/basis/create/</a>
+                    <a href="https://great-jin.github.io/vue/init/vue2/">https://great-jin.github.io/vue/init/vue2/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -666,6 +776,10 @@
                             
                                 <a href="/tags/Vue/">
                                     <span class="chip bg-color">Vue</span>
+                                </a>
+                            
+                                <a href="/tags/Axios/">
+                                    <span class="chip bg-color">Axios</span>
                                 </a>
                             
                         </div>
@@ -841,30 +955,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/windows/record/tim/">
+                <a href="/db/minio/deploy/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/program/tim.jpg" class="responsive-img" alt="TIM自定义文件存储无效">
+                        <img src="/album/banner/db/minio/1.png" class="responsive-img" alt="MinIO服务部署教程">
                         
-                        <span class="card-title">TIM自定义文件存储无效</span>
+                        <span class="card-title">MinIO服务部署教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            TIM自定义文件存储无效问题解决？
+                            MinIO不同环境安装部署教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-23
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-08
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8/" class="post-category">
-                                    软件应用
+                            <a href="/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" class="post-category">
+                                    应用部署
                                 </a>
                             
                             
@@ -874,8 +988,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Windows/">
-                        <span class="chip bg-color">Windows</span>
+                    <a href="/tags/Linux/">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                    <a href="/tags/MinIO/">
+                        <span class="chip bg-color">MinIO</span>
                     </a>
                     
                 </div>
@@ -889,30 +1007,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/web/mybatisplus/">
+                <a href="/java/spring/web/restful/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/util/mybatisplus.png" class="responsive-img" alt="MyBatis-Plus使用介绍">
+                        <img src="/album/banner/java/spring/1.jpeg" class="responsive-img" alt="Spring Boot RESTful开发教程">
                         
-                        <span class="card-title">MyBatis-Plus使用介绍</span>
+                        <span class="card-title">Spring Boot RESTful开发教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MyBatis-Plus使用介绍。
+                            Spring Boot RESTful接口开发教程。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-01
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
-                                    后端
+                            <a href="/categories/Spring%E6%A1%86%E6%9E%B6/" class="post-category">
+                                    Spring框架
                                 </a>
                             
                             
@@ -922,8 +1040,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MyBatis-Plus/">
-                        <span class="chip bg-color">MyBatis Plus</span>
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
                     </a>
                     
                 </div>
@@ -1197,7 +1315,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">256.6k</span>
+                <span class="white-color">256.9k</span>
             
             
             
