@@ -558,7 +558,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    19 分
+                    18 分
                 </div>
                 
 
@@ -899,15 +899,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>collect<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-Key-值重复"><a href="#2-Key-值重复" class="headerlink" title="(2) Key 值重复"></a>(2) Key 值重复</h5><p>在使用 <code>toMap()</code> 是需要特别注意一点，当 <code>key</code> 值重复时将会抛出 <code>IllegalStateException</code> 异常。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">mapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">></span> map <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token comment" spellcheck="true">// 此处抛出 IllegalStateException</span>
-            <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toMap</span><span class="token punctuation">(</span>it <span class="token operator">-</span><span class="token operator">></span> it<span class="token punctuation">,</span> it <span class="token operator">-</span><span class="token operator">></span> it<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-Key-值重复"><a href="#2-Key-值重复" class="headerlink" title="(2) Key 值重复"></a>(2) Key 值重复</h5><p>在使用 <code>toMap()</code> 是需要特别注意一点，当 <code>key</code> 值重复时将会抛出 <code>IllegalStateException</code> 异常。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/util/3.png"><br><img src="/album/loading.gif" data-original="/album/article/java/collect/util/4.png"></p>
 <p>因此我们需要手动指定 <code>Key</code> 值重复处理策略，执行替换或跳过，修改上述示例得到如下代码：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">mapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -922,18 +914,8 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-空值异常"><a href="#3-空值异常" class="headerlink" title="(3) 空值异常"></a>(3) 空值异常</h5><p>在 <code>HashMap</code> 中我们知道 <code>Key</code> 值允许有且仅有一个为空，<code>Value</code> 则不做空值限制，但在 <code>toMap()</code> 中其限制了 <code>Key</code> 与 <code>Value</code> 都不能为空，否则其在内部调用 <code>map.merge()</code> 时将抛出空指针异常。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> userList<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token comment" spellcheck="true">// 将会抛出空异常</span>
-            <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toMap</span><span class="token punctuation">(</span>User<span class="token operator">:</span><span class="token operator">:</span>getId<span class="token punctuation">,</span> User<span class="token operator">:</span><span class="token operator">:</span>getName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>因此，若无法保证 <code>Key</code> 与 <code>Value</code> 的值不为空，更推荐使用手动 <code>put()</code> 的方式。</p>
+<h5 id="3-空值异常"><a href="#3-空值异常" class="headerlink" title="(3) 空值异常"></a>(3) 空值异常</h5><p>在 <code>HashMap</code> 中我们知道 <code>Key</code> 值允许有且仅有一个为空，<code>Value</code> 则不做空值限制，但在 <code>toMap()</code> 中其限制了 <code>Value</code> 不能为空，否则其在内部调用 <code>map.merge()</code> 时将抛出空指针异常。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/util/5.png"><br><img src="/album/loading.gif" data-original="/album/article/java/collect/util/6.png"></p>
+<p>因此，若无法保证 <code>Value</code> 的值不为空，更推荐使用手动 <code>put()</code> 的方式。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     userList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1801,7 +1783,7 @@ lambda 表达式 foreach 耗时<span class="token operator">:</span> <span class
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">257.2k</span>
+                <span class="white-color">257.1k</span>
             
             
             
