@@ -544,14 +544,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-05-26
+                    2024-07-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.5k
                 </div>
                 
 
@@ -669,7 +669,14 @@ CHANGE <span class="token operator">&lt;</span>column_name<span class="token ope
 <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-增量新增"><a href="#1-增量新增" class="headerlink" title="(1) 增量新增"></a>(1) 增量新增</h5><p>通过基础的 <code>insert</code> 语法可实现数据的新增，但是当数据的主键冲突时则无法执行插入，因而 <code>MySQL</code> 提供了 <code>on duplicate</code> 与 <code>replace into</code> 两种方式实现增量新增。</p>
-<p>增量新增在插入时根据主键或唯一索引进行判断，若数据存在则更新，否则新增数据。</p>
+<blockquote>
+<p>二者的主要区别如下：</p>
+<ul>
+<li><strong>replace Into</strong>: 先执行插入，若数据已存在则先删除再插入。</li>
+<li><strong>on duplicate</strong>: 先执行插入，若数据已存在则根据主键更新。</li>
+</ul>
+</blockquote>
+<p>增量新增默认在插入时根据主键或唯一索引进行判断，若数据存在则更新，否则新增数据。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> tb_test<span class="token punctuation">(</span>id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> update_time<span class="token punctuation">)</span>
 <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token string">'1'</span><span class="token punctuation">,</span> <span class="token string">'Alex'</span><span class="token punctuation">,</span> <span class="token string">'2023-02-16 14:41:35'</span><span class="token punctuation">)</span>
 <span class="token keyword">on</span> <span class="token keyword">duplicate key</span> <span class="token keyword">update</span>
@@ -677,10 +684,11 @@ id <span class="token operator">=</span> <span class="token keyword">values</spa
 name <span class="token operator">=</span> <span class="token keyword">values</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
 update_time <span class="token operator">=</span> <span class="token keyword">values</span><span class="token punctuation">(</span>update_time<span class="token punctuation">)</span>
 
+
 replace <span class="token keyword">into</span> 
 test_db<span class="token punctuation">.</span>tb_info<span class="token punctuation">(</span>id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> update_time<span class="token punctuation">)</span>
 <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token string">'1'</span><span class="token punctuation">,</span> <span class="token string">'Alex'</span><span class="token punctuation">,</span> <span class="token string">'2023-02-16 14:41:35'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-数据修改"><a href="#2-数据修改" class="headerlink" title="2. 数据修改"></a>2. 数据修改</h4><p>通过 <code>update</code> 关键字修改记录值。</p>
 <p>这里分享一个使用技巧，当通过 <code>update</code> 或 <code>delete</code> 增删数据时，为了降低条件错误执行而带来的影响，可通过 <code>limit</code> 关键字限制作用条数，即便满足 <code>where</code> 条件的数据存在多条，语句执行仍仅会对 <code>limit</code> 设置的指定条数生效。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">update</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
@@ -1501,7 +1509,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">262.4k</span>
+                <span class="white-color">265k</span>
             
             
             

@@ -544,21 +544,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-05-07
+                    2024-07-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.3k
+                    3.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    12 分
                 </div>
                 
 
@@ -665,7 +665,11 @@
 <h4 id="2-插入缓冲"><a href="#2-插入缓冲" class="headerlink" title="2. 插入缓冲"></a>2. 插入缓冲</h4><p>在非聚簇索引中涉及到一个重要概念 —— 插入缓冲 <code>(Insert Buffer)</code>，其为 <code>Change Buffer</code> 中的一部分。</p>
 <p>对于非聚簇索引结构而言，其检索的依据是根据辅助索引与聚簇索引二者共同构成，但对于辅助索引而言其物理磁盘数据可能是相邻的，但其对应的 <code>B+</code> 树索引结构却是离散的。</p>
 <p>因此，在执行插入或更新时，并不是每一次都会直接插入到索引页中，而是先判断插人的非聚集索引页是否在缓冲池中，若在则执行插入操作，否则先放入 <code>Insert Buffer</code> 中，再由另一线程异步定期根据缓存和索引页数据执行 <code>merge</code> 操作，提高了对于非聚簇索引插入的性能。</p>
-<h3 id="四、索引创建"><a href="#四、索引创建" class="headerlink" title="四、索引创建"></a>四、索引创建</h3><h4 id="1-主键索引"><a href="#1-主键索引" class="headerlink" title="1. 主键索引"></a>1. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
+<h3 id="四、索引创建"><a href="#四、索引创建" class="headerlink" title="四、索引创建"></a>四、索引创建</h3><h4 id="1-普通索引"><a href="#1-普通索引" class="headerlink" title="1. 普通索引"></a>1. 普通索引</h4><p>在数据查询中，可以为查询条件中字段添加索引从而提高查询效率，创建索引的基本语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
+<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="2-主键索引"><a href="#2-主键索引" class="headerlink" title="2. 主键索引"></a>2. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
 <p>主键索引创建较为简单，当一个字段被表示为主键时会自动为其创建索引，注意主键字段必须设置为非空字段。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>
   <span class="token punctuation">`</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
@@ -674,7 +678,7 @@
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
 <span class="token keyword">ADD</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-唯一索引"><a href="#2-唯一索引" class="headerlink" title="2. 唯一索引"></a>2. 唯一索引</h4><p>唯一索引与主键索引不同是其列的值可以包含空值，在指定多列时只有在这多个列的值都不相同时才互斥。</p>
+<h4 id="3-唯一索引"><a href="#3-唯一索引" class="headerlink" title="3. 唯一索引"></a>3. 唯一索引</h4><p>唯一索引与主键索引不同是其列的值可以包含空值，在指定多列时只有在这多个列的值都不相同时才互斥。</p>
 <p>如果表中已经存在重复数据，则创建唯一索引时会失败。在这种情况下，需要先删除重复数据，或者使用 <code>IGNORE</code> 关键字来忽略重复数据并创建唯一索引。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建多列唯一索引</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
@@ -688,7 +692,7 @@
 <span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
 <span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span> <span class="token keyword">IGNORE</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-外键索引"><a href="#3-外键索引" class="headerlink" title="3. 外键索引"></a>3. 外键索引</h4><p>当两种表存在关联关系时通常可以为表创建外键索引从而提高查询效率，如 <code>学生表</code> 与 <code>成绩表</code> 之间存在明显的关联关系即可为其创建外键索引。</p>
+<h4 id="4-外键索引"><a href="#4-外键索引" class="headerlink" title="4. 外键索引"></a>4. 外键索引</h4><p>当两种表存在关联关系时通常可以为表创建外键索引从而提高查询效率，如 <code>学生表</code> 与 <code>成绩表</code> 之间存在明显的关联关系即可为其创建外键索引。</p>
 <p>创建外键之前需要先为 <code>主表</code> 和 <code>从表</code> 先创建索引，否则无法为 <code>从表</code> 创建外键。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span>  
@@ -718,7 +722,7 @@
 <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span> 
 <span class="token keyword">REFERENCES</span> <span class="token operator">&lt;</span>master_table<span class="token operator">></span><span class="token punctuation">(</span><span class="token operator">&lt;</span>master_column<span class="token operator">></span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-联合索引"><a href="#4-联合索引" class="headerlink" title="4. 联合索引"></a>4. 联合索引</h4><p>联合索引查询条件中涉及到的列的顺序需要与索引中建立的列的顺序一致，才能充分利用索引的优势。否则即使该列已经建立了索引，也无法发挥优化效果。</p>
+<h4 id="5-联合索引"><a href="#5-联合索引" class="headerlink" title="5. 联合索引"></a>5. 联合索引</h4><p>联合索引查询条件中涉及到的列的顺序需要与索引中建立的列的顺序一致，才能充分利用索引的优势。否则即使该列已经建立了索引，也无法发挥优化效果。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
 <span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -751,6 +755,16 @@
 <li>联合索引未满足最左匹配原则，<code>(k1,k2,k3)</code> 相当于创建了 <code>(k1)、(k1,k2)</code> 和 <code>(k1,k2,k3)</code> 三个索引。</li>
 </ul>
 </blockquote>
+<p>这里以索引运算为例，先准备如下测试表并构造一些测试数据。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>tb_user<span class="token punctuation">`</span> <span class="token punctuation">(</span>
+  <span class="token punctuation">`</span>Column1<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column2<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>Column1<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>utf8mb4<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成后通过主键执行条件查询，通过执行计划中的 <code>type</code> 与 <code>key</code> 可以看到语句使用了主键索引进行查询。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/5.png"></p>
+<p>现在让我们更换一下查询条件，将条件中的 <code>&#39;1&#39;</code> 替换为 <code>1</code> 并重新查询执行计划，可以看到此时 <code>type = ALL</code> 执行了全表扫描，而这则是因为 <code>Column1</code> 字段类型为 <code>varchar</code>，当通过数字 <code>1</code> 查询时 <code>MySQL</code> 会执行隐式的类型转化从而导致索引失效。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/6.png"></p>
+<p>上述中提到的其余几类索引失效场景这里就不一一进行介绍，感兴趣的话可以自行通过执行计划进行验证。</p>
 
                 
             </div>
@@ -1348,7 +1362,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">262.4k</span>
+                <span class="white-color">265k</span>
             
             
             

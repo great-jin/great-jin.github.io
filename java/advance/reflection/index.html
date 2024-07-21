@@ -544,7 +544,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-20
+                    2024-07-21
                 </div>
                 
 
@@ -601,10 +601,11 @@
 </blockquote>
 <p>如下述示例中创建了一个私有测试类 <code>Foo</code>，但是由于 <code>Foo</code> 类是私有的，而通过 <code>XXX.class</code> 方式是基于导入实现此处显然是非法的。</p>
 <p>因此在实际应用中通常是基于类的完整限定名来获取类对象，同时注意 <code>cls2</code> 中获取的方式会默认初始化对象，而对象在初始化时需要为属性字段等信息设置默认值等操作造成性能损耗。因此，在实际应用中更多推荐 <code>cls3</code> 与 <code>cls4</code> 的声明方式，即默认不初始化对象，只有当程序需要用到该对象时才会为对象初始化。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 测试私有类</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 私有类</span>
 <span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
 <span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true">// 测试类</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FooTest</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls1 <span class="token operator">=</span> Foo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// 非法，Foo 为私有类将无法导入类引用</span>
@@ -612,33 +613,13 @@
 
         <span class="token comment" spellcheck="true">// 获取当前上下文类加载</span>
         ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 更推荐下述两种方式</span>
+        <span class="token comment" spellcheck="true">// 更推荐下述两种方式，不直接初始实例化对象</span>
         Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls3 <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.example.Foo"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> classLoader<span class="token punctuation">)</span><span class="token punctuation">;</span>
         Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls4 <span class="token operator">=</span> classLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span><span class="token string">"com.example.Foo"</span><span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-信息获取"><a href="#2-信息获取" class="headerlink" title="2. 信息获取"></a>2. 信息获取</h4><p>在获取类对象之后即可通过其获取类的基本信息如包名、类型、作用域等等。</p>
-<p>如下述示例即通过获取的类对象从而查询 <code>String.class</code> 类的基本信息。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">basicInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 完整类名：java.lang.String</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Class name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 类名：String</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Simple name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 包名：java.lang</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Package name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">// 是否为枚举类</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is enum? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isEnum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 是否为接口类</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is interface? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 类是否私有</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is primitive? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isPrimitive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-对象代理"><a href="#3-对象代理" class="headerlink" title="3. 对象代理"></a>3. 对象代理</h4><p>在应用程序中若需要使用对象通常利用 <code>new</code> 关键字实现，再编译为可执行的二进制 <code>class</code> 文件，而反射则无法简单的利用 <code>new</code> 关键字。因此，在反射中提供了动态代理的方式初始化，即在运行时生成代理对象，实现对原对象的增强。</p>
+<h4 id="2-对象代理"><a href="#2-对象代理" class="headerlink" title="2. 对象代理"></a>2. 对象代理</h4><p>在应用程序中若需要使用对象通常利用 <code>new</code> 关键字实现，再编译为可执行的二进制 <code>class</code> 文件，而反射则无法简单的利用 <code>new</code> 关键字。因此，在反射中提供了动态代理的方式初始化，即在运行时生成代理对象，实现对原对象的增强。</p>
 <p>在 <code>Java</code> 反射中为对象初始化提供了两种方式，第一种即利用获取 <code>Class&lt;?&gt;</code> 对象调用其 <code>newInstance()</code> 方法，第二类即通过反射获取其构造函数再执行其 <code>newInstance()</code>。</p>
 <blockquote>
 <p><code>clazz.newInstance()</code> 与 <code>constructor.newInstance()</code> 区别如下:</p>
@@ -664,6 +645,26 @@
     constructor<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Student student2 <span class="token operator">=</span> <span class="token punctuation">(</span>Student<span class="token punctuation">)</span> constructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"student-2: "</span> <span class="token operator">+</span> student2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-信息获取"><a href="#3-信息获取" class="headerlink" title="3. 信息获取"></a>3. 信息获取</h4><p>在获取类对象之后即可通过其获取类的基本信息如包名、类型、作用域等等。</p>
+<p>如下述示例即通过获取的类对象从而查询 <code>String.class</code> 类的基本信息。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">basicInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 完整类名：java.lang.String</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Class name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 类名：String</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Simple name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 包名：java.lang</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Package name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 是否为枚举类</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is enum? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isEnum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 是否为接口类</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is interface? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 类是否私有</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is primitive? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isPrimitive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><h4 id="1-基本示例"><a href="#1-基本示例" class="headerlink" title="1. 基本示例"></a>1. 基本示例</h4><p>除了获取类等基本信息外通过反射也可获取其字段 <code>(Field)</code>、方法 <code>(Method)</code>、方法参数 <code>(Parameter)</code> 与构造器 <code>(Constructor)</code> 等属性信息，这里仅以获取字段举例，其它类型使用方式同理。</p>
@@ -1358,15 +1359,15 @@
                 <a href="/java/advance/annotation/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/43.png" class="responsive-img" alt="Java注解介绍与应用">
+                        <img src="/album/banner/java/43.png" class="responsive-img" alt="Java注解基础介绍">
                         
-                        <span class="card-title">Java注解介绍与应用</span>
+                        <span class="card-title">Java注解基础介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java注解定义使用详解。
+                            Java注解定义使用基本介绍。
                         
                     </div>
                     <div class="publish-info">
@@ -1711,7 +1712,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">262.4k</span>
+                <span class="white-color">265k</span>
             
             
             
