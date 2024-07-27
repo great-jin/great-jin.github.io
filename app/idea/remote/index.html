@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    277
+                    395
                 </div>
                 
 
@@ -620,26 +620,18 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h4 id="1-远程调试"><a href="#1-远程调试" class="headerlink" title="1. 远程调试"></a>1. 远程调试</h4><p>在工程的 <code>resources/bootstrap.conf</code> 配置添加如下配置，并在代码中进行加载即可。</p>
-<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">java.arg.debug</span><span class="token punctuation">=</span><span class="token attr-value">-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000</span>
+                <p>在应用服务完成部署之后，对于所有人而言其内部执行都是黑盒，当出现异常时如何快速定位异常也成为了重中之重。在本地开发时，作为开发人员可以通过程序断点调试轻易的发现问题根源，可一旦服务发布到线上环境时，更多的情况只能通过日志跟踪的方式排查问题。</p>
+<p>幸运的是，在 <code>IDEA</code> 中提供了远程调试的功能，可以实现线上服务断点调试，本文将介绍如何进行配置。</p>
+<h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><p>在 <code>IDEA</code> 中启动配置中新增 <code>Remote JVM Debug</code> 并填写对应对应的服务 <code>IP</code> 与端口。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/remote.png"></p>
+<h4 id="2-启动参数"><a href="#2-启动参数" class="headerlink" title="2. 启动参数"></a>2. 启动参数</h4><p>在上一步的配置之后可以看到生成了如下一串 <code>JVM</code> 参数：</p>
+<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">-agentlib</span><span class="token punctuation">:</span><span class="token attr-value">jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>当然也可以值启动命令中添加 <code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000</code> 设置远程调试配置。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">nohup</span> java -agentlib:jdwp<span class="token operator">=</span>transport<span class="token operator">=</span>dt_socket,server<span class="token operator">=</span>y,suspend<span class="token operator">=</span>n,address<span class="token operator">=</span>8000 -jar my-application.jar<span class="token operator">></span> application-info.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>
+<p>上述配置参数我们只需关心 <code>address=*:5005</code>，其中 <code>5005</code> 表示远程调试连接端口。</p>
+<p>有了上述配置信息，接下来只需要在服务启动命令上添加即可，示例如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">nohup</span> java -agentlib:jdwp<span class="token operator">=</span>transport<span class="token operator">=</span>dt_socket,server<span class="token operator">=</span>y,suspend<span class="token operator">=</span>n,address<span class="token operator">=</span>*:5005 -jar my-application.jar<span class="token operator">></span> application-info.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>完成上述配置之后在 <code>IDEA</code> 中启动配置中新增 <code>Remote JVM Debug</code> 并填写对应对应的服务 <code>IP</code> 与端口，同时选择对应的工程模块启动后即可实现远程 <code>Debug</code> 。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/remote.png"></p>
-<h4 id="2-参数配置"><a href="#2-参数配置" class="headerlink" title="2. 参数配置"></a>2. 参数配置</h4><p>当工程中涉及到一些场景可变参数时可以通过外部文件配置属性，再由代码程序进行读取，实现更动态的管理。</p>
-<p>在启动项的 <code>VM Option</code> 中添加如下内容，当然实际工程需要添加到对应的配置文件中。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/vm.png"></p>
-<p>代码中获取配置属性值如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// Get all property</span>
-    Properties property <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">getProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>property<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// Get specific property</span>
-    String info <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"properties.info"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-断点调试"><a href="#3-断点调试" class="headerlink" title="3. 断点调试"></a>3. 断点调试</h4><p>完成上述步骤后启动线上服务与 <code>IDEA</code> 中的服务即可，此时线上服务请求将会被转发到本地工程断点中。</p>
+<p>需要注意的一点是本地工程代码需要和线上服务的代码保持一致，否则可能会出现断点行数不匹配的问题。</p>
 
                 
             </div>
@@ -1241,7 +1233,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">259.8k</span>
+                <span class="white-color">259.9k</span>
             
             
             
