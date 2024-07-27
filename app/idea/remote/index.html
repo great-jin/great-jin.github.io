@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Git提交规范介绍, 布袋青年">
+    <meta name="keywords" content="在 IDEA 中优雅的远程调试, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Git提交规范介绍 | 布袋青年</title>
+    <title>在 IDEA 中优雅的远程调试 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -110,6 +110,13 @@
       <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
     </a>
     <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/course/java">
+          
+          <span>Java基础</span>
+        </a>
+      </li>
       
       <li>
         <a href="/course/ds">
@@ -263,6 +270,13 @@
         <ul  style="background:  ;"  >
                    <li>
     
+          <a href="/course/java " style="margin-left:75px">
+              
+                  <span>Java基础</span>
+                      </a>
+                    </li>
+                   <li>
+    
           <a href="/course/ds " style="margin-left:75px">
               
                   <span>数据结构</span>
@@ -372,12 +386,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/coding/git/1.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/idea/7.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Git提交规范介绍</h1>
+                    <h1 class="description center-align post-title">在 IDEA 中优雅的远程调试</h1>
                 </div>
             </div>
         </div>
@@ -512,8 +526,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Git/">
-                                <span class="chip bg-color">Git</span>
+                            <a href="/tags/IDEA/">
+                                <span class="chip bg-color">IDEA</span>
                             </a>
                         
                     </div>
@@ -524,8 +538,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" class="post-category">
-                                开发工具
+                            <a href="/categories/IDEA/" class="post-category">
+                                IDEA
                             </a>
                         
                     </div>
@@ -537,21 +551,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-06-26
+                    2021-09-22
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-12
+                    2024-07-27
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    582
+                    277
                 </div>
                 
 
@@ -578,62 +592,26 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>我相信 <code>Git</code> 每个程序员都不陌生，怎么用相信不用我多描述，但相信不少人的提交备注都是随意说明，并没有一个完整的规范。</p>
-<p>就拿我自己来说，在公司项目中的提交记录起码还能描述清本次提交的代码功能，而工作之余的个人项目提交记录则是重灾区。备注说明杂乱无章，当需要定位某次提交无异于大海捞针。</p>
-<h4 id="1-提交模板"><a href="#1-提交模板" class="headerlink" title="1. 提交模板"></a>1. 提交模板</h4><p>下面简单介绍一下如何使用 <code>Git</code> 进行规范的代码提交，提交的基本模板如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 简易模板</span>
-<span class="token operator">&lt;</span>修改类型<span class="token punctuation">(</span>影响分支<span class="token punctuation">)</span><span class="token operator">></span>:<span class="token operator">&lt;</span>内容摘要<span class="token operator">></span>
+                <h4 id="1-远程调试"><a href="#1-远程调试" class="headerlink" title="1. 远程调试"></a>1. 远程调试</h4><p>在工程的 <code>resources/bootstrap.conf</code> 配置添加如下配置，并在代码中进行加载即可。</p>
+<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">java.arg.debug</span><span class="token punctuation">=</span><span class="token attr-value">-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当然也可以值启动命令中添加 <code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000</code> 设置远程调试配置。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">nohup</span> java -agentlib:jdwp<span class="token operator">=</span>transport<span class="token operator">=</span>dt_socket,server<span class="token operator">=</span>y,suspend<span class="token operator">=</span>n,address<span class="token operator">=</span>8000 -jar my-application.jar<span class="token operator">></span> application-info.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>完成上述配置之后在 <code>IDEA</code> 中启动配置中新增 <code>Remote JVM Debug</code> 并填写对应对应的服务 <code>IP</code> 与端口，同时选择对应的工程模块启动后即可实现远程 <code>Debug</code> 。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/remote.png"></p>
+<h4 id="2-参数配置"><a href="#2-参数配置" class="headerlink" title="2. 参数配置"></a>2. 参数配置</h4><p>当工程中涉及到一些场景可变参数时可以通过外部文件配置属性，再由代码程序进行读取，实现更动态的管理。</p>
+<p>在启动项的 <code>VM Option</code> 中添加如下内容，当然实际工程需要添加到对应的配置文件中。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/vm.png"></p>
+<p>代码中获取配置属性值如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Get all property</span>
+    Properties property <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">getProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>property<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token operator">&lt;</span>详细内容说明<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其中 <code>修改类型</code> 包含如下几类:</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">类型</td>  
-        <th style="text-align: center;">说明</td> 
-    </tr>
-    <tr>
-        <td style="text-align: center;">feat</td>  
-        <td style="text-align: center;">表示提交新功能。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">fix</td>  
-        <td style="text-align: center;">表示修复了 Bug 。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">docs</td>  
-        <td style="text-align: center;">表示只修改了文档。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">style</td>  
-        <td style="text-align: center;">表示调整代码格式，未修改代码逻辑。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">refactor</td>  
-        <td style="text-align: center;">表示代码重构，既没修复 Bug 也没有添加新功能。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">perf</td>  
-        <td style="text-align: center;">表示性能优化，提高性能的代码更改。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">test</td>  
-        <td style="text-align: center;">表示添加或修改代码测试。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">chore</td>  
-        <td style="text-align: center;">表示对构建流程或辅助工具和依赖库的更改。</td>  
-    </tr>
-</table>
-
-<p>举个简单例子，比如在一次提交中我新增了一个全文搜索功能，那么我的提交备注就应该为如下内容：</p>
-<pre class="line-numbers language-git"><code class="language-git">feat(master): 新增页面内容全文搜索
-
-在站点首页新增文章内容关键词全文搜索功能。
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>从上面的例子可以看出相较于以往的提交格式也就是添加一个变更类型前缀，但带来的便利却不是一点点。</p>
-<p>如果每次提交都按模板规范提交，当别人或者你自己需要查找提交记录时根据前缀进行初步的筛选，能很清楚的知道每次提交修改的大概内容。</p>
-<p>假如我需要查看某个功能模块的重构代码提交记录，那么我只需关注提交备注前缀为 <code>refactor</code> 的即可，大大提高工作效率。虽然这并不是一种强制规范，但它却能大大提高自身与他人工作效率，且操作并不繁杂，何乐而不为呢？</p>
+    <span class="token comment" spellcheck="true">// Get specific property</span>
+    String info <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span><span class="token string">"properties.info"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -660,7 +638,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/devolop/git/rule/">https://great-jin.github.io/devolop/git/rule/</a>
+                    <a href="https://great-jin.github.io/app/idea/remote/">https://great-jin.github.io/app/idea/remote/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -698,8 +676,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Git/">
-                                    <span class="chip bg-color">Git</span>
+                                <a href="/tags/IDEA/">
+                                    <span class="chip bg-color">IDEA</span>
                                 </a>
                             
                         </div>
@@ -875,30 +853,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/redis/channel/">
+                <a href="/windows/software/huorong/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/redis/5.png" class="responsive-img" alt="Redis发布订阅实战">
+                        <img src="/album/banner/software/huo-rong.png" class="responsive-img" alt="为什么选择火绒？">
                         
-                        <span class="card-title">Redis发布订阅实战</span>
+                        <span class="card-title">为什么选择火绒？</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Redis 消息发布订阅功能实战。
+                            火绒的魅力在哪？为什么大家都推荐火绒？
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-01
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-23
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E9%9B%86%E6%88%90/" class="post-category">
-                                    中间件集成
+                            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8/" class="post-category">
+                                    软件应用
                                 </a>
                             
                             
@@ -908,8 +886,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Redis/">
-                        <span class="chip bg-color">Redis</span>
+                    <a href="/tags/Windows/">
+                        <span class="chip bg-color">Windows</span>
                     </a>
                     
                 </div>
@@ -923,30 +901,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/basis/date/">
+                <a href="/hexo/create/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/10.jpg" class="responsive-img" alt="Java时间类型详解">
+                        <img src="/album/banner/hexo/3.png" class="responsive-img" alt="HEXO博客构建教程">
                         
-                        <span class="card-title">Java时间类型详解</span>
+                        <span class="card-title">HEXO博客构建教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java 时间类型操作示例。
+                            三十分钟让你拥有专属于你的个人博客。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-26
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-17
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
+                            <a href="/categories/HEXO/" class="post-category">
+                                    HEXO
                                 </a>
                             
                             
@@ -956,8 +934,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/GitHub/">
+                        <span class="chip bg-color">GitHub</span>
+                    </a>
+                    
+                    <a href="/tags/HEXO%E6%9C%8D%E5%8A%A1/">
+                        <span class="chip bg-color">HEXO服务</span>
                     </a>
                     
                 </div>
@@ -1231,7 +1213,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.5k</span>
+                <span class="white-color">261.1k</span>
             
             
             

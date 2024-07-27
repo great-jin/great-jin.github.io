@@ -6,7 +6,7 @@
   <link href="https://great-jin.github.io/atom.xml" rel="self"/>
   
   <link href="https://great-jin.github.io/"/>
-  <updated>2024-07-27T04:28:41.273Z</updated>
+  <updated>2024-07-27T07:52:52.727Z</updated>
   <id>https://great-jin.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://great-jin.github.io/app/idea/plugin/easy-yapi/"/>
     <id>https://great-jin.github.io/app/idea/plugin/easy-yapi/</id>
     <published>2024-07-26T16:00:00.000Z</published>
-    <updated>2024-07-27T04:28:41.273Z</updated>
+    <updated>2024-07-27T07:52:52.727Z</updated>
     
     <content type="html"><![CDATA[<p>在后端开发中，对于接口测试 <code>Postman</code> 是当下较为流行的接口工具，但对于大新工程而言，逐个手动输入接口信息显然过于繁杂。因此，本文将介绍如何利用插件将工程接口批量导出至 <code>Postman</code>。</p><h4 id="1-认证信息"><a href="#1-认证信息" class="headerlink" title="1. 认证信息"></a>1. 认证信息</h4><p>在开始之前需要在 <code>Postman</code> 官网中生成账号对应的 <code>Token</code> 用于后续接口导入，<a href="https://postman.xiniushu.com/docs/developer/postman-api/authentication">官方文档</a>。</p><p>进入官网登录后按下图提示选择生成 <code>Key</code>，需要注意生成的 <code>Key</code> 仅展示一次，注意保存好。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/2.png"></p><p>另一个需要注意的是 <code>Postman</code> 以 <code>Team</code> 区分工作空间，即同个账号下不同 <code>Team</code> 对应的 <code>Key</code> 并不是相通的，在生成 <code>Key</code> 之前可以在右上角切换 <code>Team</code>。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/4.png"></p><h4 id="2-插件配置"><a href="#2-插件配置" class="headerlink" title="2. 插件配置"></a>2. 插件配置</h4><p>在 <code>IDEA</code> 插件市场下载 <code>EasyYapi</code> 插件。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/1.png"></p><p>下载完成后在 <code>IDEA</code> 设置的 <code>Other Settings</code> 里找到 <code>EasyApi</code> 并将第一步生成的 <code>Key</code> 填入。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/5.png"></p><h4 id="3-接口导出"><a href="#3-接口导出" class="headerlink" title="3. 接口导出"></a>3. 接口导出</h4><p>完成上述配置后即可进行接口的导出工作了，以下述接口为例：</p><pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span><span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api"</span><span class="token punctuation">)</span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestResource</span> <span class="token punctuation">{</span>    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo1"</span><span class="token punctuation">)</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token punctuation">}</span>    <span class="token comment" spellcheck="true">/**     * 测试接口     */</span>    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo2"</span><span class="token punctuation">)</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 <code>IDEA</code> 中右击工程选择 <code>EasyApi</code> 并导出至 <code>Postman</code>。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/6.png"></p><p>选择后将会提示导出到那个工作空间，<code>My Workspace</code> 即本地仅自己可见，而 <code>Team Workspace</code> 顾名思义即团队成员都可见。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/7.png"></p><p>完成后重新打开 <code>Postman</code> 即可看到此时接口已经被导入了，以上述的接口代码为例，若接口不存在注释则以接口方法名为名字，否则取注解名。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/8.png"></p><h4 id="4-变量配置"><a href="#4-变量配置" class="headerlink" title="4. 变量配置"></a>4. 变量配置</h4><p>查看导入口的接口可以看到接口地址中是以 <code>&#123;&#123;xxx&#125;&#125;</code> 为占位符，占位符名称为工程的模块名。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/9.png"></p><p>因此，我们需要手动添加环境变量，按照下图提示进行添加。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/10.png"></p><h4 id="5-请求认证"><a href="#5-请求认证" class="headerlink" title="5. 请求认证"></a>5. 请求认证</h4><p>通过工程的接口都带有认证信息，在上述导入的接口中可以看到接口默认的认证信息都是继承于父级。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/11.png"></p><p>因此，我们只需要在父级设置认证信息后，模块下所有接口即可全局生效。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/12.png"></p>]]></content>
     
@@ -142,8 +142,8 @@
   
   <entry>
     <title>Windows必备程序清单</title>
-    <link href="https://great-jin.github.io/devolop/environment/"/>
-    <id>https://great-jin.github.io/devolop/environment/</id>
+    <link href="https://great-jin.github.io/windows/develop/environment/"/>
+    <id>https://great-jin.github.io/windows/develop/environment/</id>
     <published>2024-06-04T16:00:00.000Z</published>
     <updated>2024-06-15T12:57:40.380Z</updated>
     
@@ -191,31 +191,6 @@
   </entry>
   
   <entry>
-    <title>Gitlab 服务部署教程</title>
-    <link href="https://great-jin.github.io/app/install/gitlab/"/>
-    <id>https://great-jin.github.io/app/install/gitlab/</id>
-    <published>2024-05-17T16:00:00.000Z</published>
-    <updated>2024-06-12T14:29:41.420Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍 <code>Docker</code> 方式部署。</p><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>老规矩第一步还是先创建数据目录用于文件映射。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/config<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/data<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/logs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>完成目录创建后通过到下述命令启动 <code>Gitlab</code> 服务，其中端口映射服务可根据自身情况调整。</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d \--name gitlab \--restart always \--privileged<span class="token operator">=</span>true \-p 8080:80 \-p 8081:443 \-p 8082:22 \-v /etc/localtime:/etc/localtime:ro \-v /usr/local/dockerdata/gitlab/config:/etc/gitlab \-v /usr/local/dockerdata/gitlab/logs:/var/log/gitlab \-v /usr/local/dockerdata/gitlab/data:/var/opt/gitlab \gitlab/gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 gitlab 映射的文件目录中编辑配置信息。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/gitlab/config/gitlab.rb<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>，保存后通过 <code>docker restart gitlab</code> 重启服务使其生效。</p><pre class="line-numbers language-txt"><code class="language-txt">external_url 'http://192.168.0.20'gitlab_rails['gitlab_ssh_host'] = '192.168.0.20'# 配置 22 端口映射的值gitlab_rails['gitlab_shell_ssh_port'] = 8082gitlab_rails['time_zone'] = 'Asia/Shanghai'  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>gitlab</code> 容器内，配置服务对应的端口信息。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it gitlab <span class="token function">bash</span><span class="token function">vi</span> /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值，完成后在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p><pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">production</span><span class="token punctuation">:</span> <span class="token important">&amp;base</span>  <span class="token key atrule">gitlab</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true"># 替换为 80 端口映射的值</span>   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>ip:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>container_id<span class="token operator">></span> <span class="token function">grep</span> <span class="token string">'Password:'</span> /etc/gitlab/initial_root_password<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;Gitlab&lt;/code&gt; 是一款广受好评的 &lt;code&gt;GIT&lt;/code&gt; 项目管理平台，其中 &lt;code&gt;Gitlab-CE&lt;/code&gt; 为免费版本，下面介绍 &lt;code&gt;Docker&lt;/code&gt; 方式部署。&lt;/p&gt;
-&lt;h4 id=&quot;1-目录创建&quot;&gt;&lt;</summary>
-      
-    
-    
-    
-    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Confluence 部署教程</title>
     <link href="https://great-jin.github.io/app/install/confluence/"/>
     <id>https://great-jin.github.io/app/install/confluence/</id>
@@ -229,6 +204,31 @@
       
     <summary type="html">&lt;p&gt;&lt;code&gt;Confluence&lt;/code&gt; 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。&lt;/p&gt;
 &lt;h4 id=&quot;1-服务启动&quot;&gt;&lt;a href=&quot;#1-服务启动&quot; class=&quot;headerlink&quot; title=&quot;1. 服务启动&quot;&gt;&lt;/a&gt;1. 服务启动</summary>
+      
+    
+    
+    
+    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
+    
+    
+    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gitlab 服务部署教程</title>
+    <link href="https://great-jin.github.io/app/install/gitlab/"/>
+    <id>https://great-jin.github.io/app/install/gitlab/</id>
+    <published>2024-05-17T16:00:00.000Z</published>
+    <updated>2024-06-12T14:29:41.420Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍 <code>Docker</code> 方式部署。</p><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>老规矩第一步还是先创建数据目录用于文件映射。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/config<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/data<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/logs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>完成目录创建后通过到下述命令启动 <code>Gitlab</code> 服务，其中端口映射服务可根据自身情况调整。</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d \--name gitlab \--restart always \--privileged<span class="token operator">=</span>true \-p 8080:80 \-p 8081:443 \-p 8082:22 \-v /etc/localtime:/etc/localtime:ro \-v /usr/local/dockerdata/gitlab/config:/etc/gitlab \-v /usr/local/dockerdata/gitlab/logs:/var/log/gitlab \-v /usr/local/dockerdata/gitlab/data:/var/opt/gitlab \gitlab/gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 gitlab 映射的文件目录中编辑配置信息。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/gitlab/config/gitlab.rb<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>，保存后通过 <code>docker restart gitlab</code> 重启服务使其生效。</p><pre class="line-numbers language-txt"><code class="language-txt">external_url 'http://192.168.0.20'gitlab_rails['gitlab_ssh_host'] = '192.168.0.20'# 配置 22 端口映射的值gitlab_rails['gitlab_shell_ssh_port'] = 8082gitlab_rails['time_zone'] = 'Asia/Shanghai'  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>gitlab</code> 容器内，配置服务对应的端口信息。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it gitlab <span class="token function">bash</span><span class="token function">vi</span> /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值，完成后在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p><pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">production</span><span class="token punctuation">:</span> <span class="token important">&amp;base</span>  <span class="token key atrule">gitlab</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true"># 替换为 80 端口映射的值</span>   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>ip:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>container_id<span class="token operator">></span> <span class="token function">grep</span> <span class="token string">'Password:'</span> /etc/gitlab/initial_root_password<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;code&gt;Gitlab&lt;/code&gt; 是一款广受好评的 &lt;code&gt;GIT&lt;/code&gt; 项目管理平台，其中 &lt;code&gt;Gitlab-CE&lt;/code&gt; 为免费版本，下面介绍 &lt;code&gt;Docker&lt;/code&gt; 方式部署。&lt;/p&gt;
+&lt;h4 id=&quot;1-目录创建&quot;&gt;&lt;</summary>
       
     
     

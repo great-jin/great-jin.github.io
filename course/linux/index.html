@@ -112,6 +112,13 @@
     <ul class="sub-nav menus_item_child ">
       
       <li>
+        <a href="/course/java">
+          
+          <span>Java基础</span>
+        </a>
+      </li>
+      
+      <li>
         <a href="/course/ds">
           
           <span>数据结构</span>
@@ -261,6 +268,13 @@
           <span class="m-icon"><i class="fas fa-chevron-right"></i></span>
         </a>
         <ul  style="background:  ;"  >
+                   <li>
+    
+          <a href="/course/java " style="margin-left:75px">
+              
+                  <span>Java基础</span>
+                      </a>
+                    </li>
                    <li>
     
           <a href="/course/ds " style="margin-left:75px">
@@ -531,7 +545,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-25
+                    2024-07-27
                 </div>
                 
 
@@ -566,47 +580,38 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>对于每个人程序员而言，平日里或多或少都会接触到 <code>Linux</code> ，在服务器方面， <code>Linux</code> 更是占据江山，本文简单介绍一些日常高频使用的命令。</p>
-<h3 id="一、基本命令"><a href="#一、基本命令" class="headerlink" title="一、基本命令"></a>一、基本命令</h3><h4 id="1-系统设置"><a href="#1-系统设置" class="headerlink" title="1. 系统设置"></a>1. 系统设置</h4><h5 id="1-时间修改"><a href="#1-时间修改" class="headerlink" title="(1) 时间修改"></a>(1) 时间修改</h5><p>例：将当前时间设置为 <code>10</code> 点：<code>date -s 10:00</code> 。</p>
-<p>将当前日期设置为 <code>2022-1-1</code> ：<code>date -s 1/1/2022</code> 。</p>
+<h3 id="一、基本命令"><a href="#一、基本命令" class="headerlink" title="一、基本命令"></a>一、基本命令</h3><h4 id="1-系统设置"><a href="#1-系统设置" class="headerlink" title="1. 系统设置"></a>1. 系统设置</h4><h5 id="1-时间修改"><a href="#1-时间修改" class="headerlink" title="(1) 时间修改"></a>(1) 时间修改</h5><p>例：将当前时间设置为 <code>10</code> 点：<code>date -s 10:00</code>。</p>
+<p>将当前日期设置为 <code>2022-1-1</code> ：<code>date -s 1/1/2022</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">date</span> -s <span class="token operator">&lt;</span>时间<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-关闭系统"><a href="#2-关闭系统" class="headerlink" title="(2) 关闭系统"></a>(2) 关闭系统</h5><p>通过 <code>reboot</code> 则可实现服务器重启</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">shutdown</span> -r Now               <span class="token comment" spellcheck="true"># 立即重启</span>
+<h5 id="2-系统启停"><a href="#2-系统启停" class="headerlink" title="(2) 系统启停"></a>(2) 系统启停</h5><p>通过 <code>shutdown</code> 关闭系统，<code>reboot</code> 实现服务器重启。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">shutdown</span> -r Now               <span class="token comment" spellcheck="true"># 立即关闭</span>
+
+<span class="token function">shutdown</span> -r +1                <span class="token comment" spellcheck="true"># 设置 1 分钟后关闭</span>
 
 <span class="token function">shutdown</span> -h 18:00             <span class="token comment" spellcheck="true"># 设置 18:00 关机</span>
-
-<span class="token function">shutdown</span> -r +1                <span class="token comment" spellcheck="true"># 设置 1 分钟后重启</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-信息查看"><a href="#2-信息查看" class="headerlink" title="2. 信息查看"></a>2. 信息查看</h4><p><code>arch</code> 命令可以查看当前服务是 <code>arm</code> 架构还是 <code>x86</code> 架构。</p>
+<h4 id="2-架构查看"><a href="#2-架构查看" class="headerlink" title="2. 架构查看"></a>2. 架构查看</h4><p><code>arch</code> 命令可以查看当前服务是 <code>arm</code> 架构还是 <code>x86</code> 架构。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">arch                <span class="token comment" spellcheck="true"># 查看系统内核</span>
 
 nproc               <span class="token comment" spellcheck="true"># 查看 CPU 核心数</span>
 
 <span class="token function">free</span> -h             <span class="token comment" spellcheck="true"># 查看内存使用情况</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-文件信息"><a href="#3-文件信息" class="headerlink" title="3. 文件信息"></a>3. 文件信息</h4><p>通过 <code>ls</code> 命名查看目录文件信息。</p>
+<h4 id="3-文件列表"><a href="#3-文件列表" class="headerlink" title="3. 文件列表"></a>3. 文件列表</h4><p>通过 <code>ls</code> 及相关命名查看目录文件信息，其中目录为蓝色，文件为灰色，绿色为隐藏文件。  </p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ls</span> -lh                      <span class="token comment" spellcheck="true"># 仅文件名，简写为：ls</span>
 
 <span class="token function">ls</span> -l                       <span class="token comment" spellcheck="true"># 详细信息: 简写为：ll</span>
 
 <span class="token function">ls</span> -a                       <span class="token comment" spellcheck="true"># 包括隐含文件 </span>
 
-<span class="token function">file</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 查看文件类型，目录为蓝色，文件为灰色，绿色为隐藏文件。     </span>
+<span class="token function">file</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 查看文件类型   </span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-磁盘信息"><a href="#4-磁盘信息" class="headerlink" title="4. 磁盘信息"></a>4. 磁盘信息</h4><p>通过 <code>df</code> 命令查看磁盘各分区使用情况。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">df</span> -h                      <span class="token comment" spellcheck="true"># 带单位显示文件系统的大小</span>
 
 <span class="token function">du</span> -h --max-depth<span class="token operator">=</span>1        <span class="token comment" spellcheck="true"># 目录下各文件大小(指定层级为 1)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-目录切换"><a href="#5-目录切换" class="headerlink" title="5. 目录切换"></a>5. 目录切换</h4><p>通过 <code>cd</code> 命令可实现目录切换。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> ./               <span class="token comment" spellcheck="true"># 进入上级目录</span>
-        
-<span class="token function">cd</span> <span class="token punctuation">..</span>/              <span class="token comment" spellcheck="true"># 进入当前目录</span>
-
-<span class="token function">cd</span> ~                <span class="token comment" spellcheck="true"># 进入当前登录用户的同名目录 </span>
-
-<span class="token function">pwd</span>                 <span class="token comment" spellcheck="true"># 显示当前位置</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、目录管理"><a href="#二、目录管理" class="headerlink" title="二、目录管理"></a>二、目录管理</h3><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>通过 <code>mkdir</code> 命令创建目录，创建的目录名中若存在空格需使用 <code>\ </code>，如 <code>mkdir a\ b</code> 即在当前创建目录 <code>a b</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 创建目录</span>
 
@@ -633,7 +638,8 @@ nproc               <span class="token comment" spellcheck="true"># 查看 CPU �
 
 <span class="token function">ln</span> -s <span class="token operator">&lt;</span>path<span class="token operator">></span> <span class="token operator">&lt;</span>nickname<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 软链接，即快捷方式</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、文件查看"><a href="#三、文件查看" class="headerlink" title="三、文件查看"></a>三、文件查看</h3><h4 id="1-文件创建"><a href="#1-文件创建" class="headerlink" title="1. 文件创建"></a>1. 文件创建</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">touch</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>                         <span class="token comment" spellcheck="true"># 创建文件</span>
+<h3 id="三、文件查看"><a href="#三、文件查看" class="headerlink" title="三、文件查看"></a>三、文件查看</h3><h4 id="1-文件创建"><a href="#1-文件创建" class="headerlink" title="1. 文件创建"></a>1. 文件创建</h4><p>通过 <code>touch</code> 命令即可新建文件，此外 <code>echo</code> 可实现文件内容写入功能。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">touch</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>                         <span class="token comment" spellcheck="true"># 创建文件</span>
 
 <span class="token keyword">echo</span> <span class="token string">'content'</span> <span class="token operator">></span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 创建文件并写入内容</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -1467,7 +1473,7 @@ hostnamectl set-hostname <span class="token operator">&lt;</span>自定义名称
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.5k</span>
+                <span class="white-color">261.1k</span>
             
             
             
