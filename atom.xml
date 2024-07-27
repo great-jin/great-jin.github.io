@@ -6,7 +6,7 @@
   <link href="https://great-jin.github.io/atom.xml" rel="self"/>
   
   <link href="https://great-jin.github.io/"/>
-  <updated>2024-07-21T08:06:14.741Z</updated>
+  <updated>2024-07-27T04:28:41.273Z</updated>
   <id>https://great-jin.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>工程接口导出教程</title>
+    <link href="https://great-jin.github.io/app/idea/plugin/easy-yapi/"/>
+    <id>https://great-jin.github.io/app/idea/plugin/easy-yapi/</id>
+    <published>2024-07-26T16:00:00.000Z</published>
+    <updated>2024-07-27T04:28:41.273Z</updated>
+    
+    <content type="html"><![CDATA[<p>在后端开发中，对于接口测试 <code>Postman</code> 是当下较为流行的接口工具，但对于大新工程而言，逐个手动输入接口信息显然过于繁杂。因此，本文将介绍如何利用插件将工程接口批量导出至 <code>Postman</code>。</p><h4 id="1-认证信息"><a href="#1-认证信息" class="headerlink" title="1. 认证信息"></a>1. 认证信息</h4><p>在开始之前需要在 <code>Postman</code> 官网中生成账号对应的 <code>Token</code> 用于后续接口导入，<a href="https://postman.xiniushu.com/docs/developer/postman-api/authentication">官方文档</a>。</p><p>进入官网登录后按下图提示选择生成 <code>Key</code>，需要注意生成的 <code>Key</code> 仅展示一次，注意保存好。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/2.png"></p><p>另一个需要注意的是 <code>Postman</code> 以 <code>Team</code> 区分工作空间，即同个账号下不同 <code>Team</code> 对应的 <code>Key</code> 并不是相通的，在生成 <code>Key</code> 之前可以在右上角切换 <code>Team</code>。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/4.png"></p><h4 id="2-插件配置"><a href="#2-插件配置" class="headerlink" title="2. 插件配置"></a>2. 插件配置</h4><p>在 <code>IDEA</code> 插件市场下载 <code>EasyYapi</code> 插件。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/1.png"></p><p>下载完成后在 <code>IDEA</code> 设置的 <code>Other Settings</code> 里找到 <code>EasyApi</code> 并将第一步生成的 <code>Key</code> 填入。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/5.png"></p><h4 id="3-接口导出"><a href="#3-接口导出" class="headerlink" title="3. 接口导出"></a>3. 接口导出</h4><p>完成上述配置后即可进行接口的导出工作了，以下述接口为例：</p><pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span><span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api"</span><span class="token punctuation">)</span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestResource</span> <span class="token punctuation">{</span>    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo1"</span><span class="token punctuation">)</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token punctuation">}</span>    <span class="token comment" spellcheck="true">/**     * 测试接口     */</span>    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo2"</span><span class="token punctuation">)</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 <code>IDEA</code> 中右击工程选择 <code>EasyApi</code> 并导出至 <code>Postman</code>。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/6.png"></p><p>选择后将会提示导出到那个工作空间，<code>My Workspace</code> 即本地仅自己可见，而 <code>Team Workspace</code> 顾名思义即团队成员都可见。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/7.png"></p><p>完成后重新打开 <code>Postman</code> 即可看到此时接口已经被导入了，以上述的接口代码为例，若接口不存在注释则以接口方法名为名字，否则取注解名。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/8.png"></p><h4 id="4-变量配置"><a href="#4-变量配置" class="headerlink" title="4. 变量配置"></a>4. 变量配置</h4><p>查看导入口的接口可以看到接口地址中是以 <code>&#123;&#123;xxx&#125;&#125;</code> 为占位符，占位符名称为工程的模块名。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/9.png"></p><p>因此，我们需要手动添加环境变量，按照下图提示进行添加。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/10.png"></p><h4 id="5-请求认证"><a href="#5-请求认证" class="headerlink" title="5. 请求认证"></a>5. 请求认证</h4><p>通过工程的接口都带有认证信息，在上述导入的接口中可以看到接口默认的认证信息都是继承于父级。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/11.png"></p><p>因此，我们只需要在父级设置认证信息后，模块下所有接口即可全局生效。<br><img src="/album/loading.gif" data-original="/album/article/idea/easyyapi/12.png"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在后端开发中，对于接口测试 &lt;code&gt;Postman&lt;/code&gt; 是当下较为流行的接口工具，但对于大新工程而言，逐个手动输入接口信息显然过于繁杂。因此，本文将介绍如何利用插件将工程接口批量导出至 &lt;code&gt;Postman&lt;/code&gt;。&lt;/p&gt;
+&lt;h4 id=&quot;1-认</summary>
+      
+    
+    
+    
+    <category term="IDEA" scheme="https://great-jin.github.io/categories/IDEA/"/>
+    
+    
+    <category term="IDEA" scheme="https://great-jin.github.io/tags/IDEA/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL执行计划详解</title>
@@ -166,31 +191,6 @@
   </entry>
   
   <entry>
-    <title>Confluence 部署教程</title>
-    <link href="https://great-jin.github.io/app/install/confluence/"/>
-    <id>https://great-jin.github.io/app/install/confluence/</id>
-    <published>2024-05-17T16:00:00.000Z</published>
-    <updated>2024-06-12T14:23:35.115Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Confluence</code> 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。</p><h4 id="1-服务启动"><a href="#1-服务启动" class="headerlink" title="1. 服务启动"></a>1. 服务启动</h4><p>首先创建对应的目录用于映射数据实现持久化。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/confluence<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>完成后通过下述命令启动服务：</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d --privileged<span class="token operator">=</span>true \-p 8090:8090 \-v /usr/local/dockerdata/confluence:/var/confluence \--name confluence-srv \-e TZ<span class="token operator">=</span><span class="token string">'Asia/Shanghai'</span> \haxqer/confluence:8.9.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="2-插件破译"><a href="#2-插件破译" class="headerlink" title="2. 插件破译"></a>2. 插件破译</h4><p>启动服务之后访问 <code>ip:8090</code> 页面，将下述 <code>&lt;you-server-id&gt;</code> 替换为页面对应的 <code>server-id</code> 并在服务上执行。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> confluence-srv java -jar /var/agent/atlassian-agent.jar \-d \-p conf \-m Hello@world.com \-n Hello@world.com \-o your-org \-s <span class="token operator">&lt;</span>you-server-id<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-数据连接"><a href="#3-数据连接" class="headerlink" title="3. 数据连接"></a>3. 数据连接</h4><p>需要注意 <code>confluence</code> 使用 <code>MySQL</code> 存储数据，但其对应的 <code>MySQL</code> 库有下述两个要求。</p><ul><li>字符集与排序规则需要为 <code>utf8mb4</code> 和 <code>utf8mb4_bin</code>。</li><li>数据库的事务隔离级别需要为 <code>READ_COMMITTED</code>。</li></ul><p>由于 <code>MySQL</code> 默认的事务隔离级别为 <code>REPEATABLE_READ</code>，因此我们需要进行修改，这边提供两种修改方式，第一种为修改配置文件，第二种为通过命令但重启 <code>MySQL</code> 后将会失效。</p><p>方式一在 <code>MySQL</code> 的配置文件中添加下述配置修改事务隔离级别，完成后重启服务即可。</p><pre class="line-numbers language-cnf"><code class="language-cnf">transaction-isolation = READ-COMMITTED<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>方式二通过下述 <code>SQL</code> 修改全局的事务隔离级别，但在 <code>MySQL</code> 重启后将会失效。</p><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">ISOLATION LEVEL</span> <span class="token keyword">READ</span> <span class="token keyword">COMMITTED</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;Confluence&lt;/code&gt; 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。&lt;/p&gt;
-&lt;h4 id=&quot;1-服务启动&quot;&gt;&lt;a href=&quot;#1-服务启动&quot; class=&quot;headerlink&quot; title=&quot;1. 服务启动&quot;&gt;&lt;/a&gt;1. 服务启动</summary>
-      
-    
-    
-    
-    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Gitlab 服务部署教程</title>
     <link href="https://great-jin.github.io/app/install/gitlab/"/>
     <id>https://great-jin.github.io/app/install/gitlab/</id>
@@ -204,6 +204,31 @@
       
     <summary type="html">&lt;p&gt;&lt;code&gt;Gitlab&lt;/code&gt; 是一款广受好评的 &lt;code&gt;GIT&lt;/code&gt; 项目管理平台，其中 &lt;code&gt;Gitlab-CE&lt;/code&gt; 为免费版本，下面介绍 &lt;code&gt;Docker&lt;/code&gt; 方式部署。&lt;/p&gt;
 &lt;h4 id=&quot;1-目录创建&quot;&gt;&lt;</summary>
+      
+    
+    
+    
+    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
+    
+    
+    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Confluence 部署教程</title>
+    <link href="https://great-jin.github.io/app/install/confluence/"/>
+    <id>https://great-jin.github.io/app/install/confluence/</id>
+    <published>2024-05-17T16:00:00.000Z</published>
+    <updated>2024-06-12T14:23:35.115Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Confluence</code> 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。</p><h4 id="1-服务启动"><a href="#1-服务启动" class="headerlink" title="1. 服务启动"></a>1. 服务启动</h4><p>首先创建对应的目录用于映射数据实现持久化。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/confluence<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>完成后通过下述命令启动服务：</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d --privileged<span class="token operator">=</span>true \-p 8090:8090 \-v /usr/local/dockerdata/confluence:/var/confluence \--name confluence-srv \-e TZ<span class="token operator">=</span><span class="token string">'Asia/Shanghai'</span> \haxqer/confluence:8.9.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="2-插件破译"><a href="#2-插件破译" class="headerlink" title="2. 插件破译"></a>2. 插件破译</h4><p>启动服务之后访问 <code>ip:8090</code> 页面，将下述 <code>&lt;you-server-id&gt;</code> 替换为页面对应的 <code>server-id</code> 并在服务上执行。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> confluence-srv java -jar /var/agent/atlassian-agent.jar \-d \-p conf \-m Hello@world.com \-n Hello@world.com \-o your-org \-s <span class="token operator">&lt;</span>you-server-id<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-数据连接"><a href="#3-数据连接" class="headerlink" title="3. 数据连接"></a>3. 数据连接</h4><p>需要注意 <code>confluence</code> 使用 <code>MySQL</code> 存储数据，但其对应的 <code>MySQL</code> 库有下述两个要求。</p><ul><li>字符集与排序规则需要为 <code>utf8mb4</code> 和 <code>utf8mb4_bin</code>。</li><li>数据库的事务隔离级别需要为 <code>READ_COMMITTED</code>。</li></ul><p>由于 <code>MySQL</code> 默认的事务隔离级别为 <code>REPEATABLE_READ</code>，因此我们需要进行修改，这边提供两种修改方式，第一种为修改配置文件，第二种为通过命令但重启 <code>MySQL</code> 后将会失效。</p><p>方式一在 <code>MySQL</code> 的配置文件中添加下述配置修改事务隔离级别，完成后重启服务即可。</p><pre class="line-numbers language-cnf"><code class="language-cnf">transaction-isolation = READ-COMMITTED<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>方式二通过下述 <code>SQL</code> 修改全局的事务隔离级别，但在 <code>MySQL</code> 重启后将会失效。</p><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">ISOLATION LEVEL</span> <span class="token keyword">READ</span> <span class="token keyword">COMMITTED</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;code&gt;Confluence&lt;/code&gt; 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。&lt;/p&gt;
+&lt;h4 id=&quot;1-服务启动&quot;&gt;&lt;a href=&quot;#1-服务启动&quot; class=&quot;headerlink&quot; title=&quot;1. 服务启动&quot;&gt;&lt;/a&gt;1. 服务启动</summary>
       
     
     
@@ -476,33 +501,6 @@
     
     
     <category term="JAVA" scheme="https://great-jin.github.io/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker Compose基础</title>
-    <link href="https://great-jin.github.io/linux/docker/docker%20compose/"/>
-    <id>https://great-jin.github.io/linux/docker/docker%20compose/</id>
-    <published>2024-02-19T16:00:00.000Z</published>
-    <updated>2024-06-15T12:25:30.580Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Docker</code> 容器基于 <code>CLI</code> 运行，而 <code>Docker compose</code> 则基于 <code>yaml</code> 配置文件，后者相对自动化程度更高。</p><h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><h4 id="1-前置服务"><a href="#1-前置服务" class="headerlink" title="1. 前置服务"></a>1. 前置服务</h4><p><code>Docker compose</code> 是基于 <code>Docker</code> 扩展，因此需要先安装 <code>Docker</code> 服务。</p><p>默认 <code>Docker</code> 安装路径为 <code>/var/lib/docker</code>。</p><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> docker-ce -y                   <span class="token comment" spellcheck="true"># 通过 yum 源安装</span>systemctl start docker                     <span class="token comment" spellcheck="true"># 启动服务</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h4 id="2-文件下载"><a href="#2-文件下载" class="headerlink" title="2. 文件下载"></a>2. 文件下载</h4><p>若使用 <code>curl</code> 命令下载失败可直接进入 <code>Docker GitHub</code> 发布页手动下载文件再上传至服务器，<a href="https://github.com/docker/compose/releases">官网直达</a>。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件下载</span>curl -L <span class="token string">"https://mirrors.tuna.tsinghua.edu.cn/docker-compose/latest/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -s<span class="token variable">)</span></span>/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -m<span class="token variable">)</span></span>/docker-compose"</span> -o /usr/local/bin/docker-compose<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h4 id="3-链接安装"><a href="#3-链接安装" class="headerlink" title="3. 链接安装"></a>3. 链接安装</h4><p>完成 <code>Docker Compose</code> 文件下载之后需要进行授权并创建链接文件。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件授权</span><span class="token function">chmod</span> +x /usr/local/bin/docker-compose<span class="token comment" spellcheck="true"># 文件链接</span><span class="token function">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose<span class="token comment" spellcheck="true"># 安装验证</span>docker-compose version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="二、文件配置"><a href="#二、文件配置" class="headerlink" title="二、文件配置"></a>二、文件配置</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>Docker Compose</code> 通过 <code>yaml</code> 文件实现容器的管理，其配置内容参数说明如下：</p><table style="display: table; margin-left: auto; margin-right: auto;">    <tr>        <th style="text-align: center;">参数</td>        <th style="text-align: center;">作用</td>    </tr>    <tr>        <td style="text-align: center;">image</td>        <td style="text-align: center;">用于指定所要使用镜像。</td>    </tr>    <tr>        <td style="text-align: center;">container_name</td>        <td style="text-align: center;">用于配置启动容器的名称。</td>    </tr>    <tr>        <td style="text-align: center;">environment</td>        <td style="text-align: center;">用于配置容器环境变量。</td>    </tr>    <tr>        <td style="text-align: center;">ports</td>        <td style="text-align: center;">用于配置容器与本机的端口映射。</td>    </tr>    <tr>        <td style="text-align: center;">volumes</td>        <td style="text-align: center;">用于配置容器与本机的文件映射。</td>    </tr></table><p>下述为一个完整的 <code>yaml</code> 配置文件示例。</p><pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># Application name</span>  <span class="token key atrule">service-1</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true"># Config the image</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> test_image        <span class="token comment" spellcheck="true"># Config the container name</span>    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> test_service        <span class="token comment" spellcheck="true"># Config the port proxy</span>    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"8080:8080"</span>    <span class="token comment" spellcheck="true"># Config the environment properties</span>    <span class="token key atrule">environment</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token key atrule">props1</span><span class="token punctuation">:</span> value1      <span class="token punctuation">-</span> <span class="token key atrule">props2</span><span class="token punctuation">:</span> value2        <span class="token comment" spellcheck="true"># config the directory or file proxy</span>    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> /home/docker/test/application.yml<span class="token punctuation">:</span>/app/application.yml     <span class="token comment" spellcheck="true"># Sharing the same networking space with the Host</span>    <span class="token key atrule">network_mode</span><span class="token punctuation">:</span> <span class="token string">"host"</span>    <span class="token comment" spellcheck="true"># Application name</span>  <span class="token key atrule">service-2</span><span class="token punctuation">:</span>    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>       <span class="token punctuation">-</span> service<span class="token punctuation">-</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="2-网络配置"><a href="#2-网络配置" class="headerlink" title="2. 网络配置"></a>2. 网络配置</h4><h5 id="1-depends-on"><a href="#1-depends-on" class="headerlink" title="(1) depends_on"></a>(1) depends_on</h5><p><code>depends_on</code> 用于定义服务之间的启动顺序和依赖关系。具体而言，它指定了某个服务依赖于其他服务，即使依赖的服务启动后，也确保依赖服务在其之前启动。</p><p>然而，它并不保证服务已经完全健康或准备好接受连接，因此它主要用于启动顺序的管理。</p><h5 id="2-network-mode"><a href="#2-network-mode" class="headerlink" title="(2) network_mode"></a>(2) network_mode</h5><p><code>network_mode</code> 用于指定服务使用的网络模式。它可以设置为 <code>bridge、host、none</code> 或自定义网络名称。</p><p>默认情况下，<code>Docker Compose</code> 创建一个自定义网络，但你可以通过 <code>network_mode</code> 来覆盖这个行为。</p><h3 id="三、命令介绍"><a href="#三、命令介绍" class="headerlink" title="三、命令介绍"></a>三、命令介绍</h3><h4 id="1-服务启停"><a href="#1-服务启停" class="headerlink" title="1. 服务启停"></a>1. 服务启停</h4><p>完成 <code>yaml</code> 文件配置之后，即可在同级目录下通过下述命令启停容器。</p><p>当完成容器启动后，可同样通过 <code>docker ps</code> 等命令进行查看，与之前文章提到 <code>docker</code> 使用并无不同。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 启动服务</span>docker-compose up<span class="token comment" spellcheck="true"># 后台运行</span>docker-compose up -d<span class="token comment" spellcheck="true"># 停止服务</span>docker-compose down<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h4><p>除了基础的服务启停之外，常用的命令如下：</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 动态查看日志</span>docker-compose logs -f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 容器基于 &lt;code&gt;CLI&lt;/code&gt; 运行，而 &lt;code&gt;Docker compose&lt;/code&gt; 则基于 &lt;code&gt;yaml&lt;/code&gt; 配置文件，后者相对自动化程度更高。&lt;/p&gt;
-&lt;h3 id=&quot;一、服务安装&quot;&gt;&lt;a</summary>
-      
-    
-    
-    
-    <category term="Linux运维" scheme="https://great-jin.github.io/categories/Linux%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
-    
-    <category term="Docker" scheme="https://great-jin.github.io/tags/Docker/"/>
     
   </entry>
   
