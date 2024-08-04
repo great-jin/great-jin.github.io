@@ -29,9 +29,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
-</head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 
@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-21
+                    2024-08-04
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -680,7 +680,39 @@
     String <span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>这里我提前自定义了三类不同的注解，具体注解声明之前之前的文章已经介绍过了这里便不再详细说明。</p>
+<h4 id="3-重复注解"><a href="#3-重复注解" class="headerlink" title="3. 重复注解"></a>3. 重复注解</h4><p>默认注解不允许重复作用于同于一个目标，以上述的 <code>@MethodAnn</code> 为例，其无法在同一个方法上声明多次。</p>
+<p>因此，在 <code>JDK 8</code> 中引入了新特性 <code>@Repeatable</code> 作用于注解使之允许重复作用于同一个对象。</p>
+<p>还是以上述的 <code>@MethodAnn</code> 为例，因为涉及到重复注解所有需要先为定义容器注解：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MethodAnnGroup</span> <span class="token punctuation">{</span>
+
+    MethodAnn<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成后修改之前定义的 <code>@MethodAnn</code> 注解，添加 <code>@Repeatable</code> 信息。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>MethodAnnGroup<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MethodAnn</span> <span class="token punctuation">{</span>
+
+    String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+    String <span class="token function">comment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此时 <code>@MethodAnn</code> 即可重复作用于同一个目标，使用方式如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestClass</span> <span class="token punctuation">{</span>
+    
+    <span class="token annotation punctuation">@MethodAnnGroup</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method-message1"</span><span class="token punctuation">)</span>
+        <span class="token annotation punctuation">@MethodAnn</span><span class="token punctuation">(</span><span class="token string">"test-method-message2"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><p>在完成上述注解的定义与使用之后，即可通过反射获取不同注解中配置的属性值。</p>
 <p>新建测试类 <code>TestService.java</code> 对三类注解进行简单应用供后续使用。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@ClassAnn</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"test-class"</span><span class="token punctuation">,</span> comment <span class="token operator">=</span> <span class="token string">"test-class-comment"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
@@ -703,7 +735,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><p>在完成上述注解的定义与使用之后，即可通过反射获取不同注解中配置的属性值。</p>
 <h4 id="1-类注解"><a href="#1-类注解" class="headerlink" title="1. 类注解"></a>1. 类注解</h4><p>一个类中相同的类注解只能包含一个，因此类注解获取相对简单，直接通过反射获取即可。</p>
 <p>通过 <code>clazz.getDeclaredAnnotations()</code> 获取是类上定义的所有注解，而 <code>clazz.getAnnotation(annClazz)</code> 获取的则是指定注解。</p>
 <pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">classDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1415,7 +1446,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">261.9k</span>
+                <span class="white-color">262.3k</span>
             
             
             
