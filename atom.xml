@@ -216,31 +216,6 @@
   </entry>
   
   <entry>
-    <title>Gitlab 服务部署教程</title>
-    <link href="https://great-jin.github.io/app/install/gitlab/"/>
-    <id>https://great-jin.github.io/app/install/gitlab/</id>
-    <published>2024-05-17T16:00:00.000Z</published>
-    <updated>2024-06-12T14:29:41.420Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍 <code>Docker</code> 方式部署。</p><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>老规矩第一步还是先创建数据目录用于文件映射。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/config<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/data<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/logs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>完成目录创建后通过到下述命令启动 <code>Gitlab</code> 服务，其中端口映射服务可根据自身情况调整。</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d \--name gitlab \--restart always \--privileged<span class="token operator">=</span>true \-p 8080:80 \-p 8081:443 \-p 8082:22 \-v /etc/localtime:/etc/localtime:ro \-v /usr/local/dockerdata/gitlab/config:/etc/gitlab \-v /usr/local/dockerdata/gitlab/logs:/var/log/gitlab \-v /usr/local/dockerdata/gitlab/data:/var/opt/gitlab \gitlab/gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 gitlab 映射的文件目录中编辑配置信息。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/gitlab/config/gitlab.rb<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>，保存后通过 <code>docker restart gitlab</code> 重启服务使其生效。</p><pre class="line-numbers language-txt"><code class="language-txt">external_url 'http://192.168.0.20'gitlab_rails['gitlab_ssh_host'] = '192.168.0.20'# 配置 22 端口映射的值gitlab_rails['gitlab_shell_ssh_port'] = 8082gitlab_rails['time_zone'] = 'Asia/Shanghai'  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>gitlab</code> 容器内，配置服务对应的端口信息。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it gitlab <span class="token function">bash</span><span class="token function">vi</span> /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值，完成后在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p><pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">production</span><span class="token punctuation">:</span> <span class="token important">&amp;base</span>  <span class="token key atrule">gitlab</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true"># 替换为 80 端口映射的值</span>   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>ip:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>container_id<span class="token operator">></span> <span class="token function">grep</span> <span class="token string">'Password:'</span> /etc/gitlab/initial_root_password<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;Gitlab&lt;/code&gt; 是一款广受好评的 &lt;code&gt;GIT&lt;/code&gt; 项目管理平台，其中 &lt;code&gt;Gitlab-CE&lt;/code&gt; 为免费版本，下面介绍 &lt;code&gt;Docker&lt;/code&gt; 方式部署。&lt;/p&gt;
-&lt;h4 id=&quot;1-目录创建&quot;&gt;&lt;</summary>
-      
-    
-    
-    
-    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
-    
-    
-    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Confluence 部署教程</title>
     <link href="https://great-jin.github.io/app/install/confluence/"/>
     <id>https://great-jin.github.io/app/install/confluence/</id>
@@ -254,6 +229,31 @@
       
     <summary type="html">&lt;p&gt;&lt;code&gt;Confluence&lt;/code&gt; 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。&lt;/p&gt;
 &lt;h4 id=&quot;1-服务启动&quot;&gt;&lt;a href=&quot;#1-服务启动&quot; class=&quot;headerlink&quot; title=&quot;1. 服务启动&quot;&gt;&lt;/a&gt;1. 服务启动</summary>
+      
+    
+    
+    
+    <category term="应用部署" scheme="https://great-jin.github.io/categories/%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"/>
+    
+    
+    <category term="Linux" scheme="https://great-jin.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gitlab 服务部署教程</title>
+    <link href="https://great-jin.github.io/app/install/gitlab/"/>
+    <id>https://great-jin.github.io/app/install/gitlab/</id>
+    <published>2024-05-17T16:00:00.000Z</published>
+    <updated>2024-06-12T14:29:41.420Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍 <code>Docker</code> 方式部署。</p><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>老规矩第一步还是先创建数据目录用于文件映射。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/config<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/data<span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/logs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>完成目录创建后通过到下述命令启动 <code>Gitlab</code> 服务，其中端口映射服务可根据自身情况调整。</p><pre class="line-numbers language-bash"><code class="language-bash">docker run -d \--name gitlab \--restart always \--privileged<span class="token operator">=</span>true \-p 8080:80 \-p 8081:443 \-p 8082:22 \-v /etc/localtime:/etc/localtime:ro \-v /usr/local/dockerdata/gitlab/config:/etc/gitlab \-v /usr/local/dockerdata/gitlab/logs:/var/log/gitlab \-v /usr/local/dockerdata/gitlab/data:/var/opt/gitlab \gitlab/gitlab-ce<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 gitlab 映射的文件目录中编辑配置信息。</p><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/gitlab/config/gitlab.rb<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>，保存后通过 <code>docker restart gitlab</code> 重启服务使其生效。</p><pre class="line-numbers language-txt"><code class="language-txt">external_url 'http://192.168.0.20'gitlab_rails['gitlab_ssh_host'] = '192.168.0.20'# 配置 22 端口映射的值gitlab_rails['gitlab_shell_ssh_port'] = 8082gitlab_rails['time_zone'] = 'Asia/Shanghai'  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>gitlab</code> 容器内，配置服务对应的端口信息。</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it gitlab <span class="token function">bash</span><span class="token function">vi</span> /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值，完成后在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p><pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">production</span><span class="token punctuation">:</span> <span class="token important">&amp;base</span>  <span class="token key atrule">gitlab</span><span class="token punctuation">:</span>    <span class="token comment" spellcheck="true"># 替换为 80 端口映射的值</span>   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>ip:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p><pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>container_id<span class="token operator">></span> <span class="token function">grep</span> <span class="token string">'Password:'</span> /etc/gitlab/initial_root_password<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;code&gt;Gitlab&lt;/code&gt; 是一款广受好评的 &lt;code&gt;GIT&lt;/code&gt; 项目管理平台，其中 &lt;code&gt;Gitlab-CE&lt;/code&gt; 为免费版本，下面介绍 &lt;code&gt;Docker&lt;/code&gt; 方式部署。&lt;/p&gt;
+&lt;h4 id=&quot;1-目录创建&quot;&gt;&lt;</summary>
       
     
     
