@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-05-18
+                    2024-08-05
                 </div>
                 
 
@@ -600,7 +600,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -621,14 +621,11 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、参数配置"><a href="#一、参数配置" class="headerlink" title="一、参数配置"></a>一、参数配置</h3><h4 id="1-配置方式"><a href="#1-配置方式" class="headerlink" title="1. 配置方式"></a>1. 配置方式</h4><p>在虚拟机中 <code>-X</code> 和 <code>-D</code> 都可用于指定 <code>JVM</code> 参数，但它们在使用方式和作用范围上有一些区别。</p>
-<ul>
-<li><p><code>-X</code> 用于指定非标准的 <code>JVM</code> 参数，这些参数通常是供具体的 <code>JVM</code> 实现或特定的虚拟机选项使用的。它的使用方式是 <code>-X&lt;parameter&gt;</code> ，其中 <code>&lt;parameter&gt;</code> 是具体的 <code>JVM</code> 参数名称。</p>
-</li>
-<li><p><code>-D</code> 用于设置系统属性，可以在应用程序中通过 <code>System.getProperty()</code> 方法获取。它的使用方式是 <code>-D&lt;property&gt;=&lt;value&gt;</code>，其中 <code>&lt;property&gt;</code> 是属性名称，<code>&lt;value&gt;</code> 是属性值。</p>
-</li>
-</ul>
-<p>总结： <code>-X</code> 参数用于指定 <code>JVM</code> 的非标准参数，而 <code>-D</code> 参数用于设置系统属性。<code>-X</code> 参数通常影响 <code>JVM</code> 的行为和性能，而 <code>-D</code> 参数提供了一种在应用程序中传递配置信息的机制。</p>
-<h5 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="(1) 基本格式"></a>(1) 基本格式</h5><p><code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
+<h5 id="1-X-方式"><a href="#1-X-方式" class="headerlink" title="(1) -X 方式"></a>(1) -X 方式</h5><p><code>-X</code> 用于指定非标准的 <code>JVM</code> 参数，这些参数通常是供具体的 <code>JVM</code> 实现或特定的虚拟机选项使用的。</p>
+<p>例如 <code>-X&lt;parameter&gt;</code>，其中 <code>&lt;parameter&gt;</code> 是具体的 <code>JVM</code> 参数名称。</p>
+<h5 id="2-D-方式"><a href="#2-D-方式" class="headerlink" title="(2) -D 方式"></a>(2) -D 方式</h5><p><code>-D</code> 用于设置系统属性，提供了一种在应用程序中传递配置信息的机制，可以在应用程序中通过 <code>System.getProperty()</code> 方法获取。</p>
+<p>例如 <code>-D&lt;property&gt;=&lt;value&gt;</code>，其中 <code>&lt;property&gt;</code> 是属性名称，<code>&lt;value&gt;</code> 是属性值。</p>
+<h5 id="3-基本格式"><a href="#3-基本格式" class="headerlink" title="(3) 基本格式"></a>(3) 基本格式</h5><p><code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
 <blockquote>
 <ul>
 <li>若用于配置是否启用，由 <code>+ -</code> 分别控制开启与关闭。</li>
@@ -659,22 +656,27 @@ java -Xmx512m -jar myapp.jar
 <span class="token comment" spellcheck="true"># 方式二</span>
 java -jar myapp.jar -Xmx1024m
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、常用配置"><a href="#二、常用配置" class="headerlink" title="二、常用配置"></a>二、常用配置</h3><h4 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="1. 内存参数"></a>1. 内存参数</h4><p>常见的 <code>JVM</code> 内存参数如下：</p>
+<h3 id="二、常用配置"><a href="#二、常用配置" class="headerlink" title="二、常用配置"></a>二、常用配置</h3><h4 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="1. 内存参数"></a>1. 内存参数</h4><p>在默认的 <code>JVM</code> 服务启动中，如果没有手动指定堆内存值，则默认的取值方式如下：</p>
+<ul>
+<li><strong>最小值</strong>：通常是物理内存大小的 <code>1/64</code>，但不超过 <code>1GB</code>，可通过 <code>-Xms</code> 参数指定。</li>
+<li><strong>最大值</strong>：通常是物理内存大小的 <code>1/4</code>，但不超过 <code>32GB</code>，可通过 <code>-Xmx</code> 参数指定。</li>
+</ul>
+<p>常见的 <code>JVM</code> 内存参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 堆内存初始值</span>
--Xms2G 
+-Xms1G 
 
 <span class="token comment" spellcheck="true"># 堆内存最大值</span>
 -Xmx2G
 
 <span class="token comment" spellcheck="true"># 每个线程的堆栈大小，默认 1MB，在相同物理内存下，减小这个值能生成更多的线程</span>
-<span class="token comment" spellcheck="true"># 但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在 3000~5000 左右。</span>
+<span class="token comment" spellcheck="true"># 但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在 3000~5000 左右</span>
 -Xss512k
 
 <span class="token comment" spellcheck="true"># 设置年轻代大小，增大年轻代后，将会减小年老代大小。</span>
 <span class="token comment" spellcheck="true"># 此值对系统性能影响较大，Sun 官方推荐配置为整个堆的 3/8。</span>
 -Xmn1024m
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-JVM参数"><a href="#2-JVM参数" class="headerlink" title="2. JVM参数"></a>2. JVM参数</h4><p>常见的 <code>JVM</code> 配置参数如下：</p>
+<h4 id="2-JVM参数"><a href="#2-JVM参数" class="headerlink" title="2. JVM参数"></a>2. JVM参数</h4><p>针对于 <code>JVM</code> 的内存堆 <code>(Heap)</code> 以及垃圾回收，常见的配置参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># CMS垃圾回收器并行线程线，推荐值为CPU核心数。</span>
 -XX:ConcGCThreads<span class="token operator">=</span>4
 
@@ -723,6 +725,7 @@ jinfo <span class="token operator">&lt;</span>options<span class="token operator
 <h5 id="1-flags"><a href="#1-flags" class="headerlink" title="(1) flags"></a>(1) flags</h5><p>显示所有可用的虚拟机参数及其当前值。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jinfo -flags <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/1.png"></p>
 <h5 id="2-flag"><a href="#2-flag" class="headerlink" title="(2) flag"></a>(2) flag</h5><p>显示指定标志的值。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jinfo -flag <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 
@@ -844,6 +847,7 @@ jstack <span class="token operator">&lt;</span>pid<span class="token operator">>
 <h5 id="1-heap"><a href="#1-heap" class="headerlink" title="(1) -heap"></a>(1) -heap</h5><p>打印 <code>Java</code> 堆内存的概要信息，包括堆的使用情况和配置。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jmap -heap <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
 <h5 id="2-heap"><a href="#2-heap" class="headerlink" title="(2) -heap"></a>(2) -heap</h5><p>打印 <code>Java</code> 堆内存中对象的直方图，显示每个类的实例数量和占用的内存大小。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jmap -histo <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -1106,18 +1110,18 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/design/enum/">
+                <a href="/linux/docker/docker%20compose/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/38.png" class="responsive-img" alt="枚举实现优雅的验证">
+                        <img src="/album/banner/linux/docker/6.png" class="responsive-img" alt="Docker Compose基础">
                         
-                        <span class="card-title">枚举实现优雅的验证</span>
+                        <span class="card-title">Docker Compose基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java枚举实现优雅的验证模式。
+                            Docker Compose使用介绍。
                         
                     </div>
                     <div class="publish-info">
@@ -1128,8 +1132,8 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
-                                    设计模式
+                            <a href="/categories/Linux%E8%BF%90%E7%BB%B4/" class="post-category">
+                                    Linux运维
                                 </a>
                             
                             
@@ -1139,8 +1143,12 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/Linux/">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
                     </a>
                     
                 </div>
@@ -1462,7 +1470,7 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">262.3k</span>
+                <span class="white-color">262.6k</span>
             
             
             
