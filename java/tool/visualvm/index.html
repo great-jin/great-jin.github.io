@@ -29,9 +29,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+</head>
 
 
 
@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-08-09
+                    2024-08-11
                 </div>
                 
 
@@ -726,7 +726,7 @@
 <p>我们可以同 <code>jstat -gcutil</code> 命令打印进程 <code>GC</code> 的相关信息，以下述为例每间隔 <code>5s</code> 执行一次打印输出。<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/12.png"></p>
 <p>在上图可以看到最开始进程执行过的 <code>YGC</code> 次数为 <code>8</code>，此时在程序页面选中查询模拟操作可以看到 <code>YGC</code> 的次数在逐次增加，但 <code>FGC</code> 还是保持在 <code>0</code>，而程序只要不频繁的触及 <code>FGC</code>，都是在我们的可接收范围之内。</p>
 <p>那如何判断堆内存的设置是否合理呢？很简单，就是一个个试，将上面的参数设置为 <code>30MB</code> 后我们再以同样的方式进行观察。</p>
-<p>将 GC 活动日志打印调整为 1s 并在程序随机选择查询模拟操作，得到下述结果：<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/13.png"></p>
+<p>将 <code>GC</code> 活动日志打印调整为 <code>1s</code> 并在程序随机选择查询模拟操作，得到下述结果：<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/13.png"></p>
 <p>此时我们再看一眼堆内存的分布，重复几次可以看到随着 <code>YGC</code> 的执行，老年代的占用比例维持在 <code>30%</code> 左右，不至于太低也不至于太高从而触发 <code>FGC</code>。</p>
 <p>当然，你可以重复上述步骤直至试了一个你觉得最佳的临界点，这里我就不啰嗦展开了。</p>
 <p>至此，整个问题的排查也告一段落了，终于又可以安心的网上冲浪了。</p>
