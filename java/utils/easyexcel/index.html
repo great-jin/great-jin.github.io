@@ -29,9 +29,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
-</head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 
@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-05
+                    2024-08-12
                 </div>
                 
 
@@ -794,6 +794,7 @@ ExcelTypeEnum.XLSX
         dataList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
 
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> headList <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">,</span> <span class="token string">"birthday"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 转化 "List&lt;Map>" 为 "List&lt;List>"</span>
     List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>Object<span class="token operator">>></span> rowDatas <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> map <span class="token operator">:</span> dataList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -804,7 +805,7 @@ ExcelTypeEnum.XLSX
         rowDatas<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     <span class="token comment" spellcheck="true">// 声明 Excel 的表头</span>
-    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>String<span class="token operator">>></span> heads <span class="token operator">=</span> Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">,</span> <span class="token string">"birthday"</span><span class="token punctuation">)</span>
+    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>String<span class="token operator">>></span> heads <span class="token operator">=</span> headList<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>Arrays<span class="token operator">:</span><span class="token operator">:</span>asList<span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 写入数据</span>
@@ -815,7 +816,7 @@ ExcelTypeEnum.XLSX
             <span class="token punctuation">.</span><span class="token function">sheet</span><span class="token punctuation">(</span><span class="token string">"Test-data"</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">doWrite</span><span class="token punctuation">(</span>rowDatas<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、注解使用"><a href="#三、注解使用" class="headerlink" title="三、注解使用"></a>三、注解使用</h3><p>上面的读写示例中都是采用默认的实体类属性映射方式，但 <code>EasyExcel</code> 提供了更灵活的注解用于字段映射，下面将分别进行介绍。</p>
 <h4 id="1-ExcelProperty"><a href="#1-ExcelProperty" class="headerlink" title="1. ExcelProperty"></a>1. ExcelProperty</h4><p><code>@ExcelProperty</code> 注解存在 <code>value</code> 与 <code>order</code> 两个属性，前者用于设置别名而后者用于设置列顺序。</p>
 <p>通过此属性即可指定列与实体字段的映射关系，同时默认的字段的映射顺序是与属性的定义顺序相关，因此通过 <code>order</code> 属性可灵活的修改映射顺序。</p>
@@ -1588,7 +1589,7 @@ ExcelTypeEnum.XLSX
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.2k</span>
+                <span class="white-color">265.5k</span>
             
             
             

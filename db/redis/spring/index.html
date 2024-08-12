@@ -29,9 +29,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
-</head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
 
@@ -570,8 +570,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E9%9B%86%E6%88%90/" class="post-category">
-                                中间件集成
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                中间件
                             </a>
                         
                     </div>
@@ -590,7 +590,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-12
+                    2024-08-12
                 </div>
                 
 
@@ -662,30 +662,30 @@
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@CacheConfig</span><span class="token punctuation">(</span>cacheNames <span class="token operator">=</span> <span class="token string">"users"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">UserService</span> <span class="token punctuation">{</span>
   
-    <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> User <span class="token function">get</span><span class="token punctuation">(</span>String Id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">get</span><span class="token punctuation">(</span>String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token annotation punctuation">@CachePut</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> User <span class="token function">query</span><span class="token punctuation">(</span>String Id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@CachePut</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">query</span><span class="token punctuation">(</span>String id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.Id"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.id"</span><span class="token punctuation">)</span>
     <span class="token keyword">public</span> User <span class="token function">update</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     
     <span class="token annotation punctuation">@Caching</span><span class="token punctuation">(</span>
-    cacheable <span class="token operator">=</span> <span class="token punctuation">{</span>
-        <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.Id"</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    evict <span class="token operator">=</span> <span class="token punctuation">{</span>
+        cacheable <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.id"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        evict <span class="token operator">=</span> <span class="token punctuation">{</span>
             <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.Id"</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span>
+            <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.id"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token keyword">public</span> User <span class="token function">insert</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> userDao<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
@@ -693,7 +693,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h3><p>了解了缓存注解的基本使用，下面就介绍在现实业务场景中如何进行使用。</p>
 <h4 id="1-项目创建"><a href="#1-项目创建" class="headerlink" title="1. 项目创建"></a>1. 项目创建</h4><p>Spring Boot项目创建步骤之前文章已经详细讲过了，这里不再重复介绍，之后文章将基于之前的工程进行改造，具体步骤参考之前文章：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Java/Spring/RESTful/">Spring boot实现接口开发</a>。</p>
-<p>创建完项目后在 Maven 工程中引入 Redis 相关依赖。</p>
+<p>创建完项目后在 <code>Maven</code> 工程中引入 <code>Redis</code> 相关依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -723,6 +723,8 @@
 <li><p>如果设置了 <code>disableCachingNullValues()</code> 禁止缓存空值，在使用<code>@Cacheable</code>时需要添加<code>unless=&quot;#result == null&quot;</code>，否则当查询到空值时程序将会出现异常。</p>
 </li>
 <li><p>如果不设置禁止空值，即空值也进行存储，虽然不会对数据库产生性能损耗，但会浪费<code>Redis</code>缓存空间。因此需要根据具体情况进行判断选择。</p>
+</li>
+</ul>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisConfig</span> <span class="token punctuation">{</span>
 
@@ -758,18 +760,15 @@
     <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">/**
-      * 配置 值 序列化
-      *
-      * 使用 GenericJackson2JsonRedisSerializer 替换默认序列化
-      */</span>
+     * 配置 值 序列化
+     *
+     * 使用 GenericJackson2JsonRedisSerializer 替换默认序列化
+     */</span>
     <span class="token keyword">private</span> RedisSerializationContext<span class="token punctuation">.</span>SerializationPair<span class="token operator">&lt;</span>Object<span class="token operator">></span> <span class="token function">valuePair</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> RedisSerializationContext<span class="token punctuation">.</span>SerializationPair<span class="token punctuation">.</span><span class="token function">fromSerializer</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">GenericJackson2JsonRedisSerializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、业务实操"><a href="#三、业务实操" class="headerlink" title="三、业务实操"></a>三、业务实操</h3><h4 id="1-开启缓存"><a href="#1-开启缓存" class="headerlink" title="1. 开启缓存"></a>1. 开启缓存</h4><p>在启动类上添加 <code>@EnableCaching</code> 开启注解。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableCaching</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
@@ -1466,7 +1465,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.2k</span>
+                <span class="white-color">265.5k</span>
             
             
             
