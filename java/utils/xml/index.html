@@ -586,14 +586,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-05
+                    2024-09-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1.4k
                 </div>
                 
 
@@ -802,19 +802,27 @@
     </tr>
     <tr>
         <td style="text-align: center;">@ObjectCreate</td>
-        <td style="text-align: center;">等价于 addObjectCreate() 配置。</td>
+        <td style="text-align: center;">匹配的 XPath 开始标识。</td>
     </tr>
     <tr>
         <td style="text-align: center;">@BeanPropertySetter</td>
-        <td style="text-align: center;">等价于 addBeanPropertySetter() 配置。</td>
+        <td style="text-align: center;">匹配标签对应的 XPath。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@SetProperty</td>
+        <td style="text-align: center;">匹配标签的 tag，通过 attributeName 属性配置。</td>
     </tr>
     <tr>
         <td style="text-align: center;">@SetNext</td>
-        <td style="text-align: center;">等价于 addSetNext() 配置。</td>
+        <td style="text-align: center;">作用于方法，用于赋值标签组，即嵌套的子标签组。</td>
     </tr>
 </table>
 
-
+<p>其中 <code>tag</code> 指的即对应标签上属性，如下述中 <code>id</code> 即为 <code>user</code> 标签的 <code>tag</code> 成员。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>user</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span>123</span><span class="token punctuation">></span></span>Alex<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>user</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>data</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-对象定义"><a href="#2-对象定义" class="headerlink" title="2. 对象定义"></a>2. 对象定义</h4><p>修改之前创建的实体类，通过注解方式配置 <code>XPath</code> 的值实现映射，对应代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
 <span class="token annotation punctuation">@ObjectCreate</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"entityContainer"</span><span class="token punctuation">)</span>
@@ -837,7 +845,6 @@
 
     <span class="token annotation punctuation">@BeanPropertySetter</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"entityContainer/entity/name"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
-    
 
     <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Attribute<span class="token operator">></span> attributes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -857,7 +864,7 @@
     <span class="token annotation punctuation">@BeanPropertySetter</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"entityContainer/entity/attribute/value"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> String value<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-规则定义"><a href="#3-规则定义" class="headerlink" title="3. 规则定义"></a>3. 规则定义</h4><p>类似的通过继承 <code>FromAnnotationsRuleModule</code> 配置读取实体类的注解信息。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyAnnotationModule</span> <span class="token keyword">extends</span> <span class="token class-name">FromAnnotationsRuleModule</span> <span class="token punctuation">{</span>
     <span class="token annotation punctuation">@Override</span>
@@ -1488,7 +1495,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.5k</span>
+                <span class="white-color">266.1k</span>
             
             
             

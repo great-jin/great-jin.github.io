@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-05
+                    2024-09-06
                 </div>
                 
 
@@ -651,47 +651,66 @@
     objectMapper<span class="token punctuation">.</span><span class="token function">setDefaultPropertyInclusion</span><span class="token punctuation">(</span>JsonInclude<span class="token punctuation">.</span>Include<span class="token punctuation">.</span>NON_DEFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-注解介绍"><a href="#2-注解介绍" class="headerlink" title="2. 注解介绍"></a>2. 注解介绍</h4><h5 id="1-JsonIgnore"><a href="#1-JsonIgnore" class="headerlink" title="(1) @JsonIgnore"></a>(1) @JsonIgnore</h5><p>作用于实体类属性字段，当进行对象序列化时忽略该字段。</p>
+<h4 id="2-注解介绍"><a href="#2-注解介绍" class="headerlink" title="2. 注解介绍"></a>2. 注解介绍</h4><p><code>Jackson</code> 提供了丰富的注解可用于定于规则，常用的注解参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">注解</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonProperty</td>
+        <td style="text-align: center;">作用于字段，用于属性重命名映射。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonIgnore</td>
+        <td style="text-align: center;">作用于字段，序列化时忽略该字段。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonFormat</td>
+        <td style="text-align: center;">作用于字段，用于定义时间格式化。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonAlias</td>
+        <td style="text-align: center;">作用于字段，用于多别名匹配。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonPropertyOrder</td>
+        <td style="text-align: center;">作用于类，用于定义属性顺序。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@JsonIgnoreProperties</td>
+        <td style="text-align: center;">作用于类，用于批量定义忽略属性。</td>
+    </tr>
+</table>
+
+<p>下面通过示例简单演示下如何使用以及对应的效果：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
+    
+    <span class="token comment" spellcheck="true">/**
+     * 为属性取别名并定于次序
+     */</span>
+    <span class="token annotation punctuation">@JsonProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"name"</span><span class="token punctuation">,</span> index <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 读取适配一对多关系
+     */</span>
+    <span class="token annotation punctuation">@JsonAlias</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"sex"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">/**
      * 序列化时将忽略该字段
      */</span>
     <span class="token annotation punctuation">@JsonIgnore</span>
-    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-JsonProperty"><a href="#2-JsonProperty" class="headerlink" title="(2) @JsonProperty"></a>(2) @JsonProperty</h5><p>作用于实体类属性字段，常用于定义转化时字段出现顺序与字段重命名。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@JsonProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"sex"</span><span class="token punctuation">,</span> index <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-JsonFormat"><a href="#3-JsonFormat" class="headerlink" title="(3) @JsonFormat"></a>(3) @JsonFormat</h5><p>作用于实体类属性字段 ，用于指定时间字段格式。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String address<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 序列化时格式属性值
+     */</span>
     <span class="token annotation punctuation">@JsonFormat</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> Date birthday<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-JsonPropertyOrder"><a href="#4-JsonPropertyOrder" class="headerlink" title="(4) @JsonPropertyOrder"></a>(4) @JsonPropertyOrder</h5><p>作用于 <code>类</code> ，用于批量指定转化时字段出现顺序。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@JsonPropertyOrder</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"Id"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="5-JsonIgnoreProperties"><a href="#5-JsonIgnoreProperties" class="headerlink" title="(5) @JsonIgnoreProperties"></a>(5) @JsonIgnoreProperties</h5><p>作用于 <code>类</code> ，用于批量指定转化时忽略的字段。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@JsonIgnoreProperties</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"gender"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Seller</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
-
-    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、序列化"><a href="#二、序列化" class="headerlink" title="二、序列化"></a>二、序列化</h3><h4 id="1-对象转化"><a href="#1-对象转化" class="headerlink" title="1. 对象转化"></a>1. 对象转化</h4><p><code>Jackson</code> 可以实现 <code>Java</code> 对象与 <code>Json</code> 字符串之间的相互转化。</p>
 <p>通过 <code>readValue()</code> 与 <code>writeValueAsString()</code> 方法实现二者之间的转换。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">jsonTran</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> JsonProcessingException <span class="token punctuation">{</span>
@@ -1593,7 +1612,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">265.5k</span>
+                <span class="white-color">266.1k</span>
             
             
             
