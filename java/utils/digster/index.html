@@ -414,7 +414,7 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/program/xml.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/program/xml/2.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-09-06
+                    2024-09-07
                 </div>
                 
 
@@ -620,10 +620,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、前置准备"><a href="#一、前置准备" class="headerlink" title="一、前置准备"></a>一、前置准备</h3><h4 id="1-概念解释"><a href="#1-概念解释" class="headerlink" title="1. 概念解释"></a>1. 概念解释</h4><p>在 <code>XML</code> 文件中有一个十分重要的概念 <code>XPath</code>，简单而言即用于定义元素的位置。</p>
-<p>直接通过示例直观的了解 <code>XPath</code> 的定义，如一个 <code>XML</code> 的文件内容如下。那么值 <code>Alex</code> 对应的标签 <code>name</code> 其相应的 <code>XPath</code> 则为 <code>student/name</code>，即用于定位元素的路径。</p>
+                <h3 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h3><h4 id="1-概念解释"><a href="#1-概念解释" class="headerlink" title="1. 概念解释"></a>1. 概念解释</h4><p>在 <code>XML</code> 文件中有一个十分重要的概念 <code>XPath</code>，简单而言即用于定义元素的位置，下面通过示例从而更直观的了解 <code>XPath</code> 的定义。</p>
+<p>如一个 <code>XML</code> 的文件内容如下，其中 <code>&lt;name&gt;&lt;/name&gt;</code> 等通常称其为标签组，而 <code>id</code> 标签中的 <code>type</code> 称之为 <code>tag</code>。且值 <code>Alex</code> 对应的标签 <code>name</code> 其相应的 <code>XPath</code> 则为 <code>student/name</code>，即用于定位元素的路径。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>student</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span>string</span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Alex<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>student</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
@@ -645,10 +645,6 @@
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>key</span><span class="token punctuation">></span></span>math<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>key</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>80<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>attribute</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>attribute</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>key</span><span class="token punctuation">></span></span>science<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>key</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>85<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>attribute</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>entity</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>entity</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
@@ -657,13 +653,9 @@
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>key</span><span class="token punctuation">></span></span>math<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>key</span><span class="token punctuation">></span></span>
             <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>85<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>attribute</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>attribute</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>key</span><span class="token punctuation">></span></span>science<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>key</span><span class="token punctuation">></span></span>
-            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>90<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>attribute</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>entity</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>entityContainer</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、基础操作"><a href="#二、基础操作" class="headerlink" title="二、基础操作"></a>二、基础操作</h3><h4 id="1-实体对象"><a href="#1-实体对象" class="headerlink" title="1. 实体对象"></a>1. 实体对象</h4><p>相对应于 <code>XML</code> 文件，需要创建对应的 <code>Java</code> 实体类用作载体。</p>
 <p>同上述准备的 <code>XML</code> 文件内容此处创建了三个对应的实体类 <code>EntityContainer</code>，<code>Entity</code> 与 <code>Attribute</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
@@ -683,10 +675,10 @@
 
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
-    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Attribute<span class="token operator">></span> attributes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Attribute attribute<span class="token punctuation">;</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addAttribute</span><span class="token punctuation">(</span>Attribute attribute<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        attributes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>attribute<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAttribute</span><span class="token punctuation">(</span>Attribute attribute<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>attribute <span class="token operator">=</span> attribute<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
@@ -706,21 +698,22 @@
     </tr>
     <tr>
         <td style="text-align: center;">addObjectCreate()</td>
-        <td style="text-align: center;">用于设置与 Java 对象的映射关系。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">addSetProperties()</td>
-        <td style="text-align: center;">设置对象属性值。</td>
+        <td style="text-align: center;">设置与 Java 对象的映射关系。</td>
     </tr>
     <tr>
         <td style="text-align: center;">addBeanPropertySetter()</td>
-        <td style="text-align: center;">用于 XPath 与实体对象属性的匹配</td>
+        <td style="text-align: center;">设置 XPath 与实体对象属性的匹配。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">addSetProperties()</td>
+        <td style="text-align: center;">设置 tag 与类属性的映射关系。</td>
     </tr>
     <tr>
         <td style="text-align: center;">addSetNext()</td>
-        <td style="text-align: center;">一个标签内嵌套多个同标签时用于指定添加方法。</td>
+        <td style="text-align: center;">标签内嵌套单个或多个标签时用于指定添加方法。</td>
     </tr>
 </table>
+
 
 <h4 id="3-读取示例"><a href="#3-读取示例" class="headerlink" title="3. 读取示例"></a>3. 读取示例</h4><p>因此，之前提到的 <code>XML</code> 文件其对应的解析示例如下，其中 <code>parse()</code> 方法支持输入文件流与文本块的方式，前者基于事件驱动后者基于内存驱动，在解析大文件的情况下前者显然能够占用更少的资源。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DigestXmlTest</span> <span class="token punctuation">{</span>
@@ -743,7 +736,7 @@
         digester<span class="token punctuation">.</span><span class="token function">addObjectCreate</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">,</span> Attribute<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         digester<span class="token punctuation">.</span><span class="token function">addBeanPropertySetter</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute/key"</span><span class="token punctuation">,</span> <span class="token string">"key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         digester<span class="token punctuation">.</span><span class="token function">addBeanPropertySetter</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute/value"</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        digester<span class="token punctuation">.</span><span class="token function">addSetNext</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">,</span> <span class="token string">"addAttribute"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        digester<span class="token punctuation">.</span><span class="token function">addSetNext</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">,</span> <span class="token string">"setAttribute"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token keyword">try</span> <span class="token punctuation">(</span>FileReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             EntityContainer container <span class="token operator">=</span> digester<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>reader<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -769,7 +762,7 @@
         <span class="token function">forPattern</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ofType</span><span class="token punctuation">(</span>Attribute<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token function">forPattern</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute/key"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setBeanProperty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token function">forPattern</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute/value"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setBeanProperty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">forPattern</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setNext</span><span class="token punctuation">(</span><span class="token string">"addAttribute"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">forPattern</span><span class="token punctuation">(</span><span class="token string">"entityContainer/entity/attribute"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setNext</span><span class="token punctuation">(</span><span class="token string">"setAttribute"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -818,11 +811,7 @@
     </tr>
 </table>
 
-<p>其中 <code>tag</code> 指的即对应标签上属性，如下述中 <code>id</code> 即为 <code>user</code> 标签的 <code>tag</code> 成员。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>data</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>user</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span>123</span><span class="token punctuation">></span></span>Alex<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>user</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>data</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-对象定义"><a href="#2-对象定义" class="headerlink" title="2. 对象定义"></a>2. 对象定义</h4><p>修改之前创建的实体类，通过注解方式配置 <code>XPath</code> 的值实现映射，对应代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
 <span class="token annotation punctuation">@ObjectCreate</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"entityContainer"</span><span class="token punctuation">)</span>
@@ -846,11 +835,11 @@
     <span class="token annotation punctuation">@BeanPropertySetter</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"entityContainer/entity/name"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
-    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Attribute<span class="token operator">></span> attributes <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> Attribute attribute<span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@SetNext</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addAttribute</span><span class="token punctuation">(</span>Attribute attribute<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        attributes<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>attribute<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAttribute</span><span class="token punctuation">(</span>Attribute attribute<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>attribute <span class="token operator">=</span> attribute<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
@@ -924,7 +913,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/utils/xml/">https://great-jin.github.io/java/utils/xml/</a>
+                    <a href="https://great-jin.github.io/java/utils/digster/">https://great-jin.github.io/java/utils/digster/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1495,7 +1484,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">266.1k</span>
+                <span class="white-color">268.4k</span>
             
             
             
