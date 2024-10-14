@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring事务应用详解, 布袋青年">
+    <meta name="keywords" content="Spring 事务管理, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring事务应用详解 | 布袋青年</title>
+    <title>Spring 事务管理 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -419,7 +419,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring事务应用详解</h1>
+                    <h1 class="description center-align post-title">Spring 事务管理</h1>
                 </div>
             </div>
         </div>
@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-01
+                    2024-10-14
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    10 分
                 </div>
                 
 
@@ -686,7 +686,7 @@
 </table>
 <br/>
 
-<p>在没有显式指定 <code>propagation</code> 的前提下即采用默认值 <code>REQUIRED</code>，将会为事务方法新建一个事务并执行方法体内容。在发生异常时事务方法体中执行的数据操作将会执行回滚操作。</p>
+<p>在没有显式指定 <code>propagation</code> 的前提下即采用默认值 <code>REQUIRED</code>，将会为事务方法新建一个事务并执行方法体内容，在发生异常时事务方法体中执行的数据操作将会执行回滚操作。</p>
 <p>下述示例中，<code>saveRecord()</code> 方法分别调用了两次新增方法，其中第二次为事务方法，并在事务方法中模拟抛出异常测试回滚。运行程序后调用接口，在执行到第二次插入后由于 <code>@Transactional</code> 的存在将为该方法开启事务，在提示报错之后查看数据库将会看到第一次新增操作成功提交，而第二次操作插入 <code>id = 456</code> 的数据实现了异常回滚库中并没有该记录。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/propagation"</span><span class="token punctuation">)</span>
@@ -827,45 +827,143 @@
     <span class="token keyword">return</span> i<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、注意事项"><a href="#三、注意事项" class="headerlink" title="三、注意事项"></a>三、注意事项</h3><h4 id="1-失效场景"><a href="#1-失效场景" class="headerlink" title="1. 失效场景"></a>1. 失效场景</h4><p>注意在 <code>Spring</code> 中无法实现在事务定义类中调用事务方法，否则将会导致代理失败从而引起事务不生效。</p>
-<p>即事务的定义与调用不应该处于同一个类中，如下述示例中 <code>demo()</code> 与 <code>execute()</code> 方法处于同一个类中，在 <code>demo()</code> 中调用 <code>execute()</code> 将导致事务失效。</p>
+<h3 id="三、手动事务"><a href="#三、手动事务" class="headerlink" title="三、手动事务"></a>三、手动事务</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>通过 <code>@Transactional</code> 注解方式我们可以快速集成事务到业务中，不过在 <code>Spring</code> 中同样提供了手动事务的开启与提交功能。</p>
+<p>在 <code>Spring</code> 的 <code>IOC</code> 容器中针对 <code>bean</code> 的有一系列的 <code>BeanDefinition</code> 用于描述定义 <code>bean</code> 对象的基本信息，例如 <code>GenericBeanDefinition</code> 等等。对于事务而言，同样也存在 <code>TransactionDefinition</code> 用于定义事务信息。</p>
+<p>对于一个事务的描述，最核心的当然就是隔离级别以及传播行为，<code>TransactionDefinition</code> 也提供了相对应的设置方法：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setName()</td>
+        <td style="text-align: center;">设置事务名称，可重复。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setIsolationLevel()</td>
+        <td style="text-align: center;">设置事务隔离级别。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setPropagationBehavior()</td>
+        <td style="text-align: center;">设置事务传播行为。</td>
+    </tr>
+</table>
+
+
+<h4 id="2-创建方式"><a href="#2-创建方式" class="headerlink" title="2. 创建方式"></a>2. 创建方式</h4><p>了解了 <code>TransactionDefinition</code> 的基本信息之后下面通过示例介绍如何手动创建事务对象。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> TransactionDefinition <span class="token function">getTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    DefaultTransactionDefinition definition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 事务名称</span>
+    definition<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"transaction"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 隔离级别</span>
+    definition<span class="token punctuation">.</span><span class="token function">setIsolationLevel</span><span class="token punctuation">(</span>TransactionDefinition<span class="token punctuation">.</span>ISOLATION_READ_COMMITTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 传播行为</span>
+    definition<span class="token punctuation">.</span><span class="token function">setPropagationBehavior</span><span class="token punctuation">(</span>TransactionDefinition<span class="token punctuation">.</span>PROPAGATION_REQUIRES_NEW<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> definition<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当创建了事务描述对象之后即可交由 <code>DataSourceTransactionManager</code> 执行事务的管理，其几个常用方法如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getTransaction()</td>
+        <td style="text-align: center;">开启事务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">commit()</td>
+        <td style="text-align: center;">提交事务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">rollback()</td>
+        <td style="text-align: center;">回滚事务。</td>
+    </tr>
+</table>
+
+<p>同样的，通过 <code>getTransaction()</code> 开启事务后将会返回一个状态值，通过其对事务进行手动管理。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TransactionConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> DataSourceTransactionManager transactionManager<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">manualTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建事务定义</span>
+        DefaultTransactionDefinition definition <span class="token operator">=</span> <span class="token function">getTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 开启事务</span>
+        TransactionStatus status <span class="token operator">=</span> transactionManager<span class="token punctuation">.</span><span class="token function">getTransaction</span><span class="token punctuation">(</span>definition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 执行数据库操作</span>
+            <span class="token comment" spellcheck="true">// dbOperation();</span>
+
+            <span class="token comment" spellcheck="true">// 提交事务</span>
+            transactionManager<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 回滚事务</span>
+            transactionManager<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> DefaultTransactionDefinition <span class="token function">getTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        DefaultTransactionDefinition definition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 事务名称</span>
+        definition<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">"transaction"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 隔离级别</span>
+        definition<span class="token punctuation">.</span><span class="token function">setIsolationLevel</span><span class="token punctuation">(</span>TransactionDefinition<span class="token punctuation">.</span>ISOLATION_READ_COMMITTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 传播行为</span>
+        definition<span class="token punctuation">.</span><span class="token function">setPropagationBehavior</span><span class="token punctuation">(</span>TransactionDefinition<span class="token punctuation">.</span>PROPAGATION_REQUIRES_NEW<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> definition<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、事务失效"><a href="#四、事务失效" class="headerlink" title="四、事务失效"></a>四、事务失效</h3><h4 id="1-自我引用"><a href="#1-自我引用" class="headerlink" title="1. 自我引用"></a>1. 自我引用</h4><p>注意在 <code>Spring</code> 中无法实现在事务定义类中调用事务方法，否则将会导致代理失败从而引起事务不生效。</p>
+<p>即事务的定义与调用不应该处于同一个类中，如下述示例中 <code>demo()</code> 与 <code>action()</code> 方法处于同一个类中，在 <code>demo()</code> 中调用 <code>action()</code> 将导致事务失效。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 此处事务可能失效</span>
-        <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 在同个类中调用事务方法将失效</span>
+        <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     
-    <span class="token comment" spellcheck="true">/**
-     * 在同个类中调用，此事务方法将失效
-     */</span>
     <span class="token annotation punctuation">@Transactional</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// dosomething</span>
 
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>因此事务的定义与调用应分开于不同的类中，改造上述的示例得到下述结果。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于此类的自我调用的有两种处理方式，最简单的方式当然就是将事务方式定义到其它类中，但对应同一模块的业务而言则会导致代码分散。</p>
+<p>针对此类场景，在 <code>Spring</code> 中提供了 <code>AopContext</code> 获取代理对象从而避免事务的自我调用导致的事务失效，使用方式也相对简单，改造上述的示例为下述即可:</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestServiceA</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        TestServiceB service <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestServiceB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        service<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 创建代理对象</span>
+        TestService proxy <span class="token operator">=</span> <span class="token punctuation">(</span>TestService<span class="token punctuation">)</span> AopContext<span class="token punctuation">.</span><span class="token function">currentProxy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 通过代理对象调用事务方法</span>
+        proxy<span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token annotation punctuation">@Service</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestServiceB</span> <span class="token punctuation">{</span>
     
     <span class="token annotation punctuation">@Transactional</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// dosomething</span>
+
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需要在使用上述的 <code>AopContext</code> 时需要在工程启动类上添加 <code>@EnableAspectJAutoProxy</code> 注解用于暴露代理对象。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableAspectJAutoProxy</span><span class="token punctuation">(</span>exposeProxy <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestApplication</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        SpringApplication<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span>TestApplication<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1463,7 +1561,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">268.4k</span>
+                <span class="white-color">269.8k</span>
             
             
             
