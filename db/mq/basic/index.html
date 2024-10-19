@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="RabbitMQ入门教程, 布袋青年">
+    <meta name="keywords" content="RabbitMQ消息队列介绍, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>RabbitMQ入门教程 | 布袋青年</title>
+    <title>RabbitMQ消息队列介绍 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -419,7 +419,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">RabbitMQ入门教程</h1>
+                    <h1 class="description center-align post-title">RabbitMQ消息队列介绍</h1>
                 </div>
             </div>
         </div>
@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-10-14
+                    2024-10-19
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    850
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    5 分
                 </div>
                 
 
@@ -620,7 +620,20 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-容器创建"><a href="#1-容器创建" class="headerlink" title="1. 容器创建"></a>1. 容器创建</h4><p>首先创建对应的数据映射目录并拉取镜像，这里注意一点拉取的镜像带 <code>management</code> 表示其内置了后台管理页面。</p>
+                <p>一提到消息队列，想必你即便没真正上手实践过，也一定对其有所耳闻，在之前的博客中以 <code>Kafka</code> 为例深入解析了消息队列模型以及其所解决的一些痛点。</p>
+<p>针对 <code>Kafka</code> 队列部分，感兴趣的小伙伴可以去考古，传送门放这了：</p>
+<ol>
+<li><a href="https://great-jin.github.io/db/kafka/basis/">Kafka消息队列详解</a></li>
+<li><a href="https://great-jin.github.io/db/kafka/subscribe/">Kafka发布订阅实战</a></li>
+</ol>
+<p>将视线收回到现在，不论是 <code>Kafka</code> 又或是今天的主角 <code>RabbitMQ</code>，其核心都在我们熟悉的名词消息队列上。二者自身的数据存储方式以及数据传输模型从而衍生出不同的特性以及适用场景。</p>
+<p>以 <code>Kafka</code> 为例，其为队列数据提供了持久化功能，基于主题与消费组的形式拉取生产者所产生的数据，拥有极高的吞吐量广泛应用于大数据领域。</p>
+<p>而 <code>RabbitMQ</code> 的一大特点即将交换器与队列相结合，通过交换器可实现复杂的数据路由功能。在数据传输中 <code>RabbitMQ</code> 虽然也提供了持久化，但默认还是以内存为主，当数据消费完成后即会被删除。同时与 <code>Kafka</code> 消费者主动拉取数据相比，<code>RabbitMQ</code> 则恰好相反由生产者主动推送数据，通过消息确认机制避免了数据丢失与重复消费。基于上述描述，<code>RabbitMQ</code> 凭借低延时的特性被广泛应用于系统或微服务间的数据通讯等方面。</p>
+<blockquote>
+<p>下面通过项目集成实战介绍 <code>RabbitMQ</code> 的实现效果</p>
+</blockquote>
+<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><p>与 <code>Kafka</code> 类似，<code>RabbitMQ</code> 同样需要进行单独的应用服务部署，下面以 <code>Docker</code> 方式快速部署测试服务。</p>
+<h4 id="1-容器创建"><a href="#1-容器创建" class="headerlink" title="1. 容器创建"></a>1. 容器创建</h4><p>首先创建对应的数据映射目录并拉取镜像，这里注意一点拉取的镜像带 <code>management</code> 表示其内置了后台管理页面。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建数据目录</span>
 <span class="token function">mkdir</span> -p /home/dockerdata/rabbitmq
 
@@ -1033,9 +1046,9 @@ rabbitmq:management
                 <a href="/db/mq/basic/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/mq/1.png" class="responsive-img" alt="RabbitMQ入门教程">
+                        <img src="/album/banner/db/mq/1.png" class="responsive-img" alt="RabbitMQ消息队列介绍">
                         
-                        <span class="card-title">RabbitMQ入门教程</span>
+                        <span class="card-title">RabbitMQ消息队列介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1387,7 +1400,7 @@ rabbitmq:management
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">269.8k</span>
+                <span class="white-color">270.3k</span>
             
             
             
