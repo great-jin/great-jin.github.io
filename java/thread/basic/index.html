@@ -590,14 +590,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-15
+                    2024-10-28
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.7k
                 </div>
                 
 
@@ -624,12 +624,19 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、基础概念"><a href="#一、基础概念" class="headerlink" title="一、基础概念"></a>一、基础概念</h3><h4 id="1-进程与线程"><a href="#1-进程与线程" class="headerlink" title="1. 进程与线程"></a>1. 进程与线程</h4><h5 id="1-进程"><a href="#1-进程" class="headerlink" title="(1) 进程"></a>(1) 进程</h5><p>进程是一个程序关于某个数据集合的一次运行活动，它是操作系统动态执行的基本单元，是并发执行的程序在执行过程中分配和管理资源的基本单位，竞争计算机系统资源的基本单位。</p>
+                <p>线程在 <code>Java</code> 语法中可谓发挥着举足轻重的作用，提供了一种更高效的任务编排方式，更是由此衍生庞大的生态体系以及令人拍手叫绝的系统设计。</p>
+<p>在 <code>JDK 21</code> 的虚拟线程之前，<code>Java</code> 中的线程与物理核心之间是相互绑定的，即当程序创建一个线程时，依赖于系统调度为其分配对应的一个核心。</p>
+<blockquote>
+<p>本文将带你初步了解线程的创建运行方式以及生命周期。</p>
+</blockquote>
+<h3 id="一、基础概念"><a href="#一、基础概念" class="headerlink" title="一、基础概念"></a>一、基础概念</h3><p>在开始具体的线程介绍之前，让我们先初步了解一下线程的一些相关概念。</p>
+<h4 id="1-进程与线程"><a href="#1-进程与线程" class="headerlink" title="1. 进程与线程"></a>1. 进程与线程</h4><h5 id="1-进程"><a href="#1-进程" class="headerlink" title="(1) 进程"></a>(1) 进程</h5><p>进程是一个程序关于某个数据集合的一次运行活动，它是操作系统动态执行的基本单元，是并发执行的程序在执行过程中分配和管理资源的基本单位，竞争计算机系统资源的基本单位。</p>
 <h5 id="2-线程"><a href="#2-线程" class="headerlink" title="(2) 线程"></a>(2) 线程</h5><p>线程是操作系统能够进行运算调度的最小单位，是进程的一个执行单元，是比进程更小的独立运行的基本单位。</p>
 <h4 id="2-并行与并发"><a href="#2-并行与并发" class="headerlink" title="2. 并行与并发"></a>2. 并行与并发</h4><h5 id="1-串行"><a href="#1-串行" class="headerlink" title="(1) 串行"></a>(1) 串行</h5><p>串行 <code>(serial)</code> 指在从事某项工作时一个步骤一个步骤的去实施，与并行相对应。</p>
 <h5 id="2-并行-parallel"><a href="#2-并行-parallel" class="headerlink" title="(2) 并行(parallel)"></a>(2) 并行(parallel)</h5><p>并行 <code>(parallel)</code> 指同一时刻有多条指令在多个处理器上同时执行，无论从微观还是从宏观来看，二者都是一起执行的。</p>
 <h5 id="3-并发-concurrency"><a href="#3-并发-concurrency" class="headerlink" title="(3) 并发(concurrency)"></a>(3) 并发(concurrency)</h5><p>并发 <code>(concurrency)</code> 指同一时刻只能有一条指令执行，但多个进程指令被快速的轮换执行，使得在宏观上具有多个进程同时执行的效果，但在微观上并不是同时执行的，只是把时间分成若干段，使多个进程快速交替的执行。</p>
-<h3 id="二、线程创建"><a href="#二、线程创建" class="headerlink" title="二、线程创建"></a>二、线程创建</h3><p><code>Java</code> 针对单线程的创建一共提供 <code>3</code> 种方式，下面将依次介绍创建方式。</p>
+<p>对于绝大数编程语言来讲，涉及的通常都是并发而非真正意义上的并行，即多个线程之间快速交替运行。</p>
+<h3 id="二、线程创建"><a href="#二、线程创建" class="headerlink" title="二、线程创建"></a>二、线程创建</h3><p><code>Java</code> 针对单线程的创建一共提供 <code>3</code> 种方式，对应着三种不同线程类，下面将依次介绍创建方式。</p>
 <h4 id="1-Thread"><a href="#1-Thread" class="headerlink" title="1. Thread"></a>1. Thread</h4><p>通过继承 <code>Thread</code> 类并重写 <code>run()</code> 方法实现异步逻辑。</p>
 <p>注意启动线程时调用的为 <code>start()</code> 而非 <code>run()</code>，前者才为异步任务启动。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
@@ -653,6 +660,15 @@
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Thread</code> 与 <code>Runnable</code> 的线程区别是由于 <code>Java</code> 特性引起的，在 <code>Java</code> 中一个类可以实现多个接口，但只能继承一个父类，因此通过继承 <code>Thread</code> 实现的线程便无法继承其它父类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// MyThread1 无法再继承其它类</span>
+<span class="token keyword">class</span> <span class="token class-name">MyThread1</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread is running!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Runnable"><a href="#2-Runnable" class="headerlink" title="2. Runnable"></a>2. Runnable</h4><p>通过实现 <code>Runnable</code> 接口并重写 <code>run()</code> 方法用于定义线程业务逻辑。</p>
 <p>注意直接执行 <code>Runnable</code> 的 <code>run()</code> 其仍为同步执行，通常将业务定义于 <code>Runnable</code> 并将任务通过 <code>Thread</code> 类或线程池进行提交，从而实现异步效果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -668,7 +684,17 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Runnable</code> 创建的线程效果和 <code>Thread</code> 创建的并没有根本性区别，但因为 <code>Runnable</code> 是通过实现接口类实现线程因此其仍可以继承其它父类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// MyThread2 可以同时继承其它父类</span>
+<span class="token keyword">class</span> <span class="token class-name">MyThread2</span> <span class="token keyword">extends</span> <span class="token class-name">Human</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread is running!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Callable"><a href="#3-Callable" class="headerlink" title="3. Callable"></a>3. Callable</h4><p>无论是通过继承 <code>Thread</code> 类还是实现 <code>Runnable</code> 接口所创建的线程都没有返回值，当需要线程返回参数时，可通过实现 <code>Callable</code> 接口并重写 <code>call()</code> 方法。</p>
+<p><code>Callable</code> 与 <code>Runnable</code> 通过是通过 <code>implements</code> 接口类实现，但与后者不同的是 <code>Callable</code> 返回值，而 <code>Runnable</code> 没有返回值。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     TimeCall thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TimeCall</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -687,35 +713,58 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-区别介绍"><a href="#4-区别介绍" class="headerlink" title="4. 区别介绍"></a>4. 区别介绍</h4><h5 id="1-Thread-1"><a href="#1-Thread-1" class="headerlink" title="(1) Thread"></a>(1) Thread</h5><p><code>Thread</code> 与 <code>Runnable</code> 的线程区别是由于 <code>Java</code> 特性引起的，在 <code>Java</code> 中一个类可以实现多个接口，但只能继承一个父类，因此通过继承 <code>Thread</code> 实现的线程便无法继承其它父类。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// MyThread1 无法再继承其它类</span>
-<span class="token keyword">class</span> <span class="token class-name">MyThread1</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread is running!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+<h3 id="三、性质特征"><a href="#三、性质特征" class="headerlink" title="三、性质特征"></a>三、性质特征</h3><h4 id="1-生命周期"><a href="#1-生命周期" class="headerlink" title="1. 生命周期"></a>1. 生命周期</h4><p>所谓生命周期即线程一个线程从创建到最后终结关闭所会经历的阶段，具体信息参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">阶段</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">New</td>
+        <td style="text-align: center;">新创建的线程，尚未执行。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Runnable</td>
+        <td style="text-align: center;">运行中的线程，正在执行 run() 方法。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Blocked</td>
+        <td style="text-align: center;">运行中的线程，因为某些操作被阻塞而挂起。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Waiting</td>
+        <td style="text-align: center;">运行中的线程，因为某些操作在等待中。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Timed Waiting</td>
+        <td style="text-align: center;">运行中的线程，因为执行 sleep() 方法正在计时等待。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Terminated</td>
+        <td style="text-align: center;">线程已终止，因为 run() 方法执行完毕。</td>
+    </tr>
+</table>
+
+<p>在代码中，我们可以通过 <code>getState()</code> 方法获取当前线程阶段状态。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">LifeDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"thread is running with "</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 状态为 NEW</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"State："</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 状态为 RUNNABLE</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"State："</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 返回当前正在运行的线程</span>
+    <span class="token comment" spellcheck="true">// 格式：[ name, priority, group.name ]</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Info："</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-Runnable-1"><a href="#2-Runnable-1" class="headerlink" title="(2) Runnable"></a>(2) Runnable</h5><p><code>Runnable</code> 创建的线程效果和 <code>Thread</code> 创建的并没有根本性区别，但因为 <code>Runnable</code> 是通过实现接口类实现线程因此其仍可以继承其它父类。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// MyThread2 可以同时继承其它父类</span>
-<span class="token keyword">class</span> <span class="token class-name">MyThread2</span> <span class="token keyword">extends</span> <span class="token class-name">Human</span> <span class="token keyword">implements</span> <span class="token class-name">Runnable</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread is running!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-Callable-1"><a href="#3-Callable-1" class="headerlink" title="(3) Callable"></a>(3) Callable</h5><p><code>Callable</code> 与 <code>Runnable</code> 通过是通过 <code>implements</code> 接口类实现，但与后者不同的是 <code>Callable</code> 返回值，而 <code>Runnable</code> 没有返回值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">TimeCall</span> <span class="token keyword">implements</span> <span class="token class-name">Callable</span><span class="token operator">&lt;</span>Long<span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> Long <span class="token function">call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、性质特征"><a href="#三、性质特征" class="headerlink" title="三、性质特征"></a>三、性质特征</h3><h4 id="1-启动方式"><a href="#1-启动方式" class="headerlink" title="1. 启动方式"></a>1. 启动方式</h4><p>在 <code>Java</code> 中对于创建的线程分别提供了 <code>run()</code> 与  <code>start()</code> 两种启用方式，下面分别介绍二者的区别。</p>
-<h5 id="1-run"><a href="#1-run" class="headerlink" title="(1) run()"></a>(1) run()</h5><p>通过 <code>run()</code> 启动线程则要等待 <code>run</code> 方法体执行完毕后才可继续执行下面的代码，程序中只有主线程这一个线程，程序执行路径还是只有一条，这样就没有达到写线程的目的。</p>
-<h5 id="2-start"><a href="#2-start" class="headerlink" title="(2) start()"></a>(2) start()</h5><p>通过 <code>start()</code> 启动线程无需等待 <code>run</code> 方法体代码执行完毕，可以直接继续执行下面的代码，从而实现异步的效果。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-启动方式"><a href="#2-启动方式" class="headerlink" title="2. 启动方式"></a>2. 启动方式</h4><p>在 <code>Java</code> 中对于创建的线程分别提供了 <code>run()</code> 与  <code>start()</code> 两种启用方式，下面分别介绍二者的区别。</p>
+<h5 id="1-run"><a href="#1-run" class="headerlink" title="(1) run()"></a>(1) run()</h5><p>启动线程则要等待 <code>run</code> 方法体执行完毕后才可继续执行下面的代码，程序中只有主线程这一个线程，程序执行路径还是只有一条，这样就没有达到写线程的目的。</p>
+<h5 id="2-start"><a href="#2-start" class="headerlink" title="(2) start()"></a>(2) start()</h5><p>启动线程无需等待 <code>run</code> 方法体代码执行完毕，可以直接继续执行下面的代码，从而实现异步的效果。</p>
 <h5 id="3-示例"><a href="#3-示例" class="headerlink" title="(3) 示例"></a>(3) 示例</h5><p>下面通过一个简单案例进行说明，在线程 <code>run</code> 方法体中利用 <code>sleep()</code> 方法让线程睡眠 <code>5</code> 秒以模拟任务耗时。再分别通过 <code>run()</code> 和 <code>start()</code> 启动线程，并在启动线程后进行一个输出打印，根据输出的时间点即可观察二者的区别。 </p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Thread thread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -745,41 +794,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-生命周期"><a href="#2-生命周期" class="headerlink" title="2. 生命周期"></a>2. 生命周期</h4><ul>
-<li><p><strong>New：</strong> 新创建的线程，尚未执行。</p>
-</li>
-<li><p><strong>Runnable：</strong> 运行中的线程，正在执行 <code>run()</code> 方法。</p>
-</li>
-<li><p><strong>Blocked：</strong> 运行中的线程，因为某些操作被阻塞而挂起。</p>
-</li>
-<li><p><strong>Waiting：</strong> 运行中的线程，因为某些操作在等待中。</p>
-</li>
-<li><p><strong>Timed Waiting：</strong> 运行中的线程，因为执行 <code>sleep()</code> 方法正在计时等待。</p>
-</li>
-<li><p><strong>Terminated：</strong> 线程已终止，因为 <code>run()</code> 方法执行完毕。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">LifeDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadSon</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 状态为 NEW</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"State："</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 状态为 RUNNABLE</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"State："</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 返回当前正在运行的线程</span>
-    <span class="token comment" spellcheck="true">// 格式：[ name, priority, group.name ]</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Info："</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">ThreadSon</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"thread is running with "</span> <span class="token operator">+</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
 <h4 id="3-守护线程"><a href="#3-守护线程" class="headerlink" title="3. 守护线程"></a>3. 守护线程</h4><p>守护线程即创建之后将一直处于运行状态，当所有非守护线程结束后，则其会自动结束退出。</p>
 <p>如果直接通过 <code>while(true)</code> 开启线程若系统异常停止程序并无法立刻退出造成资源泄露浪费，而守护线程的创建只需通过 <code>setDaemon()</code> 设置即可，但需要注意不能在守护线程进行任务资源操作，因为其结束时不会释放资源。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">DaemonDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -831,7 +845,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p>针对上述的情况，除了通过加锁的方式 <code>Java</code> 提供了更简单的 <code>isAlive()</code> 和 <code>join()</code> 以应对上述问题，下面分别介绍两种方法作用。</p>
+<p>针对上述的情况，<code>Java</code> 提供了 <code>isAlive()</code> 和 <code>join()</code> 以应对此类场景</p>
 </blockquote>
 <h4 id="1-isAlive"><a href="#1-isAlive" class="headerlink" title="1. isAlive()"></a>1. isAlive()</h4><p><code>isAlive()</code> 方法用于判断当前线程是否处于活动状态，我们可以根据不同状态进行不同操作，从而避免共享变量冲突。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">AliveDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
@@ -1625,7 +1639,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">270.3k</span>
+                <span class="white-color">271.4k</span>
             
             
             
