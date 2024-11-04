@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-21
+                    2024-11-04
                 </div>
                 
 
@@ -622,9 +622,9 @@
             <div id="articleContent">
                 <p>在业务开发中往往会碰到业务逻辑相同的功能，对于不同的项目而言迁移核心代码即可，但对于同个项目而言，最简单的方法就是将这部分代码抽象出来，从而实现代码复用。而除了抽离为抽象类或接口之外， <code>Java</code> 同时提供泛型这一特性供于业务抽象。</p>
 <p>如针对数据库中实体对象通过会定义对其的增删改查操作，但在宏观上而言即使不同实体的增删改也仅仅只是针对的对象不同而已，实现逻辑上并没有什么区别。泛型的诞生就是为了简化代码提供减少无意义的代码开发，让开发人员专注于业务， <code>Java</code> 对此提供泛型方法与泛型接口。</p>
-<h3 id="一、定义概念"><a href="#一、定义概念" class="headerlink" title="一、定义概念"></a>一、定义概念</h3><h4 id="1-泛型对象"><a href="#1-泛型对象" class="headerlink" title="1. 泛型对象"></a>1. 泛型对象</h4><p>在 <code>JDK 1.5</code> 中 <code>Java</code> 引入了泛型特性，从而提供了可拓展的代码模块编写。</p>
+<h3 id="一、定义概念"><a href="#一、定义概念" class="headerlink" title="一、定义概念"></a>一、定义概念</h3><h4 id="1-泛型擦除"><a href="#1-泛型擦除" class="headerlink" title="1. 泛型擦除"></a>1. 泛型擦除</h4><p>在 <code>JDK 1.5</code> 中 <code>Java</code> 引入了泛型特性，从而提供了可拓展的代码模块编写。</p>
 <p>需要注意在泛型设计中并无法通过 <code>new T()</code> 实现对象初始化，想要在泛型设计中创建泛型指代的类对象，最常用的方式即利用反射实现。</p>
-<h4 id="2-泛型擦除"><a href="#2-泛型擦除" class="headerlink" title="2. 泛型擦除"></a>2. 泛型擦除</h4><p>代码编写阶段程序中所定义的泛型类在编译之后将转为实际对象的类，而非 <code>T</code> 等泛型指代对象，即编译完成的 <code>class</code> 文件中将替换为相应的类，这个过程称为泛型擦除。</p>
+<p>代码编写阶段程序中所定义的泛型类在编译之后将转为实际对象的类，而非 <code>T</code> 等泛型指代对象，即编译完成的 <code>class</code> 文件中将替换为相应的类，这个过程称为泛型擦除。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token function">convert</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -634,16 +634,11 @@
     <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span> t<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如上述的代码示例在编译后的 <code>class</code> 中相对应的代码格式如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">convert</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> User <span class="token function">convert</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<p>如上述的代码示例 <code>convert()</code> 部分方法在编译后的 <code>class</code> 中相对应的代码格式如下，即会替换为实际生效的 <code>Java</code> 类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> User <span class="token function">convert</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token punctuation">(</span>User<span class="token punctuation">)</span> user<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、泛型方法"><a href="#二、泛型方法" class="headerlink" title="二、泛型方法"></a>二、泛型方法</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>先举个简单的例子来了解一下什么是泛型，在下述示例中定义一个不包含任何业务的方法，将传入的对象原封不动的返回，代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> User <span class="token function">doNothing</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// do something to "user"</span>
@@ -1428,7 +1423,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">271.4k</span>
+                <span class="white-color">271.5k</span>
             
             
             
