@@ -586,14 +586,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-13
+                    2024-11-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    902
+                    892
                 </div>
                 
 
@@ -620,7 +620,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、虚拟表"><a href="#一、虚拟表" class="headerlink" title="一、虚拟表"></a>一、虚拟表</h3><p>类似于 <code>MySQL</code> 当我们不根据已有的表进行查询时，即可通过虚拟表的方式实现。</p>
+                <h3 id="一、数据操作"><a href="#一、数据操作" class="headerlink" title="一、数据操作"></a>一、数据操作</h3><h4 id="1-虚拟表"><a href="#1-虚拟表" class="headerlink" title="1. 虚拟表"></a>1. 虚拟表</h4><p>类似于 <code>MySQL</code> 当我们不根据已有的表进行查询时，即可通过虚拟表的方式实现。</p>
 <p>虚拟表查询格式如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span>列<span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span>列n<span class="token operator">></span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -633,9 +633,8 @@
 <span class="token operator">|</span>   Alex  <span class="token operator">|</span>  <span class="token number">12</span>   <span class="token operator">|</span>  
 <span class="token comment" spellcheck="true">------------------- </span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、数据增量"><a href="#二、数据增量" class="headerlink" title="二、数据增量"></a>二、数据增量</h3><p><code>Merge</code> 函数可以对新增的记录进行判断，如果满足设定条件（如 <code>ID</code> 已存在），则进行更新操作，否则进行插入操作。通过 <code>Merge</code> 可以利用一条语句实现多种效果。</p>
-<p>需要注意一点 <code>MySQL</code> 并不支持 <code>Merge</code> 关键字操作。</p>
-<h4 id="1-结构"><a href="#1-结构" class="headerlink" title="1. 结构"></a>1. 结构</h4><p><code>Merge</code> 基本语法结构如下：</p>
+<h4 id="2-增量变更"><a href="#2-增量变更" class="headerlink" title="2. 增量变更"></a>2. 增量变更</h4><p><code>Merge</code> 函数可以对新增的记录进行判断，如果满足设定条件（如 <code>ID</code> 已存在），则进行更新操作，否则进行插入操作。通过 <code>Merge</code> 可以利用一条语句实现多种效果。</p>
+<h5 id="1-语法"><a href="#1-语法" class="headerlink" title="(1) 语法"></a>(1) 语法</h5><p><code>Merge</code> 基本语法结构如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">merge</span> <span class="token keyword">into</span> <span class="token operator">&lt;</span>t_table<span class="token operator">></span> <span class="token operator">&lt;</span>t_alias<span class="token operator">></span>
 <span class="token keyword">using</span> <span class="token operator">&lt;</span>s_table<span class="token operator">></span> <span class="token operator">&lt;</span>s_alias<span class="token operator">></span>
 <span class="token keyword">on</span><span class="token punctuation">(</span> 
@@ -648,7 +647,7 @@
 <span class="token keyword">then</span> 
    <span class="token keyword">insert</span> <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>t_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>s_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-示例"><a href="#2-示例" class="headerlink" title="2. 示例"></a>2. 示例</h4><p>假如目标表 <code>TB_TEST</code> 与来源表 <code>TB_TEMP</code> 如下：</p>
+<h5 id="2-示例"><a href="#2-示例" class="headerlink" title="(2) 示例"></a>(2) 示例</h5><p>假如目标表 <code>TB_TEST</code> 与来源表 <code>TB_TEMP</code> 如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-------------------------          ------------------------- </span>
 <span class="token operator">|</span>   id  <span class="token operator">|</span>  name  <span class="token operator">|</span>  age <span class="token operator">|</span>          <span class="token operator">|</span>   id  <span class="token operator">|</span>  name  <span class="token operator">|</span>  age <span class="token operator">|</span>
 <span class="token comment" spellcheck="true">-------------------------          -------------------------</span>
@@ -665,7 +664,7 @@
 <span class="token operator">|</span>   <span class="token number">3</span>   <span class="token operator">|</span>  Beth  <span class="token operator">|</span>  <span class="token number">42</span>  <span class="token operator">|</span>
 <span class="token comment" spellcheck="true">-------------------------</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>实现的 <code>SQL</code> 语句如下：</p>
+<p>最终实现的 <code>SQL</code> 语句如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">merge</span> <span class="token keyword">into</span> tb_test t 
 <span class="token keyword">using</span> tb_temp p
 <span class="token keyword">on</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>id<span class="token punctuation">)</span> 
@@ -674,7 +673,7 @@
 <span class="token keyword">when</span> <span class="token operator">not</span> <span class="token keyword">matched</span> <span class="token keyword">then</span> 
    <span class="token keyword">insert</span> <span class="token keyword">values</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> p<span class="token punctuation">.</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、常用函数"><a href="#三、常用函数" class="headerlink" title="三、常用函数"></a>三、常用函数</h3><h4 id="1-日期函数"><a href="#1-日期函数" class="headerlink" title="1. 日期函数"></a>1. 日期函数</h4><p><code>Oracle</code> 中常用的时间函数存在三类，描述信息参考下表。</p>
+<h3 id="二、常用函数"><a href="#二、常用函数" class="headerlink" title="二、常用函数"></a>二、常用函数</h3><h4 id="1-日期函数"><a href="#1-日期函数" class="headerlink" title="1. 日期函数"></a>1. 日期函数</h4><p><code>Oracle</code> 中常用的时间函数存在三类，描述信息参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">函数</td>
@@ -715,7 +714,7 @@
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 从第 0 位截取到第 3 位</span>
 <span class="token keyword">select</span> substr<span class="token punctuation">(</span><span class="token string">'HelloWorld'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">value</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="四、分析统计"><a href="#四、分析统计" class="headerlink" title="四、分析统计"></a>四、分析统计</h3><h4 id="1-数据分析"><a href="#1-数据分析" class="headerlink" title="1. 数据分析"></a>1. 数据分析</h4><p>通过执行分析即可手动触发元数据表信息的更新，语句基本格式如下：</p>
+<h3 id="三、分析统计"><a href="#三、分析统计" class="headerlink" title="三、分析统计"></a>三、分析统计</h3><h4 id="1-数据分析"><a href="#1-数据分析" class="headerlink" title="1. 数据分析"></a>1. 数据分析</h4><p>通过执行分析即可手动触发元数据表信息的更新，语句基本格式如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql">dbms_stats<span class="token punctuation">.</span>gather_table_stats<span class="token punctuation">(</span>
     ownname <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'&lt;schema>'</span><span class="token punctuation">,</span>
     tabname <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'&lt;table_name>'</span><span class="token punctuation">,</span>
@@ -1373,7 +1372,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">271.5k</span>
+                <span class="white-color">272.5k</span>
             
             
             

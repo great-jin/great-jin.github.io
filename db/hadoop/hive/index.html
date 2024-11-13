@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-29
+                    2024-11-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -620,7 +620,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、DDL操作"><a href="#一、DDL操作" class="headerlink" title="一、DDL操作"></a>一、DDL操作</h3><h4 id="1-新建库"><a href="#1-新建库" class="headerlink" title="1. 新建库"></a>1. 新建库</h4><p>通过 <code>create database</code> 新建 <code>Hive</code> 数据库。</p>
+                <p><code>Hive</code> 是一个基于 <code>Hadoop</code> 的数据仓库工具，用于在 <code>HDFS</code> 上进行大规模数据存储和管理。它提供了一种类 <code>SQL</code> 的查询语言 <code>HiveQL(Hive Query Language)，允许用户在无需深度掌握 </code>MapReduce` 编程的情况下进行数据分析和查询。</p>
+<p><code>Hive</code> 的底层存储机制即数据文件，拥有 <code>TextFile</code>、<code>ORC(Optimized Row Columnar)</code> 与 <code>Parquet</code> 等多种方式。在 Hive 中虽然提供类似关系型数据库的查询语法，但实际性能相对较低，实际应用中更多的是对于文件流的操作进而实现数据管理。</p>
+<p>下面就让我们来了解一下 <code>Hive</code> 的一些相关的概念及知识。</p>
+<h3 id="一、DDL操作"><a href="#一、DDL操作" class="headerlink" title="一、DDL操作"></a>一、DDL操作</h3><h4 id="1-新建库"><a href="#1-新建库" class="headerlink" title="1. 新建库"></a>1. 新建库</h4><p>通过 <code>create database</code> 新建 <code>Hive</code> 数据库。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建数据库</span>
 <span class="token keyword">create</span> <span class="token keyword">database</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -659,13 +662,13 @@ STORED <span class="token keyword">AS</span> <span class="token operator">&lt;</
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、DML操作"><a href="#二、DML操作" class="headerlink" title="二、DML操作"></a>二、DML操作</h3><h4 id="1-新增数据"><a href="#1-新增数据" class="headerlink" title="1. 新增数据"></a>1. 新增数据</h4><p>若表存在分区在插入时需要指定分区值。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 带分区</span>
-<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token operator">&lt;</span>tb_name<span class="token operator">></span> 
 <span class="token keyword">PARTITION</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">=</span> <span class="token string">'&lt;value-1>'</span><span class="token punctuation">)</span> 
 <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'&lt;value-1>'</span><span class="token punctuation">,</span> <span class="token string">'&lt;value-2>'</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token string">'&lt;value-n>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>没有分区字段的表插入语法与普通数据库无异。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 无分区</span>
-<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token operator">&lt;</span>tb_name<span class="token operator">></span> 
 <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'&lt;value-1>'</span><span class="token punctuation">,</span> <span class="token string">'&lt;value-2>'</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token string">'&lt;value-n>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-文件插入"><a href="#2-文件插入" class="headerlink" title="2. 文件插入"></a>2. 文件插入</h4><p><code>Hive</code> 原生支持从文件读取数据插入，如准备如下 <code>txt</code> 文件，其中一行数据即为一条记录，不同值之间的分隔符与建表时指定时的一致即可。</p>
@@ -674,7 +677,7 @@ STORED <span class="token keyword">AS</span> <span class="token operator">&lt;</
 <p>读取插入语句如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 默认是 append , 使用 overwrite 则进行覆盖</span>
 <span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/path/test.txt'</span> 
-overwrite <span class="token keyword">into</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">;</span>
+overwrite <span class="token keyword">into</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、基本函数"><a href="#三、基本函数" class="headerlink" title="三、基本函数"></a>三、基本函数</h3><h4 id="1-时间函数"><a href="#1-时间函数" class="headerlink" title="1. 时间函数"></a>1. 时间函数</h4><h5 id="1-from-unixtime"><a href="#1-from-unixtime" class="headerlink" title="(1) from_unixtime"></a>(1) from_unixtime</h5><p>通过 <code>from_unixtime</code> 函数可将时间戳转化为字符串。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
@@ -703,39 +706,47 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
     time1 <span class="token operator">&lt;</span> unix_timestamp<span class="token punctuation">(</span><span class="token string">'2022-06-16 16:00:00'</span><span class="token punctuation">,</span> <span class="token string">'yyyy-MM-dd HH:00:00'</span><span class="token punctuation">)</span><span class="token operator">+</span> INTERVAL <span class="token number">1</span> hour<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、MetaStore"><a href="#四、MetaStore" class="headerlink" title="四、MetaStore"></a>四、MetaStore</h3><p><code>MetaStore</code> 是 <code>Hive</code> 库内部维护的元数据库，通过其即可直接访问 <code>Hive</code> 中表的元数据信息，在最新的 <code>Hive 3</code> 中支持单独部署。</p>
-<h4 id="1-数据查询"><a href="#1-数据查询" class="headerlink" title="1. 数据查询"></a>1. 数据查询</h4><p>通过 <code>desc</code> 关键字查询 <code>Hive</code> 相关表信息。</p>
-<h5 id="1-表信息"><a href="#1-表信息" class="headerlink" title="(1) 表信息"></a>(1) 表信息</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看建表语句</span>
-<span class="token keyword">show</span> <span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
+<h4 id="1-数据查询"><a href="#1-数据查询" class="headerlink" title="1. 数据查询"></a>1. 数据查询</h4><h5 id="1-表信息"><a href="#1-表信息" class="headerlink" title="(1) 表信息"></a>(1) 表信息</h5><p>通过 <code>desc</code> 关键字查询对应数据表的相关信息。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看建表语句</span>
+<span class="token keyword">show</span> <span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 查看表统计信息（未格式化）</span>
-<span class="token keyword">desc</span> <span class="token keyword">extended</span> <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">desc</span> <span class="token keyword">extended</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 查看表统计信息（格式化）</span>
-<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-分区信息"><a href="#2-分区信息" class="headerlink" title="(2) 分区信息"></a>(2) 分区信息</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看分区结构</span>
-<span class="token keyword">show</span> partitions <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-分区信息"><a href="#2-分区信息" class="headerlink" title="(2) 分区信息"></a>(2) 分区信息</h5><p>可通过 <code>partition</code> 关键字指定查询表的特定分区信息。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看分区结构</span>
+<span class="token keyword">show</span> partitions <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 查看指定分区下统计信息</span>
-<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> 
 <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>p_name_1<span class="token operator">></span> <span class="token operator">=</span> <span class="token string">'&lt;p_value_1>'</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>p_name_2<span class="token operator">></span> <span class="token operator">=</span> <span class="token string">'&lt;p_value_2>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-字段信息"><a href="#3-字段信息" class="headerlink" title="(3) 字段信息"></a>(3) 字段信息</h5><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看字段信息</span>
-<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>database_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-字段信息"><a href="#3-字段信息" class="headerlink" title="(3) 字段信息"></a>(3) 字段信息</h5><p>同理，在 <code>desc</code> 查询表信息时可指定只查看特定列。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看字段信息</span>
+<span class="token keyword">desc</span> formatted <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="2-数据分析"><a href="#2-数据分析" class="headerlink" title="2. 数据分析"></a>2. 数据分析</h4><p>通过 <code>analyze</code> 关键字执行分析表，执行分析后将会更新对应表的文件占用与行数等信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 生成表统计信息(无分区)</span>
-<span class="token keyword">analyze</span> <span class="token keyword">table</span> a_db<span class="token punctuation">.</span>tb_test <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+<span class="token keyword">analyze</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 生成表统计信息(有分区需指定)</span>
-<span class="token keyword">analyze</span> <span class="token keyword">table</span> a_db<span class="token punctuation">.</span>tb_test2 <span class="token keyword">partition</span><span class="token punctuation">(</span>create_time<span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+<span class="token keyword">analyze</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>partition_name<span class="token operator">></span><span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 生成表统计信息(多分区需全部指定)</span>
-<span class="token keyword">analyze</span> <span class="token keyword">table</span> a_db<span class="token punctuation">.</span>tb_test3 <span class="token keyword">partition</span><span class="token punctuation">(</span>year<span class="token punctuation">,</span> month<span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+<span class="token keyword">analyze</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>partition_1<span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>partition_2<span class="token operator">></span><span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 生成表统计信息(指定分区与值)</span>
-<span class="token keyword">analyze</span> <span class="token keyword">table</span> a_db<span class="token punctuation">.</span>tb_test3 <span class="token keyword">partition</span><span class="token punctuation">(</span>year<span class="token operator">=</span><span class="token string">'2022'</span><span class="token punctuation">,</span> month<span class="token operator">=</span><span class="token string">'11'</span><span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">analyze</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>tb_name<span class="token operator">></span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>p_1<span class="token operator">></span> <span class="token operator">=</span> <span class="token operator">&lt;</span>v_1<span class="token operator">></span><span class="token punctuation">)</span> <span class="token keyword">compute</span> <span class="token keyword">statistics</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、MetaData"><a href="#五、MetaData" class="headerlink" title="五、MetaData"></a>五、MetaData</h3><p><code>MetaData</code> 是 <code>Hive</code> 库外部的元数据存储库，通常选择 <code>MySQL</code> 或 <code>PostgreSQL</code> 作为 <code>Hive</code> 外部元数据库。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -744,11 +755,15 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
     </tr>
     <tr>
         <td style="text-align: center;">DBS</td>
-        <td style="text-align: center;">存储 HIVE 数据库基本信息</td>
+        <td style="text-align: center;">存储 HIVE 数据库基本信息。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DATABASE_PARAMS</td>
+        <td style="text-align: center;">存储数据库的相关参数。</td>
     </tr>
     <tr>
         <td style="text-align: center;">TBLS</td>
-        <td style="text-align: center;">存储 HIVE 表、视图、索引等信息</td>
+        <td style="text-align: center;">存储 HIVE 表、视图、索引等信息。</td>
     </tr>
     <tr>
         <td style="text-align: center;">TABLE_PARAMS</td>
@@ -756,7 +771,7 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
     </tr>
     <tr>
         <td style="text-align: center;">PARTITIONS</td>
-        <td style="text-align: center;">存储表与视图的属性信息。</td>
+        <td style="text-align: center;">存储表的分区属性信息。</td>
     </tr>
     <tr>
         <td style="text-align: center;">TBL_PRIVS</td>
@@ -765,29 +780,44 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
 </table>
 
 <h4 id="1-DBS"><a href="#1-DBS" class="headerlink" title="1. DBS"></a>1. DBS</h4><p>资源表 <code>DBS</code> 存储 <code>Hive</code> 数据库基本信息</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> DBS
-<span class="token keyword">where</span> NAME <span class="token operator">=</span> <span class="token string">'&lt;database_name>'</span><span class="token punctuation">;</span>
-
-
-<span class="token comment" spellcheck="true">-- 存储数据库的相关参数</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> DATABASE_PARAMS<span class="token punctuation">;</span>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    DBS
+<span class="token keyword">where</span> 
+    NAME <span class="token operator">=</span> <span class="token string">'&lt;db_name>'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-TBLS"><a href="#2-TBLS" class="headerlink" title="2. TBLS"></a>2. TBLS</h4><p>资源表 <code>TBLS</code> 存储 <code>Hive</code> 表、视图、索引等信息。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> TBLS
-<span class="token keyword">where</span> TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;table_name>'</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="3-TABLE-PARAMS"><a href="#3-TABLE-PARAMS" class="headerlink" title="3. TABLE_PARAMS"></a>3. TABLE_PARAMS</h4><p>资源表 <code>TABLE_PARAMS</code> 存储 <code>Hive</code> 表与视图的属性信息，其中 <code>table_id</code> 由 <code>TBLS</code> 查询。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> TABLE_PARAMS
-<span class="token keyword">where</span> TBL_ID <span class="token operator">=</span> <span class="token operator">&lt;</span>table_id<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="4-PARTITIONS"><a href="#4-PARTITIONS" class="headerlink" title="4. PARTITIONS"></a>4. PARTITIONS</h4><p>资源表 <code>PARTITIONS</code> 存储 <code>Hive</code> 表分区信息，其中 <code>table_id</code> 由 <code>TBLS</code> 查询。</p>
+<h4 id="2-TBLS"><a href="#2-TBLS" class="headerlink" title="2. TBLS"></a>2. TBLS</h4><p>资源表 <code>TBLS</code> 存储 <code>Hive</code> 表、视图与索引等信息。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    TBLS
+<span class="token keyword">where</span> 
+    TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;tb_name>'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-TABLE-PARAMS"><a href="#3-TABLE-PARAMS" class="headerlink" title="3. TABLE_PARAMS"></a>3. TABLE_PARAMS</h4><p>资源表 <code>TABLE_PARAMS</code> 存储 <code>Hive</code> 表与视图的属性信息，其中 <code>TBL_ID</code> 由 <code>TBLS</code> 查询。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    TABLE_PARAMS
+<span class="token keyword">where</span> 
+    TBL_ID <span class="token operator">=</span> <span class="token operator">&lt;</span>table_id<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-PARTITIONS"><a href="#4-PARTITIONS" class="headerlink" title="4. PARTITIONS"></a>4. PARTITIONS</h4><p>资源表 <code>PARTITIONS</code> 存储 <code>Hive</code> 表分区信息，其中 <code>TBL_ID</code> 由 <code>TBLS</code> 查询。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 存储分区信息</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> PARTITIONS
-<span class="token keyword">where</span> TBL_ID <span class="token operator">=</span> <span class="token operator">&lt;</span>table_id<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    PARTITIONS
+<span class="token keyword">where</span> 
+    TBL_ID <span class="token operator">=</span> <span class="token operator">&lt;</span>table_id<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-TBL-PRIVS"><a href="#5-TBL-PRIVS" class="headerlink" title="5. TBL_PRIVS"></a>5. TBL_PRIVS</h4><p>资源表 <code>TBL_PRIVS</code> 存储 <code>Hive</code> 表与视图的授权信息。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> TBL_PRIVS<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    TBL_PRIVS<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="6-组合查询"><a href="#6-组合查询" class="headerlink" title="6. 组合查询"></a>6. 组合查询</h4><p>查看指定带分区的 <code>Hive</code> 表基本元数据信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
     <span class="token number">d</span><span class="token punctuation">.</span>NAME<span class="token punctuation">,</span> t<span class="token punctuation">.</span>TBL_NAME<span class="token punctuation">,</span> p<span class="token punctuation">.</span>PART_NAME<span class="token punctuation">,</span> v<span class="token punctuation">.</span>PARAM_KEY<span class="token punctuation">,</span> v<span class="token punctuation">.</span>PARAM_VALUE
@@ -804,8 +834,8 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
     p<span class="token punctuation">.</span>PART_ID <span class="token operator">=</span> v<span class="token punctuation">.</span>PART_ID
 <span class="token keyword">where</span>
     <span class="token number">d</span><span class="token punctuation">.</span>OWNER_NAME <span class="token operator">=</span> <span class="token string">'hive'</span>
-    <span class="token operator">and</span> <span class="token number">d</span><span class="token punctuation">.</span>NAME <span class="token operator">=</span> <span class="token string">'&lt;database_name>'</span>
-    <span class="token operator">and</span> t<span class="token punctuation">.</span>TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;table_name>'</span><span class="token punctuation">;</span>
+    <span class="token operator">and</span> <span class="token number">d</span><span class="token punctuation">.</span>NAME <span class="token operator">=</span> <span class="token string">'&lt;db_name>'</span>
+    <span class="token operator">and</span> t<span class="token punctuation">.</span>TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;tb_name>'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查看指定无分区的 <code>Hive</code> 表基本元数据信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
@@ -824,8 +854,8 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
     t<span class="token punctuation">.</span>DB_ID <span class="token operator">=</span> <span class="token number">d</span><span class="token punctuation">.</span>DB_ID
 <span class="token keyword">where</span>
     <span class="token number">d</span><span class="token punctuation">.</span>OWNER_NAME <span class="token operator">=</span> <span class="token string">'hive'</span>
-    <span class="token operator">and</span> <span class="token number">d</span><span class="token punctuation">.</span>NAME <span class="token operator">=</span> <span class="token string">'&lt;database_name>'</span>
-    <span class="token operator">and</span> t<span class="token punctuation">.</span>TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;table_name>'</span><span class="token punctuation">;</span>
+    <span class="token operator">and</span> <span class="token number">d</span><span class="token punctuation">.</span>NAME <span class="token operator">=</span> <span class="token string">'&lt;db_name>'</span>
+    <span class="token operator">and</span> t<span class="token punctuation">.</span>TBL_NAME <span class="token operator">=</span> <span class="token string">'&lt;tb_name>'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
@@ -1424,7 +1454,7 @@ overwrite <span class="token keyword">into</span> <span class="token keyword">ta
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">271.5k</span>
+                <span class="white-color">272.5k</span>
             
             
             

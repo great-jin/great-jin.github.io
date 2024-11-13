@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-22
+                    2024-11-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.5k
+                    6.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    19 分
+                    21 分
                 </div>
                 
 
@@ -620,14 +620,19 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、基本结构"><a href="#一、基本结构" class="headerlink" title="一、基本结构"></a>一、基本结构</h3><h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p><code>Kafka</code> 中存在两类用户：生产者和消费者。消息的生产者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
+                <p><code>Apache Kafka</code> 是一个分布式的流处理平台，主要用于构建实时数据管道和流应用。它最初由 <code>LinkedIn</code> 开发，之后捐赠给了 Apache 软件基金会并成为一款开源项目。<code>Kafka</code> 以其高吞吐量、低延迟、分布式、可扩展和容错的特性，广泛应用于日志收集、实时数据分析、事件驱动架构等领域。</p>
+<p>本文将详细刨析 <code>Kafka</code> 的设计架构，以及数据传输方式特点，下面就让我们直接进入正题。</p>
+<h3 id="一、名词解释"><a href="#一、名词解释" class="headerlink" title="一、名词解释"></a>一、名词解释</h3><p>在开始之前，先让我们看一下 <code>Kafka</code> 中所涉及到的几个关键的概念。</p>
+<h4 id="1-User"><a href="#1-User" class="headerlink" title="1. User"></a>1. User</h4><p><code>Kafka</code> 中存在两类用户：生产者和消费者。消息的生产者叫 <code>Producer</code> ，消息的使用者和接收者是 <code>Consumer</code>，生产者将数据保存到 <code>Kafka</code> 集群中，消费者从中获取消息进行业务的处理。</p>
 <h4 id="2-Broker"><a href="#2-Broker" class="headerlink" title="2. Broker"></a>2. Broker</h4><p><code>Kafka</code> 集群中可能存在多台 <code>Server</code>，其中每一台 <code>Server</code> 都可以存储消息，将每一台 <code>Server</code> 称为一个实例，也称为 <code>Broker</code>。</p>
 <p>当部署 <code>Kafka</code> 集群时则存在多个 <code>Broker</code> 节点，通常将主节点称之为 <code>Leader</code> 节点，其它 <code>Broker</code> 节点称为 <code>Follwer</code> 节点。
 　</p>
 <h4 id="3-Topic"><a href="#3-Topic" class="headerlink" title="3. Topic"></a>3. Topic</h4><p><code>Topic</code> 是 <code>Kafka</code> 中的逻辑存储概念，一个 <code>Topic</code> 里保存的是同类消息，相当于对消息的分类。每个 <code>Producer</code> 将消息发送到 <code>kafka</code> 中都需要指明 <code>Topic</code>，即指明这个消息属于哪一类。</p>
 <h4 id="4-Partition"><a href="#4-Partition" class="headerlink" title="4. Partition"></a>4. Partition</h4><p>每个 <code>Topic</code> 都可以分成多个 <code>Partition</code>，每个 <code>Partition</code> 在存储层面是 <code>append log</code> 文件，任何发布到此 <code>Partition</code> 的消息都会被直接追加到 <code>log</code> 文件的尾部。</p>
 <p>为什么要进行分区呢？最根本的原因就是 <code>Kafka</code> 基于文件存储，当文件内容大到一定程度时，很容易达到单个磁盘的上限，因此采用分区的办法，即一个分区对应一个文件，这样就可以将数据分别存储到不同的 <code>Server</code> 上去，同时也可以实现负载均衡从而容纳更多的消费者。</p>
-<h5 id="1-Replica"><a href="#1-Replica" class="headerlink" title="(1) Replica"></a>(1) Replica</h5><p>分区 <code>Partition</code> 中的数据是以文件的形式存在，而为了实现故障高可用，<code>Kafka</code> 中引入了副本概念 <code>(Replica)</code>。</p>
+<h5 id="1-Offset"><a href="#1-Offset" class="headerlink" title="(1) Offset"></a>(1) Offset</h5><p>一个分区对应一个磁盘上的文件，而消息在文件中的位置就称为偏移量 <code>(Offset)</code>，<code>Offset</code> 为一个 <code>long</code> 型数字，它可以唯一标记条消息。</p>
+<p>由于 <code>Kafka</code> 并没有提供基他额外的索引机制来存储 <code>Offset</code> ，文件只能顺序的读写，所以在 <code>Kafka</code> 中几乎不允许对消息进行”随机读写”。</p>
+<h5 id="2-Replica"><a href="#2-Replica" class="headerlink" title="(2) Replica"></a>(2) Replica</h5><p>分区 <code>Partition</code> 中的数据是以文件的形式存在，而为了实现故障高可用，<code>Kafka</code> 中引入了副本概念 <code>(Replica)</code>。</p>
 <p>当生产者发送数据时，主节点接收到消息后会先将数据写入自身节点的 <code>append log</code> 文件，并将消息复制给其它的所有的子节点。同时子节点也会定时从主节点同步数据，从而保证与主节点的消息一致性。即在集群模式下，每个 <code>Partition</code> 下的消息文件将按照一定规则均匀复制分布到各个节点，因此当存在某个故障节点仍可从其它节点读取从而保证数据的安全性。</p>
 <blockquote>
 <ul>
@@ -637,8 +642,6 @@
 <li>当 <code>Replica</code> 的个数小于或等于 <code>Broker</code> 的个数，对于每个 <code>Partition</code> 而言，每个 <code>Broker</code> 上最多只会有一个 <code>Replica</code>，因此可以使用 <code>Broker id</code> 指定 <code>Partition</code> 的 <code>Replica</code>。</li>
 </ul>
 </blockquote>
-<h4 id="5-Offset"><a href="#5-Offset" class="headerlink" title="5. Offset"></a>5. Offset</h4><p>一个分区对应一个磁盘上的文件，而消息在文件中的位置就称为偏移量 <code>(Offset)</code>，<code>Offset</code> 为一个 <code>long</code> 型数字，它可以唯一标记条消息。</p>
-<p>由于 <code>Kafka</code> 并没有提供基他额外的索引机制来存储 <code>Offset</code> ，文件只能顺序的读写，所以在 <code>Kafka</code> 中几乎不允许对消息进行”随机读写”。</p>
 <h3 id="二、传输过程"><a href="#二、传输过程" class="headerlink" title="二、传输过程"></a>二、传输过程</h3><h4 id="1-生产者"><a href="#1-生产者" class="headerlink" title="1. 生产者"></a>1. 生产者</h4><p>对于生产者要写入的条记录，可以指定四个参数：分别是 <code>Topic, Partition, Key, Value(需存入的数据)</code>，其中 <code>Topic</code> 和 <code>Value</code> 是必须要指定的，而 <code>Key</code> 和 <code>Partition</code> 是可选的。</p>
 <p>对于一条记录，先对其进行序列化，按照 <code>Topic</code> 和 <code>Partition</code> 放进对应的发送队列中，若 <code>Partition</code> 未填，则分为两类情况：</p>
 <blockquote>
@@ -680,6 +683,10 @@
 <h4 id="4-消息堆积"><a href="#4-消息堆积" class="headerlink" title="4. 消息堆积"></a>4. 消息堆积</h4><p>在实际的消息生产传输中，有可能还会遇到一个较为棘手的问题——消息堆积。所谓消息堆积即生产者发送消息之后消费者却没有及时的进行数据消费，导致大量的消息数据堆积于队列之中。</p>
 <p>应对消息堆积的策略主要思路即确定堆积的原因，是下游消费者服务宕机还是数据过多消费者无法及时处理。</p>
 <p>对于宕机的情况，如果是紧急数据最简单的方法是再部署一台消费服务应用实例先保证数据的流程，再回头定位具体服务消费异常宕机的原因。而若是由于消费者服务数量不够的情况，则是通过部署多台消费服务同时进行数据消费，从而解决堆积的问题。</p>
+<h4 id="5-数据次序"><a href="#5-数据次序" class="headerlink" title="5. 数据次序"></a>5. 数据次序</h4><p>根据上述的介绍可以看出，<code>Kafka</code> 消息的 <code>Topic</code> 下每个分区之间是相互独立的各自维护 <code>offset</code>。因此，在多分区的场景消息的消费是无序的，即当多条消息被发到不同的分区时并无法保存消费的顺序。</p>
+<p>但是，在许多的业务场景下，我们通常是需要保证消息的有序性。例如当 <code>A系统</code> 向 <code>B系统</code> 推送了一条数据，之后再次推送一条数据用户取消第一条数据，理想的场景是 <code>B系统</code> 先消费到第一条数据后再接收用于取消的数据。但由于多分区的存在，极有可能导致第二条取消的数据优先被消费导致取消失败，而后第一条数据又以正常状态进入系统。</p>
+<p>因此，部分场景下的数据有序性是至关重要的，那由应该如何解决？</p>
+<p>同样的，还是以之前的这张图例来讲，数据的无序性根本在于多个分区所导致，最简单粗暴的方式就是对应的 <code>Topic</code> 下只建一个分区，就能保证数据一定有序消费，但显然对性能将有所下降。归根到底，只需要保证同类数据最终保存到同一个分区，就能够实现数据的有序性，而 <code>Kafka</code> 的确定数据的分区是通过 <code>Key</code> 决定的，那只要将同类数据的 <code>Key</code> 设置为同一个就完美解决了这个问题。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/5.png"></p>
 <h3 id="四、数据幂等"><a href="#四、数据幂等" class="headerlink" title="四、数据幂等"></a>四、数据幂等</h3><h4 id="1-重复消费"><a href="#1-重复消费" class="headerlink" title="1. 重复消费"></a>1. 重复消费</h4><p>在 <code>Kafka</code> 中提供了消息幂等从而避免消息的重复消息，即 <code>Exactly once</code>。</p>
 <p>上述介绍 <code>ack</code> 时提到在设置为 <code>-1</code> 时，当生产者发送消息时会等待所有 <code>broker</code> 返回确认信息，若未生产者未接受到返回确认值则会重发，保证了至少消息会成功一次。</p>
 <p>在理想的情况下，<code>broker</code> 在接收到生产者发送的数据之后会添加到分区文件末端，然后返回一个 <code>ack</code> 值标识我已经成功获取消息，过程如下图：<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/7.png"></p>
@@ -1337,7 +1344,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">271.5k</span>
+                <span class="white-color">272.5k</span>
             
             
             
