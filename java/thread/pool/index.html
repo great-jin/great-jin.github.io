@@ -590,14 +590,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-15
+                    2024-11-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.6k
                 </div>
                 
 
@@ -624,12 +624,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>当我们需要使用线程时，就需要每次手动进行创建，显然很费时费力，线程池的作用就是简化这一步骤。</p>
-<p>你可以简单把线程池理解为出租公司，里面的每一辆出租车就是一个线程，当有顾客（任务）上门时，顾客可以直接使用（提交任务），当使用介绍后再还回（关闭线程）。</p>
-<blockquote>
-<p>在 Java 中为此提供了四大类线程池类型，下面分别进行介绍。</p>
-</blockquote>
-<h3 id="一、Executor"><a href="#一、Executor" class="headerlink" title="一、Executor"></a>一、Executor</h3><p><code>Executor</code> 为所有线程线程池的顶级抽象类，提供了 <code>execute()</code> 方法用于提交线程子任务。</p>
+                <p>在之前的文章中，我们对 <code>Java</code> 线程有了一个初步的了解，通过多线程设计能够大大提升系统功能。但多线程同样也带来一个新的问题，我们都知道 Java 的线程强依赖于系统调度，频繁的创建线程显然造成了一定的性能循环。</p>
+<p>因此，线程与数据库连接类似，同样具备资源池化能力，即线程池。通过线程池可以实现资源的最大化利用，当一个线程完结之后并不会被立马销毁，而是放回线程池，在新的任务被提交时即可复用此线程，省去新建以及初始化线程所带来的开销。</p>
+<p>本文就深入了解 <code>Java</code> 中为我们提供了哪些线程池以及各自所具备的特性。</p>
+<h3 id="一、Executor"><a href="#一、Executor" class="headerlink" title="一、Executor"></a>一、Executor</h3><h4 id="1-基础接口"><a href="#1-基础接口" class="headerlink" title="1. 基础接口"></a>1. 基础接口</h4><p><code>Executor</code> 为所有线程线程池的顶级抽象类，提供了 <code>execute()</code> 方法用于提交线程子任务。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">executorDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Executor executor <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     executor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -659,9 +657,9 @@
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、ExecutorService"><a href="#二、ExecutorService" class="headerlink" title="二、ExecutorService"></a>二、ExecutorService</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>ExecutorService</code> 扩展了 <code>Executor</code> 接口, 支持有返回值的线程与管理线程生命周期。即可通过 <code>submit()</code> 与 <code>invokeAny()</code> 提交 <code>Runnable</code> 与 <code>Callable</code> 两类有返回值线程任务。</p>
+<h4 id="2-进阶接口"><a href="#2-进阶接口" class="headerlink" title="2. 进阶接口"></a>2. 进阶接口</h4><p><code>ExecutorService</code> 扩展了 <code>Executor</code> 接口, 支持有返回值的线程与管理线程生命周期。即可通过 <code>submit()</code> 与 <code>invokeAny()</code> 提交 <code>Runnable</code> 与 <code>Callable</code> 两类有返回值线程任务。</p>
 <p>同时 <code>ExecutorService</code> 提供了 <code>shutdown()、shutdownNow()、isShutdown()</code> 等方法用于控制线程池的启停，当关闭线程池后无法继续提交线程任务，但已提交的线程任务仍然继续执行，待所有任务完成后则释放线程池资源。</p>
-<h4 id="2-创建示例"><a href="#2-创建示例" class="headerlink" title="2. 创建示例"></a>2. 创建示例</h4><h5 id="1-单线程池"><a href="#1-单线程池" class="headerlink" title="(1) 单线程池"></a>(1) 单线程池</h5><p>通过 <code>newSingleThreadExecutor()</code> 创建线程数为一的线程池，当提前的任务大于 <code>1</code> ，其余任务将进入等待。</p>
+<h4 id="3-线程类型"><a href="#3-线程类型" class="headerlink" title="3. 线程类型"></a>3. 线程类型</h4><h5 id="1-单线程池"><a href="#1-单线程池" class="headerlink" title="(1) 单线程池"></a>(1) 单线程池</h5><p>通过 <code>newSingleThreadExecutor()</code> 创建线程数为一的线程池，当提前的任务大于 <code>1</code> ，其余任务将进入等待。</p>
 <p>如下示例中每间隔 <code>2</code> 秒才会打印一次。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     ExecutorService executor <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -715,7 +713,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、定时线程池"><a href="#三、定时线程池" class="headerlink" title="三、定时线程池"></a>三、定时线程池</h3><p><code>ScheduledExecutorService</code> 在 <code>ExecutorService</code> 的基础上再次进行扩展，可用于创建定时线程任务资源池。</p>
+<h3 id="二、定时线程池"><a href="#二、定时线程池" class="headerlink" title="二、定时线程池"></a>二、定时线程池</h3><p><code>ScheduledExecutorService</code> 在 <code>ExecutorService</code> 的基础上再次进行扩展，可用于创建定时线程任务资源池。</p>
 <h4 id="1-创建示例"><a href="#1-创建示例" class="headerlink" title="1. 创建示例"></a>1. 创建示例</h4><p>通过 <code>schedule()</code> 方法即可提交定时线程任务，下面通过示例进行详细介绍。</p>
 <p>通过 <code>newScheduledThreadPool()</code> 创建定时任务线程池资源。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">scheduledPoolDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
@@ -750,7 +748,8 @@
 <li><h5 id="scheduleAtFixedRate"><a href="#scheduleAtFixedRate" class="headerlink" title="scheduleAtFixedRate()"></a>scheduleAtFixedRate()</h5>  间隔时间是从上一个任务开始时计算，无论上个任务是否已经结束。</li>
 <li><h5 id="scheduleWithFixedDelay"><a href="#scheduleWithFixedDelay" class="headerlink" title="scheduleWithFixedDelay()"></a>scheduleWithFixedDelay()</h5>  间隔时间是从上个任务完成时开始计算，只有当上个任务结束才会开始计时。<br>  <img src="/album/loading.gif" data-original="/album/article/java/thread/1.png" alt="scheduleAtFixedRate 与 scheduleWithFixedDelay"></li>
 </ul>
-<h3 id="四、ThreadPoolExecutor"><a href="#四、ThreadPoolExecutor" class="headerlink" title="四、ThreadPoolExecutor"></a>四、ThreadPoolExecutor</h3><h4 id="1-核心参数"><a href="#1-核心参数" class="headerlink" title="1. 核心参数"></a>1. 核心参数</h4><p><code>ThreadPoolExecutor</code> 是开发中最为常用的线程资源池，其提供一系列初始化参数用于控制线程池的资源占用，下面重点进行介绍。</p>
+<h3 id="三、ThreadPoolExecutor"><a href="#三、ThreadPoolExecutor" class="headerlink" title="三、ThreadPoolExecutor"></a>三、ThreadPoolExecutor</h3><p><code>ThreadPoolExecutor</code> 是开发中使用相对较为频繁的线程资源池，其提供一系列初始化参数用于控制线程池的资源占用，下面重点进行介绍。</p>
+<h4 id="1-核心参数"><a href="#1-核心参数" class="headerlink" title="1. 核心参数"></a>1. 核心参数</h4><p><code>ThreadPoolExecutor</code> 线程池的核心配置参数参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>  
@@ -864,68 +863,20 @@
     RejectedExecutionHandler handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>AbortPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     ThreadPoolExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>coreSize<span class="token punctuation">,</span> maxSize<span class="token punctuation">,</span> keepAliveTime<span class="token punctuation">,</span> unit<span class="token punctuation">,</span>
                 workQueue<span class="token punctuation">,</span> threadFactory<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 任务提交</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         executor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token string">"Task - "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、ForkJoinPool"><a href="#五、ForkJoinPool" class="headerlink" title="五、ForkJoinPool"></a>五、ForkJoinPool</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>ForkJoinPool</code> 是 <code>Java SE 7</code> 中引入的一个用于实现“分而治之”并行算法的线程池。它可以处理递归式的并行任务，将一个大任务拆分成若干个小任务，将这些小任务放到多个处理器上并行处理，最后将结果合并。</p>
-<p><code>ForkJoinPool</code> 支持工作窃取算法，即当一个线程的任务执行完毕后会随机选择其他线程的任务进行处理，从而以达到任务的均衡执行，有效地利用了多核 <code>CPU</code> 的性能，因此被广泛应用于大规模的并行计算和多线程编程领域。</p>
-<h4 id="2-创建示例-1"><a href="#2-创建示例-1" class="headerlink" title="2. 创建示例"></a>2. 创建示例</h4><p><code>ForkJoinPool</code> 无参构造函数创建的线程池资源核心线程数默认为 <code>CPU</code> 的核心数的两倍。</p>
-<p>如果不想使用默认的核心线程数，可以通过 <code>new ForkJoinPool(n)</code> 指定核心线程数大小。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// 创建默认 forkjoin 线程池</span>
-    ForkJoinPool forkJoinPool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        forkJoinPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">// 线程池基本信息获取</span>
-    <span class="token keyword">int</span> size <span class="token operator">=</span> forkJoinPool<span class="token punctuation">.</span><span class="token function">getPoolSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"size: "</span> <span class="token operator">+</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> active <span class="token operator">=</span> forkJoinPool<span class="token punctuation">.</span><span class="token function">getActiveThreadCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"active: "</span> <span class="token operator">+</span> active<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">long</span> count <span class="token operator">=</span> forkJoinPool<span class="token punctuation">.</span><span class="token function">getStealCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"stealCount: "</span> <span class="token operator">+</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">long</span> parallelism <span class="token operator">=</span> forkJoinPool<span class="token punctuation">.</span><span class="token function">getParallelism</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"parallelism: "</span> <span class="token operator">+</span> parallelism<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-线程任务"><a href="#3-线程任务" class="headerlink" title="3. 线程任务"></a>3. 线程任务</h4><p>普通线程任务实现了 <code>Runnable</code> 或 <code>Callable</code> 接口，而 <code>RecursiveTask</code> 与 <code>RecursiveTask</code> 继承自 <code>ForkJoinTask</code> ， 又因 <code>ForkJoinTask</code> 实现了 <code>Future</code> 和 <code>Comparable</code> 接口，故可获得异步计算的结果和比较操作。</p>
-<p><code>RecursiveTask</code> 与 <code>RecursiveTask</code> 可通过调用 <code>fork()</code> 方法启动新的子任务，然后调用 <code>join()</code> 方法等待子任务的结果并将其合并，可以更好地利用多核 <code>CPU</code> 的优势。</p>
-<h5 id="1-RecursiveTask"><a href="#1-RecursiveTask" class="headerlink" title="(1) RecursiveTask"></a>(1) RecursiveTask</h5><p><code>RecursiveTask</code> 所提交任务有返回值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinTaskDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    ForkJoinTask<span class="token operator">&lt;</span>String<span class="token operator">></span> task1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RecursiveTask</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">protected</span> String <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"RecursiveTask compute."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token string">"RecursiveTask compute."</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-RecursiveAction"><a href="#2-RecursiveAction" class="headerlink" title="(2) RecursiveAction"></a>(2) RecursiveAction</h5><p><code>RecursiveAction</code> 所提交任务无返回值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinTaskDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    ForkJoinTask<span class="token operator">&lt;</span>Void<span class="token operator">></span> task2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RecursiveAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">protected</span> String <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"RecursiveAction compute."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、Future类"><a href="#六、Future类" class="headerlink" title="六、Future类"></a>六、Future类</h3><h4 id="1-基础示例"><a href="#1-基础示例" class="headerlink" title="1. 基础示例"></a>1. 基础示例</h4><p><code>Future</code> 类正如字面意思为未来可能的值，用于声明线程返回值。</p>
-<p>其同样提供了一系列接口方法，相关示例如下：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、Future类"><a href="#四、Future类" class="headerlink" title="四、Future类"></a>四、Future类</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>众所周知，线程任务在提交之后执行是异步的，因此其需要载体接收最终的执行结果，<code>Future</code> 类正如字面意思为未来可能的值，用于声明线程返回值。</p>
+<p>例如在通过线程池通过 <code>submit()</code> 提交任务时，其返回结果即为 <code>Future&lt;T&gt;</code> 泛型，当任务执行完成之后可通过 <code>get()</code> 方法获取结果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">futureDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     ExecutorService executor <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newCachedThreadPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// submit the task</span>
     Future<span class="token operator">&lt;</span>String<span class="token operator">></span> future <span class="token operator">=</span> executor<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Task message from thread pool."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token string">"Task message from thread pool."</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -966,7 +917,70 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is cancel: "</span> <span class="token operator">+</span> cancel<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、CompletableFuture"><a href="#七、CompletableFuture" class="headerlink" title="七、CompletableFuture"></a>七、CompletableFuture</h3><p><code>CompletableFuture</code> 实现扩展了 <code>Future</code> 接口，默认使用 <code>Fork-Join</code> 线程池框架。</p>
+<h3 id="五、ForkJoinPool"><a href="#五、ForkJoinPool" class="headerlink" title="五、ForkJoinPool"></a>五、ForkJoinPool</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>ForkJoinPool</code> 是 <code>Java SE 7</code> 中引入的一个用于实现“分而治之”并行算法的线程池，通过递归式的并行任务处理，将一个大任务拆分成若干个小任务，并这些小任务放到多个处理器上并行处理，最后将结果合并。</p>
+<p><code>ForkJoinPool</code> 支持工作窃取算法，即当一个线程的任务执行完毕后会随机选择其他线程的任务进行处理，有效地利用了多核 <code>CPU</code> 的性能，从而以达到任务的均衡执行。</p>
+<h4 id="2-方法参数"><a href="#2-方法参数" class="headerlink" title="2. 方法参数"></a>2. 方法参数</h4><p><code>ForkJoinPool</code> 无参构造函数创建的线程池资源核心线程数默认为 <code>CPU</code> 的核心数的两倍。</p>
+<p>如果不想使用默认的核心线程数，可以通过 <code>new ForkJoinPool(n)</code> 指定核心线程数大小。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getPoolSize()</td>
+        <td style="text-align: center;">获取已创建启用的线程数。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getActiveThreadCount()</td>
+        <td style="text-align: center;">获取执行任务中的线程数。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getParallelism()</td>
+        <td style="text-align: center;">获取并行数，为 CPU 核心数两倍。</td>
+    </tr>
+</table>
+
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建默认 forkjoin 线程池</span>
+    ForkJoinPool forkJoinPool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ForkJoinPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 提交线程任务</span>
+        forkJoinPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-任务结果"><a href="#3-任务结果" class="headerlink" title="3. 任务结果"></a>3. 任务结果</h4><p>与普通线程池的 <code>Feature</code> 类似，在 <code>ForkJoinPool</code> 中返回的结果为 <code>ForkJoinTask</code>。</p>
+<p><code>ForkJoinTask</code> 拥有两个实现类：<code>RecursiveTask</code> 与 <code>RecursiveAction</code>，二者最核心的区别在于后者没有返回值。</p>
+<h5 id="1-RecursiveTask"><a href="#1-RecursiveTask" class="headerlink" title="(1) RecursiveTask"></a>(1) RecursiveTask</h5><p><code>RecursiveTask</code> 所提交任务有返回值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinTaskDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    ForkJoinTask<span class="token operator">&lt;</span>String<span class="token operator">></span> task1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RecursiveTask</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">protected</span> String <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"RecursiveTask compute."</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"result: "</span> <span class="token operator">+</span> task1<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-RecursiveAction"><a href="#2-RecursiveAction" class="headerlink" title="(2) RecursiveAction"></a>(2) RecursiveAction</h5><p><code>RecursiveAction</code> 所提交任务无返回值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forkJoinTaskDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    ForkJoinTask<span class="token operator">&lt;</span>Void<span class="token operator">></span> task2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RecursiveAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">protected</span> String <span class="token function">compute</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"RecursiveAction compute."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="六、CompletableFuture"><a href="#六、CompletableFuture" class="headerlink" title="六、CompletableFuture"></a>六、CompletableFuture</h3><p><code>CompletableFuture</code> 实现扩展了 <code>Future</code> 接口，默认使用 <code>Fork-Join</code> 线程池框架。</p>
 <h4 id="1-supplyAsync"><a href="#1-supplyAsync" class="headerlink" title="1. supplyAsync()"></a>1. supplyAsync()</h4><p><code>CompletableFuture</code> 提供了 <code>supplyAsync()</code> 与 <code>runAsync()</code> 两种任务提交方式，二者区别在于后者没有返回值。</p>
 <p>通过 <code>handle()</code> 回调方法可实现对子任务执行状态监控处理，注意使用 <code>runAsync()</code> 时 <code>handle()</code> 也只能捕获到时候异常而无返回值。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -1722,7 +1736,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">272.7k</span>
             
             
             

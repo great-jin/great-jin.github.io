@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-15
+                    2024-11-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -620,7 +620,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、HDFS"><a href="#一、HDFS" class="headerlink" title="一、HDFS"></a>一、HDFS</h3><h4 id="1-架构设计"><a href="#1-架构设计" class="headerlink" title="1. 架构设计"></a>1. 架构设计</h4><p><code>HDFS</code> 遵循主/从架构，由单个 <code>NameNode(NN)</code> 和多个 <code>DataNode(DN)</code> 组成：</p>
+                <p><code>Hadoop</code> 是一个开源的分布式计算框架，由 <code>Apache Software Foundation</code> 开发和维护，专为处理和存储大量数据而设计，具有高容错性和可扩展性。</p>
+<p><code>Hadoop</code> 主要由两个核心组件组成：<code>Hadoop Distributed File System(HDFS)</code> 与 <code>MapReduce</code>，分别作用于存储数据与数据的编程和执行。</p>
+<h3 id="一、HDFS"><a href="#一、HDFS" class="headerlink" title="一、HDFS"></a>一、HDFS</h3><p><code>HDFS</code> 是 <code>Hadoop</code> 中的分布式文件系统，设计用于在大规模集群环境中存储非常大的文件，它将数据分块并将块分布在多个节点上，提供高容错性和高吞吐量。</p>
+<h4 id="1-架构设计"><a href="#1-架构设计" class="headerlink" title="1. 架构设计"></a>1. 架构设计</h4><p><code>HDFS</code> 遵循主/从架构，由单个 <code>NameNode(NN)</code> 和多个 <code>DataNode(DN)</code> 组成：</p>
 <ul>
 <li><strong>NameNode</strong> : 负责执行有关 <code>文件系统命名空间</code> 的操作，例如打开，关闭、重命名文件和目录等。它同时还负责集群元数据的存储，记录着文件中各个数据块的位置信息。</li>
 <li><strong>DataNode</strong>：负责提供来自文件系统客户端的读写请求，执行块的创建，删除等操作。</li>
@@ -655,14 +658,9 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-Partitioner"><a href="#2-Partitioner" class="headerlink" title="(2) Partitioner"></a>(2) Partitioner</h5><p><code>Partitioner</code> 可以理解成分类器，将 <code>Map</code> 的输出按照 <code>Key</code> 值的不同分别分给对应的 <code>Reducer</code>，支持自定义实现。通过 <code>Partitioner</code> 即可便捷实现将结果按照自定义的规则存储分类存储至不同的文件中。</p>
 <h4 id="3-Key-Process"><a href="#3-Key-Process" class="headerlink" title="3. Key Process"></a>3. Key Process</h4><p>我们以 <code>Hadoop1</code> 为例，<code>MapReduce</code> 运行过程涉及以下几类关键进程：</p>
-<ul>
-<li><p><strong>大数据应用进程</strong>：启动用户 <code>MapReduce</code> 程序的主入口，主要指定 <code>Map</code> 和 <code>Reduce</code> 类、输入输出文件路径等，并提交作业给 <code>Hadoop</code> 集群。</p>
-</li>
-<li><p><strong>JobTracker 进程</strong>：根据要处理的输入数据量启动相应数量的 <code>map</code> 和 <code>reduce</code> 进程任务，并管理整个作业生命周期的任务调度和监控。<code>JobTracker</code> 进程在整个 <code>Hadoop</code> 集群全局唯一。</p>
-</li>
-<li><p><strong>TaskTracker进程</strong>：负责启动和管理 <code>map</code> 和 <code>reduce</code> 进程。因为需要每个数据块都有对应的 <code>map</code> 函数，<code>TaskTracker</code> 进程通常和 <code>HDFS</code> 的 <code>DataNode</code> 进程启动在同一个服务器，也就是说，<code>Hadoop</code> 集群中绝大多数服务器同时运行 <code>DataNode</code> 进程和 <code>TaskTacker</code> 进程。</p>
-</li>
-</ul>
+<h5 id="1-数据应用进程"><a href="#1-数据应用进程" class="headerlink" title="(1) 数据应用进程"></a>(1) 数据应用进程</h5><p>启动用户 <code>MapReduce</code> 程序的主入口，主要指定 <code>Map</code> 和 <code>Reduce</code> 类、输入输出文件路径等，并提交作业给 <code>Hadoop</code> 集群。</p>
+<h5 id="2-JobTracker-进程"><a href="#2-JobTracker-进程" class="headerlink" title="(2) JobTracker 进程"></a>(2) JobTracker 进程</h5><p>根据要处理的输入数据量启动相应数量的 <code>map</code> 和 <code>reduce</code> 进程任务，并管理整个作业生命周期的任务调度和监控。<code>JobTracker</code> 进程在整个 <code>Hadoop</code> 集群全局唯一。</p>
+<h5 id="3-TaskTracker进程"><a href="#3-TaskTracker进程" class="headerlink" title="(3) TaskTracker进程"></a>(3) TaskTracker进程</h5><p>负责启动和管理 <code>map</code> 和 <code>reduce</code> 进程。因为需要每个数据块都有对应的 <code>map</code> 函数，<code>TaskTracker</code> 进程通常和 <code>HDFS</code> 的 <code>DataNode</code> 进程启动在同一个服务器，也就是说，<code>Hadoop</code> 集群中绝大多数服务器同时运行 <code>DataNode</code> 进程和 <code>TaskTacker</code> 进程。</p>
 <h4 id="4-Running-Process"><a href="#4-Running-Process" class="headerlink" title="4. Running Process"></a>4. Running Process</h4><p>具体作业启动和计算过程如下：</p>
 <ul>
 <li>应用进程将用户作业 <code>jar</code> 包存储在 <code>HDFS</code> 中，将来这些 <code>jar</code> 包会分发给 <code>Hadoop</code> 集群中的服务器执行 <code>MapReduce</code> 计算。</li>
@@ -675,14 +673,16 @@
 <li><code>map</code> 或 <code>reduce</code> 程序启动后，检查本地是否有要执行任务的 <code>jar</code> 包文件，如果没有就去 <code>HDFS</code> 下载，然后加载 <code>map</code> 或 <code>reduce</code> 代码开始执行。</li>
 <li>如果是 <code>map</code> 进程，从 <code>HDFS</code> 读取数据（通常要读取的数据块正好存储在本机），如果是 <code>reduce</code> 进程，将结果数据写出到 HDFS。</li>
 </ul>
-<h3 id="三、YARN"><a href="#三、YARN" class="headerlink" title="三、YARN"></a>三、YARN</h3><p><code>Apache YARN</code>(Yet Another Resource Negotiator) 是 <code>hadoop 2.0</code> 引入的集群资源管理系统，用户可以将各种服务框架部署在 <code>YARN</code> 上，由 <code>YARN</code> 进行统一地管理和资源分配。</p>
-<h4 id="1-ResourceManager"><a href="#1-ResourceManager" class="headerlink" title="1. ResourceManager"></a>1. ResourceManager</h4><p><code>ResourceManager</code> 通常在独立的机器上以后台进程的形式运行，它是整个集群资源的主要协调者和管理者。<code>ResourceManager</code> 负责给用户提交的所有应用程序分配资源，它根据应用程序优先级、队列容量、<code>ACLs</code>、数据位置等信息，做出决策，然后以共享的、安全的、多租户的方式制定分配策略，调度集群资源。</p>
-<h4 id="2-NodeManager"><a href="#2-NodeManager" class="headerlink" title="2. NodeManager"></a>2. NodeManager</h4><p><code>NodeManager</code> 是 <code>YARN</code> 集群中的每个具体节点的管理者。主要负责该节点内所有容器的生命周期的管理，监视资源和跟踪节点健康。具体如下：</p>
+<h3 id="三、YARN"><a href="#三、YARN" class="headerlink" title="三、YARN"></a>三、YARN</h3><p><code>Apache YARN(Yet Another Resource Negotiator)</code> 是 <code>hadoop 2.0</code> 引入的集群资源管理系统，用户可以将各种服务框架部署在 <code>YARN</code> 上，由 <code>YARN</code> 进行统一地管理和资源分配。</p>
+<h4 id="1-ResourceManager"><a href="#1-ResourceManager" class="headerlink" title="1. ResourceManager"></a>1. ResourceManager</h4><p><code>ResourceManager</code> 通常在独立的机器上以后台进程的形式运行，它是整个集群资源的主要协调者和管理者。</p>
+<p><code>ResourceManager</code> 主要职能为负责给用户提交的所有应用程序分配资源，根据应用程序优先级、队列容量、<code>ACLs</code>、数据位置等信息，做出决策，然后以共享的、安全的、多租户的方式制定分配策略，调度集群资源。</p>
+<h4 id="2-NodeManager"><a href="#2-NodeManager" class="headerlink" title="2. NodeManager"></a>2. NodeManager</h4><p><code>NodeManager</code> 是 <code>YARN</code> 集群中的每个具体节点的管理者，主要负责该节点内所有容器的生命周期的管理，监视资源和跟踪节点健康，具体如下：</p>
 <ul>
 <li>启动时向 <code>ResourceManager</code> 注册并定时发送心跳消息，等待 <code>ResourceManager</code> 的指令；</li>
 <li>维护 <code>Container</code> 的生命周期，监控 <code>Container</code> 的资源使用情况；<br>管理任务运行时的相关依赖，根据 <code>ApplicationMaster</code> 的需要，在启动 <code>Container</code> 之前将需要的程序及其依赖拷贝到本地。</li>
 </ul>
-<h4 id="3-ApplicationMaster"><a href="#3-ApplicationMaster" class="headerlink" title="3. ApplicationMaster"></a>3. ApplicationMaster</h4><p>在用户提交一个应用程序时，<code>YARN</code> 会启动一个轻量级的进程 <code>ApplicationMaster</code>。<code>ApplicationMaster</code> 负责协调来自 <code>ResourceManager</code> 的资源，并通过 <code>NodeManager</code> 监视容器内资源的使用情况，同时还负责任务的监控与容错。具体如下：</p>
+<h4 id="3-ApplicationMaster"><a href="#3-ApplicationMaster" class="headerlink" title="3. ApplicationMaster"></a>3. ApplicationMaster</h4><p>在用户提交一个应用程序时，<code>YARN</code> 会启动一个轻量级的进程 <code>ApplicationMaster</code>。</p>
+<p><code>ApplicationMaster</code> 负责协调来自 <code>ResourceManager</code> 的资源，并通过 <code>NodeManager</code> 监视容器内资源的使用情况，同时还负责任务的监控与容错，具体如下：</p>
 <ul>
 <li>根据应用的运行状态来决定动态计算资源需求；</li>
 <li>向 <code>ResourceManager</code> 申请资源，监控申请的资源的使用情况；</li>
@@ -1293,7 +1293,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">272.7k</span>
             
             
             
