@@ -628,43 +628,61 @@
 <p>设想你的团队在进行一个项目开发，期间需要共享代码，你总不能和同事 <code>QQ</code> 互传吧。</p>
 <p>本期着重介绍如何通过 <code>Git</code> 把本地项目上传到 <code>GitHub</code> 仓库。</p>
 <h3 id="一、前期准备"><a href="#一、前期准备" class="headerlink" title="一、前期准备"></a>一、前期准备</h3><h4 id="1-安装Git"><a href="#1-安装Git" class="headerlink" title="1. 安装Git"></a>1. 安装Git</h4><p>首先最重要的还是先安装GIT，官网访问速度比较感人，推荐国内镜像下载。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://npm.taobao.org/mirrors/git-for-windows/ </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//npm.taobao.org/mirrors/git-for-windows/ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安装步骤比较简单，无需额外配置环境就不具体展开。</p>
 <h4 id="2-配置用户"><a href="#2-配置用户" class="headerlink" title="2. 配置用户"></a>2. 配置用户</h4><p>安装完成之后，如果是第一次使用，则需要额外设置用户名和邮箱，让系统知道操作的用户是谁，如果忘记自己有没有配置过的可以输入下行命令查看：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global --list </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git config --global --list 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果<code>user.name</code>和<code>user.email</code>有对应的用户名和邮箱，说明可以了。</p>
 <p>如果没有，依次输入下面命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;username&quot; </span><br><span class="line"></span><br><span class="line">git config --global user.email &quot;emailadress&quot; </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git config --global user.name <span class="token string">"username"</span> 
 
+git config --global user.email <span class="token string">"emailadress"</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>设置好了可以按上一步查看一下是否成功配置，到这准备工作就基本完成了。</p>
 <h4 id="3-绑定SSH"><a href="#3-绑定SSH" class="headerlink" title="3. 绑定SSH"></a>3. 绑定SSH</h4><p>只有创建完秘钥并添加到 <code>GitHub</code> 上后续才能成功提交项目到 <code>GitHub</code> 仓库。</p>
 <p>在任意文件夹鼠标右击选择： <code>Git Bash Here</code> ，在弹出的命令窗口输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">ssh-keygen -t rsa
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>根据提示回车确认即可，默认在：<code>C:\Users\你的用户名\.ssh</code> 目录下生成尾缀为 <code>.pub</code> 的文件，里面存放的就是你的 <code>SSH</code> 秘钥。</p>
 <p>然后把生成的秘钥添加到GitHub，登录到你的GitHub网站，点击头像旁下拉菜单，依次选择 <code>setting</code> ——&gt; <code>SSH and GPS kesy</code> ——&gt; <code>New SSH Keys</code> 添加即可。</p>
 <h3 id="二、本地提交"><a href="#二、本地提交" class="headerlink" title="二、本地提交"></a>二、本地提交</h3><h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><p>进入你要提交的项目文件夹内，鼠标右击选择：<code>Git Bash Here</code>，在弹出的命令行窗口输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git init
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>完成之后会在当前目录下多出来一个 <code>.git</code> 的文件夹，如果没有看见应该是你没显示隐藏文件，开启即可，接下来将你要提交的项目文件拷贝到当前文件夹中。</p>
 <h4 id="2-暂存区"><a href="#2-暂存区" class="headerlink" title="2. 暂存区"></a>2. 暂存区</h4><p>在命令行窗口继续输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git add .               # 提交工作目录下所有文件</span><br><span class="line"></span><br><span class="line">git add test.txt        # 提交指定文件</span><br><span class="line"></span><br><span class="line">git status              # 查看提交状态</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git add .               # 提交工作目录下所有文件
+
+git add test.txt        # 提交指定文件
+
+git status              # 查看提交状态
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其中 <code>.</code> 表示把当前文件夹内所有文件一并提交，当然也可以选择某一特定文件。</p>
 <p>在正式提交之前通过 <code>status</code> 查看已添加到缓存区的文件信息，可以确认一下是否选择错文件，虽然省略这一步并不影响整个流程，但仍然推荐添加文件之后检查防止错误提交。</p>
 <h4 id="3-提交文件"><a href="#3-提交文件" class="headerlink" title="3. 提交文件"></a>3. 提交文件</h4><p>将第 2 步暂存区文件提交到本地仓库上。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;本次提交备注&quot;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-git"><code class="language-git">git commit -m <span class="token string">"本次提交备注"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="4-绑定仓库"><a href="#4-绑定仓库" class="headerlink" title="4. 绑定仓库"></a>4. 绑定仓库</h4><p>首先你当然得在 <code>GitHub</code> 新建一个空的仓库，复制仓库地址，如：<code>https://github.com/great-jin/Test.git</code>。</p>
 <p>在命令窗口输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin &lt;仓库路径&gt;      # 绑定远程仓库</span><br><span class="line"></span><br><span class="line">git push -u origin master            # 提交文件到远程仓库</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git remote add origin &lt;仓库路径>      # 绑定远程仓库
+
+git push -u origin master            # 提交文件到远程仓库
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>此时系统会自动请求你输入你 <code>GitHub</code> 的 <code>ID</code> 以及密码，这时候刷新你的 <code>Github</code> 仓库就会发现本地项目已经提交成功了。</p>
 <p>其中 <code>-u </code> 表示远程仓库是空的，如果你在创建远程仓库的时候勾选了 <code>README.md</code> ，那么你的仓库是非空的，上述命令你就无法成功执行，直接跳到第三大点按相应步骤操作即可。</p>
 <h3 id="三、推送文件"><a href="#三、推送文件" class="headerlink" title="三、推送文件"></a>三、推送文件</h3><p>按照上面的步骤你就可以将本地文件提交到 <code>GitHub</code> 仓库中，但前提是你的远程仓库必须是个空仓库。那么问题来了，如果你后续想继续提交文件到该仓库呢？</p>
 <p>重新打开你本地仓库目录，就是 <code>2.1</code> 中你输入 <code>git init</code> 的文件夹。</p>
 <h4 id="1-添加文件"><a href="#1-添加文件" class="headerlink" title="1. 添加文件"></a>1. 添加文件</h4><p>通过 <code>git add</code> 即可选择文件并添加。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .                       # 添加文件</span><br><span class="line"></span><br><span class="line">git commit -m &quot;本次提交备注&quot;     # 提交文件</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git add .                       # 添加文件
 
+git commit -m <span class="token string">"本次提交备注"</span>     # 提交文件
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-同步仓库"><a href="#2-同步仓库" class="headerlink" title="2. 同步仓库"></a>2. 同步仓库</h4><p>输入如下命令，同样会提示你输入用户名和密码，按提示完成即可，刷新你的 <code>GitHub</code> 仓库，你新提交的文件就出现了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase origin master         # 同步远程仓库</span><br><span class="line"></span><br><span class="line">git push origin master                  # 推送到远程仓库</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-git"><code class="language-git">git pull --rebase origin master         # 同步远程仓库
+
+git push origin master                  # 推送到远程仓库
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1266,7 +1284,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

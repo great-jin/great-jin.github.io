@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.1k
                 </div>
                 
 
@@ -624,49 +624,122 @@
 <p>完成打包之后在项目目录下会生成 <code>target</code> 目录，其中 <code>xxx.jar</code> 就是我们要的 <code>JAR</code> 包。<br><img src="/album/loading.gif" data-original="/album/article/java/package/2.png"></p>
 <h4 id="2-打包配置"><a href="#2-打包配置" class="headerlink" title="2. 打包配置"></a>2. 打包配置</h4><p>默认打包项目的 <code>YML</code> 配置文件是内置在 <code>JAR</code> 中的，这种方式在仅修改配置的情况下也需要将整个工程重新打包更新，维护起来相对较为繁琐。因此通常在打包时选择排除 <code>YML</code> 文件，后续即使需要修改配置也无需重新打包只需重启服务即可生效。</p>
 <p>若需将配置文件外置，则在 <code>pom.xml</code> 文件中添加如下内容，部署时将配置文件与 <code>JAR</code> 包置于同级目录即可。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 只在项目打包时添加，本地启动时注释该部分 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src\main\resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>application.yml<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token comment" spellcheck="true">&lt;!-- 只在项目打包时添加，本地启动时注释该部分 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resources</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resource</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>directory</span><span class="token punctuation">></span></span>src\main\resources<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>directory</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>excludes</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>exclude</span><span class="token punctuation">></span></span>application.yml<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>exclude</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>excludes</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resource</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resources</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、脚本配置"><a href="#二、脚本配置" class="headerlink" title="二、脚本配置"></a>二、脚本配置</h3><h4 id="1-上传文件"><a href="#1-上传文件" class="headerlink" title="1. 上传文件"></a>1. 上传文件</h4><p>如果你使用的是默认的打包方式，那么直接上传文件到服务器即可。</p>
 <p>如果你在打包时你设置了外置配置文件，那么需要将 <code>application.yml</code> 文件与 <code>jar</code> 包上传到同级目录下。</p>
 <h4 id="2-启动脚本"><a href="#2-启动脚本" class="headerlink" title="2. 启动脚本"></a>2. 启动脚本</h4><p>为了方便项目启动，新建一个启动脚本 <code>start.sh</code> 用于快速运行项目。</p>
 <p>脚本内容很简单，先查询项目是否运行，如果是则先通过 <code>kill</code> 命令停止，如果不是则启动项目，同时将运行日志输出到同级目录的 <code>application-info.log</code> 文件中。</p>
 <p>需要注意如果在最后启动命令中没有使用 <code>$(pwd)</code> 而是使用相对路径则启动之后通过 <code>jps</code> 命令查看进程得到的进程名为 <code>-jar</code>，需要通过 <code>jps -l</code> 查看。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建启动脚本</span></span><br><span class="line">vi start.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash </span></span><br><span class="line"><span class="comment"># 替换 jar 包名称</span></span><br><span class="line">APP_NAME=spring-test-1.0.0-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">tpid=`ps -ef|grep <span class="variable">$APP_NAME</span>|grep -v grep|grep -v <span class="built_in">kill</span>|awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;tpid&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Stop Process...&#x27;</span></span><br><span class="line"><span class="built_in">kill</span> -9 <span class="variable">$tpid</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查进程是否已结束</span></span><br><span class="line">tpid=`ps -ef|grep <span class="variable">$APP_NAME</span>|grep -v grep|grep -v <span class="built_in">kill</span>|awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;tpid&#125;</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Stop Process...&#x27;</span></span><br><span class="line"><span class="built_in">kill</span> -9 <span class="variable">$tpid</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Stop Procecss Successfully!&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Start Procecss...&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 后台启动程序</span></span><br><span class="line"><span class="built_in">nohup</span> java -jar $(<span class="built_in">pwd</span>)/<span class="variable">$APP_NAME</span> &gt; application-info.log 2&gt;&amp;1 &amp;</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建启动脚本</span>
+<span class="token function">vi</span> start.sh
 
+<span class="token comment" spellcheck="true">#!/bin/bash </span>
+<span class="token comment" spellcheck="true"># 替换 jar 包名称</span>
+APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
 
+tpid<span class="token operator">=</span>`ps -ef<span class="token operator">|</span><span class="token function">grep</span> <span class="token variable">$APP_NAME</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">grep</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">kill</span><span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'{print <span class="token variable">$2</span>}'</span>`
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">${tpid}</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+<span class="token keyword">echo</span> <span class="token string">'Stop Process...'</span>
+<span class="token function">kill</span> -9 <span class="token variable">$tpid</span>
+<span class="token keyword">fi</span>
+
+<span class="token comment" spellcheck="true"># 检查进程是否已结束</span>
+tpid<span class="token operator">=</span>`ps -ef<span class="token operator">|</span><span class="token function">grep</span> <span class="token variable">$APP_NAME</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">grep</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">kill</span><span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'{print <span class="token variable">$2</span>}'</span>`
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">${tpid}</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+<span class="token keyword">echo</span> <span class="token string">'Stop Process...'</span>
+<span class="token function">kill</span> -9 <span class="token variable">$tpid</span>
+<span class="token keyword">else</span>
+<span class="token keyword">echo</span> <span class="token string">'Stop Procecss Successfully!'</span>
+<span class="token keyword">echo</span> <span class="token string">'Start Procecss...'</span>
+
+<span class="token comment" spellcheck="true"># 后台启动程序</span>
+<span class="token function">nohup</span> java -jar <span class="token variable"><span class="token variable">$(</span><span class="token function">pwd</span><span class="token variable">)</span></span>/<span class="token variable">$APP_NAME</span> <span class="token operator">></span> application-info.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-停止脚本"><a href="#3-停止脚本" class="headerlink" title="3. 停止脚本"></a>3. 停止脚本</h4><p>同理再新建一个停止脚本文件 <code>stop.sh</code> 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建停止脚本</span></span><br><span class="line">vi stop.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="comment"># 将 spring-test-1.0.0-SNAPSHOT.jar 修改为自己的 jar 包名</span></span><br><span class="line">APP_NAME=spring-test-1.0.0-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line">PID=$(ps -ef | grep <span class="variable">$APP_NAME</span> | grep -v grep | awk <span class="string">&#x27;&#123; print $2 &#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$PID</span>&quot;</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> Application is already stopped</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">kill</span> <span class="variable">$PID</span></span><br><span class="line"><span class="built_in">kill</span> <span class="variable">$PID</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建停止脚本</span>
+<span class="token function">vi</span> stop.sh
 
+<span class="token comment" spellcheck="true">#!/bin/sh</span>
+<span class="token comment" spellcheck="true"># 将 spring-test-1.0.0-SNAPSHOT.jar 修改为自己的 jar 包名</span>
+APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
 
+PID<span class="token operator">=</span><span class="token punctuation">$(</span>ps -ef <span class="token operator">|</span> <span class="token function">grep</span> <span class="token variable">$APP_NAME</span> <span class="token operator">|</span> <span class="token function">grep</span> -v <span class="token function">grep</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{ print <span class="token variable">$2</span> }'</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -z <span class="token string">"<span class="token variable">$PID</span>"</span> <span class="token punctuation">]</span>
+<span class="token keyword">then</span>
+<span class="token keyword">echo</span> Application is already stopped
+<span class="token keyword">else</span>
+<span class="token keyword">echo</span> <span class="token function">kill</span> <span class="token variable">$PID</span>
+<span class="token function">kill</span> <span class="token variable">$PID</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-工程启动"><a href="#4-工程启动" class="headerlink" title="4. 工程启动"></a>4. 工程启动</h4><p>完成脚本创建之后启动和停止服务直接运行脚本即可。</p>
 <h5 id="1-文件授权"><a href="#1-文件授权" class="headerlink" title="(1) 文件授权"></a>(1) 文件授权</h5><p>在运行脚本之前需要给脚本文件授予可执行文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x start.sh</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x stop.sh        </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chmod</span> +x start.sh
 
+<span class="token function">chmod</span> +x stop.sh        
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-项目启动"><a href="#2-项目启动" class="headerlink" title="(2) 项目启动"></a>(2) 项目启动</h5><p>运行启动脚本之后通过 <code>jps</code> 查看 <code>Java</code> 进程，如果能看到你的 <code>jar</code> 包表明启动成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目启动</span></span><br><span class="line">./start.sh             </span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目停止</span></span><br><span class="line">./stop.sh    </span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看进程</span></span><br><span class="line">jps           </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 项目启动</span>
+./start.sh             
 
+<span class="token comment" spellcheck="true"># 项目停止</span>
+./stop.sh    
 
-
+<span class="token comment" spellcheck="true"># 查看进程</span>
+jps           
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、Docker部署"><a href="#三、Docker部署" class="headerlink" title="三、Docker部署"></a>三、Docker部署</h3><p>在上面的例子中通过预先的脚本文件在服务器上运行 <code>JAR</code> 文件，当然你也可以选择自行构建镜像再由 <code>Docker</code> 进行部署。 </p>
 <h4 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h4><p>首先当然需要在服务器上安装 <code>Docker</code> 环境，可以参考之前的文章，这里不再详述介绍。</p>
 <p>在开始之前先将替换 <code>Docker</code> 的镜像地址以便后续构建。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑文件</span></span><br><span class="line">vi /etc/docker/daemon.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;registry-mirrors&quot;</span>: [<span class="string">&quot;https://m9r2r2uj.mirror.aliyuncs.com&quot;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 刷新并重启</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑文件</span>
+<span class="token function">vi</span> /etc/docker/daemon.json
 
+<span class="token punctuation">{</span>
+    <span class="token string">"registry-mirrors"</span><span class="token keyword">:</span> <span class="token punctuation">[</span><span class="token string">"https://m9r2r2uj.mirror.aliyuncs.com"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true"># 刷新并重启</span>
+systemctl daemon-reload
+systemctl restart docker
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h4><p>新建 <code>Dockerfile</code> 文件，配置容器镜像的基本信息。</p>
 <p>其中 <code>ADD</code> 为项目 <code>Jar</code> 包指定别名， <code>EXPOSE</code> 为程序向外开放服务的端口。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vi Dockerfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件内容</span></span><br><span class="line">FROM java:8</span><br><span class="line">VOLUME /tmp</span><br><span class="line">ADD demo-1.0.0-SNAPSHOT.jar demo.jar</span><br><span class="line">EXPOSE 9090</span><br><span class="line">ENTRYPOINT [<span class="string">&quot;java&quot;</span>,<span class="string">&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span>,<span class="string">&quot;-jar&quot;</span>,<span class="string">&quot;/demo.jar&quot;</span>]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> Dockerfile
 
-
+<span class="token comment" spellcheck="true"># 文件内容</span>
+FROM java:8
+VOLUME /tmp
+ADD demo-1.0.0-SNAPSHOT.jar demo.jar
+EXPOSE 9090
+ENTRYPOINT <span class="token punctuation">[</span><span class="token string">"java"</span>,<span class="token string">"-Djava.security.egd=file:/dev/./urandom"</span>,<span class="token string">"-jar"</span>,<span class="token string">"/demo.jar"</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-构建镜像"><a href="#3-构建镜像" class="headerlink" title="3. 构建镜像"></a>3. 构建镜像</h4><p>将程序 <code>Jar</code> 包上传到 <code>Dockerfile</code> 同级目录，通过 <code>build</code> 命令构建镜像。</p>
 <p>这里我指定了镜像名称为 <code>demo</code> ，版本号为：<code>1.0</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建镜像</span></span><br><span class="line">docker build -t demo:1.0 .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已有镜像</span></span><br><span class="line">docker images       </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 构建镜像</span>
+docker build -t demo:1.0 <span class="token keyword">.</span>
 
-
+<span class="token comment" spellcheck="true"># 查看已有镜像</span>
+docker images       
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-服务启动"><a href="#4-服务启动" class="headerlink" title="4. 服务启动"></a>4. 服务启动</h4><p>完成镜像构建之后通过 <code>run</code> 命令直接运行即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">--name demo \</span><br><span class="line">-p 9090:9090 \</span><br><span class="line">demo:1.0</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
+--name demo \
+-p 9090:9090 \
+demo:1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1263,7 +1336,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -597,14 +597,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    725
+                    620
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    2 分
                 </div>
                 
 
@@ -626,22 +626,102 @@
             <div id="articleContent">
                 <p>在 <code>Web</code> 前端工程中经常会使用到树形结构数据，即所谓数据嵌套，不同数据的之间通过父节点编号从而实现串联。</p>
 <p>这里列个简单的数据样式更直观的说明：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="string">&quot;3795d651-2243-415d-be4b-3138f6cd5829&quot;</span>,</span><br><span class="line">        <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Virginia Gaylord&quot;</span>,</span><br><span class="line">        <span class="string">&quot;childNode&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: <span class="string">&quot;0374718d-e21d-4d8a-ac56-c02fd87c8f63&quot;</span>,</span><br><span class="line">                <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;3795d651-2243-415d-be4b-3138f6cd5829&quot;</span>,</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Darnell Price&quot;</span>,</span><br><span class="line">                <span class="string">&quot;childNode&quot;</span>: [</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="string">&quot;id&quot;</span>: <span class="string">&quot;042e4180-47c5-4f90-934e-f383ed7a33be&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;0374718d-e21d-4d8a-ac56-c02fd87c8f63&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Marianne Bednar&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;childNode&quot;</span>: []</span><br><span class="line">                    &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="string">&quot;4467edda-08af-402d-b66a-4b055b5c0111&quot;</span>,</span><br><span class="line">        <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Carolyn Murray&quot;</span>,</span><br><span class="line">        <span class="string">&quot;childNode&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: <span class="string">&quot;458c5227-391b-43e7-826b-4fcc332b44e3&quot;</span>,</span><br><span class="line">                <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;4467edda-08af-402d-b66a-4b055b5c0111&quot;</span>,</span><br><span class="line">                <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Irma Mante&quot;</span>,</span><br><span class="line">                <span class="string">&quot;childNode&quot;</span>: []</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"3795d651-2243-415d-be4b-3138f6cd5829"</span><span class="token punctuation">,</span>
+        <span class="token string">"pid"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Virginia Gaylord"</span><span class="token punctuation">,</span>
+        <span class="token string">"childNode"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"0374718d-e21d-4d8a-ac56-c02fd87c8f63"</span><span class="token punctuation">,</span>
+                <span class="token string">"pid"</span><span class="token punctuation">:</span> <span class="token string">"3795d651-2243-415d-be4b-3138f6cd5829"</span><span class="token punctuation">,</span>
+                <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Darnell Price"</span><span class="token punctuation">,</span>
+                <span class="token string">"childNode"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"042e4180-47c5-4f90-934e-f383ed7a33be"</span><span class="token punctuation">,</span>
+                        <span class="token string">"pid"</span><span class="token punctuation">:</span> <span class="token string">"0374718d-e21d-4d8a-ac56-c02fd87c8f63"</span><span class="token punctuation">,</span>
+                        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Marianne Bednar"</span><span class="token punctuation">,</span>
+                        <span class="token string">"childNode"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">]</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"4467edda-08af-402d-b66a-4b055b5c0111"</span><span class="token punctuation">,</span>
+        <span class="token string">"pid"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Carolyn Murray"</span><span class="token punctuation">,</span>
+        <span class="token string">"childNode"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"458c5227-391b-43e7-826b-4fcc332b44e3"</span><span class="token punctuation">,</span>
+                <span class="token string">"pid"</span><span class="token punctuation">:</span> <span class="token string">"4467edda-08af-402d-b66a-4b055b5c0111"</span><span class="token punctuation">,</span>
+                <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Irma Mante"</span><span class="token punctuation">,</span>
+                <span class="token string">"childNode"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>针对此类数据的构建重心我们应该放在后端中，前端更多的业务是进行数据的交互，尽可能的减少数据的处理工作。</p>
 <blockquote>
 <p>下面就详细介绍如果通过 Java 列表构建上述数据结构。</p>
 </blockquote>
 <h4 id="1-创建DTO"><a href="#1-创建DTO" class="headerlink" title="1. 创建DTO"></a>1. 创建DTO</h4><p>首先先创建一个 <code>DTO</code> 类，这里限于篇幅则省去 <code>get、set</code> 方法，请自行添加。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TreeNode</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 父节点 ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String pid;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;TreeNode&gt; childNode;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TreeNode</span> <span class="token punctuation">{</span>
 
+    <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
 
+    <span class="token comment" spellcheck="true">/**
+     * 父节点 ID
+     */</span>
+    <span class="token keyword">private</span> String pid<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>TreeNode<span class="token operator">></span> childNode<span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-构建思路"><a href="#2-构建思路" class="headerlink" title="2. 构建思路"></a>2. 构建思路</h4><p>下面详细说明一下实现的逻辑。</p>
 <p>首先遍历未构建的数据集合，若节点的父节点 <code>ID</code> 为空，则说明该该节点为首级节点，直接将该节点添加至结果集即可。若节点的父节点 <code>ID</code> 不为空，则表明表明接待你存在父节点，因此根据父节点 <code>ID</code> 获取父节点，从而将当前节点添加到父节点的子集合之中即可。</p>
 <p><img src="/album/loading.gif" data-original="/album/article/java/basis/tree.png"></p>
 <h4 id="3-代码实现"><a href="#3-代码实现" class="headerlink" title="3. 代码实现"></a>3. 代码实现</h4><p>确定了实现逻辑就可以尝试代码实现了，上述步骤的代码实现如下。</p>
 <p>需要注意在获取父节点的子集合之后不能直接添加当前节点，而需要额外一步判空处理防止空指针异常。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 树形数据构建</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> list 原始数据列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title function_">buildTree</span><span class="params">(List&lt;TreeNode&gt; list)</span> &#123;</span><br><span class="line">    <span class="comment">// 通过 Map 遍历集合, 便于后于通过节点 ID 获取节点</span></span><br><span class="line">    Map&lt;String, TreeNode&gt; nodeMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (TreeNode node : list) &#123;</span><br><span class="line">        nodeMap.put(node.getId(), node);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;TreeNode&gt; trees = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (TreeNode node : list) &#123;</span><br><span class="line">        <span class="comment">// 获取节点父节点</span></span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">parent</span> <span class="operator">=</span> nodeMap.get(node.getPid());</span><br><span class="line">        <span class="keyword">if</span> (parent != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 存在父节点, 获取父节点子节点列表</span></span><br><span class="line">            List&lt;TreeNode&gt; children = parent.getChildNode();</span><br><span class="line">            <span class="keyword">if</span> (children == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 防止父节点子节点列表为空</span></span><br><span class="line">                children = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将当前节点添加到父节点中</span></span><br><span class="line">            children.add(node);</span><br><span class="line">            parent.setChildNode(children);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 不存在父节点，该节点为首节点</span></span><br><span class="line">            trees.add(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> trees;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 树形数据构建
+ * 
+ * @param list 原始数据列表
+ */</span>
+<span class="token keyword">public</span> List<span class="token operator">&lt;</span>TreeNode<span class="token operator">></span> <span class="token function">buildTree</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>TreeNode<span class="token operator">></span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 通过 Map 遍历集合, 便于后于通过节点 ID 获取节点</span>
+    Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> TreeNode<span class="token operator">></span> nodeMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>TreeNode node <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        nodeMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    List<span class="token operator">&lt;</span>TreeNode<span class="token operator">></span> trees <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>TreeNode node <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取节点父节点</span>
+        TreeNode parent <span class="token operator">=</span> nodeMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span><span class="token function">getPid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>parent <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 存在父节点, 获取父节点子节点列表</span>
+            List<span class="token operator">&lt;</span>TreeNode<span class="token operator">></span> children <span class="token operator">=</span> parent<span class="token punctuation">.</span><span class="token function">getChildNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>children <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 防止父节点子节点列表为空</span>
+                children <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// 将当前节点添加到父节点中</span>
+            children<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            parent<span class="token punctuation">.</span><span class="token function">setChildNode</span><span class="token punctuation">(</span>children<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 不存在父节点，该节点为首节点</span>
+            trees<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> trees<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1242,7 +1322,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1.2k
                 </div>
                 
 
@@ -623,21 +623,65 @@
                 <h3 id="一、模式介绍"><a href="#一、模式介绍" class="headerlink" title="一、模式介绍"></a>一、模式介绍</h3><h4 id="1-基本信息"><a href="#1-基本信息" class="headerlink" title="1. 基本信息"></a>1. 基本信息</h4><p>当你需要开发一个可插拔的 <code>Java</code> 应用程序时，你会发现一个问题：如何在运行时加载实现了相同接口的多个类，而这些类在编译时是未知的？这就是 <code>Java SPI</code> 的作用。</p>
 <p><code>Java SPI（Service Provider Interface）</code> 是 <code>Java</code> 提供的一种标准机制，用于在运行时自动发现和加载实现某个特定接口的类。它是通过在 <code>JAR</code> 包的 <code>META-INF/services</code> 目录下提供一个特定的文件来实现的，这个文件的名字是特定接口的全限定名，它的内容是实现该接口的类的全限定名。</p>
 <h3 id="二、案例演示"><a href="#二、案例演示" class="headerlink" title="二、案例演示"></a>二、案例演示</h3><h4 id="1-工程结构"><a href="#1-工程结构" class="headerlink" title="1. 工程结构"></a>1. 工程结构</h4><p>假设有一个接口 <code>xyz.ibudai.service.HelloService</code> 与其两个接口实现类 <code>StudentHelloService</code> 和 <code>TeacherHelloService</code>，三者定义结构如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.ibudai.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">HelloService</span> &#123;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StudentHelloService</span> <span class="keyword">implements</span> <span class="title class_">HelloService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Student&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Student say hello.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TeacherHelloService</span> <span class="keyword">implements</span> <span class="title class_">HelloService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Teacher&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Teacher say hello.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>service<span class="token punctuation">;</span>
 
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">HelloService</span> <span class="token punctuation">{</span>
 
+    String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">StudentHelloService</span> <span class="token keyword">implements</span> <span class="token class-name">HelloService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Student"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Student say hello."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TeacherHelloService</span> <span class="token keyword">implements</span> <span class="token class-name">HelloService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Teacher"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Teacher say hello."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-文件配置"><a href="#2-文件配置" class="headerlink" title="2. 文件配置"></a>2. 文件配置</h4><p>接下来在工程的 <code>resources</code> 目录下创建 <code>META-INF/services</code> 目录，并在该目录下创建 <code>xyz.ibudai.service.HelloService</code> 文件，注意这个文件名必须和接口类的完整限定名一致，并在文件内定义需要加载的实现类完整限定名。</p>
 <p>如上述创建了两个接口实现类，若需要加载两个类则其配置内容如下：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xyz.ibudai.service.Impl.StudentHelloService</span></span><br><span class="line"><span class="attr">xyz.ibudai.service.Impl.TeacherHelloService</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-properties"><code class="language-properties">xyz.ibudai.service.Impl.StudentHelloService
+xyz.ibudai.service.Impl.TeacherHelloService
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="3-加载实现"><a href="#3-加载实现" class="headerlink" title="3. 加载实现"></a>3. 加载实现</h4><p>在完成第二步中的配置之后，当程序运行时 <code>Java SPI</code> 就会自动加载 <code>META-INF/services</code> 目录配置文件中定义的实现类，并将它们实例化，当需要适配多个工程时即可增改配置文件从而实现动态的注册加载。</p>
 <p>而在代码实现中则无需像传统一样通过手动 <code>new</code> 的方式创建对象，使用 <code>ServiceLoader</code> 即可获取已经自动实例化完成的对象，即 <code>META-INF/services</code> 配置文件中的类对象。</p>
 <p>需要注意通过 <code>load()</code> 获取的实例集合并无法直接区分，因此在定义接口时通常会添加标识，如上述的中的 <code>getName()</code> 方法即用于标识作用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">demo</span><span class="params">()</span> &#123;</span><br><span class="line">    Map&lt;String, HelloService&gt; serviceMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    ServiceLoader&lt;HelloService&gt; loaders = ServiceLoader.load(HelloService.class);</span><br><span class="line">    <span class="keyword">for</span> (HelloService service : loaders) &#123;</span><br><span class="line">        <span class="comment">// 根据标识存入</span></span><br><span class="line">        serviceMap.put(service.getName(), service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取 StudentHello 实例对象</span></span><br><span class="line">    <span class="type">HelloService</span> <span class="variable">student</span> <span class="operator">=</span> serviceMap.get(<span class="string">&quot;Student&quot;</span>);</span><br><span class="line">    student.sayHello();</span><br><span class="line">    <span class="comment">// 获取 TeacherHello 实例对象</span></span><br><span class="line">    <span class="type">HelloService</span> <span class="variable">teacher</span> <span class="operator">=</span> serviceMap.get(<span class="string">&quot;Teacher&quot;</span>);</span><br><span class="line">    teacher.sayHello();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> HelloService<span class="token operator">></span> serviceMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ServiceLoader<span class="token operator">&lt;</span>HelloService<span class="token operator">></span> loaders <span class="token operator">=</span> ServiceLoader<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>HelloService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>HelloService service <span class="token operator">:</span> loaders<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 根据标识存入</span>
+        serviceMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>service<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> service<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-
-
+    <span class="token comment" spellcheck="true">// 获取 StudentHello 实例对象</span>
+    HelloService student <span class="token operator">=</span> serviceMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"Student"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    student<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 获取 TeacherHello 实例对象</span>
+    HelloService teacher <span class="token operator">=</span> serviceMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"Teacher"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    teacher<span class="token punctuation">.</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、功能特性"><a href="#三、功能特性" class="headerlink" title="三、功能特性"></a>三、功能特性</h3><h4 id="1-优缺点"><a href="#1-优缺点" class="headerlink" title="1. 优缺点"></a>1. 优缺点</h4><p>它可以帮助我们实现可插拔的应用程序，如果需要扩展应用程序，只需编写一个新的实现类，并将其打包为 <code>JAR</code> 文件即可，而不需要改变应用程序的源代码。</p>
 <p>其次，它提供了一种标准化的机制，让开发者可以更加方便地编写和使用扩展。<code>Java SPI</code> 已经被广泛使用在许多框架和库中，例如 <code>Spring、Hibernate</code> 等。</p>
 <p>但是由于 <code>Java SPI</code> 是通过类加载器来加载实现类的，因此存在类加载器隔离的问题。如果实现类和接口位于不同的类加载器中，就无法通过 <code>Java SPI</code> 加载实现类。</p>
@@ -1247,7 +1291,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

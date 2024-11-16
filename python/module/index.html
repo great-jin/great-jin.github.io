@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    661
+                    658
                 </div>
                 
 
@@ -622,45 +622,53 @@
             <div id="articleContent">
                 <p><code>Python</code> 近些年异军突起的一大原因就是它有着极其庞大三方库，只有你想不到的没有它做不到的。合理的利用已有的三方库能够大大增加你的工作效率。</p>
 <h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><p>首先当然时从 <code>Python</code> 环境安装开始，下面提供两种下载方案：官网下载和淘宝镜像下载。</p>
-<h4 id="1-官网"><a href="#1-官网" class="headerlink" title="1. 官网"></a>1. 官网</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.python.org/downloads/</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="2-镜像"><a href="#2-镜像" class="headerlink" title="2. 镜像"></a>2. 镜像</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://npm.taobao.org/mirrors/python/</span><br></pre></td></tr></table></figure>
-
+<h4 id="1-官网"><a href="#1-官网" class="headerlink" title="1. 官网"></a>1. 官网</h4><pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//www.python.org/downloads/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2-镜像"><a href="#2-镜像" class="headerlink" title="2. 镜像"></a>2. 镜像</h4><pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//npm.taobao.org/mirrors/python/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>具体安装步骤比较简单，没有什么需要额外配置这里我就不过多进行阐述了。</p>
 <h3 id="二、类库管理"><a href="#二、类库管理" class="headerlink" title="二、类库管理"></a>二、类库管理</h3><h4 id="1-版本查看"><a href="#1-版本查看" class="headerlink" title="1. 版本查看"></a>1. 版本查看</h4><p>通过 <code>list</code> 查看已安装的工具库，使用 <code>show</code> 用于查看指定工具库的信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip list</span><br><span class="line"></span><br><span class="line">pip show &lt;module&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">pip list
 
-
+pip show <span class="token operator">&lt;</span>module<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-模块下载"><a href="#2-模块下载" class="headerlink" title="2. 模块下载"></a>2. 模块下载</h4><p>通过 <code>pip install</code> 与工具库名称即可实现类库下载，之后即可在代码文件中导入。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &lt;module&gt;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="1-批量下载"><a href="#1-批量下载" class="headerlink" title="(1) 批量下载"></a>(1) 批量下载</h5><p>在一个工程中往往不止涉及到一个类库，如果手动的单个逐个下载显然效率过低，因此在 <code>Python</code> 可以通过文件配置达到类似前端工程 <code>package.json</code> 的效果。</p>
 <p>新建记事本文件 <code>requirements.txt</code> 文件，在文件中添加所要下载类库并指定其版本号。</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Django==3.2.18</span><br><span class="line">boto3==1.26.94</span><br><span class="line">requests==2.28.2</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-txt"><code class="language-txt">Django==3.2.18
+boto3==1.26.94
+requests==2.28.2
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>通过 <code>-r</code> 指定从文件中读取需下载的类库信息，运行命令即可实现批量下载上述文件中的所有类库。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> -r requirements.txt
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="3-模块卸载"><a href="#3-模块卸载" class="headerlink" title="3. 模块卸载"></a>3. 模块卸载</h4><p>卸载工具库与下载类似，通过 <code>uninstall</code> 即可卸载。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip uninstall &lt;module&gt;</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">pip uninstall <span class="token operator">&lt;</span>module<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="三、镜像依赖"><a href="#三、镜像依赖" class="headerlink" title="三、镜像依赖"></a>三、镜像依赖</h3><p>众所周知，国内在下载安装国外一些工具和环境时经常抽风，所以今天主要介绍一下如果通过国内镜像网站下载 <code>Python</code> 相关环境和三方库。</p>
 <h4 id="1-原生下载"><a href="#1-原生下载" class="headerlink" title="1. 原生下载"></a>1. 原生下载</h4><p>通过原生下载虽然简单安全，但是国内下载速度实在难以恭维。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install [name]          <span class="comment"># 安装相应的三方库</span></span><br><span class="line"></span><br><span class="line">pip install numpy           <span class="comment"># 安装 Numpy</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> <span class="token punctuation">[</span>name<span class="token punctuation">]</span>          <span class="token comment" spellcheck="true"># 安装相应的三方库</span>
 
-
+pip <span class="token function">install</span> numpy           <span class="token comment" spellcheck="true"># 安装 Numpy</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-镜像下载"><a href="#2-镜像下载" class="headerlink" title="2. 镜像下载"></a>2. 镜像下载</h4><p>通过镜像下载配置十分简单，在下载时通过 <code>-i</code> 指定镜像地址即可，具体命令如下:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i &lt;mirror&gt; &lt;module&gt;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> -i <span class="token operator">&lt;</span>mirror<span class="token operator">></span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>还是和上面例子一样，如通过清华镜像下载 <code>numpy</code> 库，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">pip <span class="token function">install</span> -i https://pypi.tuna.tsinghua.edu.cn/simple numpy
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这里分享几个资源比较全的国内镜像网站。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">清华：https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line">阿里云：http://mirrors.aliyun.com/pypi/simple/</span><br><span class="line"></span><br><span class="line">中国科技大学：https://pypi.mirrors.ustc.edu.cn/simple/</span><br><span class="line"></span><br><span class="line">华中理工大学：http://pypi.hustunique.com/</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-http"><code class="language-http">清华：https://pypi.tuna.tsinghua.edu.cn/simple
+
+阿里云：http://mirrors.aliyun.com/pypi/simple/
+
+中国科技大学：https://pypi.mirrors.ustc.edu.cn/simple/
+
+华中理工大学：http://pypi.hustunique.com/
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1257,7 +1265,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

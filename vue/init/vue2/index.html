@@ -629,56 +629,123 @@
 <p>Axios 是一个基于 promise 网络请求库，作用于 node.js 和浏览器，使用简单，小巧且提供了易于扩展的接口。</p>
 </blockquote>
 <h3 id="一、环境安装"><a href="#一、环境安装" class="headerlink" title="一、环境安装"></a>一、环境安装</h3><h4 id="1-Node安装"><a href="#1-Node安装" class="headerlink" title="1. Node安装"></a>1. Node安装</h4><p>先检查自己是否已经安装了 <code>node</code> ，没有的话先到<a target="_blank" rel="noopener" href="http://nodejs.cn/">官网</a>下载之后无脑下一步即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node -v     <span class="comment"># 查看Node版本</span></span><br><span class="line"></span><br><span class="line">npm -v      <span class="comment"># 查看NPM版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">node -v     <span class="token comment" spellcheck="true"># 查看Node版本</span>
 
-
+<span class="token function">npm</span> -v      <span class="token comment" spellcheck="true"># 查看NPM版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-cnpm安装"><a href="#2-cnpm安装" class="headerlink" title="2. cnpm安装"></a>2. cnpm安装</h4><p><code>cnpm</code> 是阿里的 <code>npm</code>镜像， <code>npm</code> 有时候会抽风，安装一个备用。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=http://registry.npm.taobao.org	</span><br><span class="line"></span><br><span class="line">cnpm -v     <span class="comment"># 查看cnpm版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> -g cnpm --registry<span class="token operator">=</span>http://registry.npm.taobao.org    
 
-
-
+cnpm -v     <span class="token comment" spellcheck="true"># 查看cnpm版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、项目创建"><a href="#二、项目创建" class="headerlink" title="二、项目创建"></a>二、项目创建</h3><h4 id="1-新建工程"><a href="#1-新建工程" class="headerlink" title="1. 新建工程"></a>1. 新建工程</h4><p>根据你的喜好选择对应目录，新建命令行窗体运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> vue-demo    </span><br><span class="line"><span class="built_in">cd</span> vue-demo                     <span class="comment"># 新建文件夹并进入</span></span><br><span class="line"></span><br><span class="line">vue init webpack my-project     <span class="comment"># 初始化项目</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> vue-demo    
+<span class="token function">cd</span> vue-demo                     <span class="token comment" spellcheck="true"># 新建文件夹并进入</span>
 
-
+vue init webpack my-project     <span class="token comment" spellcheck="true"># 初始化项目</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-配置信息"><a href="#2-配置信息" class="headerlink" title="2. 配置信息"></a>2. 配置信息</h4><p>回车之后就会下载项目模板，期间会让你输入项目描述，注意选择 <code>ESLint</code> 的时候记得选 <code>no</code> ，否则后续格式会出现奇奇怪怪的格式错误。</p>
 <p>具体提示信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Project name &lt;你的项目名&gt;</span><br><span class="line">Project description &lt;你的项目描述&gt;</span><br><span class="line">Author &lt;作者&gt;</span><br><span class="line">Vue build standalone</span><br><span class="line"><span class="comment"># 是否生成 router 目录</span></span><br><span class="line">Install vue-router? Yes</span><br><span class="line"><span class="comment"># 是否引入 ESlint</span></span><br><span class="line">Use ESLint to lint your code? No</span><br><span class="line"><span class="comment"># 是否生成单元测试</span></span><br><span class="line">Set up unit tests No</span><br><span class="line"><span class="comment"># 是否生成单元测试</span></span><br><span class="line">Setup e2e tests with Nightwatch? No</span><br><span class="line"><span class="comment"># 是否在项目创建后运行 npm install</span></span><br><span class="line">Should we run `npm install` <span class="keyword">for</span> you after the project has been created? (recommended) npm</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">Project name <span class="token operator">&lt;</span>你的项目名<span class="token operator">></span>
+Project description <span class="token operator">&lt;</span>你的项目描述<span class="token operator">></span>
+Author <span class="token operator">&lt;</span>作者<span class="token operator">></span>
+Vue build standalone
+<span class="token comment" spellcheck="true"># 是否生成 router 目录</span>
+Install vue-router? Yes
+<span class="token comment" spellcheck="true"># 是否引入 ESlint</span>
+Use ESLint to lint your code? No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Set up unit tests No
+<span class="token comment" spellcheck="true"># 是否生成单元测试</span>
+Setup e2e tests with Nightwatch? No
+<span class="token comment" spellcheck="true"># 是否在项目创建后运行 npm install</span>
+Should we run <span class="token variable"><span class="token variable">`</span><span class="token function">npm</span> <span class="token function">install</span><span class="token variable">`</span></span> <span class="token keyword">for</span> you after the project has been created? <span class="token punctuation">(</span>recommended<span class="token punctuation">)</span> <span class="token function">npm</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、样式引入"><a href="#三、样式引入" class="headerlink" title="三、样式引入"></a>三、样式引入</h3><h4 id="1-依赖安装"><a href="#1-依赖安装" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>这边我选择的是阿里的 <code>Ant Design</code> ，布局样式更方便，当然你可以选择原生样式或者其它 UI 框架。</p>
 <p>在新建的工程目录下新建命令窗口运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save ant-design-vue </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> i --save ant-design-vue 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-导入配置"><a href="#2-导入配置" class="headerlink" title="2. 导入配置"></a>2. 导入配置</h4><p>找到 <code>src/main.js</code> 文件，添加如下代码全局导入样式，当然你也可以在对应的页面里选择的单独引入。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局引入样式</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Antd</span> <span class="keyword">from</span> <span class="string">&#x27;ant-design-vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;ant-design-vue/dist/antd.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Antd</span>);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 全局引入样式</span>
+<span class="token keyword">import</span> Antd <span class="token keyword">from</span> <span class="token string">'ant-design-vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'ant-design-vue/dist/antd.css'</span><span class="token punctuation">;</span>
 
-
-
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Antd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、Axios配置"><a href="#四、Axios配置" class="headerlink" title="四、Axios配置"></a>四、Axios配置</h3><h4 id="1-依赖安装-1"><a href="#1-依赖安装-1" class="headerlink" title="1. 依赖安装"></a>1. 依赖安装</h4><p>打开之前新建的工程根目录，新建命令行窗口运行如下命令安装 <code>Axios </code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install axios</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> axios
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-Axios配置"><a href="#2-Axios配置" class="headerlink" title="2. Axios配置"></a>2. Axios配置</h4><p>这里用到的的接口是用的是 <code>Spring Boot</code> 编写，可以参考教程：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Spring-Boot/">Spring Boot接口开发</a>。</p>
 <p>然后在 <code>src</code> 目录下新建文件夹 <code>api</code> ，文件夹内新建文件 <code>axios.js</code> 用于对 <code>axios</code> 进行基本封装以及对相应进行简单处理，代码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">request</span>(<span class="params">axiosConfig</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> service = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">        <span class="attr">baseURL</span>: <span class="string">&#x27;http://localhost:9090&#x27;</span>,     <span class="comment">// 设置统一的请求前缀</span></span><br><span class="line">        <span class="attr">timeout</span>: <span class="number">60000</span>,                       <span class="comment">// 设置统一的超时时长, 单位毫秒</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    service.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> config</span><br><span class="line">    &#125;, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(err);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 响应拦截</span></span><br><span class="line">    service.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 请求信息弹窗提示</span></span><br><span class="line">        <span class="keyword">const</span> errorBody = err.<span class="property">response</span>.<span class="property">data</span></span><br><span class="line">        <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$notification</span>[<span class="string">&#x27;error&#x27;</span>](&#123;</span><br><span class="line">            <span class="attr">message</span>: <span class="string">&#x27;Internal Server Error&#x27;</span>,</span><br><span class="line">            <span class="attr">description</span>: errorBody.<span class="property">error</span>,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">service</span>(axiosConfig)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> request;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
 
+<span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        baseURL<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>     <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+        timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>                       <span class="token comment" spellcheck="true">// 设置统一的超时时长, 单位毫秒</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>config <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> config
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
+    <span class="token comment" spellcheck="true">// 响应拦截</span>
+    service<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>response<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> res
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> err <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 请求信息弹窗提示</span>
+        <span class="token keyword">const</span> errorBody <span class="token operator">=</span> err<span class="token punctuation">.</span>response<span class="token punctuation">.</span>data
+        Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$notification<span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            message<span class="token punctuation">:</span> <span class="token string">'Internal Server Error'</span><span class="token punctuation">,</span>
+            description<span class="token punctuation">:</span> errorBody<span class="token punctuation">.</span>error<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token function">service</span><span class="token punctuation">(</span>axiosConfig<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> request<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、Axios封装"><a href="#五、Axios封装" class="headerlink" title="五、Axios封装"></a>五、Axios封装</h3><h4 id="1-接口封装"><a href="#1-接口封装" class="headerlink" title="1. 接口封装"></a>1. 接口封装</h4><p>在api目录下新建文件 <code>user.js</code> ，在该文件内利用二次封装的 <code>axios</code> 对进行接口方法封装，这样在页面代码中我们只需引入相应的方法即可。</p>
 <p>相应的配置示例代码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> request <span class="keyword">from</span> <span class="string">&#x27;./axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">getUser</span>(<span class="params">params</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">request</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;/users/get&#x27;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">    <span class="attr">data</span>: params</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">Update</span>(<span class="params">params</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">request</span>(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;/users/update&#x27;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;post&#x27;</span>,</span><br><span class="line">    <span class="attr">data</span>: params</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> request <span class="token keyword">from</span> <span class="token string">'./axios'</span><span class="token punctuation">;</span>
 
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">getUser</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/get'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'get'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Update</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/users/update'</span><span class="token punctuation">,</span>
+    method<span class="token punctuation">:</span> <span class="token string">'post'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> params
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-接口调用"><a href="#2-接口调用" class="headerlink" title="2. 接口调用"></a>2. 接口调用</h4><p>具体的调用封装的接口方法可以参考另一篇文章，这里不详细展开：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Vue-Request/">Vue接口请求详解</a></p>
 <h3 id="六、跨域处理"><a href="#六、跨域处理" class="headerlink" title="六、跨域处理"></a>六、跨域处理</h3><p>找到项目下的 <code>config/index.js</code> 文件，在 <code>proxyTable: &#123;&#125;</code> 括号里添加如下内容，需要注意若后端配置了 <code>servlet.context-path</code> 前缀，这里对应的 <code>&#39;/&#39;</code> 需要改成其对应的值。</p>
 <p>将其中的名称 <code>your-name</code> 替换为你需要前缀，最终的接口请求地址样式即为：<code>http://localhost:8080/your-name/backend-api-path/</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;/your-name&quot;</span>:&#123;</span><br><span class="line">    <span class="attr">target</span>: <span class="string">&#x27;http://localhost:9090&#x27;</span>,</span><br><span class="line">    <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">pathRewrite</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;^/your-name&#x27;</span>: <span class="string">&#x27;/&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-js"><code class="language-js"><span class="token string">"/your-name"</span><span class="token punctuation">:</span><span class="token punctuation">{</span>
+    target<span class="token punctuation">:</span> <span class="token string">'http://localhost:9090'</span><span class="token punctuation">,</span>
+    changeOrigin<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    pathRewrite<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">'^/your-name'</span><span class="token punctuation">:</span> <span class="token string">'/'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后回到第四步的 <code>axios.js</code> 文件中将 <code>baseURL</code> 的值替换成 <code>/your-name</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> service = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">    <span class="attr">baseURL</span>: <span class="string">&#x27;/your-name&#x27;</span>,    <span class="comment">// 设置统一的请求前缀</span></span><br><span class="line">    <span class="attr">timeout</span>: <span class="number">60000</span>,           <span class="comment">// 设置统一的超时时长</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> service <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseURL<span class="token punctuation">:</span> <span class="token string">'/your-name'</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">// 设置统一的请求前缀</span>
+    timeout<span class="token punctuation">:</span> <span class="token number">60000</span><span class="token punctuation">,</span>           <span class="token comment" spellcheck="true">// 设置统一的超时时长</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p><strong>源码：</strong><a target="_blank" rel="noopener" href="https://github.com/great-jin/Blog-Code/tree/master/Vue/Axios-Seal">Axios封装</a></p>
 <p><strong>参考链接：</strong></p>
@@ -1290,7 +1357,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

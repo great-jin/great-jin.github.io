@@ -593,14 +593,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    6 分
                 </div>
                 
 
@@ -621,8 +621,12 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、基本注解"><a href="#一、基本注解" class="headerlink" title="一、基本注解"></a>一、基本注解</h3><h4 id="1-Lombok"><a href="#1-Lombok" class="headerlink" title="1. Lombok"></a>1. Lombok</h4><p><code>Lombok</code> 为实体类提供一些常用的 <code>get</code> 与 <code>set</code> 方法注解，在使用相关注解前需要引入对应依赖。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.18.24<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.projectlombok<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>lombok<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.18.24<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其常用的注解及其描述参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -679,21 +683,80 @@
 </table>
 
 <p>上述注解相应的使用示例如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CacheConfig(cacheNames = &quot;users&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">          </span><br><span class="line">    <span class="meta">@Cacheable(key = &quot;#Id&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">query</span><span class="params">(String Id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.userDao.query(Id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@CacheEvict(key = &quot;#user.Id&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">update</span><span class="params">(User user)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.userDao.update(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@CachePut(key = &quot;#Id&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">query</span><span class="params">(String Id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.userDao.query(Id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Caching(</span></span><br><span class="line"><span class="meta">        cacheable = &#123;</span></span><br><span class="line"><span class="meta">            @Cacheable(key = &quot;#Id&quot;),</span></span><br><span class="line"><span class="meta">            @Cacheable(key = &quot;&#x27;list&#x27;&quot;)</span></span><br><span class="line"><span class="meta">        &#125;,</span></span><br><span class="line"><span class="meta">        evict = &#123;</span></span><br><span class="line"><span class="meta">            @CacheEvict(key = &quot;#Id&quot;),</span></span><br><span class="line"><span class="meta">            @CacheEvict(key = &quot;&#x27;list&#x27;&quot;)</span></span><br><span class="line"><span class="meta">        &#125;,</span></span><br><span class="line"><span class="meta">        put = &#123;</span></span><br><span class="line"><span class="meta">            @CachePut(key = &quot;#Id&quot;),</span></span><br><span class="line"><span class="meta">        &#125;</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">query</span><span class="params">(String Id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.userDao.query(Id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@CacheConfig</span><span class="token punctuation">(</span>cacheNames <span class="token operator">=</span> <span class="token string">"users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">UserService</span> <span class="token punctuation">{</span>
+          
+    <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">query</span><span class="token punctuation">(</span>String Id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
+    <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.Id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">update</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userDao<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
+    <span class="token annotation punctuation">@CachePut</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">query</span><span class="token punctuation">(</span>String Id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
+    <span class="token annotation punctuation">@Caching</span><span class="token punctuation">(</span>
+        cacheable <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        evict <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        put <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@CachePut</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#Id"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">query</span><span class="token punctuation">(</span>String Id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userDao<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>Id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、接口设计"><a href="#二、接口设计" class="headerlink" title="二、接口设计"></a>二、接口设计</h3><h4 id="1、路由注解"><a href="#1、路由注解" class="headerlink" title="1、路由注解"></a>1、路由注解</h4><h5 id="1-Controller"><a href="#1-Controller" class="headerlink" title="(1) @Controller"></a>(1) @Controller</h5><p>通过视图控制器可以重定向到指定页面。</p>
 <h5 id="2-RequestMapping"><a href="#2-RequestMapping" class="headerlink" title="(2) @RequestMapping"></a>(2) @RequestMapping</h5><p>提供路由信息，负责 <code>URL</code> 到 <code>Controller</code> 中的具体函数的映射，常用于页面跳转控制。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当访问 localhost:8080/register 时触发</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/register&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toRegister</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;register&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 当访问 localhost:8080/register 时触发
+     */</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/register"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String <span class="token function">toRegister</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"register"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-RestController"><a href="#3-RestController" class="headerlink" title="(3) @RestController"></a>(3) @RestController</h5><p><code>@RestController</code> 等价于 <code>@Controller</code> 与 <code>@ResponseBody</code> 的合集，用于标注控制层组件，常配合 <code>@GetMapping</code> 等注解用于接口开发。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 接口地址 localhost:8080/login</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/login&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Login</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// put content here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 接口地址 localhost:8080/login
+     */</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/login"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Login</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// put content here</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述示例与下列代码等价，其中 <code>@RequestMapping</code> 也可换成 <code>@GetMapping</code> 等注解。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 接口地址 localhost:8080/login</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/login&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Login</span><span class="params">()</span> &#123;</span><br><span class="line">       <span class="comment">// put content here</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token annotation punctuation">@ResponseBody</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 接口地址 localhost:8080/login
+     */</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/login"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Login</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">// put content here</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2、请求注解"><a href="#2、请求注解" class="headerlink" title="2、请求注解"></a>2、请求注解</h4><p>针对 <code>HTTP</code> 的 <code>GET</code> 与 <code>POST</code> 等请求方式， <code>Spring</code> 中提供了一系列对应方式的注解。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -725,24 +788,69 @@
 
 <h4 id="3、参数注解"><a href="#3、参数注解" class="headerlink" title="3、参数注解"></a>3、参数注解</h4><h5 id="1-无注解"><a href="#1-无注解" class="headerlink" title="(1) 无注解"></a>(1) 无注解</h5><p>当不添加任何注解时，参数是以 <code>Key-Value</code> 形式拼接于请求 <code>Url</code> 中进行接收的，可以传空值或者什么都不传。当添加以下注解时默认参数必填。</p>
 <h5 id="2-RequestBody"><a href="#2-RequestBody" class="headerlink" title="(2) @RequestBody"></a>(2) @RequestBody</h5><p>前端以 <code>JSON</code> 对象的数据封装至请求体传输，<code>@RequestBody</code> 可以将其解析为实体对象，传入的对象键名必须和实体类字段名一致。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 传入的 Json 数据</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;Id&quot;</span>: <span class="number">1234</span>,</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Alex&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应的实体类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String Id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接口测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">test</span><span class="params">(<span class="meta">@RequestBody</span> User user)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 传入的 Json 数据</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"Id"</span><span class="token operator">:</span> <span class="token number">1234</span><span class="token punctuation">,</span>
+    <span class="token string">"name"</span><span class="token operator">:</span> <span class="token string">"Alex"</span>
+<span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true">// 对应的实体类</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String Id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 接口测试类</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/test"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">test</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-RequestParam"><a href="#3-RequestParam" class="headerlink" title="(3) @RequestParam"></a>(3) @RequestParam</h5><p>参数以 <code>Key-Value</code> 形式拼接于请求 <code>Url</code> 中，当传入多个参数时必须使用注解区分，<code>required</code> 用于指定该参数是否必填，默认为 <code>true</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/get&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">demo</span><span class="params">(// 默认参数必填</span></span><br><span class="line"><span class="params">                   <span class="meta">@RequestParam(value = &quot;id&quot;)</span> String Id，</span></span><br><span class="line"><span class="params">                   // 参数非必填</span></span><br><span class="line"><span class="params">                   <span class="meta">@RequestParam(value = &quot;name&quot;, required = false)</span> String name，</span></span><br><span class="line"><span class="params">                   // 非必填，为空时默认值为：male</span></span><br><span class="line"><span class="params">                   <span class="meta">@RequestParam(value = &quot;gender&quot;, required = false, defaultValue = &quot;male&quot;)</span> String gender)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Id + name + gender + <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">demo</span><span class="token punctuation">(</span><span class="token comment" spellcheck="true">// 默认参数必填</span>
+                   <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">)</span> String Id，
+                   <span class="token comment" spellcheck="true">// 参数非必填</span>
+                   <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"name"</span><span class="token punctuation">,</span> required <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span> String name，
+                   <span class="token comment" spellcheck="true">// 非必填，为空时默认值为：male</span>
+                   <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"gender"</span><span class="token punctuation">,</span> required <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> defaultValue <span class="token operator">=</span> <span class="token string">"male"</span><span class="token punctuation">)</span> String gender<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Id <span class="token operator">+</span> name <span class="token operator">+</span> gender <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="4-PathVariable"><a href="#4-PathVariable" class="headerlink" title="(4) @PathVariable"></a>(4) @PathVariable</h5><p>获取传入参数至地址栏，假如下面传入的参数为 <code>user</code> ，最终的访问 <code>url</code> 即为：<code>/user</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/&#123;path&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">Test</span><span class="params">(<span class="meta">@PathVariable</span> String path)</span>&#123;</span><br><span class="line">    <span class="comment">// do something </span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/{path}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">Test</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> String path<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// do something </span>
 
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、项目配置"><a href="#三、项目配置" class="headerlink" title="三、项目配置"></a>三、项目配置</h3><h4 id="1-Service"><a href="#1-Service" class="headerlink" title="1. @Service"></a>1. @Service</h4><p>服务层注解，可以理解就是对 <code>DAO</code> 层进行的再次封装，封装成一个服务以供使用。</p>
 <p>当 <code>@Service</code> 没有指定值默认 <code>bean</code> 名称与所实现的接口类一致。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 等价于 <span class="doctag">@Service</span>(&quot;userService&quot;)</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+  * 等价于 @Service("userService")
+  */</span>
+<span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">UserService</span> <span class="token punctuation">{</span>
 
-
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Mapper"><a href="#2-Mapper" class="headerlink" title="2. @Mapper"></a>2. @Mapper</h4><p>作用于类上，编译后为单独的接口注入容器。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Mapper</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserMapper</span> <span class="token punctuation">{</span>
 
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-MapperScan"><a href="#1-MapperScan" class="headerlink" title="(1) @MapperScan"></a>(1) @MapperScan</h5><p>作用于启动类，当工程中包含多个 <code>Mapper</code> 接口时，每一个都使用 <code>@Mapper</code> 显然过于麻烦。<code>@MapperScan</code> 用于指定 <code>Mapper</code> 所在的包，然后包下面的所有接口在编译之后都会生成相应的实现类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自动扫描包 xyz.ibudai.dao 中带 @Mapper 注解的类</span></span><br><span class="line"><span class="meta">@MapperScan(&quot;xyz.ibudai.dao&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HealthcareApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(HealthcareApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 自动扫描包 xyz.ibudai.dao 中带 @Mapper 注解的类</span>
+<span class="token annotation punctuation">@MapperScan</span><span class="token punctuation">(</span><span class="token string">"xyz.ibudai.dao"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HealthcareApplication</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        SpringApplication<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span>HealthcareApplication<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Component"><a href="#3-Component" class="headerlink" title="3. @Component"></a>3. @Component</h4><p>标注一个类为 <code>Spring</code> 容器的 <code>Bean</code> ，把 <code>pojo</code> 实例化到 <code>spring</code> 容器中，相当于配置文件中的 <code>bean</code> 注入。 </p>
 <p>在 <code>Spring</code> 工程中，项目的结构模型可以大致分为以下三类。在具体使用时，若业务场景都并非下述三种，为了区分业务就可以使用 <code>@Component</code>，但如果你在服务层不使用 <code>@Service</code> 偏要用 <code>@Component</code> ，在代码实现层面没有问题，但为了提高代码可读性及规范化，应尽量避免此类情况。</p>
 <blockquote>
@@ -1354,7 +1462,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

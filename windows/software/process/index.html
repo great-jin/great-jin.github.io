@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    932
+                    911
                 </div>
                 
 
@@ -623,14 +623,39 @@
                 <h3 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h3><p>作为一个 <code>Java</code> 工程师，经常会遇到这么个场景：<code>IDEA</code> 里的程序正在运行，此时直接关闭了 <code>IDEA</code> 而没有先关闭正在运行的服务。</p>
 <p>在绝大多数情境下，此方式都无伤大雅，但总有一些抽风的场景运行的程序并没有被正常的关闭，也就导致了重启项目时将会提示 <code>xxxx</code> 端口已被占用。</p>
 <p>在 <code>Windows</code> 下此方式解决也十分简单，在命令行输入下述两个命令即可根据端口关闭对应的进程。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 端口占用进程</span></span><br><span class="line">netstat -ano | findstr &lt;port&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进程关闭</span></span><br><span class="line">taskkill -PID &lt;pid&gt; -F</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 端口占用进程</span>
+<span class="token function">netstat</span> -ano <span class="token operator">|</span> findstr <span class="token operator">&lt;</span>port<span class="token operator">></span>
 
+<span class="token comment" spellcheck="true"># 进程关闭</span>
+taskkill -PID <span class="token operator">&lt;</span>pid<span class="token operator">></span> -F
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>虽然说也不麻烦但却很繁杂，试想一下当遇到这种情况下，我需要先翻笔记找出这两个命令，在打开命令行窗口执行，一套连招下来相当影响编程情绪。</p>
 <p>因此，我决定写一个程序能够便捷的实现这个操作，最好是带 <code>GUI</code> 页面。</p>
 <h3 id="2-实现机制"><a href="#2-实现机制" class="headerlink" title="2. 实现机制"></a>2. 实现机制</h3><p>说干就干，整个程序功能其实并不复杂，对于页面的展示要求也不高，我就确定下来了直接通过 <code>Java Swing</code> 实现 <code>GUI</code> 部分。而对于命令执行部分，在 <code>Java</code> 中提供了 <code>Process</code> 类可用于执行命令。</p>
 <p>先让我们看下 <code>Process</code> 的作用方式，以最简单的 <code>ping baidu.com</code> 测试为例。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">demo</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="type">ProcessBuilder</span> <span class="variable">processBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProcessBuilder</span>();  </span><br><span class="line">    List&lt;String&gt; command = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();  </span><br><span class="line">    command.add(<span class="string">&quot;ping&quot;</span>);  </span><br><span class="line">    command.add(<span class="string">&quot;www.baidu.com&quot;</span>);  </span><br><span class="line">    processBuilder.command(command);  </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span> &#123;  </span><br><span class="line">        <span class="type">Process</span> <span class="variable">process</span> <span class="operator">=</span> processBuilder.start();  </span><br><span class="line">        <span class="keyword">try</span> (  </span><br><span class="line">            <span class="type">InputStreamReader</span> <span class="variable">ir</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(process.getInputStream(), <span class="string">&quot;GBK&quot;</span>);  </span><br><span class="line">            <span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(ir)  </span><br><span class="line">        ) &#123;  </span><br><span class="line">            String line;  </span><br><span class="line">            <span class="keyword">while</span> ((line = br.readLine()) != <span class="literal">null</span>) &#123;  </span><br><span class="line">                System.out.println(line);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;  </span><br><span class="line">        e.printStackTrace();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+    ProcessBuilder processBuilder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ProcessBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> command <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    command<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"ping"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    command<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"www.baidu.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    processBuilder<span class="token punctuation">.</span><span class="token function">command</span><span class="token punctuation">(</span>command<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>  
+        Process process <span class="token operator">=</span> processBuilder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>  
+            InputStreamReader ir <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"GBK"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            BufferedReader br <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span>ir<span class="token punctuation">)</span>  
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+            String line<span class="token punctuation">;</span>  
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>line <span class="token operator">=</span> br<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            <span class="token punctuation">}</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>运行上述的代码，在控制台可以得到下图结果：<br><img src="/album/loading.gif" data-original="/album/article/java/process/1.png"></p>
 <p>在上述程序中，<code>ProcessBuilder</code> 用于构建命令，<code>processBuilder.start()</code> 则相当于你敲下回车执行，而执行的结果的则以 <code>IO</code> 流的形式返回，这里通过 <code>readLine()</code> 将返回的结果逐行的形式进行读取。</p>
 <p>了解的大概原理之后，剩下的事情就简单了，只需要将之前提到的两个命令以同样的方式通过 <code>Process</code> 执行就可以，再通过 Java Swing 进行一个页面展示就可以。</p>
@@ -1238,7 +1263,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

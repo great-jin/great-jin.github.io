@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    609
+                    523
                 </div>
                 
 
@@ -623,32 +623,99 @@
                 <p>如果你问我 <code>Vue</code> 的优点是什么，我的回答一定是它强大的组件功能，毫无夸张的说，组件是 <code>Vue</code> 异军突起的根据，是众多开发人员选择它的主要原因。</p>
 <p>下面举一个简单案例介绍组件使用。</p>
 <h3 id="一、组件嵌套"><a href="#一、组件嵌套" class="headerlink" title="一、组件嵌套"></a>一、组件嵌套</h3><h4 id="1-子组件"><a href="#1-子组件" class="headerlink" title="1. 子组件"></a>1. 子组件</h4><p>我们先新建一个组件 <code>sonPage.vue</code> ，并在该组件内添加一些内容，代码如下：    </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是子组件<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>我是子组件<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-父组件"><a href="#2-父组件" class="headerlink" title="2. 父组件"></a>2. 父组件</h4><h5 id="1-Script代码"><a href="#1-Script代码" class="headerlink" title="(1) Script代码"></a>(1) Script代码</h5><p>在父组件通过 <code>components</code> 对组件进行导入注册。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="comment">// 引入组件</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">SonPage</span> <span class="keyword">from</span> <span class="string">&quot;./sonPage&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="comment">// 注册组件</span></span><br><span class="line">    <span class="attr">components</span>: &#123;</span><br><span class="line">        <span class="title class_">SonPage</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;script&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+<span class="token comment" spellcheck="true">// 引入组件</span>
+<span class="token keyword">import</span> SonPage <span class="token keyword">from</span> <span class="token string">"./sonPage"</span><span class="token punctuation">;</span>
 
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 注册组件</span>
+    components<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        SonPage<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token operator">&lt;</span>script<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-HTML代码"><a href="#2-HTML代码" class="headerlink" title="(2) HTML代码"></a>(2) HTML代码</h5><p>在<code>HTML</code>代码中使用注册的组件，代码如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>以下为子组件内容<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 组件使用 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">son-page</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>以下为子组件内容<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+
+        <span class="token comment" spellcheck="true">&lt;!-- 组件使用 --></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>son-page</span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、组件传参"><a href="#二、组件传参" class="headerlink" title="二、组件传参"></a>二、组件传参</h3><h4 id="1-父传子"><a href="#1-父传子" class="headerlink" title="1. 父传子"></a>1. 父传子</h4><h5 id="1-父组件"><a href="#1-父组件" class="headerlink" title="(1) 父组件"></a>(1) 父组件</h5><p>在 <code>父组件</code> 通过自定义标签属性向子组件传参。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>下述为嵌套子组件<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">son-page</span> <span class="attr">brandName</span>=<span class="string">&quot;布袋树洞&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">son-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>下述为嵌套子组件<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>son-page</span> <span class="token attr-name">brandName</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>布袋树洞<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>son-page</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-子组件"><a href="#2-子组件" class="headerlink" title="(2) 子组件"></a>(2) 子组件</h5><p>在子组件 <code>script</code> 脚本中通过 <code>props</code> 赋值，如需额外执行获取操作。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;sonPage&#x27;</span>,</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">        <span class="comment">// 定义 props 来接收父组件传递的数据</span></span><br><span class="line">        <span class="attr">brandName</span>: &#123;</span><br><span class="line">            <span class="attr">type</span>: <span class="title class_">String</span>,</span><br><span class="line">            <span class="attr">required</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">data</span> () &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="comment">// 获取传参</span></span><br><span class="line">            <span class="attr">info</span>: <span class="variable language_">this</span>.<span class="property">brandName</span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">'sonPage'</span><span class="token punctuation">,</span>
+    props<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 定义 props 来接收父组件传递的数据</span>
+        brandName<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            type<span class="token punctuation">:</span> String<span class="token punctuation">,</span>
+            required<span class="token punctuation">:</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    data <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 获取传参</span>
+            info<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>brandName
+        <span class="token punctuation">}</span> 
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-子传父"><a href="#2-子传父" class="headerlink" title="2. 子传父"></a>2. 子传父</h4><h5 id="1-父组件-1"><a href="#1-父组件-1" class="headerlink" title="(1) 父组件"></a>(1) 父组件</h5><p>在父组件通过自定义函数获取子组件传参。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>下述为嵌套子组件<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">son-page</span> @<span class="attr">sonSend</span>=<span class="string">&quot;fatherGet&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">son-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>下述为嵌套子组件<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>son-page</span> <span class="token attr-name">@sonSend</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fatherGet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>son-page</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>自定义函数方法打印获取的参数，当子组件发送数据时将会执行上述声明的 <code>fatherGet</code> 事件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="attr">method</span>: &#123;</span><br><span class="line">        <span class="title function_">fatherGet</span>(<span class="params">data</span>) &#123;</span><br><span class="line">            <span class="comment">// 打印子组件的传参</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(data)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+    method<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token function">fatherGet</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 打印子组件的传参</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-子组件-1"><a href="#2-子组件-1" class="headerlink" title="(2) 子组件"></a>(2) 子组件</h5><p>在子组件中通过 <code>$emit</code> 事件向父组件传参。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;send&quot;</span>&gt;</span>传参<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>send<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>传参<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>需要注意这里 <code>$emit</code> 第一个参数要和父组件中 <code>@事件名</code> 一致。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="attr">method</span>: &#123;</span><br><span class="line">        <span class="title function_">send</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="comment">// 向父组件传参</span></span><br><span class="line">            <span class="variable language_">this</span>.$emit(<span class="string">&#x27;sonSend&#x27;</span>, <span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+    method<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 向父组件传参</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'sonSend'</span><span class="token punctuation">,</span> <span class="token string">'123'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1249,7 +1316,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

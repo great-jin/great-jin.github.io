@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    998
+                    992
                 </div>
                 
 
@@ -620,98 +620,142 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-库和工具"><a href="#1-库和工具" class="headerlink" title="1. 库和工具"></a>1. 库和工具</h4><h5 id="1-依赖库"><a href="#1-依赖库" class="headerlink" title="(1) 依赖库"></a>(1) 依赖库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-编译工具"><a href="#2-编译工具" class="headerlink" title="(2) 编译工具"></a>(2) 编译工具</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc perl-ExtUtils-MakeMaker package</span><br></pre></td></tr></table></figure>
-
-
+                <h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-库和工具"><a href="#1-库和工具" class="headerlink" title="1. 库和工具"></a>1. 库和工具</h4><h5 id="1-依赖库"><a href="#1-依赖库" class="headerlink" title="(1) 依赖库"></a>(1) 依赖库</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-编译工具"><a href="#2-编译工具" class="headerlink" title="(2) 编译工具"></a>(2) 编译工具</h5><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> gcc perl-ExtUtils-MakeMaker package
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-Git安装"><a href="#2-Git安装" class="headerlink" title="2. Git安装"></a>2. Git安装</h4><h5 id="1-移除旧版本"><a href="#1-移除旧版本" class="headerlink" title="(1) 移除旧版本"></a>(1) 移除旧版本</h5><p>系统自带的版本过低，我们删除重装。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove git</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">yum remove <span class="token function">git</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-下载"><a href="#2-下载" class="headerlink" title="(2) 下载"></a>(2) 下载</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/src
 
-<h5 id="2-下载"><a href="#2-下载" class="headerlink" title="(2) 下载"></a>(2) 下载</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/src</span><br><span class="line"></span><br><span class="line">wget http://ftp.ntu.edu.tw/software/scm/git/git-2.26.0.tar.gz</span><br></pre></td></tr></table></figure>
+<span class="token function">wget</span> http://ftp.ntu.edu.tw/software/scm/git/git-2.26.0.tar.gz
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-编译"><a href="#3-编译" class="headerlink" title="(3) 编译"></a>(3) 编译</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">tar</span> -zvxf git-2.26.0.tar.gz         <span class="token comment" spellcheck="true"># 解压</span>
+         
+<span class="token function">cd</span> git-2.26.0
 
-<h5 id="3-编译"><a href="#3-编译" class="headerlink" title="(3) 编译"></a>(3) 编译</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zvxf git-2.26.0.tar.gz         <span class="comment"># 解压</span></span><br><span class="line">         </span><br><span class="line"><span class="built_in">cd</span> git-2.26.0</span><br><span class="line"></span><br><span class="line">make prefix=/usr/local/git all      <span class="comment"># 编译</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="4-安装"><a href="#4-安装" class="headerlink" title="(4) 安装"></a>(4) 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make prefix=/usr/local/git install</span><br></pre></td></tr></table></figure>
-
-
+<span class="token function">make</span> prefix<span class="token operator">=</span>/usr/local/git all      <span class="token comment" spellcheck="true"># 编译</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-安装"><a href="#4-安装" class="headerlink" title="(4) 安装"></a>(4) 安装</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">make</span> prefix<span class="token operator">=</span>/usr/local/git <span class="token function">install</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="3-环境变量"><a href="#3-环境变量" class="headerlink" title="3. 环境变量"></a>3. 环境变量</h4><p>进入环境变量配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">   </span><br><span class="line"><span class="comment"># 添加如下内容</span></span><br><span class="line">PATH=<span class="variable">$PATH</span>:/usr/local/git/bin   <span class="comment"># git 的目录</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">vim /etc/profile
+   
+<span class="token comment" spellcheck="true"># 添加如下内容</span>
+PATH<span class="token operator">=</span><span class="token variable">$PATH</span>:/usr/local/git/bin   <span class="token comment" spellcheck="true"># git 的目录</span>
+<span class="token function">export</span> PATH
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>刷新配置让其生效</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">source</span> /etc/profile
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>验证安装完成，查看 <code>git</code> 的版本号是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> --version
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="二、创建用户"><a href="#二、创建用户" class="headerlink" title="二、创建用户"></a>二、创建用户</h3><h4 id="1-添加用户"><a href="#1-添加用户" class="headerlink" title="1. 添加用户"></a>1. 添加用户</h4><p>这里我创建的用户为：<code>great</code>，下文不再具体说明。创建完用户会对应在<code>/home</code>目录下生成同名文件夹，之后我们就会将Git仓库设置在该目录下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adduser great           <span class="comment"># 创建用户</span></span><br><span class="line"></span><br><span class="line">passwd great            <span class="comment"># 设置密码</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">adduser great           <span class="token comment" spellcheck="true"># 创建用户</span>
 
-
-<h4 id="2-获取权限"><a href="#2-获取权限" class="headerlink" title="2. 获取权限"></a>2. 获取权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 740 /etc/sudoers</span><br></pre></td></tr></table></figure>
-
-
+<span class="token function">passwd</span> great            <span class="token comment" spellcheck="true"># 设置密码</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-获取权限"><a href="#2-获取权限" class="headerlink" title="2. 获取权限"></a>2. 获取权限</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chmod</span> 740 /etc/sudoers
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="3-添加信息"><a href="#3-添加信息" class="headerlink" title="3. 添加信息"></a>3. 添加信息</h4><p>在文件中找到 <code>root   ALL=(ALL)  ALL</code> 在其下面添加如下内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sudoers           <span class="comment"># 编辑配置文件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root      ALL=(ALL)       ALL</span><br><span class="line">great     ALL=(ALL)       ALL</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">vim /etc/sudoers           <span class="token comment" spellcheck="true"># 编辑配置文件</span>
 
 
-<h4 id="4-退回权限"><a href="#4-退回权限" class="headerlink" title="4. 退回权限"></a>4. 退回权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 400 /etc/sudoers</span><br></pre></td></tr></table></figure>
-
-
-
+root      ALL<span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span>       ALL
+great     ALL<span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span>       ALL
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-退回权限"><a href="#4-退回权限" class="headerlink" title="4. 退回权限"></a>4. 退回权限</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chmod</span> 400 /etc/sudoers
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="三、密匙绑定"><a href="#三、密匙绑定" class="headerlink" title="三、密匙绑定"></a>三、密匙绑定</h3><h4 id="1-密匙创建"><a href="#1-密匙创建" class="headerlink" title="1. 密匙创建"></a>1. 密匙创建</h4><p>在任意位置鼠标右击选择：<code>Git Bash Here</code> ，在弹出的命令窗口输入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">ssh-keygen -t rsa
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>根据提示确认即可，默认在：<code>C:\Users\Win用户名\.ssh</code>下尾缀为<code>.pub</code>的文件，里面就是你的SSH秘钥。</p>
-<h4 id="2-切换用户"><a href="#2-切换用户" class="headerlink" title="2. 切换用户"></a>2. 切换用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su great             <span class="comment"># 切换登录账号</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> ~/.ssh         <span class="comment"># 创建 .ssh 文件夹</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-切换用户"><a href="#2-切换用户" class="headerlink" title="2. 切换用户"></a>2. 切换用户</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">su</span> great             <span class="token comment" spellcheck="true"># 切换登录账号</span>
 
-
+<span class="token function">mkdir</span> ~/.ssh         <span class="token comment" spellcheck="true"># 创建 .ssh 文件夹</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-密钥上传"><a href="#3-密钥上传" class="headerlink" title="3. 密钥上传"></a>3. 密钥上传</h4><p>保存密钥到服务器，将刚才本地生成的密匙复制到文件内，即本地尾缀为<code>.pub</code>的文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.ssh/authorized_keys       <span class="comment"># 编辑文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> 755 ~</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">vim ~/.ssh/authorized_keys       <span class="token comment" spellcheck="true"># 编辑文件</span>
 
+<span class="token function">chmod</span> 755 ~
 
+<span class="token function">chmod</span> 700 ~/.ssh
+
+<span class="token function">chmod</span> 600 ~/.ssh/authorized_keys
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-测试连接"><a href="#4-测试连接" class="headerlink" title="4. 测试连接"></a>4. 测试连接</h4><p>在本地电脑鼠标右击选择 <code>git bash here</code>，成功会提示你输入用户密码，登录即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -v &lt;username&gt;@&lt;your_ip&gt; </span><br></pre></td></tr></table></figure>
-<h3 id="四、站点创建"><a href="#四、站点创建" class="headerlink" title="四、站点创建"></a>四、站点创建</h3><h4 id="1-切换用户"><a href="#1-切换用户" class="headerlink" title="1. 切换用户"></a>1. 切换用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> /home/myhexo         <span class="comment"># 创建网站的根目录</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ssh</span> -v <span class="token operator">&lt;</span>username<span class="token operator">></span>@<span class="token operator">&lt;</span>your_ip<span class="token operator">></span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="四、站点创建"><a href="#四、站点创建" class="headerlink" title="四、站点创建"></a>四、站点创建</h3><h4 id="1-切换用户"><a href="#1-切换用户" class="headerlink" title="1. 切换用户"></a>1. 切换用户</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">su</span> root
 
+<span class="token function">mkdir</span> /home/myhexo         <span class="token comment" spellcheck="true"># 创建网站的根目录</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-赋予权限"><a href="#2-赋予权限" class="headerlink" title="2. 赋予权限"></a>2. 赋予权限</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chown</span> great:great -R /home/myhexo
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="五、Nginx安装"><a href="#五、Nginx安装" class="headerlink" title="五、Nginx安装"></a>五、Nginx安装</h3><h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h4><pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> -y nginx       <span class="token comment" spellcheck="true"># 安装</span>
 
-<h4 id="2-赋予权限"><a href="#2-赋予权限" class="headerlink" title="2. 赋予权限"></a>2. 赋予权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> great:great -R /home/myhexo</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="五、Nginx安装"><a href="#五、Nginx安装" class="headerlink" title="五、Nginx安装"></a>五、Nginx安装</h3><h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx       <span class="comment"># 安装</span></span><br><span class="line"></span><br><span class="line">nginx -t                   <span class="comment"># 查看</span></span><br></pre></td></tr></table></figure>
-
-
+nginx -t                   <span class="token comment" spellcheck="true"># 查看</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-修改配置"><a href="#2-修改配置" class="headerlink" title="2. 修改配置"></a>2. 修改配置</h4><p>修改 <code>nginx</code> 服务相关配置。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">vim /etc/nginx/nginx.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在文本中找到 <code>server</code> 模块，修改 <code>server_name</code> 和 <code>root</code> ， 没有域名可以先空着，后续通过 <code>IP</code> 地址访问。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">   listen       80 default_server;</span><br><span class="line">   listen       [::]:80 default_server;</span><br><span class="line">   server_name  _;                        <span class="comment"># 博客域名，没有先不填</span></span><br><span class="line">   root         /home/myhexo;             <span class="comment"># 上面创建的博客仓库目录</span></span><br><span class="line"></span><br><span class="line">   <span class="comment"># Load configuration files for the default server block.</span></span><br><span class="line">   include /etc/nginx/default.d/*.conf;</span><br><span class="line"></span><br><span class="line">   location / &#123;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   error_page 404 /404.html;</span><br><span class="line">      location = /40x.html &#123;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   error_page 500 502 503 504 /50x.html;</span><br><span class="line">      location = /50x.html &#123;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">server <span class="token punctuation">{</span>
+   listen       80 default_server<span class="token punctuation">;</span>
+   listen       <span class="token punctuation">[</span>::<span class="token punctuation">]</span>:80 default_server<span class="token punctuation">;</span>
+   server_name  _<span class="token punctuation">;</span>                        <span class="token comment" spellcheck="true"># 博客域名，没有先不填</span>
+   root         /home/myhexo<span class="token punctuation">;</span>             <span class="token comment" spellcheck="true"># 上面创建的博客仓库目录</span>
 
+   <span class="token comment" spellcheck="true"># Load configuration files for the default server block.</span>
+   include /etc/nginx/default.d/*.conf<span class="token punctuation">;</span>
 
+   location / <span class="token punctuation">{</span>
+   <span class="token punctuation">}</span>
+
+   error_page 404 /404.html<span class="token punctuation">;</span>
+      location <span class="token operator">=</span> /40x.html <span class="token punctuation">{</span>
+   <span class="token punctuation">}</span>
+
+   error_page 500 502 503 504 /50x.html<span class="token punctuation">;</span>
+      location <span class="token operator">=</span> /50x.html <span class="token punctuation">{</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Nginx启动"><a href="#3-Nginx启动" class="headerlink" title="3. Nginx启动"></a>3. Nginx启动</h4><p>注意每次重启服务器都需要重新启动 <code>Nginx</code> 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
-<h3 id="六、搭建仓库"><a href="#六、搭建仓库" class="headerlink" title="六、搭建仓库"></a>六、搭建仓库</h3><h4 id="1-切换用户-1"><a href="#1-切换用户-1" class="headerlink" title="1. 切换用户"></a>1. 切换用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su root        <span class="comment"># 切换回根用户</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/great       </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">systemctl start nginx.service
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="六、搭建仓库"><a href="#六、搭建仓库" class="headerlink" title="六、搭建仓库"></a>六、搭建仓库</h3><h4 id="1-切换用户-1"><a href="#1-切换用户-1" class="headerlink" title="1. 切换用户"></a>1. 切换用户</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">su</span> root        <span class="token comment" spellcheck="true"># 切换回根用户</span>
 
+<span class="token function">cd</span> /home/great       
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2. 初始化"></a>2. 初始化</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> init --bare blog.git            <span class="token comment" spellcheck="true"># 初始化仓库</span>
 
-<h4 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2. 初始化"></a>2. 初始化</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare blog.git            <span class="comment"># 初始化仓库</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">chown</span> great:great -R blog.git       <span class="comment"># 修改blog.git权限</span></span><br></pre></td></tr></table></figure>
-
-
+<span class="token function">chown</span> great:great -R blog.git       <span class="token comment" spellcheck="true"># 修改blog.git权限</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-配置钩子"><a href="#3-配置钩子" class="headerlink" title="3. 配置钩子"></a>3. 配置钩子</h4><p>在 <code>/home/myhexo/blog.git</code> 下有一个自动生成的 <code>hooks</code> 文件夹，我们创建一个新的 <code>git</code> 钩子 <code>post-receive</code> 用于自动部署。</p>
 <p>在该文件中添加下面两行代码，指定 <code>Git</code> 的工作树（源代码）和 <code>Git</code> 目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim blog.git/hooks/post-receive</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加如下内容</span></span><br><span class="line"><span class="comment">#!/bin/bash </span></span><br><span class="line">git --work-tree=/home/myhexo --git-dir=/home/great/blog.git checkout -f</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">vim blog.git/hooks/post-receive
 
-
-<h4 id="4-修改权限"><a href="#4-修改权限" class="headerlink" title="4. 修改权限"></a>4. 修改权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /home/great/blog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="5-链接文件"><a href="#5-链接文件" class="headerlink" title="5. 链接文件"></a>5. 链接文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /usr/local/great/bin/git-receive-pack  /usr/bin/git-receive-pack</span><br></pre></td></tr></table></figure>
-
-
+<span class="token comment" spellcheck="true"># 添加如下内容</span>
+<span class="token comment" spellcheck="true">#!/bin/bash </span>
+<span class="token function">git</span> --work-tree<span class="token operator">=</span>/home/myhexo --git-dir<span class="token operator">=</span>/home/great/blog.git checkout -f
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-修改权限"><a href="#4-修改权限" class="headerlink" title="4. 修改权限"></a>4. 修改权限</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chmod</span> +x /home/great/blog.git/hooks/post-receive
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="5-链接文件"><a href="#5-链接文件" class="headerlink" title="5. 链接文件"></a>5. 链接文件</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ln</span> -s /usr/local/great/bin/git-receive-pack  /usr/bin/git-receive-pack
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="七、本地配置"><a href="#七、本地配置" class="headerlink" title="七、本地配置"></a>七、本地配置</h3><h4 id="1-修改配置"><a href="#1-修改配置" class="headerlink" title="1. 修改配置"></a>1. 修改配置</h4><p>修改根站点的 <code>_config.yml</code> 文件为如下所示:</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">   <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">   <span class="attr">repo:</span> <span class="string">root@&lt;your_ip&gt;:/home/great/blog.git</span>       <span class="comment">#仓库地址</span></span><br><span class="line">   <span class="attr">branch:</span> <span class="string">master</span>                                  <span class="comment">#分支</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+   <span class="token key atrule">type</span><span class="token punctuation">:</span> git
+   <span class="token key atrule">repo</span><span class="token punctuation">:</span> root@&lt;your_ip<span class="token punctuation">></span><span class="token punctuation">:</span>/home/great/blog.git       <span class="token comment" spellcheck="true">#仓库地址</span>
+   <span class="token key atrule">branch</span><span class="token punctuation">:</span> master                                  <span class="token comment" spellcheck="true">#分支</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-部署推送"><a href="#2-部署推送" class="headerlink" title="2. 部署推送"></a>2. 部署推送</h4><p>在 <code>Hexo</code> 目录下新建命令行窗口进行推送部署，系统会要求你输入 <code>root</code> 密码，完成后在浏览器地址栏输入你的 <code>IP</code> 地址即可访问博客。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo cl &amp;&amp; hexo g -d</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">hexo cl <span class="token operator">&amp;&amp;</span> hexo g -d
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1308,7 +1352,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

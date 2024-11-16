@@ -597,7 +597,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    707
+                    695
                 </div>
                 
 
@@ -627,16 +627,24 @@
                 <p><code>Docker</code> 容器基于 <code>CLI</code> 运行，而 <code>Docker compose</code> 则基于 <code>yaml</code> 配置文件，后者相对自动化程度更高。</p>
 <h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><h4 id="1-前置服务"><a href="#1-前置服务" class="headerlink" title="1. 前置服务"></a>1. 前置服务</h4><p><code>Docker compose</code> 是基于 <code>Docker</code> 扩展，因此需要先安装 <code>Docker</code> 服务。</p>
 <p>默认 <code>Docker</code> 安装路径为 <code>/var/lib/docker</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install docker-ce -y                   <span class="comment"># 通过 yum 源安装</span></span><br><span class="line"></span><br><span class="line">systemctl start docker                     <span class="comment"># 启动服务</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">yum <span class="token function">install</span> docker-ce -y                   <span class="token comment" spellcheck="true"># 通过 yum 源安装</span>
+
+systemctl start docker                     <span class="token comment" spellcheck="true"># 启动服务</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-文件下载"><a href="#2-文件下载" class="headerlink" title="2. 文件下载"></a>2. 文件下载</h4><p>若使用 <code>curl</code> 命令下载失败可直接进入 <code>Docker GitHub</code> 发布页手动下载文件再上传至服务器，<a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">官网直达</a>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件下载</span></span><br><span class="line">curl -L <span class="string">&quot;https://mirrors.tuna.tsinghua.edu.cn/docker-compose/latest/<span class="subst">$(uname -s)</span>/<span class="subst">$(uname -m)</span>/docker-compose&quot;</span> -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件下载</span>
+curl -L <span class="token string">"https://mirrors.tuna.tsinghua.edu.cn/docker-compose/latest/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -s<span class="token variable">)</span></span>/<span class="token variable"><span class="token variable">$(</span><span class="token function">uname</span> -m<span class="token variable">)</span></span>/docker-compose"</span> -o /usr/local/bin/docker-compose
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="3-链接安装"><a href="#3-链接安装" class="headerlink" title="3. 链接安装"></a>3. 链接安装</h4><p>完成 <code>Docker Compose</code> 文件下载之后需要进行授权并创建链接文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件授权</span></span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件链接</span></span><br><span class="line"><span class="built_in">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装验证</span></span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件授权</span>
+<span class="token function">chmod</span> +x /usr/local/bin/docker-compose
 
+<span class="token comment" spellcheck="true"># 文件链接</span>
+<span class="token function">ln</span> -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-
+<span class="token comment" spellcheck="true"># 安装验证</span>
+docker-compose version
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、文件配置"><a href="#二、文件配置" class="headerlink" title="二、文件配置"></a>二、文件配置</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>Docker Compose</code> 通过 <code>yaml</code> 文件实现容器的管理，其配置内容参数说明如下：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -666,20 +674,56 @@
 </table>
 
 <p>下述为一个完整的 <code>yaml</code> 配置文件示例。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># Application name</span></span><br><span class="line">  <span class="attr">service-1:</span></span><br><span class="line">    <span class="comment"># Config the image</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">test_image</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Config the container name</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">test_service</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Config the port proxy</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Config the environment properties</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">props1:</span> <span class="string">value1</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">props2:</span> <span class="string">value2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># config the directory or file proxy</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/docker/test/application.yml:/app/application.yml</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Sharing the same networking space with the Host</span></span><br><span class="line">    <span class="attr">network_mode:</span> <span class="string">&quot;host&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># Application name</span></span><br><span class="line">  <span class="attr">service-2:</span></span><br><span class="line">    <span class="attr">depends_on:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">service-1</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token comment" spellcheck="true"># Application name</span>
+  <span class="token key atrule">service-1</span><span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># Config the image</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> test_image
+    
+    <span class="token comment" spellcheck="true"># Config the container name</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> test_service
+    
+    <span class="token comment" spellcheck="true"># Config the port proxy</span>
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"8080:8080"</span>
 
-
+    <span class="token comment" spellcheck="true"># Config the environment properties</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">props1</span><span class="token punctuation">:</span> value1
+      <span class="token punctuation">-</span> <span class="token key atrule">props2</span><span class="token punctuation">:</span> value2
+    
+    <span class="token comment" spellcheck="true"># config the directory or file proxy</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /home/docker/test/application.yml<span class="token punctuation">:</span>/app/application.yml
+ 
+    <span class="token comment" spellcheck="true"># Sharing the same networking space with the Host</span>
+    <span class="token key atrule">network_mode</span><span class="token punctuation">:</span> <span class="token string">"host"</span>
+  
+  <span class="token comment" spellcheck="true"># Application name</span>
+  <span class="token key atrule">service-2</span><span class="token punctuation">:</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span> 
+      <span class="token punctuation">-</span> service<span class="token punctuation">-</span><span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-网络配置"><a href="#2-网络配置" class="headerlink" title="2. 网络配置"></a>2. 网络配置</h4><h5 id="1-depends-on"><a href="#1-depends-on" class="headerlink" title="(1) depends_on"></a>(1) depends_on</h5><p><code>depends_on</code> 用于定义服务之间的启动顺序和依赖关系。具体而言，它指定了某个服务依赖于其他服务，即使依赖的服务启动后，也确保依赖服务在其之前启动。</p>
 <p>然而，它并不保证服务已经完全健康或准备好接受连接，因此它主要用于启动顺序的管理。</p>
 <h5 id="2-network-mode"><a href="#2-network-mode" class="headerlink" title="(2) network_mode"></a>(2) network_mode</h5><p><code>network_mode</code> 用于指定服务使用的网络模式。它可以设置为 <code>bridge、host、none</code> 或自定义网络名称。</p>
 <p>默认情况下，<code>Docker Compose</code> 创建一个自定义网络，但你可以通过 <code>network_mode</code> 来覆盖这个行为。</p>
 <h3 id="三、命令介绍"><a href="#三、命令介绍" class="headerlink" title="三、命令介绍"></a>三、命令介绍</h3><h4 id="1-服务启停"><a href="#1-服务启停" class="headerlink" title="1. 服务启停"></a>1. 服务启停</h4><p>完成 <code>yaml</code> 文件配置之后，即可在同级目录下通过下述命令启停容器。</p>
 <p>当完成容器启动后，可同样通过 <code>docker ps</code> 等命令进行查看，与之前文章提到 <code>docker</code> 使用并无不同。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">docker-compose up</span><br><span class="line"></span><br><span class="line"><span class="comment"># 后台运行</span></span><br><span class="line">docker-compose up -d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止服务</span></span><br><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 启动服务</span>
+docker-compose up
 
+<span class="token comment" spellcheck="true"># 后台运行</span>
+docker-compose up -d
 
+<span class="token comment" spellcheck="true"># 停止服务</span>
+docker-compose down
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2. 常用命令"></a>2. 常用命令</h4><p>除了基础的服务启停之外，常用的命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 动态查看日志</span></span><br><span class="line">docker-compose logs -f</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 动态查看日志</span>
+docker-compose logs -f
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1281,7 +1325,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

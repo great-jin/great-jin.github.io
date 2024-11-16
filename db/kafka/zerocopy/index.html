@@ -647,10 +647,10 @@
 <p>而 <code>mmap(Memory-mapped file support)</code> 内存映射则正是实现了这一点，其将内核缓冲区里的数据映射到用户层，从而实现在用户层即可访问内核层数据，也就节省了一次 <code>CPU</code> 数据拷贝。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/6.png"></p>
 <h4 id="2-sendfile"><a href="#2-sendfile" class="headerlink" title="2. sendfile"></a>2. sendfile</h4><p>在 <code>linux</code> 中提供了专门的文件传输函数 <code>sendfile()</code> 可用于替代 <code>read()</code> 与 <code>write()</code> 操作。该函数能够直接实现两个内核态的数据拷贝，从而减少了 <code>1</code> 次用户态层级切换，在 <code>Java</code> 的 <code>NIO</code> 中也涉及到该函数的封装调用，后面会详细介绍。</p>
 <p>在 <code>Nginx</code> 的配置文件中经常可以看到下述配置，其即代表使用 <code>sendfile</code> 执行传输。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    sendfile        on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-conf"><code class="language-conf">http {
+    sendfile        on;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、Java实现"><a href="#三、Java实现" class="headerlink" title="三、Java实现"></a>三、Java实现</h3><h4 id="1-NIO接口"><a href="#1-NIO接口" class="headerlink" title="1. NIO接口"></a>1. NIO接口</h4><p>在上述提到 <code>linux</code> 中提供了 <code>sendfile()</code> 替换了 <code>read()</code> 和 <code>write()</code> 从而减少状态的切换，在 <code>NIO</code> 中的 <code>FileChannel</code> 正利用了这一方式提高了传输效率。</p>
 <p>在 <code>FileChannelImpl</code> 的 <code>transferTo()</code> 方法中正是封装利用这一特性执行数据的传输，通过下述图示了解其类的层级结构。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/10.png"></p>
 <p><code>transferTo()</code> 方法的内部实现逻辑此处不具体展开描述，感兴趣的朋友可以自行查看 <code>JDk</code> 源码，这里以简洁的图示描述其执行调用路径。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/11.png"></p>
@@ -1261,7 +1261,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

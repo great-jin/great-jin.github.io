@@ -593,14 +593,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    790
+                    733
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    2 分
                 </div>
                 
 
@@ -623,9 +623,11 @@
                 <h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在业务常见开发中经常我们会涉及到失败重试的逻辑，如当发送通知失败后再次尝试。</p>
 <p>针对此类场景最简单粗暴的方式即 <code>CV</code> 大法，但显然这种方式不够优雅，为此 <code>Spring Boot</code> 中提供了 <code>Retry</code> 从而实现优雅的异常失败重试。</p>
 <h4 id="2-依赖导入"><a href="#2-依赖导入" class="headerlink" title="2. 依赖导入"></a>2. 依赖导入</h4><p>在开始前在 <code>Spring Boot</code> 工程中引入相应的 <code>Retry</code> 依赖。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.retry<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-retry<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.retry<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-retry<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-异常处理"><a href="#3-异常处理" class="headerlink" title="3. 异常处理"></a>3. 异常处理</h4><p><code>Spring Retry</code> 的使用也及其简单，通过 <code>@Retryable</code> 注解配置，其基本配置参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -663,20 +665,80 @@
 </table>
 
 <p>如下述示例代码中则设置当 <code>call()</code> 方法抛出 <code>RuntimeException</code> 异常时重试两次，每次重试间隔 <code>500</code> 毫秒。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetryService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Retryable(</span></span><br><span class="line"><span class="meta">            value = RuntimeException.class,</span></span><br><span class="line"><span class="meta">            // 设置尝试次数，默认为 3</span></span><br><span class="line"><span class="meta">            maxAttempts = 2,</span></span><br><span class="line"><span class="meta">            // maxAttemptsExpression = &quot;$&#123;retry.maxAttempts&#125;&quot;,</span></span><br><span class="line"><span class="meta">            // 设置每次尝试间隔时间，默认 1 秒，此处设为 500 毫秒</span></span><br><span class="line"><span class="meta">            backoff = @Backoff(delay = 500)</span></span><br><span class="line"><span class="meta">            // 通过表达式配置间隔时间</span></span><br><span class="line"><span class="meta">            // backoff = @Backoff(delayExpression = &quot;$&#123;retry.maxDelay&#125;&quot;)</span></span><br><span class="line"><span class="meta">    )</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">call</span><span class="params">(<span class="type">boolean</span> failed)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (failed) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;================ &gt;&gt;&gt; retry.&quot;</span>);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryService</span> <span class="token punctuation">{</span>
 
-
+    <span class="token annotation punctuation">@Retryable</span><span class="token punctuation">(</span>
+            value <span class="token operator">=</span> RuntimeException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 设置尝试次数，默认为 3</span>
+            maxAttempts <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// maxAttemptsExpression = "${retry.maxAttempts}",</span>
+            <span class="token comment" spellcheck="true">// 设置每次尝试间隔时间，默认 1 秒，此处设为 500 毫秒</span>
+            backoff <span class="token operator">=</span> <span class="token annotation punctuation">@Backoff</span><span class="token punctuation">(</span>delay <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// 通过表达式配置间隔时间</span>
+            <span class="token comment" spellcheck="true">// backoff = @Backoff(delayExpression = "${retry.maxDelay}")</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"================ >>> retry."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-恢复事件"><a href="#4-恢复事件" class="headerlink" title="4. 恢复事件"></a>4. 恢复事件</h4><p>重试的恢复事件由 <code>@Recover</code> 注解控制，即当 <code>@Retryable</code> 方法达到重试次数仍失败时触发。</p>
 <p>需要注意的是 <code>@Recover</code> 注解的标注的方法第一个参数必须与 <code>@Retryable</code> 中的 <code>value</code> 类型一致，剩余参数则必须与 <code>@Retryable</code> 修饰的方法入参一致。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetryService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * &quot;<span class="doctag">@Retryable</span>&quot; 重试指定次数后若仍失败则触发 &quot;<span class="doctag">@Recover</span>&quot;</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * 第一个方法参数为 &quot;<span class="doctag">@Retryable</span>&quot; 中监听的异常类型</span></span><br><span class="line"><span class="comment">     * 第二个方法参数为 &quot;<span class="doctag">@Retryable</span>&quot; 方法中剩余的入参</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Recover</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">recover</span><span class="params">(RuntimeException e, <span class="type">boolean</span> failed)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;================ &gt;&gt;&gt; recover, params: &quot;</span> + failed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryService</span> <span class="token punctuation">{</span>
 
+    <span class="token comment" spellcheck="true">/**
+     * "@Retryable" 重试指定次数后若仍失败则触发 "@Recover"
+     * &lt;p>
+     * 第一个方法参数为 "@Retryable" 中监听的异常类型
+     * 第二个方法参数为 "@Retryable" 方法中剩余的入参
+     */</span>
+    <span class="token annotation punctuation">@Recover</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">recover</span><span class="token punctuation">(</span>RuntimeException e<span class="token punctuation">,</span> <span class="token keyword">boolean</span> failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"================ >>> recover, params: "</span> <span class="token operator">+</span> failed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>新建测试类 <code>RetryController</code> 调用接口后即可看到控制台分别打印了两句 <code>&gt;&gt;&gt; retry</code> 与一句 <code>&gt;&gt;&gt; recover</code> 日志信息，说明重试机制生效了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/retry&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RetryController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RetryService retryService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;demo1&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">demo</span><span class="params">(<span class="type">boolean</span> failed)</span> &#123;</span><br><span class="line">        retryService.call(failed);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/retry"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryController</span> <span class="token punctuation">{</span>
 
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> RetryService retryService<span class="token punctuation">;</span>
 
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo1"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        retryService<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>failed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-配置管理"><a href="#5-配置管理" class="headerlink" title="5. 配置管理"></a>5. 配置管理</h4><p>除了在方法上通过 <code>@Retryable</code> 注解显式设置尝试策略，也可通过全局的配置修改默认的尝试次数与间隔时间等信息。</p>
 <p>新建配置类 <code>AppConfig</code>，具体的配置内容参考下述示例，此处的配置将全局生效，当然仍可在方法处通过 <code>@Retryable</code> 注解覆盖配置。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableRetry</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RetryTemplate <span class="title function_">retryTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">RetryTemplate</span> <span class="variable">retryTemplate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RetryTemplate</span>();</span><br><span class="line">        <span class="comment">// Set retry policy</span></span><br><span class="line">        <span class="type">SimpleRetryPolicy</span> <span class="variable">retryPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleRetryPolicy</span>();</span><br><span class="line">        retryPolicy.setMaxAttempts(<span class="number">1</span>);</span><br><span class="line">        retryTemplate.setRetryPolicy(retryPolicy);</span><br><span class="line">        <span class="comment">// Set interval policy</span></span><br><span class="line">        <span class="type">FixedBackOffPolicy</span> <span class="variable">backOffPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FixedBackOffPolicy</span>();</span><br><span class="line">        backOffPolicy.setBackOffPeriod(<span class="number">2000l</span>);</span><br><span class="line">        retryTemplate.setBackOffPolicy(backOffPolicy);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> retryTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableRetry</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AppConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> RetryTemplate <span class="token function">retryTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        RetryTemplate retryTemplate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RetryTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Set retry policy</span>
+        SimpleRetryPolicy retryPolicy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleRetryPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        retryPolicy<span class="token punctuation">.</span><span class="token function">setMaxAttempts</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        retryTemplate<span class="token punctuation">.</span><span class="token function">setRetryPolicy</span><span class="token punctuation">(</span>retryPolicy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// Set interval policy</span>
+        FixedBackOffPolicy backOffPolicy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FixedBackOffPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        backOffPolicy<span class="token punctuation">.</span><span class="token function">setBackOffPeriod</span><span class="token punctuation">(</span>2000l<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        retryTemplate<span class="token punctuation">.</span><span class="token function">setBackOffPolicy</span><span class="token punctuation">(</span>backOffPolicy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> retryTemplate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1274,7 +1336,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    655
+                    628
                 </div>
                 
 
@@ -626,16 +626,52 @@
 <h4 id="2-目标效果"><a href="#2-目标效果" class="headerlink" title="2. 目标效果"></a>2. 目标效果</h4><p>在 <code>Spring Boot</code> 中的一大核心即全局的 <code>Bean</code> 对象容器管理，因此可以将工厂模式与之进一步结合。</p>
 <p>其核心在于利用 <code>Spring</code> 的 <code>Bean</code> 容器分组效果，将工厂类的不同实例化对象注入 <code>Bean</code> 容器，当需要创建对象时，直接通过 <code>Bean</code> 容器获取即可。</p>
 <h3 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h3><h4 id="1-常量定义"><a href="#1-常量定义" class="headerlink" title="1. 常量定义"></a>1. 常量定义</h4><p>为了提供程序的可读性与可维护性，此处将后续涉及的常量统一外置定义。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Const</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ANIMAL_DOG</span> <span class="operator">=</span> <span class="string">&quot;dog&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ANIMAL_CAT</span> <span class="operator">=</span> <span class="string">&quot;cat&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Const</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String ANIMAL_DOG <span class="token operator">=</span> <span class="token string">"dog"</span><span class="token punctuation">;</span>
 
-
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String ANIMAL_CAT <span class="token operator">=</span> <span class="token string">"cat"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-工厂实现"><a href="#2-工厂实现" class="headerlink" title="2. 工厂实现"></a>2. 工厂实现</h4><p>这里同样以基础的动物工厂为例，定义了接口 <code>Animal</code>，同时定义了两个实现类 <code>Dog</code> 与 <code>Cat</code>。</p>
 <p>需要注意此处的两个实现类需要通过 <code>@Service</code> 注入 <code>Bean</code> 对象至 <code>Spring</code> 容器中，并指定了 <code>Bean</code> 名称。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">roar</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Service(Const.ANIMAL_DOG)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Dog</span> <span class="keyword">implements</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">roar</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Dog roar&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Service(Const.ANIMAL_CAT)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Cat</span> <span class="keyword">implements</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">roar</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Cat roar&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Animal</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
 
+<span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_DOG<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Dog</span> <span class="token keyword">implements</span> <span class="token class-name">Animal</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Dog roar"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_CAT<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Cat</span> <span class="token keyword">implements</span> <span class="token class-name">Animal</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Cat roar"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>完成上述步骤后即可通过 <code>Map</code> 与 <code>@Autowired</code> 获取对象实例，依托于 <code>Spring</code> 容器实现了类似工厂与 <code>SPI</code> 结合的效果。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Animal&gt; animalMap;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="comment">// --&gt; Dog roar</span></span><br><span class="line">        <span class="type">Animal</span> <span class="variable">dog</span> <span class="operator">=</span> animalMap.get(Const.ANIMAL_DOG);</span><br><span class="line">        dog.roar();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// --&gt; Cat roar</span></span><br><span class="line">        <span class="type">Animal</span> <span class="variable">cat</span> <span class="operator">=</span> animalMap.get(Const.ANIMAL_CAT);</span><br><span class="line">        cat.roar();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Animal<span class="token operator">></span> animalMap<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// --> Dog roar</span>
+        Animal dog <span class="token operator">=</span> animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_DOG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dog<span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// --> Cat roar</span>
+        Animal cat <span class="token operator">=</span> animalMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Const<span class="token punctuation">.</span>ANIMAL_CAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cat<span class="token punctuation">.</span><span class="token function">roar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1233,7 +1269,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -697,17 +697,24 @@
 <h4 id="4-引用类型"><a href="#4-引用类型" class="headerlink" title="4. 引用类型"></a>4. 引用类型</h4><p>在 <code>Java</code> 中一个对象的引用情况分为三类：强引用 <code>(Strong Reference)</code>、软引用 <code>(Soft Reference)</code> 和弱应用 <code>(Weak Reference)</code>。</p>
 <h5 id="1-强引用"><a href="#1-强引用" class="headerlink" title="(1) 强引用"></a>(1) 强引用</h5><p>强引用是日常使用中最常见的引用方式，当通过 <code>new</code> 关键字或基础类型赋值时即创建一个强引用。</p>
 <p>如下示例中即创建了两个强引用对象，在执行 <code>GC</code> 垃圾回收时强引用对象资源不会被系统回收。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
+Object obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-软引用"><a href="#2-软引用" class="headerlink" title="(2) 软引用"></a>(2) 软引用</h5><p>通过 <code>SoftReference</code> 泛型类即可创建一个软引用对象，如下示例中将强引用对象 <code>prime</code> 转化为软引用对象。</p>
 <p>软引用对象在不存在任何实例或引用时即可被 <code>GC</code> 识别，但其所占内存空间不会被立即回收，只有在 <code>JVM</code> 内存空间不足时才会被真正 <code>GC</code> 回收。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">prime</span> <span class="operator">=</span> <span class="number">1</span>;  </span><br><span class="line">SoftReference&lt;Integer&gt; soft = <span class="keyword">new</span> <span class="title class_">SoftReference</span>&lt;Integer&gt;(prime);</span><br><span class="line"><span class="comment">// 赋空，此时可被 GC 识别但只在 JVM 内存不足时执行 GC</span></span><br><span class="line">prime = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java">Integer prime <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
+SoftReference<span class="token operator">&lt;</span>Integer<span class="token operator">></span> soft <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SoftReference</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span>prime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 赋空，此时可被 GC 识别但只在 JVM 内存不足时执行 GC</span>
+prime <span class="token operator">=</span> null<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-弱引用"><a href="#3-弱引用" class="headerlink" title="(3) 弱引用"></a>(3) 弱引用</h5><p>通过 <code>WeakReference</code> 可创建一个弱应用对象，如下示例中将强引用对象 <code>prime</code> 转化为弱引用对象。</p>
 <p>当一个对象被声明为弱引用时，在下一次 <code>GC</code> 生命周期即会被系统回收。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">prime</span> <span class="operator">=</span> <span class="number">1</span>;  </span><br><span class="line">WeakReference&lt;Integer&gt; soft = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;Integer&gt;(prime); </span><br><span class="line"><span class="comment">// 赋空，下一次 GC 即被回收</span></span><br><span class="line">prime = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-java"><code class="language-java">Integer prime <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
+WeakReference<span class="token operator">&lt;</span>Integer<span class="token operator">></span> soft <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakReference</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span>prime<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment" spellcheck="true">// 赋空，下一次 GC 即被回收</span>
+prime <span class="token operator">=</span> null<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、安全点"><a href="#四、安全点" class="headerlink" title="四、安全点"></a>四、安全点</h3><h4 id="1-OopMap"><a href="#1-OopMap" class="headerlink" title="1. OopMap"></a>1. OopMap</h4><p>迄今为止，所有收集器在根节点枚举 (<code>GC Roots</code>) 这一步骤时都是必须暂停用户线程的，从而防止在执行标记的过程中产生新的引用，而虽然可达性分析算法耗时最长的查找引用链的过程已经可以做到与用户线程一起并发，但根节点枚举始终还是必须在一个能保障一致性的快照中才得以进行。</p>
 <p>目前主流 <code>Java</code> 虚拟机使用的都是准确式垃圾收集，所以当用户线程停顿下来之后，其实并不需要一个不漏地检查完所有执行上下文和全局的引用位置，虚拟机应当是有办法直接得到哪些地方存放着对象引用的，在 <code>HotSpot</code> 的解决方案里，是使用一组称为 <code>OopMap</code> 的数据结构来达到这个目的。</p>
 <p>一旦类加载动作完成的时候，<code>HotSpot</code> 就会把对象内什么偏移量上是什么类型的数据计算出来，在即时编译过程中也会在特定的位置记录下栈里和寄存器里哪些位置是引用，这样收集器在扫描时就可以直接得知这些信息了，并不需要真正一个不漏地从方法区等 <code>GC Roots</code> 开始查找，从而省去大量时间。</p>
@@ -736,9 +743,30 @@
 <p><code>HotSpot</code> 虚拟机为了避免安全点过多带来过重的负担，对循环还有一项优化措施，认为循环次数较少的话，执行时间应该也不会太长，所以使用 <code>int</code> 类型或范围更小的数据类型作为索引值的循环默认是不会被放置安全点的，这种循环被称为可数循环（<code>Counted Loop</code>），在退出循环之后才会放置安全点。相对应地，使用 <code>long</code> 或者范围更大的数据类型作为索引值的循环就被称为不可数循环（<code>Uncounted Loop</code>），将会被放置安全点。</p>
 <p>如下示例中的第一个循环即为可数循环（<code>Counted Loop</code>），第二个与第三个为不可数循环（<code>Uncounted Loop</code>），当程序的循环次数过多时或单词循环耗时过久时，可将循环遍历类型设置为 <code>long</code> 或在循环内部通过 <code>Thread.sleep(0)</code> 显式的设置安全点，因为 <code>sleep()</code> 方法调用了 <code>native</code> 方法实现。</p>
 <p>需要注意的一点的是设置安全点并不是代表一定会触发 <code>GC</code>，而是当执行 <code>GC</code> 时用户线程可从当前安全点作为 <code>GC Roots</code> 开始扫描对象引用关系。因此，当执行耗时的可数循环（<code>Counted Loop</code>）时若没有手动设置安全点但此刻却触发了 <code>GC</code> 进程，将会导致 <code>GC</code> 停顿时间过久，这显然不是我们愿意看到的结果。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Counted Loop</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++) &#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Uncounted Loop</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">long</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++) &#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Uncounted Loop</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">1000000000</span>; i++) &#123;</span><br><span class="line">	<span class="comment">// do something</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(i % <span class="number">1000</span> == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;  </span><br><span class="line">			<span class="comment">// sleep() will add Safeponit</span></span><br><span class="line">			<span class="comment">// Because it execute the native method</span></span><br><span class="line">		    Thread.sleep(<span class="number">0</span>);  </span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;  </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// Counted Loop</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// do something</span>
+<span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true">// Uncounted Loop</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">long</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// do something</span>
+<span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true">// Uncounted Loop</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// do something</span>
+    
+    <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">%</span> <span class="token number">1000</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>  
+            <span class="token comment" spellcheck="true">// sleep() will add Safeponit</span>
+            <span class="token comment" spellcheck="true">// Because it execute the native method</span>
+            Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-执行方案"><a href="#4-执行方案" class="headerlink" title="4. 执行方案"></a>4. 执行方案</h4><p>针对如何在垃圾收集发生时让所有线程都跑到最近的安全点然后停顿下来，有两种方案可供选择：抢先式中断（<code>Preemptive Suspension</code>）和主动式中断（<code>Voluntary Suspension</code>）。</p>
 <p>当下较为流行并被广泛使用的为主动式中断，二者相对应的定义如下：</p>
 <blockquote>
@@ -821,14 +849,16 @@
 <h4 id="5-模式查看"><a href="#5-模式查看" class="headerlink" title="5. 模式查看"></a>5. 模式查看</h4><p>那如何查看当前 <code>JVM</code> 的启动方式呢？方法其实很简单直接通过 <code>java -version</code> 命令即可。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/11.png"></p>
 <p>可以看到上图的最后一行中有 <code>64-Bit Server VM</code> 字样，即代表当前 <code>JVM</code> 默认的启动模式为服务器模式，简单的讲即当前通过 <code>java -jar</code> 命令运行的程序其 <code>JVM</code> 模式为服务器模式。</p>
 <p>而针对正在运行中的程序，则可以通过 <code>jcmd</code> 命令进行查看，命令格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jcmd &lt;pid&gt; VM.version</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">jcmd <span class="token operator">&lt;</span>pid<span class="token operator">></span> VM.version
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>执行后可以看到返回的信息和上述 <code>java -version</code> 结果类似，同样为 <code>Server VM</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/12.png"></p>
 <p>如果你不想以默认的模式启动，则可以在执行运行命令时通过 <code>-client</code> 或 <code>-server</code> 指定模式。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以客户端模式启动</span></span><br><span class="line">java -client -jar test.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以服务器模式启动</span></span><br><span class="line">java -server -jar test.jar</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 以客户端模式启动</span>
+java -client -jar test.jar
 
-
-
+<span class="token comment" spellcheck="true"># 以服务器模式启动</span>
+java -server -jar test.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="七、CMS收集器"><a href="#七、CMS收集器" class="headerlink" title="七、CMS收集器"></a>七、CMS收集器</h3><p><code>CMS(Concurrent Mark Sweep)</code> 是一款优秀的收集器，它最主要的优点在名字上已经体现出来：并发收集、低停顿，一些官方公开文档里面也称之为“并发低停顿收集器”（<code>Concurrent Low Pause Collector</code>）。垃圾收集的目标范围为整个新生代（<code>Minor GC</code>），或整个老年代（<code>Major GC</code>），亦或整个 <code>Java</code> 堆（<code>Full GC</code>）。</p>
 <h4 id="1-工作流程"><a href="#1-工作流程" class="headerlink" title="1. 工作流程"></a>1. 工作流程</h4><p><code>CMS</code> 收集器的执行流程共分为四步，具体工程流程如下：</p>
 <h5 id="Ⅰ-初始标记"><a href="#Ⅰ-初始标记" class="headerlink" title="(Ⅰ) 初始标记"></a>(Ⅰ) 初始标记</h5><p><code>CMS initial mark</code>，需要停止所有用户线程，仅标记 <code>GC Roots</code> 能直接关联到的对象，整个过程耗时很短。</p>
@@ -1492,7 +1522,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -597,14 +597,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    5 分
                 </div>
                 
 
@@ -629,62 +629,112 @@
 </blockquote>
 <p>下面介绍在 <code>Linux</code> 与 <code>Windows</code> 平台搭建 <code>MinIO</code> 服务的具体步骤。</p>
 <h3 id="一、编译安装"><a href="#一、编译安装" class="headerlink" title="一、编译安装"></a>一、编译安装</h3><h4 id="1-文件下载"><a href="#1-文件下载" class="headerlink" title="1. 文件下载"></a>1. 文件下载</h4><p>这里我选择的安装路径：<code>/home/minio</code>，根据你的喜好自行选择。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http://dl.minio.org.cn/server/minio/release/linux-amd64/minio      <span class="comment"># 下载文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x minio              <span class="comment"># 赋予文件权限</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">wget</span> http://dl.minio.org.cn/server/minio/release/linux-amd64/minio      <span class="token comment" spellcheck="true"># 下载文件</span>
 
-
+<span class="token function">chmod</span> +x minio              <span class="token comment" spellcheck="true"># 赋予文件权限</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>新版本的 <code>MinIO</code> 在启动时必须指定控制台端口，否则将外网将无法访问。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./minio/minio server ./mimio/data --console-adress <span class="string">&quot;:9001&quot;</span>     <span class="comment"># 启动，并重定向到9001</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">nohup</span> /home/minio/minio server --console-address 0.0.0.0:9001 /home/minio/data &gt; /home/minio/data/minio.log 2&gt;&amp;1 &amp;      <span class="comment"># 设置后台运行</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">./minio/minio server ./mimio/data --console-adress <span class="token string">":9001"</span>     <span class="token comment" spellcheck="true"># 启动，并重定向到9001</span>
 
-
+<span class="token function">nohup</span> /home/minio/minio server --console-address 0.0.0.0:9001 /home/minio/data <span class="token operator">></span> /home/minio/data/minio.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>      <span class="token comment" spellcheck="true"># 设置后台运行</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-端口开放"><a href="#3-端口开放" class="headerlink" title="3. 端口开放"></a>3. 端口开放</h4><p>需要提前开放 <code>9001</code> 防火墙端口，然后即可通过 <code>IP:9000</code> 访问控制台了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --add-port=9001/tcp --zone=public --permanent       <span class="comment"># 永久开放9001端口</span></span><br><span class="line"></span><br><span class="line">firewall-cmd --reload        <span class="comment"># 重载配置生效</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">firewall-cmd --add-port<span class="token operator">=</span>9001/tcp --zone<span class="token operator">=</span>public --permanent       <span class="token comment" spellcheck="true"># 永久开放9001端口</span>
+
+firewall-cmd --reload        <span class="token comment" spellcheck="true"># 重载配置生效</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-密码修改"><a href="#4-密码修改" class="headerlink" title="4. 密码修改"></a>4. 密码修改</h4><h5 id="1-配置修改"><a href="#1-配置修改" class="headerlink" title="(1) 配置修改"></a>(1) 配置修改</h5><p>修改密码的话直接修改 <code>config.json</code> 文件中对应的 <code>value</code> 值即可，完成后保存后重启服务即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ./minio/data/.minio.sys/config/</span><br><span class="line"></span><br><span class="line">vi config.json       </span><br><span class="line"></span><br><span class="line">[&#123;<span class="string">&quot;key&quot;</span>:<span class="string">&quot;access_key&quot;</span>,<span class="string">&quot;value&quot;</span>:<span class="string">&quot;user_name&quot;</span>&#125;,&#123;<span class="string">&quot;key&quot;</span>:<span class="string">&quot;secret_key&quot;</span>,<span class="string">&quot;value&quot;</span>:<span class="string">&quot;password&quot;</span>&#125;]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> ./minio/data/.minio.sys/config/
+
+<span class="token function">vi</span> config.json       
+
+<span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"key"</span><span class="token keyword">:</span><span class="token string">"access_key"</span>,<span class="token string">"value"</span><span class="token keyword">:</span><span class="token string">"user_name"</span><span class="token punctuation">}</span>,<span class="token punctuation">{</span><span class="token string">"key"</span><span class="token keyword">:</span><span class="token string">"secret_key"</span>,<span class="token string">"value"</span><span class="token keyword">:</span><span class="token string">"password"</span><span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-服务重启"><a href="#2-服务重启" class="headerlink" title="(2) 服务重启"></a>(2) 服务重启</h5><p>修改之后重启 <code>MinIO</code> 服务即可，我暂时没找到直接的重启命令，所有我采取最粗暴的方式直接关闭 <code>MinIO</code> 的进程再手动启动。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:9000                <span class="comment"># 查看对应进程获取PID</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">kill</span> -9 [PID]               <span class="comment"># 关闭进程</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">nohup</span> /home/minio/minio server --console-address 0.0.0.0:9001 /home/minio/data &gt; /home/minio/data/minio.log 2&gt;&amp;1 &amp;      <span class="comment"># 重新运行</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">lsof</span> -i:9000                <span class="token comment" spellcheck="true"># 查看对应进程获取PID</span>
 
+<span class="token function">kill</span> -9 <span class="token punctuation">[</span>PID<span class="token punctuation">]</span>               <span class="token comment" spellcheck="true"># 关闭进程</span>
 
-
+<span class="token function">nohup</span> /home/minio/minio server --console-address 0.0.0.0:9001 /home/minio/data <span class="token operator">></span> /home/minio/data/minio.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>      <span class="token comment" spellcheck="true"># 重新运行</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、Docker安装"><a href="#二、Docker安装" class="headerlink" title="二、Docker安装"></a>二、Docker安装</h3><h4 id="1-Docker下载"><a href="#1-Docker下载" class="headerlink" title="1. Docker下载"></a>1. Docker下载</h4><p>在部署之前需要先安装 <code>Docker</code> 服务。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker           <span class="comment"># 安装docker</span></span><br><span class="line"></span><br><span class="line">systemctl start docker          <span class="comment"># 启动docker</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">yum -y <span class="token function">install</span> docker           <span class="token comment" spellcheck="true"># 安装docker</span>
 
-
+systemctl start docker          <span class="token comment" spellcheck="true"># 启动docker</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-旧版安装"><a href="#2-旧版安装" class="headerlink" title="2. 旧版安装"></a>2. 旧版安装</h4><h5 id="1-镜像拉取"><a href="#1-镜像拉取" class="headerlink" title="(1) 镜像拉取"></a>(1) 镜像拉取</h5><p>通过 <code>docker pull</code> 拉取指定版本 <code>MinIO</code> 镜像版本。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull minio/minio:RELEASE.2021-06-17T00-10-46Z       <span class="comment"># 拉取minio版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">docker pull minio/minio:RELEASE.2021-06-17T00-10-46Z       <span class="token comment" spellcheck="true"># 拉取minio版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-服务启动-1"><a href="#2-服务启动-1" class="headerlink" title="(2) 服务启动"></a>(2) 服务启动</h5><p>如果出现 <code>xxx is not a valid repository/tag</code> 说明的 <code>Docker</code> 版本太低不支持大写键入，需要手动进行更新。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d  --name minio -p 9000:9000\</span><br><span class="line">-e <span class="string">&quot;MINIO_ACCESS_KEY=minioadmin&quot;</span> \</span><br><span class="line">-e <span class="string">&quot;MINIO_SECRET_KEY=minioadmin&quot;</span> \</span><br><span class="line">-v /usr/local/minio/data:/data \</span><br><span class="line">-v /usr/local/minio/config:/root/.minio \</span><br><span class="line">minio/minio:RELEASE.2021-06-17T00-10-46Z server /data</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker run -d  --name minio -p 9000:9000\
+-e <span class="token string">"MINIO_ACCESS_KEY=minioadmin"</span> \
+-e <span class="token string">"MINIO_SECRET_KEY=minioadmin"</span> \
+-v /usr/local/minio/data:/data \
+-v /usr/local/minio/config:/root/.minio \
+minio/minio:RELEASE.2021-06-17T00-10-46Z server /data
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-Docker更新"><a href="#3-Docker更新" class="headerlink" title="(3) Docker更新"></a>(3) Docker更新</h5><p>在执行 <code>curl -fsSL https://get.docker.com/ | sh</code> 可能会提示超时，多试几次就可以了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep docker                          <span class="comment"># 查看 docker 相关源文件</span></span><br><span class="line"></span><br><span class="line">yum -y remove &lt;xxx&gt;                          <span class="comment"># 删除上一步查询的文件包</span></span><br><span class="line"></span><br><span class="line">curl -fsSL https://get.docker.com/ | sh      <span class="comment"># 安装最新版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">rpm -qa<span class="token operator">|</span><span class="token function">grep</span> docker                          <span class="token comment" spellcheck="true"># 查看 docker 相关源文件</span>
 
+yum -y remove <span class="token operator">&lt;</span>xxx<span class="token operator">></span>                          <span class="token comment" spellcheck="true"># 删除上一步查询的文件包</span>
 
+curl -fsSL https://get.docker.com/ <span class="token operator">|</span> sh      <span class="token comment" spellcheck="true"># 安装最新版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-新版安装"><a href="#3-新版安装" class="headerlink" title="3. 新版安装"></a>3. 新版安装</h4><p>这新版本中引入众多特性，如桶内允许嵌套桶等等。</p>
 <h5 id="1-镜像拉取-1"><a href="#1-镜像拉取-1" class="headerlink" title="(1) 镜像拉取"></a>(1) 镜像拉取</h5><p>同样拉取 <code>MinIO</code> 镜像，未指定版本默认拉取最新版本。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull minio/minio       <span class="comment"># 拉取镜像</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker pull minio/minio       <span class="token comment" spellcheck="true"># 拉取镜像</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-启动服务"><a href="#2-启动服务" class="headerlink" title="(2) 启动服务"></a>(2) 启动服务</h5><p>控制台服务使用 <code>50000</code> 端口访问， <code>API</code> 接口使用 <code>9000</code> 端口访问，数据存储于： <code>/usr/local/minio/data</code>，配置文件位于：<code>/usr/local/minio/config</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name minio \</span><br><span class="line">--privileged=<span class="literal">true</span> \</span><br><span class="line">-p 9000:9000 \</span><br><span class="line">-p 50000:50000 \</span><br><span class="line">-e MINIO_ROOT_USER=minioadmin \</span><br><span class="line">-e MINIO_ROOT_PASSWORD=minioadmin \</span><br><span class="line">-v /usr/local/minio/data:/data \</span><br><span class="line">-v /usr/local/minio/config:/root/.minio \</span><br><span class="line">minio/minio server /data \</span><br><span class="line">--console-address <span class="string">&quot;:50000&quot;</span> --address <span class="string">&quot;:9000&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker run -d --name minio \
+--privileged<span class="token operator">=</span>true \
+-p 9000:9000 \
+-p 50000:50000 \
+-e MINIO_ROOT_USER<span class="token operator">=</span>minioadmin \
+-e MINIO_ROOT_PASSWORD<span class="token operator">=</span>minioadmin \
+-v /usr/local/minio/data:/data \
+-v /usr/local/minio/config:/root/.minio \
+minio/minio server /data \
+--console-address <span class="token string">":50000"</span> --address <span class="token string">":9000"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、Windows安装"><a href="#三、Windows安装" class="headerlink" title="三、Windows安装"></a>三、Windows安装</h3><h4 id="1-前台启动"><a href="#1-前台启动" class="headerlink" title="1. 前台启动"></a>1. 前台启动</h4><h5 id="1-文件下载-1"><a href="#1-文件下载-1" class="headerlink" title="(1) 文件下载"></a>(1) 文件下载</h5><p>进入官网进行下载，只需下载服务端即可。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://min.io/download</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//min.io/download
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-启动配置"><a href="#2-启动配置" class="headerlink" title="(2) 启动配置"></a>(2) 启动配置</h5><p>将下载 <code>minio.exe</code> 文件指定位置，我这里放在 <code>D:\Develop\MinIO</code> 目录下。在该目录下新建 <code>start.bat</code> 文件，其中 <code>D:\Develop\MinIO\date</code> 表示 <code>MinIO</code> 后续数据存放位置。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bat 文件内容</span></span><br><span class="line">minio.exe server D:\Develop\MinIO\<span class="built_in">date</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># bat 文件内容</span>
+minio.exe server D:\Develop\MinIO\date
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h5 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="(3) 服务启动"></a>(3) 服务启动</h5><p>双击启动 <code>bat</code> 文件即可，控制台会自动显示访问地址以及默认的登录账号。</p>
 <h4 id="2-后台运行"><a href="#2-后台运行" class="headerlink" title="2. 后台运行"></a>2. 后台运行</h4><p>后台启动的话就无需前台一直开着命令行窗口，更便捷。</p>
 <h5 id="1-WinSW下载"><a href="#1-WinSW下载" class="headerlink" title="(1) WinSW下载"></a>(1) WinSW下载</h5><p>后台服务需要用到 <code>WinSW</code> ，官网下载地址如下：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/winsw/winsw/releases</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//github.com/winsw/winsw/releases
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="(2) 配置文件"></a>(2) 配置文件</h5><p><code>XML</code> 文件必须和 <code>MinIOServer</code> 文件名一致，将 <code>MinIOServer.xml</code> 文件和 <code>MinIOServer.exe</code> 置于 <code>minio.exe</code> 同级目录。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>MinIOServer<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>MinIOServer<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>minio文件存储服务器<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 环境配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">&quot;HOME&quot;</span> <span class="attr">value</span>=<span class="string">&quot;%BASE%&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executable</span>&gt;</span>%BASE%\minio.exe<span class="tag">&lt;/<span class="name">executable</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">arguments</span>&gt;</span>server &quot;%BASE%\data&quot;<span class="tag">&lt;/<span class="name">arguments</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 日志配置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logpath</span>&gt;</span>%BASE%\logs<span class="tag">&lt;/<span class="name">logpath</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">log</span> <span class="attr">mode</span>=<span class="string">&quot;roll-by-size-time&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sizeThreshold</span>&gt;</span>10240<span class="tag">&lt;/<span class="name">sizeThreshold</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>yyyyMMdd<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">autoRollAtTime</span>&gt;</span>00:00:00<span class="tag">&lt;/<span class="name">autoRollAtTime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">zipOlderThanNumDays</span>&gt;</span>5<span class="tag">&lt;/<span class="name">zipOlderThanNumDays</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">zipDateFormat</span>&gt;</span>yyyyMMdd<span class="tag">&lt;/<span class="name">zipDateFormat</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">log</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>service</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>MinIOServer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>MinIOServer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>minio文件存储服务器<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
 
+    <span class="token comment" spellcheck="true">&lt;!-- 环境配置 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>env</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>HOME<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>%BASE%<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>executable</span><span class="token punctuation">></span></span>%BASE%\minio.exe<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>executable</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>arguments</span><span class="token punctuation">></span></span>server "%BASE%\data"<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>arguments</span><span class="token punctuation">></span></span>
+
+    <span class="token comment" spellcheck="true">&lt;!-- 日志配置 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>logpath</span><span class="token punctuation">></span></span>%BASE%\logs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>logpath</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>log</span> <span class="token attr-name">mode</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>roll-by-size-time<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sizeThreshold</span><span class="token punctuation">></span></span>10240<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sizeThreshold</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pattern</span><span class="token punctuation">></span></span>yyyyMMdd<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pattern</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>autoRollAtTime</span><span class="token punctuation">></span></span>00:00:00<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>autoRollAtTime</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>zipOlderThanNumDays</span><span class="token punctuation">></span></span>5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>zipOlderThanNumDays</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>zipDateFormat</span><span class="token punctuation">></span></span>yyyyMMdd<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>zipDateFormat</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>log</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>service</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-启动"><a href="#3-启动" class="headerlink" title="(3) 启动"></a>(3) 启动</h5><p>在该目录下新建命令窗口，输入：<code>MinIOServer.exe install</code>。然后在 <code>Windows</code> 服务中找到 <code>MinIOServer</code> 服务启动即可。访问路径：<code>localhost:9000</code>，默认账号密码：<code>minioadmin, minioadmin</code>。</p>
 <p>若要关闭 <code>MinIO</code> 服务直接关闭 <code>MinIOServer</code> 服务即可。</p>
 <h5 id="4-修改密码"><a href="#4-修改密码" class="headerlink" title="(4) 修改密码"></a>(4) 修改密码</h5><p>进入目录 <code>minio\data\.minio.sys\config</code>，修改 <code>config.json</code> 文件中的信息即可。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="string">&quot;key&quot;</span>:<span class="string">&quot;access_key&quot;</span>,<span class="string">&quot;value&quot;</span>:<span class="string">&quot;username&quot;</span>&#125;,&#123;<span class="string">&quot;key&quot;</span>:<span class="string">&quot;secret_key&quot;</span>,<span class="string">&quot;value&quot;</span>:<span class="string">&quot;password&quot;</span>&#125;]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"key"</span><span class="token punctuation">:</span><span class="token string">"access_key"</span><span class="token punctuation">,</span><span class="token string">"value"</span><span class="token punctuation">:</span><span class="token string">"username"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"key"</span><span class="token punctuation">:</span><span class="token string">"secret_key"</span><span class="token punctuation">,</span><span class="token string">"value"</span><span class="token punctuation">:</span><span class="token string">"password"</span><span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -1294,7 +1344,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

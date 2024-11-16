@@ -580,7 +580,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    346
+                    310
                 </div>
                 
 
@@ -608,33 +608,46 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、安装目录"><a href="#一、安装目录" class="headerlink" title="一、安装目录"></a>一、安装目录</h3><h4 id="1-SDK配置"><a href="#1-SDK配置" class="headerlink" title="1. SDK配置"></a>1. SDK配置</h4><p>默认 <code>SDK</code> 安装目录如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\User\Administrator\AppData\Local\Android\Sdk</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">C:\User\Administrator\AppData\Local\Android\Sdk
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-应用卸载"><a href="#2-应用卸载" class="headerlink" title="2. 应用卸载"></a>2. 应用卸载</h4><p>在卸载 <code>Android Studio</code> 应用后还须进入 <code>C</code> 盘删除应用缓存文件。</p>
 <p>打开目录 <code>C:\用户\Administrator</code> ，删除：<code>.android</code>，<code>.gradle</code>，<code>.Android studiox.x</code> 三个文件夹。</p>
 <h3 id="二、基本操作"><a href="#二、基本操作" class="headerlink" title="二、基本操作"></a>二、基本操作</h3><h4 id="1-应用图标"><a href="#1-应用图标" class="headerlink" title="1. 应用图标"></a>1. 应用图标</h4><p>在 <code>res\drawable</code> 目录下放置要更换的图标；修改 <code>AndroidManifest.xml</code> 文件。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android: icon=&quot;@drawable/图标名&quot;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-xml"><code class="language-xml">android: icon="@drawable/图标名"
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-启动页变更"><a href="#2-启动页变更" class="headerlink" title="2. 启动页变更"></a>2. 启动页变更</h4><p>修改<code>AndroidManifest.xml</code>文件为如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>.MainActivity<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>intent-filter</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>action</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>android.intent.action.MAIN<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>category</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>android.intent.category.LAUNCHER<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>intent-filter</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activity</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-页面跳转"><a href="#3-页面跳转" class="headerlink" title="3. 页面跳转"></a>3. 页面跳转</h4><p>创建 <code>Intent</code> 对象用于页面跳转并传输数据。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * CurrentActivity: 当前页面</span></span><br><span class="line"><span class="comment"> * TargetActivity: 目标页面</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(CurrentActivity.<span class="built_in">this</span>, TargetActivity.class);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * CurrentActivity: 当前页面
+ * TargetActivity: 目标页面
+ */</span>
+Intent intent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Intent</span><span class="token punctuation">(</span>CurrentActivity<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">,</span> TargetActivity<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">startActivity</span><span class="token punctuation">(</span>intent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在跳转前的页面以键值对形式存入所要传输的数据。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent.putExtra(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;value&quot;</span>);</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java">intent<span class="token punctuation">.</span><span class="token function">putExtra</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在跳转后的页面通过 <code>key</code> 值获取所传输的数据。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> getIntent();</span><br><span class="line">re_nameEdit.setText(intent.getStringExtra(<span class="string">&quot;key&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-java"><code class="language-java">Intent intent <span class="token operator">=</span> <span class="token function">getIntent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+re_nameEdit<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span>intent<span class="token punctuation">.</span><span class="token function">getStringExtra</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="4-页面标题"><a href="#4-页面标题" class="headerlink" title="4. 页面标题"></a>4. 页面标题</h4><p>(1) 在 <code>res/values/string.xml</code> 提前定义字符串。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resouces</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;login&quot;</span>&gt;</span>Login Page<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resouces</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resouces</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>string</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>login<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Login Page<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>string</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resouces</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>(2) 在<code>AndroidManifest.xml</code>添加如下语句：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.LoginActivity&quot;</span>&gt;</span></span><br><span class="line">    android:label=&quot;@string/login&quot;</span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>.LoginActivity<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    android:label="@string/login"
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>activity</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>最终效果即登录页面显示 <code>Login Page</code> 。</p>
 
                 
@@ -1208,7 +1221,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

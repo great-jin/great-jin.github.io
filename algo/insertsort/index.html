@@ -597,7 +597,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    767
+                    740
                 </div>
                 
 
@@ -630,14 +630,55 @@
 <h4 id="1-数组实现"><a href="#1-数组实现" class="headerlink" title="1. 数组实现"></a>1. 数组实现</h4><p>首先先从简单的数组类型功能实现入手。</p>
 <p>基本思想就是将一个数组划分为只有一个元素的 <code>子表1</code> 和剩下的元素构成的 <code>子表2</code> 。每次从 <code>子表2</code> 取一个元素插入到 <code>子表1</code> 表尾，如果插入元素小于等于表尾元素，则将元素不断后移，直到遇到大于此值的元素并插入，最终实现排序的目的。</p>
 <p>光看文字可能不太清楚，直接上代码。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">InsertSort</span><span class="params">(<span class="type">int</span> A[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// A[i-1]: 子表1表尾，A[i]：子表2表头</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span> ; i &lt;= A.length ; i++)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果要插入元素小于子表表尾 </span></span><br><span class="line">        <span class="keyword">if</span>(A[i] &lt; A[i<span class="number">-1</span>])&#123;  </span><br><span class="line">            A[<span class="number">0</span>] = A[i];    <span class="comment">// 哨兵，临时存放待插入元素</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 从子表表尾往前扫描，把大于哨兵的后移</span></span><br><span class="line">            <span class="comment">// 当遇到比哨兵大的元素结束循环，将元素插入到该位置</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j = i<span class="number">-1</span> ; A[<span class="number">0</span>] &lt; A[j] ; j--)&#123;      </span><br><span class="line">                A[j<span class="number">+1</span>] = A[j];</span><br><span class="line">            &#125;</span><br><span class="line">            A[j<span class="number">+1</span>] = A[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">InsertSort</span><span class="token punctuation">(</span><span class="token keyword">int</span> A<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// A[i-1]: 子表1表尾，A[i]：子表2表头</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">2</span> <span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> A<span class="token punctuation">.</span>length <span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
 
+        <span class="token comment" spellcheck="true">// 如果要插入元素小于子表表尾 </span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> A<span class="token punctuation">[</span>i<span class="token number">-1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+            A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// 哨兵，临时存放待插入元素</span>
 
+            <span class="token comment" spellcheck="true">// 从子表表尾往前扫描，把大于哨兵的后移</span>
+            <span class="token comment" spellcheck="true">// 当遇到比哨兵大的元素结束循环，将元素插入到该位置</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token number">-1</span> <span class="token punctuation">;</span> A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span><span class="token punctuation">{</span>      
+                A<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            A<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-链表实现"><a href="#2-链表实现" class="headerlink" title="2. 链表实现"></a>2. 链表实现</h4><p>数组实现起来相对比较简单，那么链表又应该怎么实现呢？</p>
 <p>思路上其实时一致的，这里是基于含头结点的单链表。通过将链表划分为两个子链表进行操作，需要注意的一点是如果要求输出增序，链表我们应该排成降序，这是因为基于链表的头插方式第一个插入的元素会在最后一个输出。</p>
 <p>同样附上实现代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Sort</span><span class="params">(LinkList &amp;L)</span></span>&#123;</span><br><span class="line">    LNode *p = L-&gt;next, *pre;    <span class="comment">// p 指向头结点</span></span><br><span class="line">    LNode *r = p-&gt;next;         <span class="comment">// r 指向第一个元素</span></span><br><span class="line">    </span><br><span class="line">    p-&gt;next = <span class="literal">NULL</span>;     <span class="comment">// 将 L 置为空表，仅含有头结点</span></span><br><span class="line">    p = r;              <span class="comment">// p 指向第一个元素</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        r = p-&gt;next;    <span class="comment">//指向后继，保证不断链</span></span><br><span class="line">        pre = L;        <span class="comment">//头指针</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 此时已经变成两条链表：</span></span><br><span class="line">        <span class="comment">// 一条是以 pre 为头指针的链表，一条是以 p 为第一个元素的链表</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 插入排序, 得到一个递减的链表，根据头插法特性输出时刚好递增</span></span><br><span class="line">        <span class="comment">// 如果插入的元素比子表尾的值大，依次往后移动元素</span></span><br><span class="line">        <span class="keyword">while</span> (pre-&gt;next != <span class="literal">NULL</span> &amp;&amp; p-&gt;date &gt; pre-&gt;next-&gt;date )</span><br><span class="line">        &#123;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        p-&gt;next = pre-&gt;next;    <span class="comment">//插入，先链后断</span></span><br><span class="line">        pre-&gt;next = p;</span><br><span class="line">        p = r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Sort</span><span class="token punctuation">(</span>LinkList <span class="token operator">&amp;</span>L<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    LNode <span class="token operator">*</span>p <span class="token operator">=</span> L<span class="token operator">-</span><span class="token operator">></span>next<span class="token punctuation">,</span> <span class="token operator">*</span>pre<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// p 指向头结点</span>
+    LNode <span class="token operator">*</span>r <span class="token operator">=</span> p<span class="token operator">-</span><span class="token operator">></span>next<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">// r 指向第一个元素</span>
+    
+    p<span class="token operator">-</span><span class="token operator">></span>next <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 将 L 置为空表，仅含有头结点</span>
+    p <span class="token operator">=</span> r<span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">// p 指向第一个元素</span>
 
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>p <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        r <span class="token operator">=</span> p<span class="token operator">-</span><span class="token operator">></span>next<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//指向后继，保证不断链</span>
+        pre <span class="token operator">=</span> L<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">//头指针</span>
+
+        <span class="token comment" spellcheck="true">// 此时已经变成两条链表：</span>
+        <span class="token comment" spellcheck="true">// 一条是以 pre 为头指针的链表，一条是以 p 为第一个元素的链表</span>
+
+        <span class="token comment" spellcheck="true">// 插入排序, 得到一个递减的链表，根据头插法特性输出时刚好递增</span>
+        <span class="token comment" spellcheck="true">// 如果插入的元素比子表尾的值大，依次往后移动元素</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>pre<span class="token operator">-</span><span class="token operator">></span>next <span class="token operator">!=</span> <span class="token constant">NULL</span> <span class="token operator">&amp;&amp;</span> p<span class="token operator">-</span><span class="token operator">></span>date <span class="token operator">></span> pre<span class="token operator">-</span><span class="token operator">></span>next<span class="token operator">-</span><span class="token operator">></span>date <span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            pre <span class="token operator">=</span> pre<span class="token operator">-</span><span class="token operator">></span>next<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        p<span class="token operator">-</span><span class="token operator">></span>next <span class="token operator">=</span> pre<span class="token operator">-</span><span class="token operator">></span>next<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//插入，先链后断</span>
+        pre<span class="token operator">-</span><span class="token operator">></span>next <span class="token operator">=</span> p<span class="token punctuation">;</span>
+        p <span class="token operator">=</span> r<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>实现起来和数组其实类似，建议在写代码的时候在旁边画一下草稿就很清晰了。</p>
 
                 
@@ -1240,7 +1281,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

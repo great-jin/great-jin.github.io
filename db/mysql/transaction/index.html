@@ -633,22 +633,38 @@
 <h5 id="4-SERIALIZABLE"><a href="#4-SERIALIZABLE" class="headerlink" title="(4) SERIALIZABLE"></a>(4) SERIALIZABLE</h5><p>序列化，隔离的最高级别，事务将串行执行，事务的读操作会加读锁，写操作会加写锁，虽不会造成上述提到的几类情况但性能较低。</p>
 <h3 id="二、事务管理"><a href="#二、事务管理" class="headerlink" title="二、事务管理"></a>二、事务管理</h3><h4 id="1-事务创建"><a href="#1-事务创建" class="headerlink" title="1. 事务创建"></a>1. 事务创建</h4><p>在 <code>MySQL</code> 中可以使用 <code>begin</code> 或 <code>start transaction</code> 显式的开启事务，通过 <code>commit</code> 提交事务。若没有显式开启默认则会提交隐式事务，在语句执行结束之后会自动提交，无法实现回滚。</p>
 <p>如最常用的增删改查等语句都是默认开始事务并在语句执行结束时自动提交。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user <span class="keyword">values</span>(<span class="number">123</span>, <span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>上述的插入命令默认是开始事务并自动提交的，但是通常我们感知不强，其等价于下述操作。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user <span class="keyword">values</span>(<span class="number">123</span>, <span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
 
+<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token keyword">commit</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-事务回滚"><a href="#2-事务回滚" class="headerlink" title="2. 事务回滚"></a>2. 事务回滚</h4><p>当任务执行异常时需要执行回滚通过 <code>rollback</code> 即可。</p>
 <p>例如下述事务中若在第一个插入完成后执行第二个失败，此时通过 <code>rollback</code> 即可撤销第一个插入语句的效果。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user <span class="keyword">values</span>(<span class="number">123</span>, <span class="string">&#x27;alex&#x27;</span>, <span class="string">&#x27;male&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tb_user <span class="keyword">values</span>(<span class="number">456</span>, <span class="string">&#x27;beth&#x27;</span>, <span class="string">&#x27;female&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- rollback transaction</span></span><br><span class="line"><span class="keyword">rollback</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
 
+<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">456</span><span class="token punctuation">,</span> <span class="token string">'beth'</span><span class="token punctuation">,</span> <span class="token string">'female'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- rollback transaction</span>
+<span class="token keyword">rollback</span><span class="token punctuation">;</span>
+
+<span class="token keyword">commit</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-保存点"><a href="#3-保存点" class="headerlink" title="3. 保存点"></a>3. 保存点</h4><p>在一个事务中可以创建多个 <code>savepoint</code> 标记点，并可通过 <code>rollback to</code> 回滚至指定保存点，通过 <code>release savepoint</code> 关键字删除创建的保存点。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- create </span></span><br><span class="line"><span class="keyword">savepoint</span> sp1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- rollback</span></span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> sp1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- delete</span></span><br><span class="line"><span class="keyword">release</span> <span class="keyword">savepoint</span> sp1;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create </span>
+<span class="token keyword">savepoint</span> sp1<span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">-- rollback</span>
+<span class="token keyword">rollback</span> <span class="token keyword">to</span> sp1<span class="token punctuation">;</span>
 
-
+<span class="token comment" spellcheck="true">-- delete</span>
+<span class="token keyword">release</span> <span class="token keyword">savepoint</span> sp1<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、MVCC介绍"><a href="#三、MVCC介绍" class="headerlink" title="三、MVCC介绍"></a>三、MVCC介绍</h3><p>多版本并发控制 <code>MVCC</code> 是一种无锁读取的优化策略，它的无锁是特指读取时不需要加锁。</p>
 <p>基本思路是对数据库的任何修改都不会直接覆盖之前的数据，而是产生一个新版副本与老版本共存，以此达到读取时可以完全不加锁的目的。</p>
 <h4 id="1-实现机制"><a href="#1-实现机制" class="headerlink" title="1. 实现机制"></a>1. 实现机制</h4><p><code>MVCC</code> 用来解决读写冲突的无锁并发控制，就是为事务分配单向增长的时间戳，为每个数据修改保存一个版本，版本与事务时间戳相关联。</p>
@@ -687,19 +703,29 @@
 <li>当前会话给表加 <code>读锁</code>，当前会话可对加锁表执行 <code>查询</code> 操作，其它会话能 <code>读取</code> 加锁表的数据，但 <code>增改</code> 操作需要等待加锁会话释放表锁。</li>
 <li>当前会话给表加 <code>写锁</code>，当前会话可对加锁表执行任意操作，其它会话对加锁表执行 <code>增删改查</code> 需要等待加锁会话释放表锁。</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- lock all table</span></span><br><span class="line">FLUSH TABLES <span class="keyword">with</span> <span class="operator">&lt;</span>type<span class="operator">&gt;</span> lock;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- lock single table, default lock 50s(innodb_lock_wait_timeout).</span></span><br><span class="line">lock TABLES <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> <span class="operator">&lt;</span>type<span class="operator">&gt;</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">-- unlock all table</span></span><br><span class="line">unlock TABLES;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- view lock table</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">open</span> TABLES <span class="keyword">where</span> In_Use <span class="operator">&gt;</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- lock all table</span>
+FLUSH <span class="token keyword">TABLES</span> <span class="token keyword">with</span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token keyword">lock</span><span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">-- lock single table, default lock 50s(innodb_lock_wait_timeout).</span>
+<span class="token keyword">lock</span> <span class="token keyword">TABLES</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span> 
 
+<span class="token comment" spellcheck="true">-- unlock all table</span>
+unlock <span class="token keyword">TABLES</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">-- view lock table</span>
+<span class="token keyword">show</span> <span class="token keyword">open</span> <span class="token keyword">TABLES</span> <span class="token keyword">where</span> In_Use <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-元数据锁"><a href="#2-元数据锁" class="headerlink" title="2. 元数据锁"></a>2. 元数据锁</h4><p><code>Metadata lock</code> 是表级锁，行锁中的读写操作对应在 <code>Metadata lock</code> 中都属于读锁。</p>
 <ul>
 <li>所有的 <code>DML</code> 操作都会在表上加一个 <code>Metadata</code> 读锁；</li>
 <li>所有的 <code>DDL</code> 操作都会在表上加一个 <code>Metadata</code> 写锁；</li>
 </ul>
 <p>通过查看 <code>performance_schema.metadata_locks</code> 元数据表可查看当前激活的元数据锁。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">   <span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">   performance_schema.metadata_locks;</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
+   <span class="token operator">*</span>
+<span class="token keyword">from</span>
+   performance_schema<span class="token punctuation">.</span>metadata_locks<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、行锁"><a href="#五、行锁" class="headerlink" title="五、行锁"></a>五、行锁</h3><p>表锁虽然能够保证数据的原子性但其带来的性能损耗也是显而易见的，因此 <code>MYSQL</code> 中同时引入了行锁实现更细粒度的操作，即锁的作用域是表中的单条记录，对于表中其它数据并不影响。</p>
 <p><code>InnoDB</code> 行锁是通过给记录的 <code>索引项加锁</code> 来实现的，只有通过索引条件检索数据才会生效，否则 <code>InnoDB</code> 将使用表锁。</p>
 <h4 id="1-分类介绍"><a href="#1-分类介绍" class="headerlink" title="1. 分类介绍"></a>1. 分类介绍</h4><p><code>MySQL</code> 中的行锁分为两类：共享锁与排他锁，二者的作用类似于表锁中的读锁与写锁。</p>
@@ -707,9 +733,12 @@
 <li><strong>共享锁</strong>：共享锁允许一个事务读数据，不允许修改数据，如果其他事务要再对该行加锁，只能加共享锁。</li>
 <li><strong>排他锁</strong>：排他锁是修改数据时加的锁，可以读取和修改数据，一旦一个事务对该行数据加锁，其他事务将不能再对该数据加任务锁。</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 共享锁</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> ... LOCK <span class="keyword">IN</span> SHARE MODE</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 排他锁</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> ... <span class="keyword">FOR</span> <span class="keyword">UPDATE</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 共享锁</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">LOCK</span> <span class="token operator">IN</span> <span class="token keyword">SHARE MODE</span>
 
-
+<span class="token comment" spellcheck="true">-- 排他锁</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">FOR</span> <span class="token keyword">UPDATE</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-实现算法"><a href="#2-实现算法" class="headerlink" title="2. 实现算法"></a>2. 实现算法</h4><p><code>MySQL</code> 中 <code>InnoDB</code> 存储引擎支持三种行锁的算法，默认行锁模式为 <code>Next-Key Lock</code>，各自的作用效果如下：</p>
 <blockquote>
 <p><strong>(Ⅰ) Record Lock</strong></p>
@@ -1339,7 +1368,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

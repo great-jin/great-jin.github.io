@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    367
+                    364
                 </div>
                 
 
@@ -622,16 +622,25 @@
             <div id="articleContent">
                 <p><code>Confluence</code> 是一款强大的知识库管理工具，在团队合作中发挥着重要作用。</p>
 <h4 id="1-服务启动"><a href="#1-服务启动" class="headerlink" title="1. 服务启动"></a>1. 服务启动</h4><p>首先创建对应的目录用于映射数据实现持久化。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/confluence</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/confluence
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>完成后通过下述命令启动服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --privileged=<span class="literal">true</span> \</span><br><span class="line">-p 8090:8090 \</span><br><span class="line">-v /usr/local/dockerdata/confluence:/var/confluence \</span><br><span class="line">--name confluence-srv \</span><br><span class="line">-e TZ=<span class="string">&#x27;Asia/Shanghai&#x27;</span> \</span><br><span class="line">haxqer/confluence:8.9.1</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker run -d --privileged<span class="token operator">=</span>true \
+-p 8090:8090 \
+-v /usr/local/dockerdata/confluence:/var/confluence \
+--name confluence-srv \
+-e TZ<span class="token operator">=</span><span class="token string">'Asia/Shanghai'</span> \
+haxqer/confluence:8.9.1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-插件破译"><a href="#2-插件破译" class="headerlink" title="2. 插件破译"></a>2. 插件破译</h4><p>启动服务之后访问 <code>ip:8090</code> 页面，将下述 <code>&lt;you-server-id&gt;</code> 替换为页面对应的 <code>server-id</code> 并在服务上执行。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> confluence-srv java -jar /var/agent/atlassian-agent.jar \</span><br><span class="line">-d \</span><br><span class="line">-p conf \</span><br><span class="line">-m Hello@world.com \</span><br><span class="line">-n Hello@world.com \</span><br><span class="line">-o your-org \</span><br><span class="line">-s &lt;you-server-id&gt;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> confluence-srv java -jar /var/agent/atlassian-agent.jar \
+-d \
+-p conf \
+-m Hello@world.com \
+-n Hello@world.com \
+-o your-org \
+-s <span class="token operator">&lt;</span>you-server-id<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-数据连接"><a href="#3-数据连接" class="headerlink" title="3. 数据连接"></a>3. 数据连接</h4><p>需要注意 <code>confluence</code> 使用 <code>MySQL</code> 存储数据，但其对应的 <code>MySQL</code> 库有下述两个要求。</p>
 <ul>
 <li>字符集与排序规则需要为 <code>utf8mb4</code> 和 <code>utf8mb4_bin</code>。</li>
@@ -639,10 +648,11 @@
 </ul>
 <p>由于 <code>MySQL</code> 默认的事务隔离级别为 <code>REPEATABLE_READ</code>，因此我们需要进行修改，这边提供两种修改方式，第一种为修改配置文件，第二种为通过命令但重启 <code>MySQL</code> 后将会失效。</p>
 <p>方式一在 <code>MySQL</code> 的配置文件中添加下述配置修改事务隔离级别，完成后重启服务即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transaction-isolation = READ-COMMITTED</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-cnf"><code class="language-cnf">transaction-isolation = READ-COMMITTED
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>方式二通过下述 <code>SQL</code> 修改全局的事务隔离级别，但在 <code>MySQL</code> 重启后将会失效。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> TRANSACTION ISOLATION LEVEL READ COMMITTED;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">ISOLATION LEVEL</span> <span class="token keyword">READ</span> <span class="token keyword">COMMITTED</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -1240,7 +1250,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

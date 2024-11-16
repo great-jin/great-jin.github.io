@@ -597,7 +597,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    487
+                    481
                 </div>
                 
 
@@ -627,22 +627,65 @@
                 <p>本教程基于 <code>Docker</code> 进行 <code>Kafka</code> 环境搭建，如果你还没安装 <code>Docker</code> 可以参考之前的教程：<a target="_blank" rel="noopener" href="https://www.great-invincible.xyz/Server-Docker/">Docker安装教程</a>。</p>
 <h4 id="1-端口开放"><a href="#1-端口开放" class="headerlink" title="1. 端口开放"></a>1. 端口开放</h4><p><code>Kafka</code> 和 <code>Zookeeper</code> 服务的默认端口号为 <code>9092</code> 和 <code>2181</code> ，在安装之前需要在服务器添加防火墙规则并在服务器开放端口。</p>
 <p>在服务器内开放端口命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 永久开放 2181 端口</span></span><br><span class="line">firewall-cmd --add-port=2181/tcp --zone=public --permanent     </span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久开放 9092 端口</span></span><br><span class="line">firewall-cmd --add-port=9092/tcp --zone=public --permanent      </span><br><span class="line"></span><br><span class="line"><span class="comment"># 重载文件使生效</span></span><br><span class="line">firewall-cmd --reload   </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 永久开放 2181 端口</span>
+firewall-cmd --add-port<span class="token operator">=</span>2181/tcp --zone<span class="token operator">=</span>public --permanent     
 
+<span class="token comment" spellcheck="true"># 永久开放 9092 端口</span>
+firewall-cmd --add-port<span class="token operator">=</span>9092/tcp --zone<span class="token operator">=</span>public --permanent      
 
+<span class="token comment" spellcheck="true"># 重载文件使生效</span>
+firewall-cmd --reload   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-ZK安装"><a href="#2-ZK安装" class="headerlink" title="2. ZK安装"></a>2. ZK安装</h4><p><code>Kafka</code> 需要使用 <code>Zookeeper</code> 管理，所以我们需要先安装 <code>Zookeeper</code> 。 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull wurstmeister/zookeeper</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker run -dit --restart=always \</span><br><span class="line">--log-driver json-file \</span><br><span class="line">--log-opt max-size=100m \</span><br><span class="line">--log-opt max-file=2 \</span><br><span class="line">--name zookeeper \</span><br><span class="line">-p 2181:2181 \</span><br><span class="line">-v /etc/localtime:/etc/localtime \</span><br><span class="line">-t wurstmeister/zookeeper</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
+docker pull wurstmeister/zookeeper
 
-
+<span class="token comment" spellcheck="true"># 启动容器</span>
+docker run -dit --restart<span class="token operator">=</span>always \
+--log-driver json-file \
+--log-opt max-size<span class="token operator">=</span>100m \
+--log-opt max-file<span class="token operator">=</span>2 \
+--name zookeeper \
+-p 2181:2181 \
+-v /etc/localtime:/etc/localtime \
+-t wurstmeister/zookeeper
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Kafka安装"><a href="#3-Kafka安装" class="headerlink" title="3. Kafka安装"></a>3. Kafka安装</h4><p>安装完<code>Zookeeper</code>之后接下来就可以开始安装 <code>Kafka</code> 了，注意把将其中的 <code>192.168.0.20</code> 替换为你自己的服务器 <code>IP</code> 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull wurstmeister/kafka</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker run -dit --restart=always \</span><br><span class="line">--log-driver json-file \</span><br><span class="line">--log-opt max-size=100m \</span><br><span class="line">--log-opt max-file=2 \</span><br><span class="line">--name kafka \</span><br><span class="line">-p 9092:9092 \</span><br><span class="line">-e KAFKA_BROKER_ID=1 \</span><br><span class="line">-e KAFKA_ZOOKEEPER_CONNECT=192.168.0.20:2181 \</span><br><span class="line">-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.20:9092 \</span><br><span class="line">-e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 wurstmeister/kafka</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
+docker pull wurstmeister/kafka
 
-
+<span class="token comment" spellcheck="true"># 启动容器</span>
+docker run -dit --restart<span class="token operator">=</span>always \
+--log-driver json-file \
+--log-opt max-size<span class="token operator">=</span>100m \
+--log-opt max-file<span class="token operator">=</span>2 \
+--name kafka \
+-p 9092:9092 \
+-e KAFKA_BROKER_ID<span class="token operator">=</span>1 \
+-e KAFKA_ZOOKEEPER_CONNECT<span class="token operator">=</span>192.168.0.20:2181 \
+-e KAFKA_ADVERTISED_LISTENERS<span class="token operator">=</span>PLAINTEXT://192.168.0.20:9092 \
+-e KAFKA_LISTENERS<span class="token operator">=</span>PLAINTEXT://0.0.0.0:9092 wurstmeister/kafka
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-测试连接"><a href="#4-测试连接" class="headerlink" title="4. 测试连接"></a>4. 测试连接</h4><p>完成安装之后通过简单的 Kafka 消息发送测试服务是否安装成功。</p>
 <p>需要注意这里需要打开两个窗口，一个用户订阅信息，另一个用于发送消息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line">docker <span class="built_in">exec</span> -it kafka bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开脚本目录</span></span><br><span class="line"><span class="built_in">cd</span> /opt/kafka/bin/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 Topic </span></span><br><span class="line">kafka-topics.sh --create --topic &lt;Topic Name&gt; --zookeeper localhost:2181 --replication-factor 1 --partitions 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Topic 列表 </span></span><br><span class="line">kafka-topics.sh --zookeeper localhost:2181 --list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 消费者监听 Topic</span></span><br><span class="line">kafka-console-consumer.sh --bootstrap-server  localhost:9092 --topic &lt;Topic Name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产者发送消息</span></span><br><span class="line">kafka-console-producer.sh --broker-list localhost:9092 --topic &lt;Topic Name&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
+docker <span class="token function">exec</span> -it kafka <span class="token function">bash</span>
 
+<span class="token comment" spellcheck="true"># 打开脚本目录</span>
+<span class="token function">cd</span> /opt/kafka/bin/
 
+<span class="token comment" spellcheck="true"># 创建 Topic </span>
+kafka-topics.sh --create --topic <span class="token operator">&lt;</span>Topic Name<span class="token operator">></span> --zookeeper localhost:2181 --replication-factor 1 --partitions 1
+
+<span class="token comment" spellcheck="true"># 查看 Topic 列表 </span>
+kafka-topics.sh --zookeeper localhost:2181 --list
+
+<span class="token comment" spellcheck="true"># 消费者监听 Topic</span>
+kafka-console-consumer.sh --bootstrap-server  localhost:9092 --topic <span class="token operator">&lt;</span>Topic Name<span class="token operator">></span>
+
+<span class="token comment" spellcheck="true"># 生产者发送消息</span>
+kafka-console-producer.sh --broker-list localhost:9092 --topic <span class="token operator">&lt;</span>Topic Name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-连接工具"><a href="#5-连接工具" class="headerlink" title="5. 连接工具"></a>5. 连接工具</h4><p>这里推荐两个 <code>Kafka</code> 和 <code>Zookeeper</code> 管理工具。</p>
 <ul>
 <li><p><strong>Kafka</strong> : <a target="_blank" rel="noopener" href="https://offsetexplorer.com/download.html">Offset Explorer</a>。</p>
@@ -1259,7 +1302,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

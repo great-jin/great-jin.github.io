@@ -597,7 +597,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    998
+                    1k
                 </div>
                 
 
@@ -637,22 +637,34 @@
 <p><strong>准备材料</strong> ：内网服务(客户端)、公网服务器(服务端)。</p>
 <p>这里我准备了一台Linux云服务器和本地Windows电脑用于演示。</p>
 <h3 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><p><code>NPS</code> 服务会用到 <code>8024</code> 和 <code>8080</code> 两个端口，我们的服务器需要提前在防火墙放行端口，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 永久开放 8024 端口</span></span><br><span class="line">firewall-cmd --add-port=8024/tcp --zone=public --permanent     </span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久开放 8080 端口</span></span><br><span class="line">firewall-cmd --add-port=8080/tcp --zone=public --permanent      </span><br><span class="line"></span><br><span class="line"><span class="comment"># 重载文件使生效</span></span><br><span class="line">firewall-cmd --reload   </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 永久开放 8024 端口</span>
+firewall-cmd --add-port<span class="token operator">=</span>8024/tcp --zone<span class="token operator">=</span>public --permanent     
 
+<span class="token comment" spellcheck="true"># 永久开放 8080 端口</span>
+firewall-cmd --add-port<span class="token operator">=</span>8080/tcp --zone<span class="token operator">=</span>public --permanent      
 
-
+<span class="token comment" spellcheck="true"># 重载文件使生效</span>
+firewall-cmd --reload   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、服务端"><a href="#二、服务端" class="headerlink" title="二、服务端"></a>二、服务端</h3><h4 id="1-NPS安装"><a href="#1-NPS安装" class="headerlink" title="1. NPS安装"></a>1. NPS安装</h4><p>打开 <code>NPS</code> 官网选择相应版本进行下载，记得下载的是 <code>Server</code> 版本，<a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps/releases">NPS官网</a>。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/1.png"></p>
 <p>将下载的文件上传到你的服务器并解压，这里我选择放在 <code>/usr/local/nps</code>，根据你的喜好自行更换。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> nps</span><br><span class="line"></span><br><span class="line">tar -xzvf linux_amd64_server.tar.gz   <span class="comment"># 解压文件</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local
 
+<span class="token function">mkdir</span> nps
 
+<span class="token function">tar</span> -xzvf linux_amd64_server.tar.gz   <span class="token comment" spellcheck="true"># 解压文件</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-配置修改"><a href="#2-配置修改" class="headerlink" title="2. 配置修改"></a>2. 配置修改</h4><p>在启动服务之前我们需要修改一些默认配置，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim conf/nps.conf</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">vim conf/nps.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果你的服务器 <code>80</code> 端口和 <code> 443</code> 端口已经部署其它服务则需要替换成其它端口，修改第二个红框中的登录用户信息。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/7.png"></p>
 <h4 id="3-服务启动"><a href="#3-服务启动" class="headerlink" title="3. 服务启动"></a>3. 服务启动</h4><p>在文件解压目录下执行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./nps install   </span><br><span class="line"></span><br><span class="line">nps start         <span class="comment"># 启动服务</span></span><br><span class="line"></span><br><span class="line">nps stop          <span class="comment"># 关闭服务</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">./nps <span class="token function">install</span>   
 
+nps start         <span class="token comment" spellcheck="true"># 启动服务</span>
+
+nps stop          <span class="token comment" spellcheck="true"># 关闭服务</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>安装服务成功后会在<code>/etc/nps</code>目录下生成<code>conf web</code>两个文件夹。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/8.png"></p>
 <p>服务启动日志路径：<code>/var/log/nps.log</code>，如果出现异常可查看日志信息，启动服务之后就可以通过你的服务器 <code>IP</code> 地址加 <code>8080</code> 端口进行访问了。</p>
 <h4 id="4-创建连接"><a href="#4-创建连接" class="headerlink" title="4. 创建连接"></a>4. 创建连接</h4><h5 id="1-服务新增"><a href="#1-服务新增" class="headerlink" title="(1) 服务新增"></a>(1) 服务新增</h5><p>点击右侧客户端并点击新增<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/6.png"></p>
@@ -661,7 +673,21 @@
 <h5 id="4-端口信息"><a href="#4-端口信息" class="headerlink" title="(4) 端口信息"></a>(4) 端口信息</h5><p>填写服务相关信息，服务端端口为之后你公网要访问的端口，目标填写你内网服务的 <code>ID</code> 加端口。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/5.png"></p>
 <h3 id="三、客户端"><a href="#三、客户端" class="headerlink" title="三、客户端"></a>三、客户端</h3><h4 id="1-服务下载"><a href="#1-服务下载" class="headerlink" title="1. 服务下载"></a>1. 服务下载</h4><p>这里演示的客户端是 <code>Window</code> 服务，进入官网下载对应<code>Client</code>版本.<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/2.png"></p>
 <h4 id="2-配置修改-1"><a href="#2-配置修改-1" class="headerlink" title="2. 配置修改"></a>2. 配置修改</h4><p>解压下载的文件，修改<code>conf/npc.conf</code>文件。把原文件内容全部删除，复制下面内容，记得 <code>server_addr</code> 替换成你自己的服务端<code>IP</code>，<code>vkey</code> 为创建客户端时自动生成。</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr=[your ip]:<span class="number">8024</span></span><br><span class="line">conn_type=tcp</span><br><span class="line">vkey=jwep5wv3zcn8etn6</span><br><span class="line">auto_reconnection=true</span><br><span class="line">max_conn=<span class="number">1000</span></span><br><span class="line">flow_limit=<span class="number">1000</span></span><br><span class="line">rate_limit=<span class="number">1000</span></span><br><span class="line">basic_username=<span class="number">11</span></span><br><span class="line">basic_password=<span class="number">3</span></span><br><span class="line">web_username=user</span><br><span class="line">web_password=<span class="number">123</span></span><br><span class="line">crypt=true</span><br><span class="line">compress=true</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-vim"><code class="language-vim"><span class="token punctuation">[</span>common<span class="token punctuation">]</span>
+server_addr<span class="token operator">=</span><span class="token punctuation">[</span>your ip<span class="token punctuation">]</span><span class="token punctuation">:</span><span class="token number">8024</span>
+conn_type<span class="token operator">=</span>tcp
+vkey<span class="token operator">=</span>jwep5wv3zcn8etn6
+auto_reconnection<span class="token operator">=</span>true
+max_conn<span class="token operator">=</span><span class="token number">1000</span>
+flow_limit<span class="token operator">=</span><span class="token number">1000</span>
+rate_limit<span class="token operator">=</span><span class="token number">1000</span>
+basic_username<span class="token operator">=</span><span class="token number">11</span>
+basic_password<span class="token operator">=</span><span class="token number">3</span>
+web_username<span class="token operator">=</span>user
+web_password<span class="token operator">=</span><span class="token number">123</span>
+crypt<span class="token operator">=</span>true
+compress<span class="token operator">=</span>true
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/album/loading.gif" data-original="/album/article/tool/nps/4.png"></p>
 <h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3. 启动服务"></a>3. 启动服务</h4><p>双击<code>npc.exe</code>文件即可，显示下图说明连接成功，此时就可以通过你的公网 <code>IP</code> 访问本地服务了。<br><img src="/album/loading.gif" data-original="/album/article/tool/nps/11.png"></p>
 <h4 id="4-后台启动"><a href="#4-后台启动" class="headerlink" title="4. 后台启动"></a>4. 后台启动</h4><p>上述步骤启动之后<code>npc.exe</code>命令行窗口必须一直开着，如果我们将其注册成服务就可以后台运行了。</p>
@@ -1271,7 +1297,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

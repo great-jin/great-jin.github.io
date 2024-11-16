@@ -628,26 +628,30 @@
 <p>现在市面上有许多的免费图传，且稳定性也还不错，但既然自己都有服务器了，当然是选择自建图床了。</p>
 <h3 id="一、兰空图床"><a href="#一、兰空图床" class="headerlink" title="一、兰空图床"></a>一、兰空图床</h3><p>图床这里我选择的是兰空图床，并通过 <code>Docker</code> 容器进行构建，步骤如下。</p>
 <h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>首先创建容器数据映射目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /home/budai/dockerdata/lsky</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /home/budai/dockerdata/lsky
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-容器启动"><a href="#2-容器启动" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>目录创建完成之后即可拉取镜像启动容器，这里将容器 <code>80</code> 端口映射到服务器的 <code>9200</code> 端口，注意配置防火墙规则。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged=<span class="literal">true</span> -d \</span><br><span class="line">--name lsky \</span><br><span class="line">-p 9200:80 \</span><br><span class="line">-v /home/budai/dockerdata/lsky:/var/www/html \</span><br><span class="line">halcyonazure/lsky-pro-docker:latest</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker run --privileged<span class="token operator">=</span>true -d \
+--name lsky \
+-p 9200:80 \
+-v /home/budai/dockerdata/lsky:/var/www/html \
+halcyonazure/lsky-pro-docker:latest
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-服务配置"><a href="#3-服务配置" class="headerlink" title="3. 服务配置"></a>3. 服务配置</h4><p>访问 <code>ip:9200</code> 即可出现下图页面，选择下一步。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/1.png"></p>
 <h5 id="1-数据库配置"><a href="#1-数据库配置" class="headerlink" title="(1) 数据库配置"></a>(1) 数据库配置</h5><p>在 <code>MySQL</code> 中提前创建好数据库，在此填写相应的数据库信息，其中邮箱和密码为后续图床登录账号信息。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/2.png"></p>
 <h5 id="2-完成安装"><a href="#2-完成安装" class="headerlink" title="(2) 完成安装"></a>(2) 完成安装</h5><p>完成配置后确定，出现下图说明安装成功。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/3.png"></p>
 <h4 id="4-访问测试"><a href="#4-访问测试" class="headerlink" title="4. 访问测试"></a>4. 访问测试</h4><h5 id="1-登录图床"><a href="#1-登录图床" class="headerlink" title="(1) 登录图床"></a>(1) 登录图床</h5><p>根据上面设置的邮箱和密码登录图床，即可出现下图内容：<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/5.png"></p>
 <h5 id="2-图片上传"><a href="#2-图片上传" class="headerlink" title="(2) 图片上传"></a>(2) 图片上传</h5><p>点击右侧上传图片，完成上传之后将自动生成图片链接，根据你的需求选择不同形式的链接即可。<br><img src="/album/loading.gif" data-original="/album/article/linux/lsky/6.png"></p>
 <h3 id="二、网盘搭建"><a href="#二、网盘搭建" class="headerlink" title="二、网盘搭建"></a>二、网盘搭建</h3><h4 id="1-目录创建-1"><a href="#1-目录创建-1" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>同样需要先创建容器数据映射目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /home/budai/dockerdata/nextcloud</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /home/budai/dockerdata/nextcloud
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-容器启动-1"><a href="#2-容器启动-1" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>目录创建完成之后拉取镜像启动即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged=<span class="literal">true</span> -d \</span><br><span class="line">-p 9300:80 \</span><br><span class="line">--name nextcloud \</span><br><span class="line">-v /home/budai/dockerdata/nextcloud:/var/www/html \</span><br><span class="line">nextcloud</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">docker run --privileged<span class="token operator">=</span>true -d \
+-p 9300:80 \
+--name nextcloud \
+-v /home/budai/dockerdata/nextcloud:/var/www/html \
+nextcloud
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-服务配置-1"><a href="#3-服务配置-1" class="headerlink" title="3. 服务配置"></a>3. 服务配置</h4><p>我们需要对网盘服务的数据选择存储介质，这里我选择 <code>MySQL</code> 数据库，同样需要提前创建好数据库。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/1.png"></p>
 <h4 id="4-访问测试-1"><a href="#4-访问测试-1" class="headerlink" title="4. 访问测试"></a>4. 访问测试</h4><p>完成之后通过上一步配置的密码登录服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/2.png"></p>
 <p>出现下图则说明安装成功。<br><img src="/album/loading.gif" data-original="/album/article/linux/nextcloud/3.png"></p>
@@ -1252,7 +1256,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

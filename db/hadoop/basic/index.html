@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.3k
                 </div>
                 
 
@@ -643,8 +643,16 @@
 <p><code>MapReduce</code> 编程模型中 <code>splitting</code> 和 <code>shuffing</code> 操作都是由框架实现的，需要我们自己编程实现的只有 <code>mapping</code> 和 <code>reducing</code>，这也就是 <code>MapReduce</code> 这个称呼的来源。</p>
 <h4 id="2-基础概念"><a href="#2-基础概念" class="headerlink" title="2. 基础概念"></a>2. 基础概念</h4><h5 id="1-Combiner"><a href="#1-Combiner" class="headerlink" title="(1) Combiner"></a>(1) Combiner</h5><p><code>Combiner</code> 是 <code>Map</code> 运算后的可选操作，它实际上是一个本地化的 <code>Reduce</code> 操作，它主要是在 <code>Map</code> 计算出中间文件后做一个简单的合并重复 <code>key</code> 值的操作。</p>
 <p>例词频统计经过 <code>Map</code> 运算后结果如下:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Map-1</span></span><br><span class="line">&#123;aa : <span class="number">1</span>&#125;, &#123;bb : <span class="number">1</span>&#125;, &#123;aa : <span class="number">1</span>&#125;</span><br><span class="line"><span class="comment">// Map-2</span></span><br><span class="line">&#123;cc : <span class="number">1</span>&#125;, &#123;dd : <span class="number">1</span>&#125;, &#123;dd : <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Combiner-1</span></span><br><span class="line">&#123;aa : <span class="number">2</span>&#125;, &#123;bb : <span class="number">1</span>&#125;</span><br><span class="line"><span class="comment">// Combiner-2</span></span><br><span class="line">&#123;cc : <span class="number">1</span>&#125;, &#123;dd : <span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// Map-1</span>
+<span class="token punctuation">{</span>aa <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>bb <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>aa <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Map-2</span>
+<span class="token punctuation">{</span>cc <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>dd <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>dd <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span>
 
+<span class="token comment" spellcheck="true">// Combiner-1</span>
+<span class="token punctuation">{</span>aa <span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>bb <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Combiner-2</span>
+<span class="token punctuation">{</span>cc <span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>dd <span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-Partitioner"><a href="#2-Partitioner" class="headerlink" title="(2) Partitioner"></a>(2) Partitioner</h5><p><code>Partitioner</code> 可以理解成分类器，将 <code>Map</code> 的输出按照 <code>Key</code> 值的不同分别分给对应的 <code>Reducer</code>，支持自定义实现。通过 <code>Partitioner</code> 即可便捷实现将结果按照自定义的规则存储分类存储至不同的文件中。</p>
 <h4 id="3-Key-Process"><a href="#3-Key-Process" class="headerlink" title="3. Key Process"></a>3. Key Process</h4><p>我们以 <code>Hadoop1</code> 为例，<code>MapReduce</code> 运行过程涉及以下几类关键进程：</p>
 <ul>
@@ -1285,7 +1293,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    824
+                    777
                 </div>
                 
 
@@ -622,44 +622,62 @@
             <div id="articleContent">
                 <p><code>Linux Shell</code> 是 <code>Linux</code> 中提供的一种强大的脚本工具，通过编写脚本可实现一系列动作，本文将介绍 <code>Shell</code> 脚本的基本语法以及应用。</p>
 <h3 id="一、基础命令"><a href="#一、基础命令" class="headerlink" title="一、基础命令"></a>一、基础命令</h3><h4 id="1-内容格式"><a href="#1-内容格式" class="headerlink" title="1. 内容格式"></a>1. 内容格式</h4><p><code>Shell</code> 脚本的定义相对简单，新建 <code>.sh</code> 文件并在文件中首行添加 <code>#!/bin/bash</code> 即可，文件中后续的内容一行即为一条命令，当执行文件时将会自顶向下开始执行命令。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">content</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh"><code class="language-sh">#!/bin/bash
 
+content
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>当完成脚本文件的定义之后，通过还需要为文件授权为可执行文件，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建脚本文件</span></span><br><span class="line"><span class="built_in">touch</span> &lt;filename&gt;.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 授权文件为可执行</span></span><br><span class="line"><span class="built_in">chmod</span> +x &lt;filename&gt;.sh</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建脚本文件</span>
+<span class="token function">touch</span> <span class="token operator">&lt;</span>filename<span class="token operator">></span>.sh
 
-
+<span class="token comment" spellcheck="true"># 授权文件为可执行</span>
+<span class="token function">chmod</span> +x <span class="token operator">&lt;</span>filename<span class="token operator">></span>.sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-打印输出"><a href="#2-打印输出" class="headerlink" title="2. 打印输出"></a>2. 打印输出</h4><p>在 <code>Linux</code> 中通过 <code>echo</code> 命令可执行内容的打印输出，默认其将直接输出到控制台，可以通过 <code>&gt;</code> 或 <code>&gt;&gt;</code> 将其保存至指定文件中。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出到控制台</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello World!&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 输出到控制台</span>
+<span class="token keyword">echo</span> <span class="token string">"Hello World!"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>在使用 <code>&gt;</code> 或 <code>&gt;&gt;</code> 将其保存到文件时需要注意，前者将会覆盖文件中原有的数据内容，后 <code>&gt;&gt;</code> 则是继续将内容添加到文件末端。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出到文件，覆盖原内容</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello World!&quot;</span> &gt; info.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出到文件，追加到文件末端</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello World!&quot;</span> &gt;&gt; info.log</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 输出到文件，覆盖原内容</span>
+<span class="token keyword">echo</span> <span class="token string">"Hello World!"</span> <span class="token operator">></span> info.log
 
-
+<span class="token comment" spellcheck="true"># 输出到文件，追加到文件末端</span>
+<span class="token keyword">echo</span> <span class="token string">"Hello World!"</span> <span class="token operator">>></span> info.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-变量管理"><a href="#3-变量管理" class="headerlink" title="3. 变量管理"></a>3. 变量管理</h4><p><code>Shell</code> 中存在两种方式的变量定义获取方式，下面分开进行介绍。</p>
 <h5 id="1"><a href="#1" class="headerlink" title="(1) ${}"></a>(1) ${}</h5><p>通过 <code>$&#123;&#125;</code> 即可读取已定义的变量信息，如下示例即通过 <code>$&#123;msg&#125;</code> 读取已经定义的 <code>msg</code> 变量。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msg = <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;msg&#125;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">msg <span class="token operator">=</span> <span class="token string">"Hello World!"</span>
+<span class="token keyword">echo</span> <span class="token variable">${msg}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>同时也可以直接通过 <code>$</code> 读取变量，上述的读取也可替换为 <code>$msg</code> 但此方式不便于规范变量名从而造成歧义。</p>
 <p>例如下述例子中，变量 <code>$msg</code> 输出即存在多种可能结果，既有可能为 <code>Hellog</code> 也有可能为 <code>World</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ms = <span class="string">&quot;Hello&quot;</span></span><br><span class="line">msg = <span class="string">&quot;World&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$msg</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">ms <span class="token operator">=</span> <span class="token string">"Hello"</span>
+msg <span class="token operator">=</span> <span class="token string">"World"</span>
+<span class="token keyword">echo</span> <span class="token variable">$msg</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="2"><a href="#2" class="headerlink" title="(2) $()"></a>(2) $()</h5><p>通过 <code>$()</code> 获取命令执行的结果，如下述示例通过 <code>$(pwd)</code> 读取 <code>pwd</code> 命令的执行结果。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $(<span class="built_in">pwd</span>)</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token keyword">echo</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">pwd</span><span class="token variable">)</span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="4-执行参数"><a href="#4-执行参数" class="headerlink" title="4. 执行参数"></a>4. 执行参数</h4><p>在 <code>Shell</code> 中通过 <code>$数字</code> 接收脚本执行时的参数。</p>
 <p>例如在下述示例中 <code>$0</code> 即为 <code>test.sh</code>，而 <code>$1</code> 为 <code>params</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh test.sh params</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash">sh test.sh params
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="二、语法介绍"><a href="#二、语法介绍" class="headerlink" title="二、语法介绍"></a>二、语法介绍</h3><h4 id="1-IF条件"><a href="#1-IF条件" class="headerlink" title="1. IF条件"></a>1. IF条件</h4><p>在 <code>Shell</code> 脚本中，条件判断 <code>IF</code> 的基本语法格式如下，其中通过 <code>fi</code> 标记结束，需要注意的是 <code>if</code> 和 <code>[</code> 以及条件 <code>command</code> 执行相隔的空格不能缺省。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ <span class="built_in">command</span> ]; <span class="keyword">then</span></span><br><span class="line">    march_command_1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    march_command_2</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-sh"><code class="language-sh">if [ command ]; then
+    march_command_1
+else
+    march_command_2
+fi
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>当存在多分支时，其语法格式如下，通过 <code>elif</code> 判断多分支。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ <span class="built_in">command</span> ]; <span class="keyword">then</span></span><br><span class="line">    march_command_1</span><br><span class="line"><span class="keyword">elif</span> [ <span class="built_in">command</span> ]; <span class="keyword">then</span></span><br><span class="line">    march_command_2</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    march_command_3</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-sh"><code class="language-sh">if [ command ]; then
+    march_command_1
+elif [ command ]; then
+    march_command_2
+else
+    march_command_3
+fi
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Switch"><a href="#2-Switch" class="headerlink" title="2. Switch"></a>2. Switch</h4><p><code>Shell</code> 脚本中的 <code>switch case</code> 语句规则如下：</p>
 <blockquote>
 <ul>
@@ -670,10 +688,53 @@
 </ul>
 </blockquote>
 <p>下面通过一个具体的示例讲解：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">method_1</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Hello&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">method_2</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;World&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$1</span>&quot;</span> <span class="keyword">in</span></span><br><span class="line">    p1)</span><br><span class="line">        method_1</span><br><span class="line">        ;;</span><br><span class="line">    p2)</span><br><span class="line">        method_2</span><br><span class="line">        ;;</span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;default branch&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh"><code class="language-sh">#!/bin/bash
 
+method_1() {
+    echo "Hello"
+}
+
+method_2() {
+    echo "World"
+}
+
+case "$1" in
+    p1)
+        method_1
+        ;;
+    p2)
+        method_2
+        ;;
+    *)
+        echo "default branch"
+        exit 1
+    ;;
+esac
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>为了更好的对比，将上述 <code>Shell</code> 逻辑转为 <code>Java</code> 代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">demo</span><span class="params">(String params)</span> &#123;</span><br><span class="line">    swtich (params) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;p1&quot;</span>:</span><br><span class="line">            method1();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&quot;p2&quot;</span>:</span><br><span class="line">            method2();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            System.out.println(<span class="string">&quot;default branch&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method1</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Hello&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method2</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;World&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span>String params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">swtich</span> <span class="token punctuation">(</span>params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token string">"p1"</span><span class="token operator">:</span>
+            <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">case</span> <span class="token string">"p2"</span><span class="token operator">:</span>
+            <span class="token function">method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token keyword">default</span><span class="token operator">:</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"default branch"</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"World"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1274,7 +1335,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

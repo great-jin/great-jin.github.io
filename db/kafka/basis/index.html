@@ -706,9 +706,22 @@
 <p>若需要开启事务，生产者通过配置 <code>transactional.id</code> 值开启事务，且必须同时开启幂等。生产者启动后同时还会获取一个单调递增的 <code>producer epoch</code>，如果使用同一个 <code>transactional.id</code> 开启两个生产者，<code>Kafka</code> 收到事务提交请求时检查当前事务提交者的 <code>epoch</code> 不是最新的，那么就会拒绝该 <code>Producer</code> 的请求。</p>
 <h4 id="2-事务机制"><a href="#2-事务机制" class="headerlink" title="2. 事务机制"></a>2. 事务机制</h4><p>从生产者的角度分析，通过事务 <code>Kafka</code> 可以保证跨生产者会话的消息幂等发送，以及跨生产者会话的事务恢复。前者表示具有相同 <code>transactional.id</code> 的新生产者实例被创建且工作的时候，旧的且拥有相同 <code>transactional.id</code> 的生产者实例将不再工作。后者指当某个生产者实例宕机后，新的生产者实例可以保证任何未完成的旧事务要么被提交 <code>(Commit)</code>，要么被中止 <code>(Abort)</code>，如此可以使新的生产者实例从一个正常的状态开始工作。</p>
 <h4 id="3-事务方法"><a href="#3-事务方法" class="headerlink" title="3. 事务方法"></a>3. 事务方法</h4><p>在 <code>KafkaProducer</code> 中提供了 <code>5</code> 个与事务相关的方法，详细如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">initTransactions</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开启事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">beginTransaction</span><span class="params">()</span> <span class="keyword">throws</span> ProducerFencedException;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为 Consumer 提供的在事务内 Commit Offsets 的操作</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">sendOffsetsToTransaction</span><span class="params">(Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets,</span></span><br><span class="line"><span class="params">                              String consumerGroupId)</span> <span class="keyword">throws</span> ProducerFencedException;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 提交事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">commitTransaction</span><span class="params">()</span> <span class="keyword">throws</span> ProducerFencedException;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 放弃事务，类似于回滚事务的操作</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">abortTransaction</span><span class="params">()</span> <span class="keyword">throws</span> ProducerFencedException;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 初始化事务</span>
+<span class="token keyword">void</span> <span class="token function">initTransactions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">// 开启事务</span>
+<span class="token keyword">void</span> <span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">// 为 Consumer 提供的在事务内 Commit Offsets 的操作</span>
+<span class="token keyword">void</span> <span class="token function">sendOffsetsToTransaction</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>TopicPartition<span class="token punctuation">,</span> OffsetAndMetadata<span class="token operator">></span> offsets<span class="token punctuation">,</span>
+                              String consumerGroupId<span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 提交事务</span>
+<span class="token keyword">void</span> <span class="token function">commitTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 放弃事务，类似于回滚事务的操作</span>
+<span class="token keyword">void</span> <span class="token function">abortTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> ProducerFencedException<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-事务隔离"><a href="#4-事务隔离" class="headerlink" title="4. 事务隔离"></a>4. 事务隔离</h4><p>在消费端有一个参数 <code>isolation.level</code> 与事务有关，这个参数的默认值为 <code>read_uncommitted</code>，即表明说消费者可以读到未提交的事务，当然对于已提交的事务也是可见的。这个参数还可以设置为 <code>read_committed</code>，表示消费者不可以读取尚未提交的事务内的消息。另外，需设置 <code>enable.auto.commit = false</code> 关闭自动提交 <code>Offset</code> 功能。</p>
 <h3 id="六、优点特性"><a href="#六、优点特性" class="headerlink" title="六、优点特性"></a>六、优点特性</h3><h4 id="1-Broker"><a href="#1-Broker" class="headerlink" title="1. Broker"></a>1. Broker</h4><h5 id="1-IO多路复用"><a href="#1-IO多路复用" class="headerlink" title="(1) IO多路复用"></a>(1) IO多路复用</h5><p><code>Kafka</code> 采用 <code>Reactor</code> 网络通信模型实现复用以提高效率。</p>
 <p><code>Acceptor</code>线程负责监听新的连接，<code>Processor</code>线程都有自己的 <code>selector</code>，负责从 <code>Socket</code> 中读写数据。<code>KafkaRequestHandler</code>业务处理线程进行业务处理，然后生成 <code>Response</code>，再交由给 <code>Processor</code> 线程。  </p>
@@ -1331,7 +1344,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

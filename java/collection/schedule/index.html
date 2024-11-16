@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    936
+                    898
                 </div>
                 
 
@@ -623,9 +623,27 @@
                 <h3 id="一、定时任务"><a href="#一、定时任务" class="headerlink" title="一、定时任务"></a>一、定时任务</h3><p>在 <code>java.util</code> 包下提供了 <code>Timer</code> 与 <code>TimerTask</code> 用于提交定时任务，其中 <code>Timer</code> 用于管理定时任务，<code>TimerTask</code> 创建定义定时任务的具体执行内容。</p>
 <h4 id="1-定时任务"><a href="#1-定时任务" class="headerlink" title="1. 定时任务"></a>1. 定时任务</h4><p><code>TimerTask</code> 使用类似于线程，新建任务类 <code>CustomTask</code> 继承 <code>TimerTask</code> 类并重写 <code>run()</code> 方法，在 <code>run()</code> 方法中定义任务的具体执行逻辑。</p>
 <p>如下示例中我定义了一个定时任务打印当前系统时间并自增计数器 <code>num</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomTask</span> <span class="keyword">extends</span> <span class="title class_">TimerTask</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String taskName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CustomTask</span><span class="params">(String taskName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.taskName = taskName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd hh:mm:ss&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">nowadays</span> <span class="operator">=</span> formatter.format(LocalDateTime.now());</span><br><span class="line">            System.out.printf(<span class="string">&quot;Schedule [%s] active, current time: %s%n&quot;</span>, <span class="built_in">this</span>.taskName, nowadays);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Error running thread &quot;</span> + ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">        num.getAndIncrement();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">CustomTask</span> <span class="token keyword">extends</span> <span class="token class-name">TimerTask</span> <span class="token punctuation">{</span>
 
+    <span class="token keyword">private</span> String taskName<span class="token punctuation">;</span>
 
+    <span class="token keyword">public</span> <span class="token function">CustomTask</span><span class="token punctuation">(</span>String taskName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>taskName <span class="token operator">=</span> taskName<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            DateTimeFormatter formatter <span class="token operator">=</span> DateTimeFormatter<span class="token punctuation">.</span><span class="token function">ofPattern</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd hh:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            String nowadays <span class="token operator">=</span> formatter<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>LocalDateTime<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Schedule [%s] active, current time: %s%n"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>taskName<span class="token punctuation">,</span> nowadays<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Error running thread "</span> <span class="token operator">+</span> ex<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        num<span class="token punctuation">.</span><span class="token function">getAndIncrement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-任务提交"><a href="#2-任务提交" class="headerlink" title="2. 任务提交"></a>2. 任务提交</h4><p>完成定时任务的创建之后即可通过 <code>Timer</code> 类的 <code>schedule()</code> 方法进行提交，Timer 中维护了一个默认大小为 128 的工作队列用于接收传入定时任务。</p>
 <p><code>schedule(task, delay, period)</code> 方法的三个入参描述参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -648,8 +666,30 @@
 </table>
 
 <p>如下示例中通过 <code>Timer</code> 提交了一个定时任务，并设置在 <code>2</code> 秒后触发，任务每隔 <code>5</code> 秒执行一次。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ScheduleTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">AtomicInteger</span> <span class="variable">num</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">timeTaskDemo</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Timer</span> <span class="variable">time</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Timer</span>();</span><br><span class="line">        <span class="type">long</span> <span class="variable">delay</span> <span class="operator">=</span> TimeUnit.SECONDS.toMillis(<span class="number">2</span>);</span><br><span class="line">        <span class="type">long</span> <span class="variable">period</span> <span class="operator">=</span> TimeUnit.SECONDS.toMillis(<span class="number">5</span>);</span><br><span class="line">        time.schedule(<span class="keyword">new</span> <span class="title class_">CustomTask</span>(), delay, period);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (num.get() &gt; <span class="number">3</span>) &#123;</span><br><span class="line">                time.cancel();</span><br><span class="line">                System.out.println(<span class="string">&quot;Cancel time task.&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// purge(): Remove the cancelled task from time queue.</span></span><br><span class="line">        <span class="comment">// If timer queue is empty that is eligible for gc</span></span><br><span class="line">        time.purge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ScheduleTest</span> <span class="token punctuation">{</span>
 
+    <span class="token keyword">private</span> <span class="token keyword">volatile</span> AtomicInteger num <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AtomicInteger</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">timeTaskDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+        Timer time <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">long</span> delay <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">toMillis</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">long</span> period <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">toMillis</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        time<span class="token punctuation">.</span><span class="token function">schedule</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CustomTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> delay<span class="token punctuation">,</span> period<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>num<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                time<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Cancel time task."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// purge(): Remove the cancelled task from time queue.</span>
+        <span class="token comment" spellcheck="true">// If timer queue is empty that is eligible for gc</span>
+        time<span class="token punctuation">.</span><span class="token function">purge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>除了 <code>schedule()</code> 方法 <code>Timer</code> 类中还提供其它相应的操作，具体信息参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -697,7 +737,25 @@
 <li><h5 id="scheduleWithFixedDelay"><a href="#scheduleWithFixedDelay" class="headerlink" title="scheduleWithFixedDelay()"></a>scheduleWithFixedDelay()</h5>  间隔时间是从上个任务完成时开始计算，只有当上个任务结束才会开始计时。</li>
 </ul>
 <p><img src="/album/loading.gif" data-original="/album/article/java/thread/1.png" alt="scheduleAtFixedRate 与 scheduleWithFixedDelay"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">scheduledPoolDemo</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">ScheduledExecutorService</span> <span class="variable">executor</span> <span class="operator">=</span> Executors.newScheduledThreadPool(<span class="number">3</span>);</span><br><span class="line">    <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">interval</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">    <span class="comment">// 当前时间 1 秒后执行一次</span></span><br><span class="line">    executor.schedule(() -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Task-1 running.&quot;</span>);</span><br><span class="line">    &#125;, interval, TimeUnit.SECONDS);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 当前时间 1 秒后执行, 且每隔 3 秒重复执行</span></span><br><span class="line">    <span class="comment">// (间隔时间：上一次任务开始时计时)</span></span><br><span class="line">    executor.scheduleAtFixedRate(<span class="keyword">new</span> <span class="title class_">Task</span>(<span class="string">&quot;fixed-rate&quot;</span>), start, interval, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前时间 1 秒后执行, 上一任务执行完成 3 秒后重复执行</span></span><br><span class="line">    <span class="comment">// (间隔时间：上一次任务结束时计时)</span></span><br><span class="line">    executor.scheduleWithFixedDelay(<span class="keyword">new</span> <span class="title class_">Task</span>(<span class="string">&quot;fixed-delay&quot;</span>), start, interval, TimeUnit.SECONDS);</span><br><span class="line">    executor.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">scheduledPoolDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    ScheduledExecutorService executor <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">newScheduledThreadPool</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> start <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> interval <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 当前时间 1 秒后执行一次</span>
+    executor<span class="token punctuation">.</span><span class="token function">schedule</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Task-1 running."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> interval<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment" spellcheck="true">// 当前时间 1 秒后执行, 且每隔 3 秒重复执行</span>
+    <span class="token comment" spellcheck="true">// (间隔时间：上一次任务开始时计时)</span>
+    executor<span class="token punctuation">.</span><span class="token function">scheduleAtFixedRate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token string">"fixed-rate"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> start<span class="token punctuation">,</span> interval<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 当前时间 1 秒后执行, 上一任务执行完成 3 秒后重复执行</span>
+    <span class="token comment" spellcheck="true">// (间隔时间：上一次任务结束时计时)</span>
+    executor<span class="token punctuation">.</span><span class="token function">scheduleWithFixedDelay</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token string">"fixed-delay"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> start<span class="token punctuation">,</span> interval<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    executor<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -987,18 +1045,18 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/db/mysql/storage/">
+                <a href="/db/mysql/index/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/mysql/7.png" class="responsive-img" alt="MySQL存储结构详解">
+                        <img src="/album/banner/coding/alg/3.png" class="responsive-img" alt="MYSQL 数据索引详解">
                         
-                        <span class="card-title">MySQL存储结构详解</span>
+                        <span class="card-title">MYSQL 数据索引详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MySQL数据库存储结构详解。
+                            MYSQL 数据索引详解。
                         
                     </div>
                     <div class="publish-info">
@@ -1295,7 +1353,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

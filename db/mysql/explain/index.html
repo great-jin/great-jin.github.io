@@ -623,9 +623,14 @@
                 <h3 id="一、执行计划"><a href="#一、执行计划" class="headerlink" title="一、执行计划"></a>一、执行计划</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>执行计划可谓是每个数据库中十分重要的一环，故名思意即通过执行计划可以了解 <code>SQL</code> 脚本对应的执行信息。</p>
 <p>在排查慢 <code>SQL</code> 时更尤为重要，通过执行计划可以查看到语句的执行顺序，是否使用索引等等信息，帮助我们更好的优化语句脚本。</p>
 <h4 id="2-数据测试"><a href="#2-数据测试" class="headerlink" title="2. 数据测试"></a>2. 数据测试</h4><p>在开始之前先准备两张测试表，结构相对简单对应的脚本语句如下，另一测试表 <code>tb_02</code> 表结构与其相同。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `tb_01` (</span><br><span class="line">  `Column1` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `Column2` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `Column3` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `Column4` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`Column1`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>tb_01<span class="token punctuation">`</span> <span class="token punctuation">(</span>
+  <span class="token punctuation">`</span>Column1<span class="token punctuation">`</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column2<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column3<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column4<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>Column1<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>utf8mb4<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3. 使用方式"></a>3. 使用方式</h4><p>执行计划的使用方式十分简单，只需要在对应的语句前添加 <code>explain</code> 关键字执行即可，执行结果将返回语句执行的详细信息。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/1.png"></p>
 <p>上图执行结果中字段的描述信息参考下表，后面会详细介绍。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -707,8 +712,9 @@
 <p>在上一点的查询中，通过主键查询数据时可以看到返回 <code>possible_keys</code> 与 <code>key</code> 均为 <code>PRIMARY</code>，表示预测和实际查询的所使用的索引都是主键索引。</p>
 <p>同理，在查询中将条件中的字段替换为普通属性，可以看到结果中的  <code>possible_keys</code> 与 <code>key</code> 都为 <code>null</code>，且结果中的 <code>type</code> 为 <code>ALL</code>，表明查询没有使用任何索引而是执行了全表扫描。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/5.png"></p>
 <p>对于这种全表扫描通常则需要进行优化，最简单的方式即给对应的条件字段条件索引，执行下述脚本添加索引后重新执行上述语句。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index c2_idx</span><br><span class="line"><span class="keyword">on</span> tb_01 (column2)</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">index</span> c2_idx
+<span class="token keyword">on</span> tb_01 <span class="token punctuation">(</span>column2<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>从下图中的结果可以看到此时的 <code>type</code> 为 <code>ref</code> 且 <code>possible_keys</code> 与 <code>key</code> 则为 <code>c2_idx</code>，表明此时查询已经通过索引执行。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/6.png"></p>
 <h4 id="3-Extra"><a href="#3-Extra" class="headerlink" title="3. Extra"></a>3. Extra</h4><p><code>Extra</code> 表示详细说明，一般该列存在下列值，常见的不太友好的值有：<code>Using filesort</code>，<code>Using temporary</code>。</p>
 <blockquote>
@@ -724,8 +730,12 @@
 </blockquote>
 <h3 id="三、操作句柄"><a href="#三、操作句柄" class="headerlink" title="三、操作句柄"></a>三、操作句柄</h3><h4 id="1-基础介绍-1"><a href="#1-基础介绍-1" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>除了执行计划之外，在 <code>MySQL</code> 还提供了操作句柄 <code>Handler</code> 用于描述脚本对数据发生的变更。</p>
 <p>通过下述命令即可查看当前会话的脚本执行句柄信息，通常在执行查询之前通过 <code>FLUSH</code> 先执行清空。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 清空句柄</span></span><br><span class="line">FLUSH STATUS;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询句柄信息</span></span><br><span class="line"><span class="keyword">SHOW</span> SESSION STATUS <span class="keyword">LIKE</span> <span class="string">&#x27;Handler%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 清空句柄</span>
+FLUSH <span class="token keyword">STATUS</span><span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">-- 查询句柄信息</span>
+<span class="token keyword">SHOW</span> <span class="token keyword">SESSION</span> <span class="token keyword">STATUS</span> <span class="token operator">LIKE</span> <span class="token string">'Handler%'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>执行查询返回的结果如下：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/6.png"></p>
 <p>各项属性描述参考下表，其中若 <code>Handler_read_rnd_next</code> 值很高，可能表示表的全表扫描次数很多；若 <code>Handler_read_key</code> 值很高，说明通过索引查找行的次数很多，索引在查询中被有效利用；若 <code>Handler_update</code> 和 <code>Handler_delete</code> 的值很高，说明有很多行更新和删除操作。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -809,8 +819,20 @@
 
 
 <h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>下面通过具体的示例介绍效果，依次执行下述的三个语句。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 清空</span></span><br><span class="line">FLUSH STATUS;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 执行脚本</span></span><br><span class="line"><span class="keyword">select</span> </span><br><span class="line">	<span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	tb_01</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	column1 <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询句柄</span></span><br><span class="line"><span class="keyword">SHOW</span> SESSION STATUS <span class="keyword">LIKE</span> <span class="string">&#x27;Handler%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 清空</span>
+FLUSH <span class="token keyword">STATUS</span><span class="token punctuation">;</span>
 
+<span class="token comment" spellcheck="true">-- 执行脚本</span>
+<span class="token keyword">select</span> 
+    <span class="token operator">*</span>
+<span class="token keyword">from</span>
+    tb_01
+<span class="token keyword">where</span>
+    column1 <span class="token operator">=</span> <span class="token number">1</span>
+
+<span class="token comment" spellcheck="true">-- 查询句柄</span>
+<span class="token keyword">SHOW</span> <span class="token keyword">SESSION</span> <span class="token keyword">STATUS</span> <span class="token operator">LIKE</span> <span class="token string">'Handler%'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>执行后得到下图结果，由于默认的增删改是自动提交的因此可以看出 <code>Handler_commit</code> 值为 <code>1</code>，同时根据主键字段查询整个查询过程中的涉及的索引数量为 <code>1</code>，因此 <code>Handler_read_key</code> 为 <code>1</code>。</p>
 <p>同时，对于 <code>MySQL</code> 而言默认的事务级别为 <code>REPEATABLE_READ</code>，在执行查询时将会添加写锁，每次加锁与释放锁 <code>Handler_external_lock</code> 值都将会增加，因此整个查询动作过程 <code>Handler_external_lock</code> 值为 <code>2</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/7.png"></p>
 
@@ -1410,7 +1432,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

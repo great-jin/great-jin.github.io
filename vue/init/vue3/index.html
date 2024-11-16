@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    714
+                    685
                 </div>
                 
 
@@ -623,13 +623,14 @@
                 <p>本篇文件将详细介绍在 <code>Windows</code> 环境下如何通过命令行新建 <code>Vue3</code> 项目。</p>
 <h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><h4 id="1-Node-安装"><a href="#1-Node-安装" class="headerlink" title="1. Node 安装"></a>1. Node 安装</h4><p><code>node</code> 环境依赖相对简单，进入官网下载的对应的安装包无脑下一步即可，<a target="_blank" rel="noopener" href="https://nodejs.org/en/">官网直达</a><br><img src="/album/loading.gif" data-original="/album/article/vue/create/12.png"></p>
 <h4 id="2-环境验证"><a href="#2-环境验证" class="headerlink" title="2. 环境验证"></a>2. 环境验证</h4><p>安装完成后在命令窗口输入如下命令查看版本，若能正确显示则说明安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node -v         <span class="comment"># 查看 Node 版本</span></span><br><span class="line"></span><br><span class="line">npm -v          <span class="comment"># 查看 NPM 版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">node -v         <span class="token comment" spellcheck="true"># 查看 Node 版本</span>
+
+<span class="token function">npm</span> -v          <span class="token comment" spellcheck="true"># 查看 NPM 版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><img src="/album/loading.gif" data-original="/album/article/vue/create/13.png"></p>
 <h4 id="3-依赖安装"><a href="#3-依赖安装" class="headerlink" title="3. 依赖安装"></a>3. 依赖安装</h4><p>完成 <code>node</code> 安装之后，在新建工程之前我们还需要安装 <code>vue-cli</code> 依赖。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-cli -g</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> vue-cli -g
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="二、创建步骤"><a href="#二、创建步骤" class="headerlink" title="二、创建步骤"></a>二、创建步骤</h3><p>完成上述环境准备后下面就可以正式开始创建项目了。</p>
 <h4 id="1-新建工程"><a href="#1-新建工程" class="headerlink" title="1. 新建工程"></a>1. 新建工程</h4><p>在你的本地工作目录下进入命令行窗口，通过 <code>vue create &lt;工程名&gt;</code> 创建工程。<br><img src="/album/loading.gif" data-original="/album/article/vue/create/1.png"></p>
 <h4 id="2-模块选择"><a href="#2-模块选择" class="headerlink" title="2. 模块选择"></a>2. 模块选择</h4><p><img src="/album/loading.gif" data-original="/album/article/vue/create/2.png"></p>
@@ -643,19 +644,46 @@
 <p>创建结束之后打开目录即可看见已经生成如下内容：<br><img src="/album/loading.gif" data-original="/album/article/vue/create/14.png"></p>
 <h3 id="四、框架集成"><a href="#四、框架集成" class="headerlink" title="四、框架集成"></a>四、框架集成</h3><h4 id="1-依赖下载"><a href="#1-依赖下载" class="headerlink" title="1. 依赖下载"></a>1. 依赖下载</h4><p>为了更便捷的实现开发这里选择集成 <code>Element</code> 框架，需要注意 <code>Element-UI</code> 是针对 <code>Vue 2</code> 版本，而本文的 <code>Vue 3</code> 则需选择 <code>Element-Plus</code>。</p>
 <p>在上述创建工程目录下打开命令行输出下述命令下载依赖。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> element-plus --save
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-项目配置"><a href="#2-项目配置" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>完成后修改项目的 <code>/src/main.js</code> 文件，全局引入 <code>ElementPlus</code>，完整的配置如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span></span><br><span class="line"><span class="comment">// element-plus</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(router)</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>)</span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> createApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'./router'</span>
+<span class="token comment" spellcheck="true">// element-plus</span>
+<span class="token keyword">import</span> ElementPlus <span class="token keyword">from</span> <span class="token string">'element-plus'</span>
+<span class="token keyword">import</span> <span class="token string">'element-plus/dist/index.css'</span>
 
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">createApp</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
 
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>router<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>ElementPlus<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span><span class="token function">mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-图标集成"><a href="#3-图标集成" class="headerlink" title="3. 图标集成"></a>3. 图标集成</h4><p>在 <code>Element-Plus</code> 中使用 <code>Icon</code> 图标需要额外引入依赖。</p>
 <p>同样在项目工程命令窗口输入下述命令下载依赖：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @element-plus/icons-vue</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @element-plus/icons-vue
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>完成后修改 <code>main.js</code> 文件全局引入，完整配置如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span></span><br><span class="line"><span class="comment">// element-plus</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"><span class="comment">// element-plus icon</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="title class_">ElementPlusIconsVue</span> <span class="keyword">from</span> <span class="string">&#x27;@element-plus/icons-vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [key, component] <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">entries</span>(<span class="title class_">ElementPlusIconsVue</span>)) &#123;</span><br><span class="line">    app.<span class="title function_">component</span>(key, component)</span><br><span class="line">&#125;</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>)</span><br><span class="line">app.<span class="title function_">use</span>(router)</span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> createApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'./router'</span>
+<span class="token comment" spellcheck="true">// element-plus</span>
+<span class="token keyword">import</span> ElementPlus <span class="token keyword">from</span> <span class="token string">'element-plus'</span>
+<span class="token keyword">import</span> <span class="token string">'element-plus/dist/index.css'</span>
+<span class="token comment" spellcheck="true">// element-plus icon</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> ElementPlusIconsVue <span class="token keyword">from</span> <span class="token string">'@element-plus/icons-vue'</span>
+
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">createApp</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token punctuation">[</span>key<span class="token punctuation">,</span> component<span class="token punctuation">]</span> <span class="token keyword">of</span> Object<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span>ElementPlusIconsVue<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    app<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> component<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>ElementPlus<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>router<span class="token punctuation">)</span>
+app<span class="token punctuation">.</span><span class="token function">mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
                 
             </div>
             <hr/>
@@ -1252,7 +1280,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

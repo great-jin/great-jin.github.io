@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    953
+                    947
                 </div>
                 
 
@@ -621,70 +621,77 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h3 id="一、常用操作"><a href="#一、常用操作" class="headerlink" title="一、常用操作"></a>一、常用操作</h3><h4 id="1-日志查看"><a href="#1-日志查看" class="headerlink" title="1. 日志查看"></a>1. 日志查看</h4><p>查看哪位用户何时提交文件，附带了每次提交的变化，并显示对应提交的校验码。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> --<span class="built_in">stat</span></span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> log --stat
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="二、撤销回退"><a href="#二、撤销回退" class="headerlink" title="二、撤销回退"></a>二、撤销回退</h3><h4 id="1-撤销提交"><a href="#1-撤销提交" class="headerlink" title="1. 撤销提交"></a>1. 撤销提交</h4><h5 id="1-撤销提交-1"><a href="#1-撤销提交-1" class="headerlink" title="(1) 撤销提交"></a>(1) 撤销提交</h5><p>如果发现提交有误想撤销已添加到缓存区的文件，输入下面命令即可。</p>
 <p>该命令用于撤销已 <code>commit</code> 但未 <code>push</code> 的文件，<code>soft</code> 表示只撤销提交，<code>hard</code> 表示撤销提交并删除本地文件中本次提交内容。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft HEAD^</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"><span class="comment">##### (2) 删除文件</span></span><br><span class="line">```bash </span><br><span class="line">git <span class="built_in">rm</span> test.txt                 <span class="comment"># 同时从暂存区和本地目录下删除文件。</span></span><br><span class="line"></span><br><span class="line">git <span class="built_in">rm</span> --cached test.txt        <span class="comment"># 只删除缓存区文件，保留本地文件</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> reset --soft HEAD^
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="2-删除文件"><a href="#2-删除文件" class="headerlink" title="(2) 删除文件"></a>(2) 删除文件</h5><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">rm</span> test.txt                 <span class="token comment" spellcheck="true"># 同时从暂存区和本地目录下删除文件。</span>
 
-
+<span class="token function">git</span> <span class="token function">rm</span> --cached test.txt        <span class="token comment" spellcheck="true"># 只删除缓存区文件，保留本地文件</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-版本回退"><a href="#2-版本回退" class="headerlink" title="2. 版本回退"></a>2. 版本回退</h4><h5 id="1-回退为上个版本"><a href="#1-回退为上个版本" class="headerlink" title="(1) 回退为上个版本"></a>(1) 回退为上个版本</h5><p>一个 <code>^</code> 表示退回到上个版本，两个则退回到上上个版本提交。</p>
 <p>其中 <code>--hard</code> 表示回退并移除本地变化，<code>--soft</code> 则只移除 <code>Git</code> 提交但保留本地变更。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^  </span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> reset --hard HEAD^  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-回退到指定版本"><a href="#2-回退到指定版本" class="headerlink" title="(2) 回退到指定版本"></a>(2) 回退到指定版本</h5><p>我们需要先查看每次提交命令对应的 <code>ID</code> ，显示的最前面 <code>7</code> 位字符就是对应命令的 <code>ID</code> 了。</p>
 <p>在输入 <code>ID</code> 的时候可以不用完整输入七位编码，正常情况 <code>4</code> 到 <code>5</code> 位即可，系统会自动匹配。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reflog                  <span class="comment"># 查看ID</span></span><br><span class="line"></span><br><span class="line">git reset --hard &lt;ID&gt;       <span class="comment"># 回退指定版本</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> reflog                  <span class="token comment" spellcheck="true"># 查看ID</span>
 
+<span class="token function">git</span> reset --hard <span class="token operator">&lt;</span>ID<span class="token operator">></span>       <span class="token comment" spellcheck="true"># 回退指定版本</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-撤销编辑"><a href="#3-撤销编辑" class="headerlink" title="(3) 撤销编辑"></a>(3) 撤销编辑</h5><p>如果文件修改了但尚未通过 <code>add</code> 添加到暂存区，则会回退到你上次 <code>commit</code> 一样的状态；若在添加到暂存区后进行了修改文件，则会回到添加到暂存区后的状态。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- test.txt  </span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> checkout -- test.txt  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="三、分支操作"><a href="#三、分支操作" class="headerlink" title="三、分支操作"></a>三、分支操作</h3><h4 id="1-查看分支"><a href="#1-查看分支" class="headerlink" title="1. 查看分支"></a>1. 查看分支</h4><p>用于查看存在哪些分支，以及当前在哪个分支上，在初始化仓库时会自动创建 <code>master</code> 分支。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> branch
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-分支管理"><a href="#2-分支管理" class="headerlink" title="2. 分支管理"></a>2. 分支管理</h4><h5 id="1-创建分支"><a href="#1-创建分支" class="headerlink" title="(1) 创建分支"></a>(1) 创建分支</h5><p>其中 <code>branch-name</code> 为你创建的分支名。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> branch <span class="token operator">&lt;</span>branch-name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="2-切换分支"><a href="#2-切换分支" class="headerlink" title="(2) 切换分支"></a>(2) 切换分支</h5><p>通过 <code>checkout</code> 命令切换当前所在分支。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;       <span class="comment"># 创建分支</span></span><br><span class="line"></span><br><span class="line">git checkout -b &lt;branch-name&gt;    <span class="comment"># 创建分支并切换到该分支</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> checkout <span class="token operator">&lt;</span>branch-name<span class="token operator">></span>       <span class="token comment" spellcheck="true"># 创建分支</span>
 
+<span class="token function">git</span> checkout -b <span class="token operator">&lt;</span>branch-name<span class="token operator">></span>    <span class="token comment" spellcheck="true"># 创建分支并切换到该分支</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="3-删除分支"><a href="#3-删除分支" class="headerlink" title="(3) 删除分支"></a>(3) 删除分支</h5><p>通过 <code>-d</code> 表示删除分支。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d branch-name</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> branch -d branch-name
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="3-合并分支"><a href="#3-合并分支" class="headerlink" title="3. 合并分支"></a>3. 合并分支</h4><p>将对应分支的内容合并到当前分支，如要将 <code>分支a</code> 合并到 <code>分支b</code> ，则需要先切换到 <code>分支b</code>再输入命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
-
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> merge <span class="token operator">&lt;</span>branch-name<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="四、标签操作"><a href="#四、标签操作" class="headerlink" title="四、标签操作"></a>四、标签操作</h3><p>通过上面的 <code>git reflog</code> 可以看到每次提交命令都有对应唯一的 <code>ID</code> 码，但它是系统随机生成在记忆方面十分困难，所谓打标签就好比给其取一个更好记的别名。</p>
 <h4 id="1-标签创建"><a href="#1-标签创建" class="headerlink" title="1. 标签创建"></a>1. 标签创建</h4><p>在当前位置打标签，其中 <code>v1.0</code> 可以换成你需要的标签。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0 -m <span class="string">&quot;标签备注&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> tag -a v1.0 -m <span class="token string">"标签备注"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>给之前提交的打标签，将其中 <code>id</code> 替换成对应提交记录的 <code>id</code> 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.0 &lt;<span class="built_in">id</span>&gt;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">git</span> tag -a v1.0 <span class="token operator">&lt;</span>id<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-查看标签"><a href="#2-查看标签" class="headerlink" title="2. 查看标签"></a>2. 查看标签</h4><p>通过 <code>show</code> 命令即可查看对应标签的详细信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有标签</span></span><br><span class="line">git tag</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看指定标签信息</span></span><br><span class="line">git show v1.0</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 列出所有标签</span>
+<span class="token function">git</span> tag
 
-
-
+<span class="token comment" spellcheck="true"># 查看指定标签信息</span>
+<span class="token function">git</span> show v1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="五、常见异常"><a href="#五、常见异常" class="headerlink" title="五、常见异常"></a>五、常见异常</h3><h4 id="1-连接重置"><a href="#1-连接重置" class="headerlink" title="1. 连接重置"></a>1. 连接重置</h4><p>提示 <code>OpenSSL SSL_read: Connection was reset, errno 10054</code>。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.sslVerify &quot;false&quot;</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-git"><code class="language-git">git config --global http.sslVerify <span class="token string">"false"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="2-文件名过长"><a href="#2-文件名过长" class="headerlink" title="2. 文件名过长"></a>2. 文件名过长</h4><p>提示 <code>Filename too long</code> 说明提交的文件名称过长，需要设置放行长文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.longpaths true</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-git"><code class="language-git">git config --global core.longpaths true
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="3-大小写忽略"><a href="#3-大小写忽略" class="headerlink" title="3. 大小写忽略"></a>3. 大小写忽略</h4><p>在 <code>Git</code> 仓库中默认是不区分文件大小写的，如文件 <code>aa.txt</code> 和 <code>AA.txt</code> 系统默认是同一个文件，若需要开启大写识别需要进行配置。</p>
 <p>打开 <code>.git/config</code> 文件，将文件中的 <code>ignorecase</code> 设置为 <code>false</code> 即可。</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">repositoryformatversion</span> = <span class="string">0</span></span><br><span class="line"><span class="attr">filemode</span> = <span class="string">false</span></span><br><span class="line"><span class="attr">bare</span> = <span class="string">false</span></span><br><span class="line"><span class="attr">logallrefupdates</span> = <span class="string">true</span></span><br><span class="line"><span class="attr">symlinks</span> = <span class="string">false</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 是否忽略大小写，设置为 false</span></span><br><span class="line"><span class="attr">ignorecase</span> = <span class="string">false</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-properties"><code class="language-properties"><span class="token attr-name">repositoryformatversion</span> <span class="token punctuation">=</span> <span class="token attr-value">0</span>
+<span class="token attr-name">filemode</span> <span class="token punctuation">=</span> <span class="token attr-value">false</span>
+<span class="token attr-name">bare</span> <span class="token punctuation">=</span> <span class="token attr-value">false</span>
+<span class="token attr-name">logallrefupdates</span> <span class="token punctuation">=</span> <span class="token attr-value">true</span>
+<span class="token attr-name">symlinks</span> <span class="token punctuation">=</span> <span class="token attr-value">false</span>
+
+<span class="token comment" spellcheck="true"># 是否忽略大小写，设置为 false</span>
+<span class="token attr-name">ignorecase</span> <span class="token punctuation">=</span> <span class="token attr-value">false</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1286,7 +1293,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             

@@ -705,21 +705,31 @@
 <p><code>HTTP</code> 运行在 <code>TCP</code> 之上，而 <code>TCP</code> 又运行在 <code>IP</code> 之上，与 <code>IP</code> (一种网络协议)和 <code>TCP</code> (一种传输协议)相比，<code>HTTP</code> 是一种应用协议——这意味着它被应用程序直接使用。</p>
 <h3 id="三、HTTP发展"><a href="#三、HTTP发展" class="headerlink" title="三、HTTP发展"></a>三、HTTP发展</h3><h4 id="1-HTTP-0-9"><a href="#1-HTTP-0-9" class="headerlink" title="1. HTTP/0.9"></a>1. HTTP/0.9</h4><p><code>HTTP/0.9</code> 在 <code>1991</code> 第一次被提出，是一种无头 (没有请求头)，只允许发送 <code>GET</code> 请求且返回值只能是 <code>HTML</code> 内容的请求方式。</p>
 <p>假设客户端发出了下述一个简单的请求：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /index.html</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">GET /index.html
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>则上述请求对应的返回响应如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(response body)</span><br><span class="line">(connection closed)</span><br></pre></td></tr></table></figure>
-
-
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">(</span>response body<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>connection closed<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="2-HTTP-1-0"><a href="#2-HTTP-1-0" class="headerlink" title="2. HTTP/1.0"></a>2. HTTP/1.0</h4><p>在 <code>1996</code> 年 <code>HTTP/1.0</code> 问世，扩展提高了 <code>HTTP/0.9</code> 协议，引入了请求头并新增了 <code>POST</code> 和 <code>HEAD</code> 接口协议。</p>
 <p>不同于 <code>HTTP/0.9</code> 在 <code>1.0</code> 中允许了多种数据返回内容，此时不再只运行返回 <code>HTML</code> 内容，还可返回图片、文件、视频等等。</p>
 <p>如下为一个简易的 <code>1.0</code> 协议请求示例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.0</span><br><span class="line">Host: cs.fyi</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5)</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-bash"><code class="language-bash">GET / HTTP/1.0
+Host: cs.fyi
+User-Agent: Mozilla/5.0 <span class="token punctuation">(</span>Macintosh<span class="token punctuation">;</span> Intel Mac OS X 10_10_5<span class="token punctuation">)</span>
+Accept: */*
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述请求对应的响应体格式则如下，可以看到不仅有了请求头，还多了现今人们熟悉的状态码如 <code>200</code>。也正是引入了请求头，即可通过 <code>Content-Type</code> 控制返回的数据内容格式，使其不再局限于 <code>0.9</code> 中的 <code>HTML</code> 内容格式。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.0 200 OK </span><br><span class="line">Content-Type: text/plain</span><br><span class="line">Content-Length: 137582</span><br><span class="line">Expires: Thu, 05 Dec 1997 16:00:00 GMT</span><br><span class="line">Last-Modified: Wed, 5 August 1996 15:55:28 GMT</span><br><span class="line">Server: Apache 0.84</span><br><span class="line"></span><br><span class="line">(response body)</span><br><span class="line">(connection closed)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash"><code class="language-bash">HTTP/1.0 200 OK 
+Content-Type: text/plain
+Content-Length: 137582
+Expires: Thu, 05 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+Server: Apache 0.84
 
-
+<span class="token punctuation">(</span>response body<span class="token punctuation">)</span>
+<span class="token punctuation">(</span>connection closed<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-HTTP-1-1"><a href="#3-HTTP-1-1" class="headerlink" title="3. HTTP/1.1"></a>3. HTTP/1.1</h4><p>仅在三年后的 <code>1999</code> 年 <code>HTTP/1.1</code> 即正式发布，引入了下述新特性：</p>
 <blockquote>
 <ul>
@@ -772,8 +782,13 @@
 <p>举个简单示例，客户端发送了 <code>2</code> 条消息，由于 <code>Nagle</code> 算法的存在数据包被合并为了一条，此时服务端本应该接受 <code>2</code> 条信息但却只接收到一条。若服务端没有针对接受的数据包执行重新拆包处理，那么服务端将无法正确处理接收到的数据包，这个过程也是就粘包。</p>
 <p>那为什么又称粘包并非 <code>TCP</code> 问题，正是因为上述提到的 <code>TCP</code> 为传输层协议，只负责数据流的点对点传输。对于传输层而言，其只负责数据的完整传输送达，而粘包问题应在应用层执行拆包解决而非由 <code>TCP</code> 协议处理。</p>
 <p>如果接收端没有单独的拆包处理，又想避免粘包问题的出现，可以在发送端配置开启 <code>TCP_NODELAY</code> 从而禁用 <code>Nagle</code> 算法，如在 <code>Netty</code> 中即可通过 <code>option(ChannelOption.TCP_NODELAY, true)</code> 禁用 <code>Nagle</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Bootstrap</span> <span class="variable">bootstrap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Bootstrap</span>()</span><br><span class="line">            <span class="comment">// 禁用 Nagle 算法，发送数据包时都会立即发送，不会等待数据包的合并发送。</span></span><br><span class="line">            .option(ChannelOption.TCP_NODELAY, <span class="literal">true</span>)</span><br><span class="line">            .handler(<span class="keyword">new</span> <span class="title class_">SimpleClientInitializer</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Bootstrap bootstrap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// 禁用 Nagle 算法，发送数据包时都会立即发送，不会等待数据包的合并发送。</span>
+            <span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span>ChannelOption<span class="token punctuation">.</span>TCP_NODELAY<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">handler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">SimpleClientInitializer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p><strong>参考链接</strong></p>
 <ol>
@@ -1355,7 +1370,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.1k</span>
+                <span class="white-color">272.5k</span>
             
             
             
