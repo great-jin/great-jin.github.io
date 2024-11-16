@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -630,249 +630,94 @@
 <p>下面即介绍常用数据库通过 <code>Docker</code> 容器部署教程。</p>
 </blockquote>
 <h3 id="一、MySQL5"><a href="#一、MySQL5" class="headerlink" title="一、MySQL5"></a>一、MySQL5</h3><h4 id="1-配置管理"><a href="#1-配置管理" class="headerlink" title="1. 配置管理"></a>1. 配置管理</h4><p>创建 <code>my.cnf</code> 配置文件用于管理 <code>MySQL</code> 相关的配置。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/dockerdata/mysql/conf 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/dockerdata/mysql/conf </span><br><span class="line"></span><br><span class="line">vim my.cnf</span><br></pre></td></tr></table></figure>
 
-vim my.cnf
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>将以下内容复制到文件中，完成后 <code>esc</code> + <code>:wq</code> 保存退出。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>mysqld<span class="token punctuation">]</span>
-pid-file    <span class="token operator">=</span> /var/run/mysqld/mysqld.pid
-socket        <span class="token operator">=</span> /var/run/mysqld/mysqld.sock
-datadir        <span class="token operator">=</span> /var/lib/mysql
-<span class="token comment" spellcheck="true"># log-error    = /var/log/mysql/error.log</span>
-<span class="token comment" spellcheck="true"># Disabling symbolic-links is recommended to prevent assorted security risks</span>
-symbolic-links<span class="token operator">=</span>0
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">pid-file	= /var/run/mysqld/mysqld.pid</span><br><span class="line">socket		= /var/run/mysqld/mysqld.sock</span><br><span class="line">datadir		= /var/lib/mysql</span><br><span class="line"><span class="comment"># log-error	= /var/log/mysql/error.log</span></span><br><span class="line"><span class="comment"># Disabling symbolic-links is recommended to prevent assorted security risks</span></span><br><span class="line">symbolic-links=0</span><br><span class="line"></span><br><span class="line">max_connections = 2000</span><br><span class="line">max_user_connections = 1900</span><br><span class="line">max_connect_errors = 100000</span><br><span class="line">max_allowed_packet = 50M</span><br><span class="line">lower_case_table_names=1</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><br></pre></td></tr></table></figure>
 
-max_connections <span class="token operator">=</span> 2000
-max_user_connections <span class="token operator">=</span> 1900
-max_connect_errors <span class="token operator">=</span> 100000
-max_allowed_packet <span class="token operator">=</span> 50M
-lower_case_table_names<span class="token operator">=</span>1
-
-<span class="token punctuation">[</span>mysqld<span class="token punctuation">]</span>
-sql_mode<span class="token operator">=</span>STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-bin-log配置"><a href="#1-bin-log配置" class="headerlink" title="(1) bin log配置"></a>(1) bin log配置</h5><p>在上述的 <code>my.conf</code> 配置文件添加如下内容，完成后重启 <code>MySQL</code> 容器服务即可生效。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">server-id <span class="token operator">=</span> 1
-log_bin <span class="token operator">=</span> mysql-bin
-binlog_format <span class="token operator">=</span> row
-binlog_row_image <span class="token operator">=</span> full
-expire_logs_days <span class="token operator">=</span> 10
-gtid_mode <span class="token operator">=</span> on
-enforce_gtid_consistency <span class="token operator">=</span> on
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server-id = 1</span><br><span class="line">log_bin = mysql-bin</span><br><span class="line">binlog_format = row</span><br><span class="line">binlog_row_image = full</span><br><span class="line">expire_logs_days = 10</span><br><span class="line">gtid_mode = on</span><br><span class="line">enforce_gtid_consistency = on</span><br></pre></td></tr></table></figure>
+
 <p>查看 <code>bin log</code> 记录的内容步骤如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it mysql /bin/bash             <span class="token comment" spellcheck="true"># 进入容器</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mysql /bin/bash             <span class="comment"># 进入容器</span></span><br><span class="line"></span><br><span class="line">show variables like <span class="string">&#x27;%log_bin%&#x27;</span>;            <span class="comment"># 查看目录</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /var/lib/mysql                           <span class="comment"># 进入目录</span></span><br><span class="line"></span><br><span class="line">mysqlbinlog --base64-output=decode-rows -v mysql-bin.000001;</span><br></pre></td></tr></table></figure>
 
-show variables like <span class="token string">'%log_bin%'</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true"># 查看目录</span>
 
-<span class="token function">cd</span> /var/lib/mysql                           <span class="token comment" spellcheck="true"># 进入目录</span>
-
-mysqlbinlog --base64-output<span class="token operator">=</span>decode-rows -v mysql-bin.000001<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>在启动容器之前先创建对应目录用于存放相关配置与数据，可根据自身需要修改路径。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 配置文件目录</span>
-<span class="token function">mkdir</span> -p /usr/local/dockerdata/mysql/conf 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置文件目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/mysql/conf </span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据存放目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/mysql/data</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 日志存放目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/mysql/logs</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 数据存放目录</span>
-<span class="token function">mkdir</span> -p /usr/local/dockerdata/mysql/data
-    
-<span class="token comment" spellcheck="true"># 日志存放目录</span>
-<span class="token function">mkdir</span> -p /usr/local/dockerdata/mysql/logs
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意将其中的目录换成你上一步创建的路径，默认的用户名为 <code>root</code> ，密码这里我设置的是 <code>123456</code>，如果想要设置免密登录替换为 <code>-e MYSQL_ALLOW_EMPTY_PASSWORD=yes</code> 即可。</p>
 <p>同时这里通过 <code>-v</code> 参数将容器的目录内容映射到外部物理机以便后续使用。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run --privileged<span class="token operator">=</span>true \
--p 3306:3306 \
---name mysql \
--v /usr/local/dockerdata/mysql/conf:/etc/mysql/conf.d \
--v /usr/local/dockerdata/mysql/data:/var/lib/mysql \
--v /usr/local/dockerdata/mysql:/logs \
--e MYSQL_ROOT_PASSWORD<span class="token operator">=</span>123456 \
--d mysql:5.7
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run --privileged=<span class="literal">true</span> \</span><br><span class="line">-p 3306:3306 \</span><br><span class="line">--name mysql \</span><br><span class="line">-v /usr/local/dockerdata/mysql/conf:/etc/mysql/conf.d \</span><br><span class="line">-v /usr/local/dockerdata/mysql/data:/var/lib/mysql \</span><br><span class="line">-v /usr/local/dockerdata/mysql:/logs \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \</span><br><span class="line">-d mysql:5.7</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="3-修改密码"><a href="#3-修改密码" class="headerlink" title="3. 修改密码"></a>3. 修改密码</h4><p>首先需要修改配置文件为免密登录。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/mysql/conf/my.cnf
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/dockerdata/mysql/conf/my.cnf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在文件中添加下面两行内容，然后保存退出。</span></span><br><span class="line">skip-name-resolve</span><br><span class="line">skip-grant-tables</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 在文件中添加下面两行内容，然后保存退出。</span>
-skip-name-resolve
-skip-grant-tables
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>设置完免密后重启容器，然后再进入容器重新设置密码。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker restart mysql                    <span class="token comment" spellcheck="true"># 重启容器</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker restart mysql                    <span class="comment"># 重启容器</span></span><br><span class="line"></span><br><span class="line">docker <span class="built_in">exec</span> -it mysql bash              <span class="comment"># 进入容器</span></span><br><span class="line"></span><br><span class="line">mysql                                   <span class="comment"># 进入MySQL</span></span><br><span class="line"></span><br><span class="line">use mysql;                              <span class="comment"># 切换数据库</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改密码</span></span><br><span class="line">update mysql.user <span class="built_in">set</span> authentication_string = password(<span class="string">&quot;xxxx&quot;</span>) <span class="built_in">where</span> user=<span class="string">&quot;root&quot;</span>;</span><br></pre></td></tr></table></figure>
 
-docker <span class="token function">exec</span> -it mysql <span class="token function">bash</span>              <span class="token comment" spellcheck="true"># 进入容器</span>
 
-mysql                                   <span class="token comment" spellcheck="true"># 进入MySQL</span>
-
-use mysql<span class="token punctuation">;</span>                              <span class="token comment" spellcheck="true"># 切换数据库</span>
-
-<span class="token comment" spellcheck="true"># 修改密码</span>
-update mysql.user <span class="token keyword">set</span> authentication_string <span class="token operator">=</span> password<span class="token punctuation">(</span><span class="token string">"xxxx"</span><span class="token punctuation">)</span> where user<span class="token operator">=</span><span class="token string">"root"</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、MySQL8"><a href="#二、MySQL8" class="headerlink" title="二、MySQL8"></a>二、MySQL8</h3><h4 id="1-配置管理-1"><a href="#1-配置管理-1" class="headerlink" title="1. 配置管理"></a>1. 配置管理</h4><p><code>MySQL 8</code> 配置与 <code>MySQL 5</code> 不同是在 8 版本 <code>sql_mode</code> 中移除了 <code>NO_AUTO_CREATE_USER</code>，其对应配置如下：</p>
-<pre class="line-numbers language-cnf"><code class="language-cnf">[mysqld]
-pid-file    = /var/run/mysqld/mysqld.pid
-socket        = /var/run/mysqld/mysqld.sock
-datadir        = /var/lib/mysql
-# log-error    = /var/log/mysql/error.log
-# Disabling symbolic-links is recommended to prevent assorted security risks
-symbolic-links=0
-    
-# turn on the bin-log
-server-id = 1
-log_bin = mysql-bin
-binlog_format = row
-binlog_row_image = full
-expire_logs_days = 10
-gtid_mode = on
-enforce_gtid_consistency = on
-    
-max_connections = 2000
-max_user_connections = 1900
-max_connect_errors = 100000
-max_allowed_packet = 50M
-lower_case_table_names=1
-[mysqld]
-skip-name-resolve
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">pid-file	= /var/run/mysqld/mysqld.pid</span><br><span class="line">socket		= /var/run/mysqld/mysqld.sock</span><br><span class="line">datadir		= /var/lib/mysql</span><br><span class="line"># log-error	= /var/log/mysql/error.log</span><br><span class="line"># Disabling symbolic-links is recommended to prevent assorted security risks</span><br><span class="line">symbolic-links=0</span><br><span class="line">    </span><br><span class="line"># turn on the bin-log</span><br><span class="line">server-id = 1</span><br><span class="line">log_bin = mysql-bin</span><br><span class="line">binlog_format = row</span><br><span class="line">binlog_row_image = full</span><br><span class="line">expire_logs_days = 10</span><br><span class="line">gtid_mode = on</span><br><span class="line">enforce_gtid_consistency = on</span><br><span class="line">    </span><br><span class="line">max_connections = 2000</span><br><span class="line">max_user_connections = 1900</span><br><span class="line">max_connect_errors = 100000</span><br><span class="line">max_allowed_packet = 50M</span><br><span class="line">lower_case_table_names=1</span><br><span class="line">[mysqld]</span><br><span class="line">skip-name-resolve</span><br><span class="line"></span><br><span class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</span><br></pre></td></tr></table></figure>
 
-sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-启动命令"><a href="#2-启动命令" class="headerlink" title="2. 启动命令"></a>2. 启动命令</h4><p><code>MySQL 8</code> 与 <code>MySQL 5</code> 的启动命令上其实并没有什么太大差别，这里略去的映射目录创建的步骤。</p>
 <p>启动服务后通过工具或应用链接提示 <code> </code> 则在连接串上添加 <code>allowPublicKeyRetrieval=True</code> 参数。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
---privileged<span class="token operator">=</span>true \
--p 3306:3306 \
--p 33060:33060 \
---name mysql8 \
--m 500m \
--v /home/budai/dockerdata/mysql8/data:/var/lib/mysql \
--v /home/budai/dockerdata/mysql8/config:/etc/mysql/conf.d \
--e MYSQL_ROOT_PASSWORD<span class="token operator">=</span>123456 \
--e TZ<span class="token operator">=</span>Asia/Shanghai \
---lower_case_table_names<span class="token operator">=</span>1 \
-mysql:8.0.21
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Oracle"><a href="#三、Oracle" class="headerlink" title="三、Oracle"></a>三、Oracle</h3><h4 id="1-容器启动"><a href="#1-容器启动" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><p><code>Oracle</code> 镜像拉取和服务启动命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
-docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">--privileged=<span class="literal">true</span> \</span><br><span class="line">-p 3306:3306 \</span><br><span class="line">-p 33060:33060 \</span><br><span class="line">--name mysql8 \</span><br><span class="line">-m 500m \</span><br><span class="line">-v /home/budai/dockerdata/mysql8/data:/var/lib/mysql \</span><br><span class="line">-v /home/budai/dockerdata/mysql8/config:/etc/mysql/conf.d \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \</span><br><span class="line">-e TZ=Asia/Shanghai \</span><br><span class="line">--lower_case_table_names=1 \</span><br><span class="line">mysql:8.0.21</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 启动容器</span>
-docker run -d \
--p 1521:1521 \
---name oracle \
-registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="三、Oracle"><a href="#三、Oracle" class="headerlink" title="三、Oracle"></a>三、Oracle</h3><h4 id="1-容器启动"><a href="#1-容器启动" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><p><code>Oracle</code> 镜像拉取和服务启动命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g </span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker run -d \</span><br><span class="line">-p 1521:1521 \</span><br><span class="line">--name oracle \</span><br><span class="line">registry.cn-hangzhou.aliyuncs.com/helowin/oracle_11g</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-新增用户"><a href="#2-新增用户" class="headerlink" title="2. 新增用户"></a>2. 新增用户</h4><p>完成容器创建后还需要进行用户的创建和授权操作。</p>
 <p>通过下述步骤连接至数据库控制台：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入容器</span>
-docker <span class="token function">exec</span> -it oracle /bin/bash
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line">docker <span class="built_in">exec</span> -it oracle /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /home/oracle &amp;&amp; <span class="built_in">source</span> .bash_profile</span><br><span class="line"></span><br><span class="line">sqlplus /nolog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 登录数据库</span></span><br><span class="line">conn /as sysdba  </span><br><span class="line"></span><br><span class="line">startup mount</span><br></pre></td></tr></table></figure>
 
-<span class="token function">cd</span> /home/oracle <span class="token operator">&amp;&amp;</span> <span class="token function">source</span> .bash_profile
-
-sqlplus /nolog
-
-<span class="token comment" spellcheck="true"># 登录数据库</span>
-conn /as sysdba  
-
-startup <span class="token function">mount</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>下述步骤创建用户并授权，这里创建了账号密码为 <code>root/123456</code> 的管理员用户，可根据自身需求场景替换。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true"># 修改用户 system 的密码为 system</span>
-<span class="token keyword">alter</span> <span class="token keyword">user</span> system identified <span class="token keyword">by</span> system<span class="token punctuation">;</span> 
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 修改用户 <span class="keyword">system</span> 的密码为 <span class="keyword">system</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> <span class="keyword">system</span> identified <span class="keyword">by</span> <span class="keyword">system</span>; </span><br><span class="line"></span><br><span class="line"># 修改用户 sys 的密码为 <span class="keyword">system</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> sys identified <span class="keyword">by</span> <span class="keyword">system</span>; </span><br><span class="line"></span><br><span class="line"># 创建用户 root 的密码为 <span class="number">123456</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> root identified <span class="keyword">by</span> <span class="number">123456</span>; </span><br><span class="line"></span><br><span class="line"># 授权 root 为管理员</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span>, resource, dba <span class="keyword">to</span> root; </span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> profile <span class="keyword">default</span> limit password_life_time unlimited;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> processes<span class="operator">=</span><span class="number">2000</span> <span class="keyword">scope</span><span class="operator">=</span>spfile;</span><br><span class="line"></span><br><span class="line"># 解锁用户 root</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> root account unlock; </span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 修改用户 sys 的密码为 system</span>
-<span class="token keyword">alter</span> <span class="token keyword">user</span> sys identified <span class="token keyword">by</span> system<span class="token punctuation">;</span> 
 
-<span class="token comment" spellcheck="true"># 创建用户 root 的密码为 123456</span>
-<span class="token keyword">create</span> <span class="token keyword">user</span> root identified <span class="token keyword">by</span> <span class="token number">123456</span><span class="token punctuation">;</span> 
-
-<span class="token comment" spellcheck="true"># 授权 root 为管理员</span>
-<span class="token keyword">grant</span> <span class="token keyword">connect</span><span class="token punctuation">,</span> resource<span class="token punctuation">,</span> <span class="token number">dba</span> <span class="token keyword">to</span> root<span class="token punctuation">;</span> 
-
-<span class="token keyword">alter</span> profile <span class="token keyword">default</span> <span class="token keyword">limit</span> password_life_time unlimited<span class="token punctuation">;</span>
-
-<span class="token keyword">alter</span> system <span class="token keyword">set</span> processes<span class="token operator">=</span><span class="token number">2000</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true"># 解锁用户 root</span>
-<span class="token keyword">alter</span> <span class="token keyword">user</span> root account unlock<span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-服务连接"><a href="#3-服务连接" class="headerlink" title="3. 服务连接"></a>3. 服务连接</h4><p>需要注意上面选择的 <code>Oracle</code> 镜像为阿里云镜像，因而连接时服务名并不是 <code>ORCL</code> 而是 <code>helowin</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/oracle/1.png"></p>
 <h3 id="四、PostgreSQL"><a href="#四、PostgreSQL" class="headerlink" title="四、PostgreSQL"></a>四、PostgreSQL</h3><h4 id="1-服务启动"><a href="#1-服务启动" class="headerlink" title="1. 服务启动"></a>1. 服务启动</h4><p>搭建 <code>PostgreSQL</code> 环境同样也只需拉取镜像启动即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
-docker pull postgres
-  
-<span class="token comment" spellcheck="true"># 启动容器</span>
-docker run -d \
---name posdgres \
--p 5432:5432 \
--e POSTGRES_PASSWORD<span class="token operator">=</span>123456 \
-postgres
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull postgres</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker run -d \</span><br><span class="line">--name posdgres \</span><br><span class="line">-p 5432:5432 \</span><br><span class="line">-e POSTGRES_PASSWORD=123456 \</span><br><span class="line">postgres</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="五、MongoDB"><a href="#五、MongoDB" class="headerlink" title="五、MongoDB"></a>五、MongoDB</h3><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>首先创建相应的目录用于存储映射文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/mongodb/db
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/mongodb/db</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/local/dockerdata/mongodb/configdb</span><br></pre></td></tr></table></figure>
 
-<span class="token function">mkdir</span> -p /usr/local/dockerdata/mongodb/configdb
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-容器启动"><a href="#2-容器启动" class="headerlink" title="2. 容器启动"></a>2. 容器启动</h4><p>创建目录之后即可拉取容器并通过 <code>docker run</code> 启动，这里同样将内容的目录映射到物理机。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 拉取镜像</span>
-docker pull mongo
-  
-<span class="token comment" spellcheck="true"># 启动容器</span>
-docker run -d \
---name mongodb \
--p 27017:27017 \
--v /usr/local/dockerdata/mongodb/configdb:/data/configdb \
--v /usr/local/dockerdata/mongodb/db:/data/db \
-docker.io/mongo --auth
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull mongo</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker run -d \</span><br><span class="line">--name mongodb \</span><br><span class="line">-p 27017:27017 \</span><br><span class="line">-v /usr/local/dockerdata/mongodb/configdb:/data/configdb \</span><br><span class="line">-v /usr/local/dockerdata/mongodb/db:/data/db \</span><br><span class="line">docker.io/mongo --auth</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="3-用户创建"><a href="#3-用户创建" class="headerlink" title="3. 用户创建"></a>3. 用户创建</h4><p><code>MongoDB</code> 创建用户的相关命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it mongo mongo admin
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mongo mongo admin</span><br><span class="line"></span><br><span class="line">db.createUser(&#123; user: <span class="string">&#x27;root&#x27;</span>, <span class="built_in">pwd</span>: <span class="string">&#x27;123456&#x27;</span>, roles: [ &#123; role: <span class="string">&quot;userAdminAnyDatabase&quot;</span>, db: <span class="string">&quot;admin&quot;</span> &#125; ] &#125;);</span><br></pre></td></tr></table></figure>
 
-db.createUser<span class="token punctuation">(</span><span class="token punctuation">{</span> user: <span class="token string">'root'</span>, pwd: <span class="token string">'123456'</span>, roles: <span class="token punctuation">[</span> <span class="token punctuation">{</span> role: <span class="token string">"userAdminAnyDatabase"</span>, db: <span class="token string">"admin"</span> <span class="token punctuation">}</span> <span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、Vertica"><a href="#六、Vertica" class="headerlink" title="六、Vertica"></a>六、Vertica</h3><h4 id="1-容器启动-1"><a href="#1-容器启动-1" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> /usr/local/dockerdata/vertica          <span class="token comment" spellcheck="true"># 创建映射目录</span>
 
-docker run -d \
---name vertica \
--p 5433:5433 \
--v /usr/local/dockerdata/vertica:/home/dbadmin/docker \
-jbfavre/vertica:latest
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="六、Vertica"><a href="#六、Vertica" class="headerlink" title="六、Vertica"></a>六、Vertica</h3><h4 id="1-容器启动-1"><a href="#1-容器启动-1" class="headerlink" title="1. 容器启动"></a>1. 容器启动</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /usr/local/dockerdata/vertica          <span class="comment"># 创建映射目录</span></span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">--name vertica \</span><br><span class="line">-p 5433:5433 \</span><br><span class="line">-v /usr/local/dockerdata/vertica:/home/dbadmin/docker \</span><br><span class="line">jbfavre/vertica:latest</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="3-用户管理"><a href="#3-用户管理" class="headerlink" title="3. 用户管理"></a>3. 用户管理</h4><p>通过 <code>create user</code> 关键字创建新用户。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create user</span>
-<span class="token keyword">create</span> <span class="token keyword">user</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span> identified <span class="token keyword">by</span> <span class="token string">'&lt;password>'</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- create user</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span> identified <span class="keyword">by</span> <span class="string">&#x27;&lt;password&gt;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- update password</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;&lt;password&gt;&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true">-- update password</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">USER</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'&lt;password>'</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完成用户创建之后通过 <code>grant</code> 关键字授予用户权限，其中 <code>&lt;rolename&gt;</code> 取值如下：</p>
 <ul>
 <li><strong>dbduser</strong>: 允许非 <code>dba</code> 用户访问 <code>database designer</code> 使用命令行函数。</li>
 <li><strong>dbadmin</strong>: 可以创建删除用户，角色以及模式；查询系统表；结束用户进程；修改配置文件等操作；但是不能启停数据库。</li>
 <li><strong>pseudosuperuser</strong>: 可以认为几乎可以干所有的事，类似 <code>oracle</code> 的 <code>dba</code>。</li>
 </ul>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- grant privilege</span>
-<span class="token keyword">grant</span> <span class="token operator">&lt;</span>rolename<span class="token operator">></span> <span class="token keyword">to</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- grant privilege</span></span><br><span class="line"><span class="keyword">grant</span> <span class="operator">&lt;</span>rolename<span class="operator">&gt;</span> <span class="keyword">to</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- remove privilege</span></span><br><span class="line"><span class="keyword">REVOKE</span> <span class="operator">&lt;</span>rolename<span class="operator">&gt;</span> <span class="keyword">FROM</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span>;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true">-- remove privilege</span>
-<span class="token keyword">REVOKE</span> <span class="token operator">&lt;</span>rolename<span class="token operator">></span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-模式管理"><a href="#2-模式管理" class="headerlink" title="2. 模式管理"></a>2. 模式管理</h4><h5 id="1-Schema创建"><a href="#1-Schema创建" class="headerlink" title="(1) Schema创建"></a>(1) Schema创建</h5><p><code>Schema</code> 模式创建语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> SCHEMA <span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">ON</span> schema <span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span> <span class="keyword">TO</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span>;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">GRANT</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token keyword">schema</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-表授权"><a href="#2-表授权" class="headerlink" title="(2) 表授权"></a>(2) 表授权</h5><p>表授权语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- grant all table to user</span>
-<span class="token keyword">GRANT</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token keyword">ALL</span> <span class="token keyword">TABLES</span> <span class="token operator">IN</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- grant single table to user</span>
-<span class="token keyword">GRANT</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- remove table privilege</span>
-<span class="token keyword">REVOKE</span> <span class="token keyword">ALL</span> <span class="token keyword">ON</span> <span class="token operator">&lt;</span>schema_name<span class="token operator">></span><span class="token punctuation">.</span><span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">FROM</span> linewell<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- grant all table to user</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">ON</span> <span class="keyword">ALL</span> TABLES <span class="keyword">IN</span> SCHEMA <span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span> <span class="keyword">TO</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- grant single table to user</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">ON</span> <span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span>.<span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> <span class="keyword">TO</span> <span class="operator">&lt;</span>user_name<span class="operator">&gt;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- remove table privilege</span></span><br><span class="line"><span class="keyword">REVOKE</span> <span class="keyword">ALL</span> <span class="keyword">ON</span> <span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span>.<span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> <span class="keyword">FROM</span> linewell;</span><br></pre></td></tr></table></figure>
 
                 
             </div>
@@ -1118,54 +963,6 @@ jbfavre/vertica:latest
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/network/tools/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/13.png" class="responsive-img" alt="Java 网络操作示例">
-                        
-                        <span class="card-title">Java 网络操作示例</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java 网络常用工具类操作示例
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-25
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E7%BD%91%E7%BB%9C%E5%B9%B6%E5%8F%91/" class="post-category">
-                                    网络并发
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/db/install/midware/">
                     <div class="card-image">
                         
@@ -1181,9 +978,9 @@ jbfavre/vertica:latest
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-23
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-23
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1205,6 +1002,58 @@ jbfavre/vertica:latest
                     
                     <a href="/tags/CentOS/">
                         <span class="chip bg-color">CentOS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/thread/spring/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/spring/5.png" class="responsive-img" alt="Spring Boot多线程使用">
+                        
+                        <span class="card-title">Spring Boot多线程使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Spring Boot开启多线程任务。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BD%91%E7%BB%9C%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    网络并发
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                        <span class="chip bg-color">多线程</span>
                     </a>
                     
                 </div>
@@ -1478,7 +1327,7 @@ jbfavre/vertica:latest
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1736,7 +1585,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1752,6 +1601,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>

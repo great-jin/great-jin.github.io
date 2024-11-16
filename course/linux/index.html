@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -580,14 +580,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -610,78 +610,49 @@
                 <p>对于每个人程序员而言，平日里或多或少都会接触到 <code>Linux</code> ，在服务器方面， <code>Linux</code> 更是占据江山，本文简单介绍一些日常高频使用的命令。</p>
 <h3 id="一、基本命令"><a href="#一、基本命令" class="headerlink" title="一、基本命令"></a>一、基本命令</h3><h4 id="1-系统设置"><a href="#1-系统设置" class="headerlink" title="1. 系统设置"></a>1. 系统设置</h4><h5 id="1-时间修改"><a href="#1-时间修改" class="headerlink" title="(1) 时间修改"></a>(1) 时间修改</h5><p>例：将当前时间设置为 <code>10</code> 点：<code>date -s 10:00</code>。</p>
 <p>将当前日期设置为 <code>2022-1-1</code> ：<code>date -s 1/1/2022</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">date</span> -s <span class="token operator">&lt;</span>时间<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">date</span> -s &lt;时间&gt;</span><br></pre></td></tr></table></figure>
 <h5 id="2-系统启停"><a href="#2-系统启停" class="headerlink" title="(2) 系统启停"></a>(2) 系统启停</h5><p>通过 <code>shutdown</code> 关闭系统，<code>reboot</code> 实现服务器重启。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">shutdown</span> -r Now               <span class="token comment" spellcheck="true"># 立即关闭</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">shutdown -r Now               <span class="comment"># 立即关闭</span></span><br><span class="line"></span><br><span class="line">shutdown -r +1                <span class="comment"># 设置 1 分钟后关闭</span></span><br><span class="line"></span><br><span class="line">shutdown -h 18:00             <span class="comment"># 设置 18:00 关机</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#### 2. 架构查看</span></span><br><span class="line">``<span class="built_in">arch</span>`` 命令可以查看当前服务是 ``arm`` 架构还是 ``x86`` 架构。</span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">arch</span>                <span class="comment"># 查看系统内核</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">nproc</span>               <span class="comment"># 查看 CPU 核心数</span></span><br><span class="line"></span><br><span class="line">free -h             <span class="comment"># 查看内存使用情况</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">shutdown</span> -r +1                <span class="token comment" spellcheck="true"># 设置 1 分钟后关闭</span>
 
-<span class="token function">shutdown</span> -h 18:00             <span class="token comment" spellcheck="true"># 设置 18:00 关机</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-架构查看"><a href="#2-架构查看" class="headerlink" title="2. 架构查看"></a>2. 架构查看</h4><p><code>arch</code> 命令可以查看当前服务是 <code>arm</code> 架构还是 <code>x86</code> 架构。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">arch                <span class="token comment" spellcheck="true"># 查看系统内核</span>
-
-nproc               <span class="token comment" spellcheck="true"># 查看 CPU 核心数</span>
-
-<span class="token function">free</span> -h             <span class="token comment" spellcheck="true"># 查看内存使用情况</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-文件列表"><a href="#3-文件列表" class="headerlink" title="3. 文件列表"></a>3. 文件列表</h4><p>通过 <code>ls</code> 及相关命名查看目录文件信息，其中目录为蓝色，文件为灰色，绿色为隐藏文件。  </p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ls</span> -lh                      <span class="token comment" spellcheck="true"># 仅文件名，简写为：ls</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -lh                      <span class="comment"># 仅文件名，简写为：ls</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">ls</span> -l                       <span class="comment"># 详细信息: 简写为：ll</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">ls</span> -a                       <span class="comment"># 包括隐含文件 </span></span><br><span class="line"></span><br><span class="line">file &lt;file_name&gt;            <span class="comment"># 查看文件类型   </span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">ls</span> -l                       <span class="token comment" spellcheck="true"># 详细信息: 简写为：ll</span>
 
-<span class="token function">ls</span> -a                       <span class="token comment" spellcheck="true"># 包括隐含文件 </span>
-
-<span class="token function">file</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 查看文件类型   </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-磁盘信息"><a href="#4-磁盘信息" class="headerlink" title="4. 磁盘信息"></a>4. 磁盘信息</h4><p>通过 <code>df</code> 命令查看磁盘各分区使用情况。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">df</span> -h                      <span class="token comment" spellcheck="true"># 带单位显示文件系统的大小</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h                      <span class="comment"># 带单位显示文件系统的大小</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">du</span> -h --max-depth=1        <span class="comment"># 目录下各文件大小(指定层级为 1)</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">du</span> -h --max-depth<span class="token operator">=</span>1        <span class="token comment" spellcheck="true"># 目录下各文件大小(指定层级为 1)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
 <h3 id="二、目录管理"><a href="#二、目录管理" class="headerlink" title="二、目录管理"></a>二、目录管理</h3><h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>通过 <code>mkdir</code> 命令创建目录，创建的目录名中若存在空格需使用 <code>\ </code>，如 <code>mkdir a\ b</code> 即在当前创建目录 <code>a b</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 创建目录</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> &lt;dire_name&gt;               <span class="comment"># 创建目录</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p &lt;dire_1&gt;/&lt;dire_2&gt;      <span class="comment"># 根据层级创建目录</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">mkdir</span> -p <span class="token operator">&lt;</span>dire_1<span class="token operator">></span>/<span class="token operator">&lt;</span>dire_2<span class="token operator">></span>      <span class="token comment" spellcheck="true"># 根据层级创建目录</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-删除目录"><a href="#1-删除目录" class="headerlink" title="(1) 删除目录"></a>(1) 删除目录</h5><p>通过 <code>rm</code> 命令删除目录。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">rmdir</span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 无法删除非空目录</span>
-        
-<span class="token function">rm</span> -rf <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 强制删除，删除非空目录时使用</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rmdir</span> &lt;dire_name&gt;             <span class="comment"># 无法删除非空目录</span></span><br><span class="line">        </span><br><span class="line"><span class="built_in">rm</span> -rf &lt;dire_name&gt;            <span class="comment"># 强制删除，删除非空目录时使用</span></span><br></pre></td></tr></table></figure>
+
 <h5 id="2-删除文件"><a href="#2-删除文件" class="headerlink" title="(2) 删除文件"></a>(2) 删除文件</h5><p>删除 <code>N</code> 天前的文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> -type f -mtime +N -exec <span class="token function">rm</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find &lt;path&gt; -<span class="built_in">type</span> f -mtime +N -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-目录迁移"><a href="#2-目录迁移" class="headerlink" title="2. 目录迁移"></a>2. 目录迁移</h4><p>在 <code>Linux</code> 中没有重命名命令，移动到当前目录即等价于重命名。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mv</span> <span class="token operator">&lt;</span>source_path<span class="token operator">></span> <span class="token operator">&lt;</span>target_path<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> &lt;source_path&gt; &lt;target_path&gt;</span><br></pre></td></tr></table></figure>
+
 <p>复制目录需加 <code>-r</code> ，复制文件则不需要。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cp</span> <span class="token operator">&lt;</span>source_path<span class="token operator">></span> <span class="token operator">&lt;</span>target_path<span class="token operator">></span>                  <span class="token comment" spellcheck="true"># 移动文件</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> &lt;source_path&gt; &lt;target_path&gt;                  <span class="comment"># 移动文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cp</span> -r &lt;source_path&gt; &lt;target_path&gt;               <span class="comment"># 移动目录</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">cp</span> -r <span class="token operator">&lt;</span>source_path<span class="token operator">></span> <span class="token operator">&lt;</span>target_path<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 移动目录</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>文件链接分为软链接和硬链接，目录无法创建硬链接，文件则无限制。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ln</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> <span class="token operator">&lt;</span>nickname<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 硬链接，即源文件复制 </span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> &lt;path&gt; &lt;nickname&gt;               <span class="comment"># 硬链接，即源文件复制 </span></span><br><span class="line"></span><br><span class="line"><span class="built_in">ln</span> -s &lt;path&gt; &lt;nickname&gt;            <span class="comment"># 软链接，即快捷方式</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">ln</span> -s <span class="token operator">&lt;</span>path<span class="token operator">></span> <span class="token operator">&lt;</span>nickname<span class="token operator">></span>            <span class="token comment" spellcheck="true"># 软链接，即快捷方式</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
 <h3 id="三、文件查看"><a href="#三、文件查看" class="headerlink" title="三、文件查看"></a>三、文件查看</h3><h4 id="1-文件创建"><a href="#1-文件创建" class="headerlink" title="1. 文件创建"></a>1. 文件创建</h4><p>通过 <code>touch</code> 命令即可新建文件，此外 <code>echo</code> 可实现文件内容写入功能。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">touch</span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>                         <span class="token comment" spellcheck="true"># 创建文件</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> &lt;file_name&gt;                         <span class="comment"># 创建文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;content&#x27;</span> &gt; &lt;file_name&gt;              <span class="comment"># 创建文件并写入内容</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">echo</span> <span class="token string">'content'</span> <span class="token operator">></span> <span class="token operator">&lt;</span>file_name<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 创建文件并写入内容</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-内容查看"><a href="#2-内容查看" class="headerlink" title="2. 内容查看"></a>2. 内容查看</h4><p>常用的文件内容查看命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">more</span> <span class="token operator">&lt;</span>文件名<span class="token operator">></span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">more &lt;文件名&gt;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> &lt;文件名&gt;                  <span class="comment"># 查看短文档，过长无法显示</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">head</span> -n &lt;文件名&gt;              <span class="comment"># 查看前 n 行，默认 15 行 </span></span><br><span class="line">     </span><br><span class="line"><span class="built_in">tail</span> -n &lt;文件名&gt;              <span class="comment"># 查看后 n 行，默认尾部 10 行</span></span><br><span class="line">     </span><br><span class="line"><span class="built_in">tail</span> -f &lt;文件名&gt;              <span class="comment"># 动态查看文件内容</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">cat</span> <span class="token operator">&lt;</span>文件名<span class="token operator">></span>                  <span class="token comment" spellcheck="true"># 查看短文档，过长无法显示</span>
 
-<span class="token function">head</span> -n <span class="token operator">&lt;</span>文件名<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 查看前 n 行，默认 15 行 </span>
-     
-<span class="token function">tail</span> -n <span class="token operator">&lt;</span>文件名<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 查看后 n 行，默认尾部 10 行</span>
-     
-<span class="token function">tail</span> -f <span class="token operator">&lt;</span>文件名<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 动态查看文件内容</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-文件查找"><a href="#3-文件查找" class="headerlink" title="3. 文件查找"></a>3. 文件查找</h4><p>通过 <code>find</code> 命令可按照指定规则搜索文件或目录。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -702,44 +673,30 @@ nproc               <span class="token comment" spellcheck="true"># 查看 CPU �
     </tr>
 </table>
 
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 基本格式</span>
-<span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> <span class="token operator">&lt;</span>type<span class="token operator">></span> <span class="token operator">&lt;</span>name<span class="token operator">></span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本格式</span></span><br><span class="line">find &lt;path&gt; &lt;<span class="built_in">type</span>&gt; &lt;name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 path 目录下 N 天前的文件</span></span><br><span class="line">find &lt;path&gt; -<span class="built_in">type</span> f -mtime +N -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 查看 path 目录下 N 天前的文件</span>
-<span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">></span> -type f -mtime +N -exec <span class="token function">ls</span> -l <span class="token punctuation">{</span><span class="token punctuation">}</span> \<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="4-文件分发"><a href="#4-文件分发" class="headerlink" title="4. 文件分发"></a>4. 文件分发</h4><p>通过 <code>scp</code> 命令可实现不同服务器之间的文件传输，当传输对象为目录时需要添加 <code>-r</code> 参数。</p>
 <h5 id="1-分发到远程"><a href="#1-分发到远程" class="headerlink" title="(1) 分发到远程"></a>(1) 分发到远程</h5><p>如下命令将本机 <code>/temp/hellp.txt</code> 文件复制到 <code>192.168.0.1</code> 的 <code>/temp</code> 目录下，回车后需输入目标服务器的 <code>root</code> 登录密码。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 命令格式</span>
-<span class="token function">scp</span> -r <span class="token operator">&lt;</span>local_path<span class="token operator">></span> <span class="token operator">&lt;</span>User<span class="token operator">></span>@<span class="token operator">&lt;</span>IP<span class="token operator">></span>:<span class="token operator">&lt;</span>remote_path<span class="token operator">></span>
-    
-<span class="token function">scp</span> -r /temp/hellp.txt root@192.168.173.1:/temp
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令格式</span></span><br><span class="line">scp -r &lt;local_path&gt; &lt;User&gt;@&lt;IP&gt;:&lt;remote_path&gt;</span><br><span class="line">    </span><br><span class="line">scp -r /temp/hellp.txt root@192.168.173.1:/temp</span><br></pre></td></tr></table></figure>
 <h5 id="2-分发到本机"><a href="#2-分发到本机" class="headerlink" title="(2) 分发到本机"></a>(2) 分发到本机</h5><p>如下将 <code>192.168.173.1</code> 的 <code>/temp/hellp.txt</code> 文件复制到本机 <code>/temp</code> 目录下。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 命令格式</span>
-<span class="token function">scp</span> -r root@<span class="token operator">&lt;</span>IP<span class="token operator">></span>:<span class="token operator">&lt;</span>remote_path<span class="token operator">></span> <span class="token operator">&lt;</span>local_path<span class="token operator">></span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 命令格式</span></span><br><span class="line">scp -r root@&lt;IP&gt;:&lt;remote_path&gt; &lt;local_path&gt;</span><br><span class="line"></span><br><span class="line">scp -r root@192.168.173.1:/temp/hellp.txt /temp</span><br></pre></td></tr></table></figure>
 
-<span class="token function">scp</span> -r root@192.168.173.1:/temp/hellp.txt /temp
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
 <h3 id="四、用户管理"><a href="#四、用户管理" class="headerlink" title="四、用户管理"></a>四、用户管理</h3><h4 id="1-创建用户"><a href="#1-创建用户" class="headerlink" title="1. 创建用户"></a>1. 创建用户</h4><p>通过 <code>useradd</code> 创建用户之后会在 <code>/home</code> 目录下生成同名目录。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">useradd</span> <span class="token operator">&lt;</span>用户名<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 创建用户</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">useradd &lt;用户名&gt;              <span class="comment"># 创建用户</span></span><br><span class="line"></span><br><span class="line">passwd &lt;用户名&gt;               <span class="comment"># 设置密码</span></span><br><span class="line"></span><br><span class="line">useradd -c &lt;备注&gt;             <span class="comment"># 创建带备注信息的用户</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">passwd</span> <span class="token operator">&lt;</span>用户名<span class="token operator">></span>               <span class="token comment" spellcheck="true"># 设置密码</span>
 
-<span class="token function">useradd</span> -c <span class="token operator">&lt;</span>备注<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 创建带备注信息的用户</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-删除用户"><a href="#2-删除用户" class="headerlink" title="2. 删除用户"></a>2. 删除用户</h4><p>通过 <code>userdel</code> 命令删除用户，添加参数 <code>-r</code> 会删除在 <code>/home</code> 目录下创建的同名文件夹。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">userdel</span> <span class="token operator">&lt;</span>user_name<span class="token operator">></span>                <span class="token comment" spellcheck="true"># /home 路径下的目录仍存在</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">userdel &lt;user_name&gt;                <span class="comment"># /home 路径下的目录仍存在</span></span><br><span class="line"></span><br><span class="line">userdel -r &lt;user_name&gt;             <span class="comment"># 完全删除用户及其文件夹 </span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">userdel</span> -r <span class="token operator">&lt;</span>user_name<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 完全删除用户及其文件夹 </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3-权限管理"><a href="#3-权限管理" class="headerlink" title="3. 权限管理"></a>3. 权限管理</h4><p>通过 <code>usermod</code> 命令管理用户权限。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">usermod</span> -s /sbin/nologin <span class="token operator">&lt;</span>user_name<span class="token operator">></span>       <span class="token comment" spellcheck="true"># 设置用户不能登陆系统</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">usermod -s /sbin/nologin &lt;user_name&gt;       <span class="comment"># 设置用户不能登陆系统</span></span><br><span class="line"></span><br><span class="line">usermod -L &lt;user_name&gt;                     <span class="comment"># 即无法使用该用户名进行登录</span></span><br><span class="line"></span><br><span class="line">usermod -U &lt;user_name&gt;                     <span class="comment"># 重新启用被禁用的用户</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">usermod</span> -L <span class="token operator">&lt;</span>user_name<span class="token operator">></span>                     <span class="token comment" spellcheck="true"># 即无法使用该用户名进行登录</span>
 
-<span class="token function">usermod</span> -U <span class="token operator">&lt;</span>user_name<span class="token operator">></span>                     <span class="token comment" spellcheck="true"># 重新启用被禁用的用户</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="五、压缩管理"><a href="#五、压缩管理" class="headerlink" title="五、压缩管理"></a>五、压缩管理</h3><p>常见的压缩包格式有：<code>.tar</code>, <code>.tar.gz</code>, <code>.zip </code>, <code>.gzip </code>，根据不同格式选择不同命令。</p>
 <h4 id="1-文件打包"><a href="#1-文件打包" class="headerlink" title="1. 文件打包"></a>1. 文件打包</h4><p>在实际环境中最常见到是 <code>tar.gz</code> ，因为该方式能够保存文件权限信息，压缩后文件为红色标识，目录大小不变，其中相关命令参数如下：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -773,25 +730,14 @@ nproc               <span class="token comment" spellcheck="true"># 查看 CPU �
     </tr>
 </table>
    
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">tar</span> -cf <span class="token operator">&lt;</span>alias.tar<span class="token operator">></span> <span class="token operator">&lt;</span>target<span class="token operator">></span>                    <span class="token comment" spellcheck="true"># 打包文件</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tar -cf &lt;alias.tar&gt; &lt;target&gt;                    <span class="comment"># 打包文件</span></span><br><span class="line"></span><br><span class="line">tar -xf &lt;alias.tar&gt;                             <span class="comment"># 解包文件</span></span><br><span class="line"></span><br><span class="line">tar -tf &lt;target.tar&gt;                            <span class="comment"># 不解压的前提列出文件</span></span><br><span class="line"></span><br><span class="line">tar -zcf &lt;alias.tar.gz&gt; &lt;target&gt;                <span class="comment"># 打包目录并压缩</span></span><br><span class="line">    </span><br><span class="line">tar -zxf &lt;target.tar.gz&gt;                        <span class="comment"># 解压缩文件</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">tar</span> -xf <span class="token operator">&lt;</span>alias.tar<span class="token operator">></span>                             <span class="token comment" spellcheck="true"># 解包文件</span>
 
-<span class="token function">tar</span> -tf <span class="token operator">&lt;</span>target.tar<span class="token operator">></span>                            <span class="token comment" spellcheck="true"># 不解压的前提列出文件</span>
-
-<span class="token function">tar</span> -zcf <span class="token operator">&lt;</span>alias.tar.gz<span class="token operator">></span> <span class="token operator">&lt;</span>target<span class="token operator">></span>                <span class="token comment" spellcheck="true"># 打包目录并压缩</span>
-    
-<span class="token function">tar</span> -zxf <span class="token operator">&lt;</span>target.tar.gz<span class="token operator">></span>                        <span class="token comment" spellcheck="true"># 解压缩文件</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-文件压解缩"><a href="#2-文件压解缩" class="headerlink" title="2. 文件压解缩"></a>2. 文件压解缩</h4><p>其中 <code>-r</code> 表示压缩整个目录。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">zip</span> -r <span class="token operator">&lt;</span>name.zip<span class="token operator">></span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>                <span class="token comment" spellcheck="true"># 压缩文件 </span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zip -r &lt;name.zip&gt; &lt;dire_name&gt;                <span class="comment"># 压缩文件 </span></span><br><span class="line"></span><br><span class="line">gzip -d &lt;file&gt;                               <span class="comment"># 解压文件 </span></span><br><span class="line"></span><br><span class="line">unzip -l &lt;name.zip&gt;                          <span class="comment"># 不解压列出</span></span><br><span class="line"></span><br><span class="line">unzip &lt;name.zip&gt; &lt;dire_name&gt;                 <span class="comment"># 解压到指定路径</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">gzip</span> -d <span class="token operator">&lt;</span>file<span class="token operator">></span>                               <span class="token comment" spellcheck="true"># 解压文件 </span>
 
-unzip -l <span class="token operator">&lt;</span>name.zip<span class="token operator">></span>                          <span class="token comment" spellcheck="true"># 不解压列出</span>
 
-unzip <span class="token operator">&lt;</span>name.zip<span class="token operator">></span> <span class="token operator">&lt;</span>dire_name<span class="token operator">></span>                 <span class="token comment" spellcheck="true"># 解压到指定路径</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、文本编辑"><a href="#六、文本编辑" class="headerlink" title="六、文本编辑"></a>六、文本编辑</h3><h4 id="1-插入模式"><a href="#1-插入模式" class="headerlink" title="1. 插入模式"></a>1. 插入模式</h4><p>在命令模式下按 <code>i</code> 键进入。</p>
 <h4 id="2-命令模式"><a href="#2-命令模式" class="headerlink" title="2. 命令模式"></a>2. 命令模式</h4><p>在插入模式下按 <code>esc</code> 键进入。</p>
 <h4 id="3-末行模式"><a href="#3-末行模式" class="headerlink" title="3. 末行模式"></a>3. 末行模式</h4><p>在插入模式下按 <code>exit</code> 键进入命令模式，然后输入对应命令按回车即可。</p>
@@ -843,90 +789,45 @@ unzip <span class="token operator">&lt;</span>name.zip<span class="token operato
 
 
 <h3 id="七、进程管理"><a href="#七、进程管理" class="headerlink" title="七、进程管理"></a>七、进程管理</h3><h4 id="1-防火墙"><a href="#1-防火墙" class="headerlink" title="1. 防火墙"></a>1. 防火墙</h4><p>针对生产服务器并不建议关闭防火墙，应根据情况对放行相应端口或 <code>IP</code> 。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">systemctl status firewalld              <span class="token comment" spellcheck="true"># 防火墙状态</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld              <span class="comment"># 防火墙状态</span></span><br><span class="line"></span><br><span class="line">systemctl stop firewalld                <span class="comment"># 停止防火墙</span></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld             <span class="comment"># 禁用防火墙</span></span><br><span class="line"></span><br><span class="line">firewall-cmd --reload                   <span class="comment"># 刷新配置</span></span><br></pre></td></tr></table></figure>
 
-systemctl stop firewalld                <span class="token comment" spellcheck="true"># 停止防火墙</span>
 
-systemctl disable firewalld             <span class="token comment" spellcheck="true"># 禁用防火墙</span>
-
-firewall-cmd --reload                   <span class="token comment" spellcheck="true"># 刷新配置</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-策略管理"><a href="#2-策略管理" class="headerlink" title="2. 策略管理"></a>2. 策略管理</h4><h5 id="1-端口策略"><a href="#1-端口策略" class="headerlink" title="(1) 端口策略"></a>(1) 端口策略</h5><p>每次修改端口策略后都需要刷新配置使其生效。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启指定端口</span>
-firewall-cmd --zone<span class="token operator">=</span>public --add-port<span class="token operator">=</span>80/tcp --permanent
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启指定端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭指定端口</span></span><br><span class="line">firewall-cmd --zone=public --remove-port=22/tcp --permanent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已打开的所有端口</span></span><br><span class="line">firewall-cmd --zone=public --list-ports   </span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 关闭指定端口</span>
-firewall-cmd --zone<span class="token operator">=</span>public --remove-port<span class="token operator">=</span>22/tcp --permanent
-
-<span class="token comment" spellcheck="true"># 查看已打开的所有端口</span>
-firewall-cmd --zone<span class="token operator">=</span>public --list-ports   
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-IP策略"><a href="#2-IP策略" class="headerlink" title="(2) IP策略"></a>(2) IP策略</h5><p>每次修改 <code>IP</code> 策略后都需要刷新配置使其生效。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 放行指定 IP</span>
-firewall-cmd --permanent --add-rich-rule<span class="token operator">=</span><span class="token string">"rule family="</span>ipv4<span class="token string">" source address="</span>192.168.0.1<span class="token string">" accept"</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 放行指定 IP</span></span><br><span class="line">firewall-cmd --permanent --add-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.0.1<span class="string">&quot; accept&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除配置的策略</span></span><br><span class="line">firewall-cmd --permanent --remove-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.0.1<span class="string">&quot; accept&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看策略</span></span><br><span class="line">firewall-cmd --list-all</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 移除配置的策略</span>
-firewall-cmd --permanent --remove-rich-rule<span class="token operator">=</span><span class="token string">"rule family="</span>ipv4<span class="token string">" source address="</span>192.168.0.1<span class="token string">" accept"</span>
 
-<span class="token comment" spellcheck="true"># 查看策略</span>
-firewall-cmd --list-all
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-进程管理"><a href="#3-进程管理" class="headerlink" title="3. 进程管理"></a>3. 进程管理</h4><p>通过 <code>ps</code> 组合命令可根据服务名查询进程信息。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">top</span>                      <span class="token comment" spellcheck="true"># 查看系统中进程动态变化 </span>
-
-<span class="token function">jobs</span>                     <span class="token comment" spellcheck="true"># 查看后台的进程</span>
-
-<span class="token function">ps</span> aux <span class="token operator">|</span> <span class="token function">grep</span> <span class="token operator">&lt;</span>name<span class="token operator">></span>     <span class="token comment" spellcheck="true"># 查看服务进程</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">top                      <span class="comment"># 查看系统中进程动态变化 </span></span><br><span class="line"></span><br><span class="line"><span class="built_in">jobs</span>                     <span class="comment"># 查看后台的进程</span></span><br><span class="line"></span><br><span class="line">ps aux | grep &lt;name&gt;     <span class="comment"># 查看服务进程</span></span><br></pre></td></tr></table></figure>
 <p>通过 <code>pwdx</code> 命令可查询对应进程的服务运行目录。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">pwdx <span class="token operator">&lt;</span>pid<span class="token operator">></span>              <span class="token comment" spellcheck="true"># 根据进程号查看应用目录</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwdx &lt;pid&gt;              <span class="comment"># 根据进程号查看应用目录</span></span><br><span class="line"></span><br><span class="line">pgrep &lt;name&gt;             <span class="comment"># 根据服务查看进程号</span></span><br></pre></td></tr></table></figure>
 
-pgrep <span class="token operator">&lt;</span>name<span class="token operator">></span>             <span class="token comment" spellcheck="true"># 根据服务查看进程号</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="4-端口监听"><a href="#4-端口监听" class="headerlink" title="4. 端口监听"></a>4. 端口监听</h4><p><code>netstat</code> 与 <code>lsof</code> 命令都能根据端口查询其对应服务进程信息。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 工具安装</span>
-yum <span class="token function">install</span> -y net-tools
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 工具安装</span></span><br><span class="line">yum install -y net-tools</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看指定端口</span></span><br><span class="line">netstat -tunl | grep &lt;port&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看端口占用情况 </span></span><br><span class="line">lsof -i:&lt;port&gt;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 查看指定端口</span>
-<span class="token function">netstat</span> -tunl <span class="token operator">|</span> <span class="token function">grep</span> <span class="token operator">&lt;</span>port<span class="token operator">></span>
 
-<span class="token comment" spellcheck="true"># 查看端口占用情况 </span>
-<span class="token function">lsof</span> -i:<span class="token operator">&lt;</span>port<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="八、网络请求"><a href="#八、网络请求" class="headerlink" title="八、网络请求"></a>八、网络请求</h3><h4 id="1-Get请求"><a href="#1-Get请求" class="headerlink" title="1. Get请求"></a>1. Get请求</h4><p><code>curl</code> 默认发送的即 <code>Get</code> 请求，若请求含参则通过 <code>?</code> 拼接于 <code>url</code> 中。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">curl <span class="token operator">&lt;</span>url<span class="token operator">></span>          <span class="token comment" spellcheck="true"># 发送 get 请求到 url</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl &lt;url&gt;          <span class="comment"># 发送 get 请求到 url</span></span><br><span class="line"></span><br><span class="line">curl &lt;url&gt;?<span class="built_in">id</span>=123&amp;name=alex</span><br></pre></td></tr></table></figure>
 
-curl <span class="token operator">&lt;</span>url<span class="token operator">></span>?id<span class="token operator">=</span>123<span class="token operator">&amp;</span>name<span class="token operator">=</span>alex
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-Post请求"><a href="#2-Post请求" class="headerlink" title="2. Post请求"></a>2. Post请求</h4><p>通过 <code>-X Post</code> 指定请求方式为 <code>Post</code> ，<code>-H</code> 用于指定请求头，<code>-d</code> 用于指定请求体内容。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">curl -X POST -d <span class="token string">'name=alex&amp;pwd=456'</span> <span class="token operator">&lt;</span>url<span class="token operator">></span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST -d <span class="string">&#x27;name=alex&amp;pwd=456&#x27;</span> &lt;url&gt;</span><br><span class="line"></span><br><span class="line">curl -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-X POST -d <span class="string">&#x27;&#123;&quot;name&quot;:&quot;alex&quot;,&quot;pwd&quot;:&quot;456&quot;&#125;&#x27;</span> &lt;url&gt;</span><br></pre></td></tr></table></figure>
 
-curl -H <span class="token string">"Content-Type: application/json"</span> \
--X POST -d <span class="token string">'{"name":"alex","pwd":"456"}'</span> <span class="token operator">&lt;</span>url<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="九、服务器优化"><a href="#九、服务器优化" class="headerlink" title="九、服务器优化"></a>九、服务器优化</h3><h4 id="1-Host修改"><a href="#1-Host修改" class="headerlink" title="1. Host修改"></a>1. Host修改</h4><p>通过设置 <code>hostname</code> 服务器之前即可不通过 <code>IP</code> 实现访问。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 自定义本机名称</span>
-hostnamectl set-hostname <span class="token operator">&lt;</span>自定义名称<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>添加集群 <code>Host</code> ，在配置文件添加如下内容：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑 Hosts 配置</span>
-<span class="token function">vi</span> /etc/hosts
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义本机名称</span></span><br><span class="line">hostnamectl set-hostname &lt;自定义名称&gt;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 文件添加内容示例</span>
-192.168.173.1 node1
-192.168.173.2 node2
-192.168.173.3 node3
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>添加集群 <code>Host</code> ，在配置文件添加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑 Hosts 配置</span></span><br><span class="line">vi /etc/hosts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件添加内容示例</span></span><br><span class="line">192.168.173.1 node1</span><br><span class="line">192.168.173.2 node2</span><br><span class="line">192.168.173.3 node3</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-JDK安装"><a href="#2-JDK安装" class="headerlink" title="2. JDK安装"></a>2. JDK安装</h4><p><code>JDK</code> 安装步骤较为简单，提前下载好对应版本的 <code>JDK</code> 并上传至服务器，修改系统文件并刷新即可。</p>
 <p>通过 <code>arch</code> 命令查看服务器是 <code>x86</code> 还是 <code>arm</code> 并上传下载的服务包，编辑 <code>/etc/profile</code> 文件并在文末配置 <code>JDK</code> 环境变量。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">vim /etc/profile        <span class="token comment" spellcheck="true"># 修改配置文件</span>
-
-<span class="token function">export</span> JAVA_HOME<span class="token operator">=</span>/usr/local/jdk1.8.0_261
-<span class="token function">export</span> PATH<span class="token operator">=</span><span class="token variable">${JAVA_HOME}</span>/bin:<span class="token variable">$PATH</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通过 <code>source</code> 命令重载配置使环境变量生效。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">source</span> /etc/profile      <span class="token comment" spellcheck="true"># 生效配置</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile        <span class="comment"># 修改配置文件</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/local/jdk1.8.0_261</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">通过 ``<span class="built_in">source</span>`` 命令重载配置使环境变量生效。</span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">source</span> /etc/profile      <span class="comment"># 生效配置</span></span><br></pre></td></tr></table></figure>
 
                 
             </div>
@@ -1501,7 +1402,7 @@ hostnamectl set-hostname <span class="token operator">&lt;</span>自定义名称
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1759,7 +1660,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1775,6 +1676,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>

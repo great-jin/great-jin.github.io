@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -597,7 +597,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.8k
+                    3.9k
                 </div>
                 
 
@@ -629,15 +629,8 @@
 </blockquote>
 <p>本文将简单介绍 <code>Nginx</code> 的安装与实现反向代理步骤。</p>
 <h3 id="一、安装部署"><a href="#一、安装部署" class="headerlink" title="一、安装部署"></a>一、安装部署</h3><h4 id="1-YUM安装"><a href="#1-YUM安装" class="headerlink" title="1. YUM安装"></a>1. YUM安装</h4><p>通过 <code>yum</code> 安装虽然方便但无法自定义存放目录，如果只是虚拟机测试使用则无伤大雅。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 添加 Nginx 源</span>
-rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 Nginx 源</span></span><br><span class="line">rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 Nginx</span></span><br><span class="line">yum install -y nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 安装 Nginx</span>
-yum <span class="token function">install</span> -y nginx
-
-<span class="token comment" spellcheck="true"># 启动服务</span>
-systemctl start nginx.service
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-文件目录"><a href="#1-文件目录" class="headerlink" title="(1) 文件目录"></a>(1) 文件目录</h5><ul>
 <li>安装目录： <code>/etc/nginx</code>。      </li>
 <li>配置文件： <code>/etc/nginx/nginx.conf</code>。</li>
@@ -648,129 +641,52 @@ systemctl start nginx.service
 <li>自定义 Nginx 站点配置文件存放目录: <code>/etc/nginx/conf.d</code>。</li>
 </ul>
 <h5 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="(2) 服务启动"></a>(2) 服务启动</h5><p>服务相关的启停命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">systemctl start nginx.service              <span class="token comment" spellcheck="true"># 启动</span>
-            
-systemctl stop nginx.service               <span class="token comment" spellcheck="true"># 关闭</span>
-            
-systemctl restart nginx.service            <span class="token comment" spellcheck="true"># 重启</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service              <span class="comment"># 启动</span></span><br><span class="line">            </span><br><span class="line">systemctl stop nginx.service               <span class="comment"># 关闭</span></span><br><span class="line">            </span><br><span class="line">systemctl restart nginx.service            <span class="comment"># 重启</span></span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-编译安装"><a href="#2-编译安装" class="headerlink" title="2. 编译安装"></a>2. 编译安装</h4><p>除了通过 <code>yum</code> 安装外更推荐自定义编译安装，这里通过 <code>wget</code> 下载为例，当然也可以官网手动下载上传。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入安装目录</span>
-<span class="token function">cd</span> /usr/local/  
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入安装目录</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载安装包，版本请自行选择</span></span><br><span class="line">wget https://nginx.org/download/nginx-1.21.2.tar.gz   </span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxf nginx-1.21.2.tar.gz</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 下载安装包，版本请自行选择</span>
-<span class="token function">wget</span> https://nginx.org/download/nginx-1.21.2.tar.gz   
-
-<span class="token comment" spellcheck="true"># 解压</span>
-<span class="token function">tar</span> -zxf nginx-1.21.2.tar.gz
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-文件编译"><a href="#1-文件编译" class="headerlink" title="(1) 文件编译"></a>(1) 文件编译</h5><p>进入解压后的文件执行 <code>configure</code> 文件验证当前系统环境。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 进入解压目录</span>
-<span class="token function">cd</span> ./nginx-1.21.2
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入解压目录</span></span><br><span class="line"><span class="built_in">cd</span> ./nginx-1.21.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证环境</span></span><br><span class="line">./configure</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 验证环境</span>
-./configure
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果在执行 <code>./configure</code> 报错根据下面提示执行不同操作即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 提示 ./configure: error: C compiler cc is not found</span>
-yum <span class="token function">install</span> -y gcc-c++
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提示 ./configure: error: C compiler cc is not found</span></span><br><span class="line">yum install -y gcc-c++</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示 error: the HTTP rewrite module requires the PCRE library.</span></span><br><span class="line">yum install -y pcre pcre-devel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示 error: Invalid C++ compiler or C++ compiler flags.</span></span><br><span class="line">yum install -y gcc gcc-c++</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示 error: the HTTP gzip module requires the zlib library.</span></span><br><span class="line">yum install -y zlib-devel</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 提示 error: the HTTP rewrite module requires the PCRE library.</span>
-yum <span class="token function">install</span> -y pcre pcre-devel
-
-<span class="token comment" spellcheck="true"># 提示 error: Invalid C++ compiler or C++ compiler flags.</span>
-yum <span class="token function">install</span> -y gcc gcc-c++
-
-<span class="token comment" spellcheck="true"># 提示 error: the HTTP gzip module requires the zlib library.</span>
-yum <span class="token function">install</span> -y zlib-devel
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果没有提示异常说明环境没有问题继续执行编译即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 执行编译</span>
-<span class="token function">make</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行编译</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 执行安装</span>
-<span class="token function">make</span> <span class="token function">install</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-服务启动-1"><a href="#2-服务启动-1" class="headerlink" title="(2) 服务启动"></a>(2) 服务启动</h5><p>编译完成后会在 <code>/usr/local/</code> 下生成 <code>nginx</code> 目录，其中 <code>nginx/sbin</code> 中为可执行文件，配置文件在 <code>nginx/conf</code> 目录下。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/nginx/sbin          <span class="token comment" spellcheck="true"># 打开脚本目录</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/nginx/sbin          <span class="comment"># 打开脚本目录</span></span><br><span class="line"></span><br><span class="line">./nginx                           <span class="comment"># 运行</span></span><br><span class="line"></span><br><span class="line">./nginx -s stop                   <span class="comment"># 停止</span></span><br><span class="line">    </span><br><span class="line">nginx -s reload                   <span class="comment"># 重载配置</span></span><br><span class="line">            </span><br><span class="line">nginx -t                          <span class="comment"># 检查配置是否正确</span></span><br></pre></td></tr></table></figure>
 
-./nginx                           <span class="token comment" spellcheck="true"># 运行</span>
 
-./nginx -s stop                   <span class="token comment" spellcheck="true"># 停止</span>
-    
-nginx -s reload                   <span class="token comment" spellcheck="true"># 重载配置</span>
-            
-nginx -t                          <span class="token comment" spellcheck="true"># 检查配置是否正确</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-Windows"><a href="#3-Windows" class="headerlink" title="3. Windows"></a>3. Windows</h4><p>上述两种方式都是在 <code>Linux</code> 环境下部署 <code>Nginx</code> 服务，如果是初学者可以先在 <code>Windows</code> 上先熟悉基本配置，下面介绍 <code>Windows</code> 平台部署步骤。</p>
 <p>先进入官网下载对应的部署包：<a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">Nginx官网</a><br><img src="/album/loading.gif" data-original="/album/article/tool/nginx/1.png"></p>
 <p>解压下载的文件，其中包含如下文件，启动服务双击 <code>nginx.exe</code> 文件即可。<br><img src="/album/loading.gif" data-original="/album/article/tool/nginx/2.png"></p>
 <h5 id="1-常用命令"><a href="#1-常用命令" class="headerlink" title="(1) 常用命令"></a>(1) 常用命令</h5><p><code>Windwos</code> 环境下 <code>nginx</code> 涉及的常用命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看版本信息</span>
-nginx -V
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看版本信息</span></span><br><span class="line">nginx -V</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试配置文件合法性</span></span><br><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 测试配置文件合法性</span>
-nginx -t
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-服务启停"><a href="#2-服务启停" class="headerlink" title="(2) 服务启停"></a>(2) 服务启停</h5><p><code>Windwos</code> 环境下 <code>nginx</code> 服务启停命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 启动服务</span>
-nginx.exe -c conf/nginx.conf
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">nginx.exe -c conf/nginx.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重载配置</span></span><br><span class="line">nginx -s reload</span><br><span class="line"></span><br><span class="line"><span class="comment"># 快速关闭，可能不保存相关信息，并迅速终止服务</span></span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 平稳关闭，保存相关信息，有安排的结束服务</span></span><br><span class="line">nginx -s quit</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 重载配置</span>
-nginx -s reload
 
-<span class="token comment" spellcheck="true"># 快速关闭，可能不保存相关信息，并迅速终止服务</span>
-nginx -s stop
 
-<span class="token comment" spellcheck="true"># 平稳关闭，保存相关信息，有安排的结束服务</span>
-nginx -s quit
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、请求代理"><a href="#二、请求代理" class="headerlink" title="二、请求代理"></a>二、请求代理</h3><h4 id="1-正向代理"><a href="#1-正向代理" class="headerlink" title="1. 正向代理"></a>1. 正向代理</h4><p>在正向代理模式下，客户端知道需要访问的服务器信息，通过向代理服务器发送请求来访问目标服务器上的资源，而目标服务器并不知道客户端的存在，只知道代理服务器的存在。<br><img src="/album/loading.gif" data-original="/album/article/linux/nginx/1.png"></p>
 <h4 id="2-反向代理"><a href="#2-反向代理" class="headerlink" title="2. 反向代理"></a>2. 反向代理</h4><p>在反向代理模式下，客户端不再知晓具体的目标服务器信息，而是将请求发送至代理服务器，由代理服务通过一定的规则确定具体的目标服务器节点，进而执行请求并访问响应。<br><img src="/album/loading.gif" data-original="/album/article/linux/nginx/2.png"></p>
 <h3 id="三、服务代理"><a href="#三、服务代理" class="headerlink" title="三、服务代理"></a>三、服务代理</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p><code>Nginx</code> 配置文件中主要包含三大模块：<code>http</code>、<code>server</code> 与 <code>location</code>，三者分别对应一个网络地址的 <code>IP</code>、<code>端口</code> 与 <code>接口地址</code>。</p>
 <p>三个模块其基本的配置格式如下，当配置冲突时 <code>location</code> 模块优先级最高，其次为 <code>server</code>，<code>http</code> 优先级最低，即内层优先级越高但作用范围越小。</p>
-<pre class="line-numbers language-conf"><code class="language-conf">http {
-    // 此处配置全局生效
-    
-    server {
-        // 一个 server 对应一个端口
-        // 一个 http 模块可包含多个 server 模块
-        // 配置优先级高于 http 模块但低于 location 模块
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">	// 此处配置全局生效</span><br><span class="line">	</span><br><span class="line">	server &#123;</span><br><span class="line">		// 一个 server 对应一个端口</span><br><span class="line">		// 一个 http 模块可包含多个 server 模块</span><br><span class="line">        // 配置优先级高于 http 模块但低于 location 模块</span><br><span class="line"></span><br><span class="line">		location / &#123;</span><br><span class="line">			// 一个 location 对应一个转发地址</span><br><span class="line">			// 一个 server 模块可包含多个 location 模块</span><br><span class="line">            // 相同配置 location 模块优先级最高</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        location / {
-            // 一个 location 对应一个转发地址
-            // 一个 server 模块可包含多个 location 模块
-            // 相同配置 location 模块优先级最高
-        }
-    }
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-资源代理"><a href="#2-资源代理" class="headerlink" title="2. 资源代理"></a>2. 资源代理</h4><p>通过 <code>Nginx</code> 可实现便捷的静态资源代码，如下配置即通过本机的 <code>8080</code> 端口代理本地目录 <code>/usr/local/spring/vue</code> 下的 <code>index.html</code> 静态资源。</p>
-<pre class="line-numbers language-conf"><code class="language-conf">server {
-    listen       8080;
-    server_name  localhost;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       8080;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /usr/local/spring/vue;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    location / {
-        root   /usr/local/spring/vue;
-        index  index.html index.htm;
-    }
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3-代理转发"><a href="#3-代理转发" class="headerlink" title="3. 代理转发"></a>3. 代理转发</h4><p>通过代理转发即可实现将指定服务转发至另一端口服务上。</p>
 <p>如下述配置中即通过 <code>127.0.0.1:5000</code> 实现 <code>127.0.0.1:4000</code> 服务的资源代理，具体的配置文件如下：</p>
-<pre class="line-numbers language-conf"><code class="language-conf">server {
-    listen 5000;
-    server_name ibudai.xyz;
-        
-    location / {
-        proxy_pass http://127.0.0.1:4000/;        # 端口号替换成对应服务端口
-        
-        proxy_set_header HOST $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 5000;</span><br><span class="line">    server_name ibudai.xyz;</span><br><span class="line">        </span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:4000/;        # 端口号替换成对应服务端口</span><br><span class="line">        </span><br><span class="line">        proxy_set_header HOST $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="4-SSL服务"><a href="#4-SSL服务" class="headerlink" title="4. SSL服务"></a>4. SSL服务</h4><p>通过配置 <code>SSL</code> 服务，即可通过 <code>HTTPS</code> 方式访问所代理的服务，下面即介绍配置步骤：</p>
 <ul>
 <li>到阿里云申请免费 <code>SSL</code> 证书，并解析绑定你的域名。</li>
@@ -778,31 +694,14 @@ nginx -s quit
 <li>在 <code>nginx</code> 安装路径下新建文件夹用于存放上一步下载的两个文件，这里我创建了 <code>cert</code> 目录。</li>
 <li>在 <code>nginx.conf</code> 文件添加如下配置:</li>
 </ul>
-<pre class="line-numbers language-conf"><code class="language-conf">server {
-    listen 443 ssl;
-    server_name www.ibudai.xyz;
-    root /home/hexo;
-        
-    index index.html index.htm;
-    ssl_certificate cert/xxx.pem;         # .pem 证书存放目录
-    ssl_certificate_key cert/xxx.key;     # .key 证书存放目录
-    ssl_session_timeout 5m;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
-    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
-    ssl_prefer_server_ciphers on;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、常用配置"><a href="#四、常用配置" class="headerlink" title="四、常用配置"></a>四、常用配置</h3><h4 id="1-重定向"><a href="#1-重定向" class="headerlink" title="1. 重定向"></a>1. 重定向</h4><p>通过 <code>rewrite</code> 可实现请求的重定向，如下述中将所有 <code>HTTP</code> 请求通过 <code>rewrite</code> 指令重定向到 <code>HTTPS</code> 。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">server <span class="token punctuation">{</span>
-    listen 80<span class="token punctuation">;</span>
-    server_name ibudai.xyz<span class="token punctuation">;</span>
-    rewrite ^<span class="token punctuation">(</span>.*<span class="token punctuation">)</span>$ https://<span class="token variable">$host</span><span class="token variable">$1</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true"># 重定向请求</span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name www.ibudai.xyz;</span><br><span class="line">    root /home/hexo;</span><br><span class="line">        </span><br><span class="line">    index index.html index.htm;</span><br><span class="line">    ssl_certificate cert/xxx.pem;         # .pem 证书存放目录</span><br><span class="line">    ssl_certificate_key cert/xxx.key;     # .key 证书存放目录</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    location / <span class="token punctuation">{</span>
-        index index.html index.htm<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="四、常用配置"><a href="#四、常用配置" class="headerlink" title="四、常用配置"></a>四、常用配置</h3><h4 id="1-重定向"><a href="#1-重定向" class="headerlink" title="1. 重定向"></a>1. 重定向</h4><p>通过 <code>rewrite</code> 可实现请求的重定向，如下述中将所有 <code>HTTP</code> 请求通过 <code>rewrite</code> 指令重定向到 <code>HTTPS</code> 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name ibudai.xyz;</span><br><span class="line">    rewrite ^(.*)$ https://$host<span class="variable">$1</span>;     <span class="comment"># 重定向请求</span></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        index index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-超时配置"><a href="#2-超时配置" class="headerlink" title="2. 超时配置"></a>2. 超时配置</h4><p>其中 <code>keepalive_timeout</code> 是 <code>Nginx</code> 中用来设置连接保持时间的参数，它决定了一个客户端和后端服务器之间的连接在空闲状态下保持打开的时间，以便复用该连接减少连接建立的开销。</p>
 <p>当一个客户端与 <code>Nginx</code> 建立连接后，在超过 <code>keepalive_timeout</code> 设置的时间内没有再次请求，该连接将被关闭。</p>
 <blockquote>
@@ -831,22 +730,9 @@ nginx -s quit
 <li><strong>fastcgi_read_timeout：</strong> 设置从 <code>FastCGI</code> 后端服务器读取响应数据的超时时间。</li>
 </ul>
 <p>上述配置可配置于 <code>http</code> 模块或 <code>location</code> 模块，配置于前者则全局生效，当 <code>location</code> 模块与 <code>http</code> 模块配置冲突时以 <code>location</code> 模块配置为准。</p>
-<pre class="line-numbers language-conf"><code class="language-conf">http {
-    # 设置与后端服务器的连接超时时间为 30 秒
-    proxy_connect_timeout 30s;
-    # 设置向后端服务器发送请求数据的超时时间为 30 秒
-    proxy_send_timeout 30s;
-    # 设置从后端服务器读取响应数据的超时时间为 30 秒
-    proxy_read_timeout 30s;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    # 设置与后端服务器的连接超时时间为 30 秒</span><br><span class="line">    proxy_connect_timeout 30s;</span><br><span class="line">    # 设置向后端服务器发送请求数据的超时时间为 30 秒</span><br><span class="line">    proxy_send_timeout 30s;</span><br><span class="line">    # 设置从后端服务器读取响应数据的超时时间为 30 秒</span><br><span class="line">    proxy_read_timeout 30s;</span><br><span class="line"></span><br><span class="line">    # 设置与 FastCGI 后端服务器的连接超时时间为 30 秒</span><br><span class="line">    fastcgi_connect_timeout 30s;</span><br><span class="line">    # 设置向 FastCGI 后端服务器发送请求数据的超时时间为 30 秒</span><br><span class="line">    fastcgi_send_timeout 30s;</span><br><span class="line">    # 设置从 FastCGI 后端服务器读取响应数据的超时时间为 30 秒</span><br><span class="line">    fastcgi_read_timeout 30s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    # 设置与 FastCGI 后端服务器的连接超时时间为 30 秒
-    fastcgi_connect_timeout 30s;
-    # 设置向 FastCGI 后端服务器发送请求数据的超时时间为 30 秒
-    fastcgi_send_timeout 30s;
-    # 设置从 FastCGI 后端服务器读取响应数据的超时时间为 30 秒
-    fastcgi_read_timeout 30s;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3-缓存配置"><a href="#3-缓存配置" class="headerlink" title="3. 缓存配置"></a>3. 缓存配置</h4><blockquote>
 <p><strong>(Ⅰ) 请求配置参数（作用于客户端与代理服务器之间）</strong></p>
 </blockquote>
@@ -870,89 +756,40 @@ nginx -s quit
 <li><code>proxy_max_temp_file_size</code> 值需要等于或大于 <code>proxy_buffers</code> 与 <code>proxy_buffer_size</code> 中的最大值。</li>
 <li><code>proxy_busy_buffers_size</code> 值需要等于或大于 <code>proxy_buffers</code> 与 <code>proxy_buffer_size</code> 中的最大值。</li>
 </ul>
-<pre class="line-numbers language-conf"><code class="language-conf">http {
-    client_max_body_size 128m;
-    client_body_buffer_size 10m;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">	client_max_body_size 128m;</span><br><span class="line">    client_body_buffer_size 10m;</span><br><span class="line"></span><br><span class="line">    proxy_buffers 4 10m;</span><br><span class="line">    proxy_buffer_size 10m;</span><br><span class="line">    proxy_max_temp_file_size 15m;</span><br><span class="line">    proxy_busy_buffers_size 15m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    proxy_buffers 4 10m;
-    proxy_buffer_size 10m;
-    proxy_max_temp_file_size 15m;
-    proxy_busy_buffers_size 15m;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
 <h3 id="五、请求头配置"><a href="#五、请求头配置" class="headerlink" title="五、请求头配置"></a>五、请求头配置</h3><h4 id="1-请求配置"><a href="#1-请求配置" class="headerlink" title="1. 请求配置"></a>1. 请求配置</h4><p><code>add_header</code> 配置的请求头作用于客户端与代理服务器期间。</p>
-<pre class="line-numbers language-conf"><code class="language-conf">location {
-    add_header 'Content-Type' 'text/plain; charset=utf-8';
-    
-    add_header Access-Control-Allow-Origin http://127.0.0.1;
-    add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-    add_header Access-Control-Allow-Credentials 'true';
-    add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization';
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location &#123;</span><br><span class="line">	add_header &#x27;Content-Type&#x27; &#x27;text/plain; charset=utf-8&#x27;;</span><br><span class="line">	</span><br><span class="line">	add_header Access-Control-Allow-Origin http://127.0.0.1;</span><br><span class="line">	add_header Access-Control-Allow-Methods &#x27;GET, POST, OPTIONS&#x27;;</span><br><span class="line">	add_header Access-Control-Allow-Credentials &#x27;true&#x27;;</span><br><span class="line">	add_header Access-Control-Allow-Headers &#x27;DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-代理配置"><a href="#2-代理配置" class="headerlink" title="2. 代理配置"></a>2. 代理配置</h4><p><code>proxy_set_header</code> 配置的请求头作用于代理服务器与后端服务器期间。</p>
-<pre class="line-numbers language-conf"><code class="language-conf">location {
-    proxy_set_header HOST $host; 
-    proxy_set_header X-Real-IP $remote_addr; 
-    # 后端的 Web 服务器可以通过 X-Forwarded-For 获取用户真实 IP
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location &#123;</span><br><span class="line">	proxy_set_header HOST $host; </span><br><span class="line">	proxy_set_header X-Real-IP $remote_addr; </span><br><span class="line">	# 后端的 Web 服务器可以通过 X-Forwarded-For 获取用户真实 IP</span><br><span class="line">	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="六、负载均衡"><a href="#六、负载均衡" class="headerlink" title="六、负载均衡"></a>六、负载均衡</h3><p>负载均衡即通过一定的算法机制，将接收请求的分发至集群中不同服务节点，从而降低单台服务器的压力，而通过 <code>Nginx</code> 即可实现便捷的负载均衡配置。</p>
 <h4 id="1-负载类型"><a href="#1-负载类型" class="headerlink" title="1. 负载类型"></a>1. 负载类型</h4><p><code>Nginx</code> 代理中针对不同的应用场景提供了一系列负载均衡配置算法，常用的类型包含下述六类。</p>
 <h5 id="1-基础轮询"><a href="#1-基础轮询" class="headerlink" title="(1) 基础轮询"></a>(1) 基础轮询</h5><p>基础轮询默认所有服务器权重为 <code>1</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    server 192.168.0.20:8080
-    server 192.168.0.21:8080
-    server 192.168.0.22:8080
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-加权轮询"><a href="#2-加权轮询" class="headerlink" title="(2) 加权轮询"></a>(2) 加权轮询</h5><p>加权轮询可以为每个节点单独指定权重，权重越高服务负载越高，未指定权重时默认为 <code>1</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    server 192.168.0.20:8080     weight<span class="token operator">=</span>3
-    server 192.168.0.21:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
-    server 192.168.0.22:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-最少连接"><a href="#3-最少连接" class="headerlink" title="(3) 最少连接"></a>(3) 最少连接</h5><p>根据当前活跃连接数选择负载更少的后端服务器来分配请求，从而实现负载均衡。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    least_conn<span class="token punctuation">;</span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    server 192.168.0.20:8080</span><br><span class="line">    server 192.168.0.21:8080</span><br><span class="line">    server 192.168.0.22:8080</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    <span class="token comment" spellcheck="true"># with default weight for all (weight=1)</span>
-    server 192.168.0.20:8080
-    server 192.168.0.21:8080
-    server 192.168.0.22:8080
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-加权轮询"><a href="#2-加权轮询" class="headerlink" title="(2) 加权轮询"></a>(2) 加权轮询</h5><p>加权轮询可以为每个节点单独指定权重，权重越高服务负载越高，未指定权重时默认为 <code>1</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    server 192.168.0.20:8080     weight=3</span><br><span class="line">    server 192.168.0.21:8080     <span class="comment"># default weight=1</span></span><br><span class="line">    server 192.168.0.22:8080     <span class="comment"># default weight=1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-最少连接"><a href="#3-最少连接" class="headerlink" title="(3) 最少连接"></a>(3) 最少连接</h5><p>根据当前活跃连接数选择负载更少的后端服务器来分配请求，从而实现负载均衡。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    least_conn;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># with default weight for all (weight=1)</span></span><br><span class="line">    server 192.168.0.20:8080</span><br><span class="line">    server 192.168.0.21:8080</span><br><span class="line">    server 192.168.0.22:8080</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h5 id="4-加权最少连接"><a href="#4-加权最少连接" class="headerlink" title="(4) 加权最少连接"></a>(4) 加权最少连接</h5><p>在最少连接的负载前提下同时指定节点的权重。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    least_conn<span class="token punctuation">;</span>
-        
-    server 192.168.0.20:8080     weight<span class="token operator">=</span>3
-    server 192.168.0.21:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
-    server 192.168.0.22:8080     <span class="token comment" spellcheck="true"># default weight=1</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">        </span><br><span class="line">    server 192.168.0.20:8080     weight=3</span><br><span class="line">    server 192.168.0.21:8080     <span class="comment"># default weight=1</span></span><br><span class="line">    server 192.168.0.22:8080     <span class="comment"># default weight=1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h5 id="5-普通-Hash"><a href="#5-普通-Hash" class="headerlink" title="(5) 普通 Hash"></a>(5) 普通 Hash</h5><p><code>普通Hash</code> 是将每个请求按照其某个固定的属性（如 <code>URL</code> 等）计算出一个哈希值，并将其分配给相应的服务器进行处理。这种方式可以确保相同的请求总是被分配给同一个服务器，避免了因服务器动态上下线而导致的请求重复路由的问题。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    <span class="token function">hash</span> <span class="token variable">$request_uri</span><span class="token punctuation">;</span>
-        
-    <span class="token comment" spellcheck="true"># with default weight for all (weight=1)</span>
-    server 192.168.0.20:8080
-    server 192.168.0.21:8080
-    server 192.168.0.22:8080
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    <span class="built_in">hash</span> <span class="variable">$request_uri</span>;</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># with default weight for all (weight=1)</span></span><br><span class="line">    server 192.168.0.20:8080</span><br><span class="line">    server 192.168.0.21:8080</span><br><span class="line">    server 192.168.0.22:8080</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h5 id="6-IP-Hash"><a href="#6-IP-Hash" class="headerlink" title="(6) IP Hash"></a>(6) IP Hash</h5><p><code>IP Hash</code> 则是在 <code>普通Hash</code> 的基础上，加入了客户端 <code>IP</code> 地址的因素。它会根据客户端 <code>IP</code> 地址进行哈希计算，从而保证来自同一个 <code>IP</code> 地址的请求总是被分配给同一个服务器进行处理。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">upstream host_list <span class="token punctuation">{</span>
-    ip_hash<span class="token punctuation">;</span>
-        
-    <span class="token comment" spellcheck="true"># with default weight for all (weight=1)</span>
-    server 192.168.0.20:8080
-    server 192.168.0.21:8080
-    server 192.168.0.22:8080
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">upstream host_list &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># with default weight for all (weight=1)</span></span><br><span class="line">    server 192.168.0.20:8080</span><br><span class="line">    server 192.168.0.21:8080</span><br><span class="line">    server 192.168.0.22:8080</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-参数配置"><a href="#2-参数配置" class="headerlink" title="2. 参数配置"></a>2. 参数配置</h4><p>在配置服务均衡时除了可以指定节点权重外 <code>nginx</code> 还提供了其它参数，详细介绍参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -987,29 +824,8 @@ nginx -s quit
 
 
 <h4 id="3-负载示例"><a href="#3-负载示例" class="headerlink" title="3. 负载示例"></a>3. 负载示例</h4><p>下述是一个完整的 <code>Nginx</code> 负载配置示例，相应的配置文件如下：</p>
-<pre class="line-numbers language-conf"><code class="language-conf">http {
-    # 设定负载均衡的服务器列表
-    upstream host_list {
-        # weigth 参数表示权值，权值越高被分配到的几率越大
-        server 192.168.0.20:80   weight=1;
-        server 192.168.0.21:80   weight=2;
-        server 192.168.0.22:80   weight=3;
-    }
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    # 设定负载均衡的服务器列表</span><br><span class="line">    upstream host_list &#123;</span><br><span class="line">        # weigth 参数表示权值，权值越高被分配到的几率越大</span><br><span class="line">        server 192.168.0.20:80   weight=1;</span><br><span class="line">        server 192.168.0.21:80   weight=2;</span><br><span class="line">        server 192.168.0.22:80   weight=3;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  www.helloworld.com;</span><br><span class="line"></span><br><span class="line">        # 对所有请求进行负载均衡请求</span><br><span class="line">        location / &#123;</span><br><span class="line">            root        /root;              </span><br><span class="line">            index       index.html index.htm;  </span><br><span class="line">            # 请求转向 host_list 定义的服务器列表</span><br><span class="line">            proxy_pass  http://host_list ;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-   server {
-        listen       80;
-        server_name  www.helloworld.com;
-
-        # 对所有请求进行负载均衡请求
-        location / {
-            root        /root;              
-            index       index.html index.htm;  
-            # 请求转向 host_list 定义的服务器列表
-            proxy_pass  http://host_list ;
-        }
-    }
-}
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1615,7 +1431,7 @@ nginx -s quit
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1873,7 +1689,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1889,6 +1705,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>

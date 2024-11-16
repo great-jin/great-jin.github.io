@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -593,7 +593,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    831
+                    875
                 </div>
                 
 
@@ -700,11 +700,8 @@
 <p>根据最后拆分得到的词典表，当用户搜索关键字 <code>电影</code> 时，即返回 <code>2, 3</code> 两篇文章。</p>
 <h4 id="1-数据分词"><a href="#1-数据分词" class="headerlink" title="1. 数据分词"></a>1. 数据分词</h4><p>了解了分词器的作用，下面就介绍一下在 <code>ES</code> 中如何使用分词器进行分词。</p>
 <p>通过工具 <code>POST</code> 方法请求 <code>192.168.0.20:9200/_analyze</code> 接口，请求体参数内容如下：</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-    <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"standard"</span><span class="token punctuation">,</span>
-    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"I am iron man!"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;analyzer&quot;</span>: <span class="string">&quot;standard&quot;</span>,</span><br><span class="line">    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;I am iron man!&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>请求返回的参数如下所示，可以看到请求参数中的 <code>text</code> 内容被分割成一个个单词。<br><img src="/album/loading.gif" data-original="/album/article/db/es/3.png"></p>
 <h4 id="2-IK分词器"><a href="#2-IK分词器" class="headerlink" title="2. IK分词器"></a>2. IK分词器</h4><p>在上面介绍了分词器的作用和基本使用，但默认的分词器并不支持中文分词，若使用默认分词器对中文句子进行分词，则会默认将一个字当成一个词，无法达到分词的效果。</p>
 <p>因此想要给中文分词需要额外安装分词器，<code>IK分词器</code> 则是专为中文分词量身定做，下面分享如何安装与使用。</p>
@@ -712,38 +709,20 @@
 <p>在 <code>ES</code> 安装目录下的 <code>Plugins</code> 中新建 <code>ik</code> 目录，将下载的 <code>Ik分词器</code> 文件上传并解压，完成后重启 <code>ES</code> 即可生效。</p>
 <h4 id="3-使用说明"><a href="#3-使用说明" class="headerlink" title="3. 使用说明"></a>3. 使用说明</h4><p><code>IK分词器</code> 分词器使用方式与默认的分词器相同，但 <code>IK分词器</code> 提供了两种分词方式，下面分别进行介绍。</p>
 <h5 id="1-ik-smart"><a href="#1-ik-smart" class="headerlink" title="(1) ik_smart"></a>(1) ik_smart</h5><p><code>ik_smart</code> 分词方式会将句子拆分为单个词语。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-    <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_smart"</span><span class="token punctuation">,</span>
-    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;analyzer&quot;</span>: <span class="string">&quot;ik_smart&quot;</span>,</span><br><span class="line">    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;如何学习分词器。&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/4.png"></p>
 <h5 id="2-ik-max-word"><a href="#2-ik-max-word" class="headerlink" title="(2) ik_max_word"></a>(2) ik_max_word</h5><p><code>ik_max_word</code> 分词方式会则拆分句子的所有的组合方式。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-    <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_max_word"</span><span class="token punctuation">,</span>
-    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;analyzer&quot;</span>: <span class="string">&quot;ik_max_word&quot;</span>,</span><br><span class="line">    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;如何学习分词器。&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/5.png"></p>
 <h4 id="4-自定义词典"><a href="#4-自定义词典" class="headerlink" title="4. 自定义词典"></a>4. 自定义词典</h4><p>在 <code>IK分词器</code> 的基础之上，你也可以根据的自身业务需求额外自定义分词词组。</p>
 <h5 id="1-词典配置"><a href="#1-词典配置" class="headerlink" title="(1) 词典配置"></a>(1) 词典配置</h5><p>在 <code>plugins/ik/config</code> 目录下新建 <code>budai.dic</code> 词典文件，并添加自定义词组。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> budai.dic 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi budai.dic </span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件内容</span></span><br><span class="line">如何学习</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 文件内容</span>
-如何学习
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>将自定义词典文件添加到配置中：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">cd</span> plugins/ik/config                  <span class="token comment" spellcheck="true"># 进入目录</span>
-
-<span class="token function">vi</span> IKAnalyzer.cfg.xml                 <span class="token comment" spellcheck="true"># 修改配置</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> plugins/ik/config                  <span class="comment"># 进入目录</span></span><br><span class="line"></span><br><span class="line">vi IKAnalyzer.cfg.xml                 <span class="comment"># 修改配置</span></span><br></pre></td></tr></table></figure>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/7.png"></p>
 <h5 id="2-效果测试"><a href="#2-效果测试" class="headerlink" title="(2) 效果测试"></a>(2) 效果测试</h5><p>还是通过 <code>ik_smart</code> 方式进行分词，与之前相对比可以看到结果中 <code>如何学习</code> 此时已经被当成一个词组了。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token punctuation">{</span>
-    <span class="token string">"analyzer"</span><span class="token punctuation">:</span> <span class="token string">"ik_smart"</span><span class="token punctuation">,</span>
-    <span class="token string">"text"</span><span class="token punctuation">:</span> <span class="token string">"如何学习分词器。"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;analyzer&quot;</span>: <span class="string">&quot;ik_smart&quot;</span>,</span><br><span class="line">    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;如何学习分词器。&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/album/loading.gif" data-original="/album/article/db/es/6.png"></p>
 
                 
@@ -1342,7 +1321,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1600,7 +1579,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1616,6 +1595,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>

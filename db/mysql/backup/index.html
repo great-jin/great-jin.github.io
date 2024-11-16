@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -623,70 +623,27 @@
                 <p><code>MySQL</code> 作为一款开源数据库深受开发者的青睐，在不断的使用中数据也不断的积累，做好备份工作的重要性不言而喻，下面就详细介绍如何在 <code>Linux</code> 中实现定时数据库备份。</p>
 <p>本文所基于的 <code>MySQL</code> 是通过 <code>Docker</code> 容器进行部署，如果是直接安装本机的教程基本类似，只需更改脚本内容即可。</p>
 <h4 id="1-备份脚本"><a href="#1-备份脚本" class="headerlink" title="1. 备份脚本"></a>1. 备份脚本</h4><p>在创建脚本之前根据偏好新建目录用于存放备份数据库文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建备份存放目录</span>
-<span class="token function">mkdir</span> /home/mysql/bak
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建备份存放目录</span></span><br><span class="line"><span class="built_in">mkdir</span> /home/mysql/bak</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增备份脚本</span></span><br><span class="line">vi mysql_bak.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 赋予脚本可执行权限</span></span><br><span class="line"><span class="built_in">chmod</span> +x mysql_bak.sh</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 新增备份脚本</span>
-<span class="token function">vi</span> mysql_bak.sh
-
-<span class="token comment" spellcheck="true"># 赋予脚本可执行权限</span>
-<span class="token function">chmod</span> +x mysql_bak.sh
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>脚本关键部分我都进行了备注说明，这里我备份的文件命名格式为： <code>数据库名 _ 年月日.sql </code>，如：<code>test_db_20220903.sql</code>，根据你的具体情况进行替换即可，完整脚本内容如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true"># 进入容器, 替换为自己的容器ID</span>
-docker <span class="token keyword">exec</span> <span class="token operator">-</span>i <span class="token operator">&lt;</span>容器ID<span class="token operator">></span> bash<span class="token operator">&lt;&lt;</span><span class="token string">'EOF'</span>
-    
-<span class="token comment" spellcheck="true"># 判断目录是否存在，不存在则创建</span>
-<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token operator">!</span> <span class="token operator">-</span><span class="token number">d</span> <span class="token string">"/backup/mysql"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
-    mkdir <span class="token operator">-</span>p <span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>mysql
-fi
-    
-<span class="token comment" spellcheck="true"># 导出数据库脚本</span>
-<span class="token comment" spellcheck="true"># 设置数据账号密码以及需要备份的数据名</span>
-mysqldump <span class="token operator">-</span>h localhost <span class="token operator">-</span>uroot <span class="token operator">-</span>p123456 test_nifi <span class="token comment" spellcheck="true">--set-gtid-purged=off > /backup/mysql/test_nifi_$(date +%Y%m%d).sql</span>
-<span class="token comment" spellcheck="true"># 删除超过 10 天的数据</span>
-rm <span class="token operator">-</span><span class="token number">f</span> <span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>mysql<span class="token operator">/</span>test_nifi_$<span class="token punctuation">(</span><span class="token keyword">date</span> <span class="token operator">-</span><span class="token number">d</span> <span class="token operator">-</span>10day <span class="token operator">+</span><span class="token operator">%</span>Y<span class="token operator">%</span>m<span class="token operator">%</span><span class="token number">d</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sql
-<span class="token keyword">exit</span>
-EOF
-    
-<span class="token comment" spellcheck="true"># 将 docker 中的备份文件拷贝到宿主机上。</span>
-sudo docker cp <span class="token operator">&lt;</span>容器ID<span class="token operator">></span>:<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>mysql<span class="token operator">/</span>test_nifi_$<span class="token punctuation">(</span><span class="token keyword">date</span> <span class="token operator">+</span><span class="token operator">%</span>Y<span class="token operator">%</span>m<span class="token operator">%</span><span class="token number">d</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sql <span class="token operator">/</span>home<span class="token operator">/</span>mysql<span class="token operator">/</span>bak
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 进入容器, 替换为自己的容器ID</span><br><span class="line">docker <span class="keyword">exec</span> <span class="operator">-</span>i <span class="operator">&lt;</span>容器ID<span class="operator">&gt;</span> bash<span class="operator">&lt;&lt;</span><span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">    </span><br><span class="line"># 判断目录是否存在，不存在则创建</span><br><span class="line">if [ <span class="operator">!</span> <span class="operator">-</span>d &quot;/backup/mysql&quot; ]; <span class="keyword">then</span></span><br><span class="line">	mkdir <span class="operator">-</span>p <span class="operator">/</span>backup<span class="operator">/</span>mysql</span><br><span class="line">fi</span><br><span class="line">    </span><br><span class="line"># 导出数据库脚本</span><br><span class="line"># 设置数据账号密码以及需要备份的数据名</span><br><span class="line">mysqldump <span class="operator">-</span>h localhost <span class="operator">-</span>uroot <span class="operator">-</span>p123456 test_nifi <span class="comment">--set-gtid-purged=off &gt; /backup/mysql/test_nifi_$(date +%Y%m%d).sql</span></span><br><span class="line"># 删除超过 <span class="number">10</span> 天的数据</span><br><span class="line">rm <span class="operator">-</span>f <span class="operator">/</span>backup<span class="operator">/</span>mysql<span class="operator">/</span>test_nifi_$(<span class="type">date</span> <span class="operator">-</span>d <span class="number">-10</span><span class="keyword">day</span> <span class="operator">+</span><span class="operator">%</span>Y<span class="operator">%</span>m<span class="operator">%</span>d).<span class="keyword">sql</span></span><br><span class="line">exit</span><br><span class="line">EOF</span><br><span class="line">    </span><br><span class="line"># 将 docker 中的备份文件拷贝到宿主机上。</span><br><span class="line">sudo docker cp <span class="operator">&lt;</span>容器ID<span class="operator">&gt;</span>:<span class="operator">/</span>backup<span class="operator">/</span>mysql<span class="operator">/</span>test_nifi_$(<span class="type">date</span> <span class="operator">+</span><span class="operator">%</span>Y<span class="operator">%</span>m<span class="operator">%</span>d).<span class="keyword">sql</span> <span class="operator">/</span>home<span class="operator">/</span>mysql<span class="operator">/</span>bak</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-过期删除"><a href="#2-过期删除" class="headerlink" title="2. 过期删除"></a>2. 过期删除</h4><p>除了数据备份脚本之外，通常还需要一个定期删除脚本，用于删除过旧的备份文件，如果你觉得不需要也可以跳过这步。同时你也可以直接将删除脚本内容添加在备份脚本中，当完成数据备份后即进行过期文件删除。</p>
 <p>这里我设置的是删除 <code>10</code> 天前的备份文件，根据你的需要替换即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 新建删除脚本</span>
-<span class="token function">vi</span> remove_bak.sh
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建删除脚本</span></span><br><span class="line">vi remove_bak.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 脚本中添加如下内容</span></span><br><span class="line"><span class="comment">#/bin/bash</span></span><br><span class="line">find /home/mysql/bak -<span class="built_in">type</span> f -mtime +10 | xargs <span class="built_in">rm</span> -f</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 脚本中添加如下内容</span>
-<span class="token comment" spellcheck="true">#/bin/bash</span>
-<span class="token function">find</span> /home/mysql/bak -type f -mtime +10 <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token function">rm</span> -f
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3-数据分发"><a href="#3-数据分发" class="headerlink" title="3. 数据分发"></a>3. 数据分发</h4><p>即使通过脚本进行数据文件备份，但是一旦出现服务器宕机的情况，无法及时的访问备份的文件仍然十分让人头疼。因此除了备份工作之外，还应该将备份文件再次备份到其它服务器上。</p>
 <p>如下脚本则将本机目录下的备份文件远程传输到 <code>192.168.0.1</code> 服务器上，并使用 <code>root</code> 用户访问，账号密码为：<code>123456</code>，根据你的配置替换即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#! /bin/sh</span>
-<span class="token function">expect</span> -c <span class="token string">"
-    spawn scp -r /home/mysql/bak/test_nifi_<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y%m%d<span class="token variable">)</span></span>.sql root@192.168.0.1:/home/mysql/bak/
-    expect {
-        \"assword\" {set timeout 3600; send \"123456\r\";}
-        \"yes/no\" {set \"yes\r\"; exp_continue;}
-    }
-expect eof"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh</span></span><br><span class="line">expect -c <span class="string">&quot;</span></span><br><span class="line"><span class="string">	spawn scp -r /home/mysql/bak/test_nifi_<span class="subst">$(date +%Y%m%d)</span>.sql root@192.168.0.1:/home/mysql/bak/</span></span><br><span class="line"><span class="string">	expect &#123;</span></span><br><span class="line"><span class="string">		\&quot;assword\&quot; &#123;set timeout 3600; send \&quot;123456\r\&quot;;&#125;</span></span><br><span class="line"><span class="string">		\&quot;yes/no\&quot; &#123;set \&quot;yes\r\&quot;; exp_continue;&#125;</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">expect eof&quot;</span></span><br></pre></td></tr></table></figure>
+
+
 <h4 id="4-定时任务"><a href="#4-定时任务" class="headerlink" title="4. 定时任务"></a>4. 定时任务</h4><p>完成脚本创建之后只需创建定时即可，总不能定时由运维人员手动执行脚本吧。</p>
 <p><code>Linux</code> 中可以通过 <code>crontab</code> 创建定时任务，先简单介绍一下其相关命令。</p>
 <h5 id="1-命令介绍"><a href="#1-命令介绍" class="headerlink" title="(1) 命令介绍"></a>(1) 命令介绍</h5><p><code>crontab</code> 命令相应的操作与描述如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 设定特定用户的定时服务</span>
-<span class="token function">crontab</span> -u 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设定特定用户的定时服务</span></span><br><span class="line">crontab -u </span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出当前用户定时服务内容</span></span><br><span class="line">crontab -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑当前用户的定时服务</span></span><br><span class="line">crontab -e</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除当前用户的定时服务</span></span><br><span class="line">crontab -r</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 列出当前用户定时服务内容</span>
-<span class="token function">crontab</span> -l
-
-<span class="token comment" spellcheck="true"># 编辑当前用户的定时服务</span>
-<span class="token function">crontab</span> -e
-
-<span class="token comment" spellcheck="true"># 删除当前用户的定时服务</span>
-<span class="token function">crontab</span> -r
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-任务介绍"><a href="#2-任务介绍" class="headerlink" title="(2) 任务介绍"></a>(2) 任务介绍</h5><p>定时任务通过五个 <code>*</code> 用于控制执行频率，不同位置 <code>*</code> 代表含义如下：</p>
 <ul>
 <li>第一个 <code>*</code> 表示分钟：取值范围 <code>0-59</code> 。</li>
@@ -695,29 +652,10 @@ expect eof"</span>
 <li>第四个 <code>*</code> 表示月份：取值范围 <code>1-12</code> 。</li>
 <li>第五个 <code>*</code> 表示每周：取值范围 <code>0-6</code> 。</li>
 </ul>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 使用 - 可以划定范围</span>
-<span class="token comment" spellcheck="true"># 如下表示每天 0-3 点整执行脚本</span>
-0 0-3 * * *  sh test.sh
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 - 可以划定范围</span></span><br><span class="line"><span class="comment"># 如下表示每天 0-3 点整执行脚本</span></span><br><span class="line">0 0-3 * * *  sh test.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 , 可以枚举时间</span></span><br><span class="line"><span class="comment"># 如下表示每个小时的 0 分，15 分，30 分，45 分会执行脚本</span></span><br><span class="line">0,15,30,45 * * * * sh test.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 / 可以指定间隔</span></span><br><span class="line"><span class="comment"># 如下表示每 8 小时执行脚本</span></span><br><span class="line">如：* */8 * * * sh test.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组合用法</span></span><br><span class="line"><span class="comment"># 表示在前 20 分钟内每隔 10 分钟执行脚本</span></span><br><span class="line">0-20/10 * * * * sh test.sh</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true"># 使用 , 可以枚举时间</span>
-<span class="token comment" spellcheck="true"># 如下表示每个小时的 0 分，15 分，30 分，45 分会执行脚本</span>
-0,15,30,45 * * * * sh test.sh
-
-<span class="token comment" spellcheck="true"># 使用 / 可以指定间隔</span>
-<span class="token comment" spellcheck="true"># 如下表示每 8 小时执行脚本</span>
-如：* */8 * * * sh test.sh
-
-<span class="token comment" spellcheck="true"># 组合用法</span>
-<span class="token comment" spellcheck="true"># 表示在前 20 分钟内每隔 10 分钟执行脚本</span>
-0-20/10 * * * * sh test.sh
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>了解了定时任务基本使用就可以创建我们自己的定时任务了，这里我设定了每天凌晨 <code>3点</code> 执行脚本。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 编辑定时任务</span>
-<span class="token function">crontab</span> -e
-
-<span class="token comment" spellcheck="true"># 添加定时任务</span>
-* 3 * * * sh /home/mysql/bak/mysql_bak.sh <span class="token operator">></span> info.log
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加定时任务</span></span><br><span class="line">* 3 * * * sh /home/mysql/bak/mysql_bak.sh &gt; info.log</span><br></pre></td></tr></table></figure>
 
                 
             </div>
@@ -1319,7 +1257,7 @@ expect eof"</span>
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1577,7 +1515,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1593,6 +1531,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>

@@ -29,7 +29,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="布袋青年" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
@@ -600,7 +600,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    13 分
                 </div>
                 
 
@@ -708,81 +708,39 @@
 <p>对于非聚簇索引结构而言，其检索的依据是根据辅助索引与聚簇索引二者共同构成，但对于辅助索引而言其物理磁盘数据可能是相邻的，但其对应的 <code>B+</code> 树索引结构却是离散的。</p>
 <p>因此，在执行插入或更新时，并不是每一次都会直接插入到索引页中，而是先判断插人的非聚集索引页是否在缓冲池中，若在则执行插入操作，否则先放入 <code>Insert Buffer</code> 中，再由另一线程异步定期根据缓存和索引页数据执行 <code>merge</code> 操作，提高了对于非聚簇索引插入的性能。</p>
 <h3 id="四、索引创建"><a href="#四、索引创建" class="headerlink" title="四、索引创建"></a>四、索引创建</h3><h4 id="1-普通索引"><a href="#1-普通索引" class="headerlink" title="1. 普通索引"></a>1. 普通索引</h4><p>在数据查询中，可以为查询条件中字段添加索引从而提高查询效率，创建索引的基本语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> (column_1);</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-主键索引"><a href="#2-主键索引" class="headerlink" title="2. 主键索引"></a>2. 主键索引</h4><p>若一张表没有设置主键列时会自动为每条记录生成一条 <code>6</code> 位数的标识码作为隐式主键。</p>
 <p>主键索引创建较为简单，当一个字段被表示为主键时会自动为其创建索引，注意主键字段必须设置为非空字段。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>
-  <span class="token punctuation">`</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> (</span><br><span class="line">  `<span class="operator">&lt;</span>column_name<span class="operator">&gt;</span>` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY (<span class="operator">&lt;</span>column_name<span class="operator">&gt;</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="3-唯一索引"><a href="#3-唯一索引" class="headerlink" title="3. 唯一索引"></a>3. 唯一索引</h4><p>唯一索引与主键索引不同是其列的值可以包含空值，在指定多列时只有在这多个列的值都不相同时才互斥。</p>
 <p>如果表中已经存在重复数据，则创建唯一索引时会失败。在这种情况下，需要先删除重复数据，或者使用 <code>IGNORE</code> 关键字来忽略重复数据并创建唯一索引。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建多列唯一索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建多列唯一索引</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> (column_1, ..., column_n);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方式二，作用同上</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> (column_1, ..., column_n);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 忽略重复数据创建唯一索引</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">UNIQUE</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> (column_1, ..., column_n) IGNORE;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true">-- 方式二，作用同上</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">ADD</span> <span class="token keyword">UNIQUE</span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 忽略重复数据创建唯一索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">UNIQUE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span> <span class="token keyword">IGNORE</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-外键索引"><a href="#4-外键索引" class="headerlink" title="4. 外键索引"></a>4. 外键索引</h4><p>当两种表存在关联关系时通常可以为表创建外键索引从而提高查询效率，如 <code>学生表</code> 与 <code>成绩表</code> 之间存在明显的关联关系即可为其创建外键索引。</p>
 <p>创建外键之前需要先为 <code>主表</code> 和 <code>从表</code> 先创建索引，否则无法为 <code>从表</code> 创建外键。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span>  
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 为外键列创建索引</span></span><br><span class="line"><span class="keyword">CREATE</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span>  </span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>slave_table<span class="operator">&gt;</span> (<span class="operator">&lt;</span>slave_column<span class="operator">&gt;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 为外键列创建索引</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>slave_table<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ADD</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> (<span class="operator">&lt;</span>slave_column<span class="operator">&gt;</span>);</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true">-- 为外键列创建索引</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span> 
-<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>slave_column<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>需要注意针对已经存在的表添加外键索引时，若 <code>从表</code> 中存在没有与 <code>主表</code> 的关联的记录需要先删除，否则将会异常创建失败。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 建表指定</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> parent <span class="token punctuation">(</span> 
-    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
-    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> 
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 建表指定</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> parent ( </span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">	name <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> child ( </span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">	parent_id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	name <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">FOREIGN</span> KEY (parent_id) <span class="keyword">REFERENCES</span> parent(id)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 存在表新增</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>slave_table<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> <span class="operator">&lt;</span>foreign_name<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">FOREIGN</span> KEY (<span class="operator">&lt;</span>column_name<span class="operator">&gt;</span>) </span><br><span class="line"><span class="keyword">REFERENCES</span> <span class="operator">&lt;</span>master_table<span class="operator">&gt;</span>(<span class="operator">&lt;</span>master_column<span class="operator">&gt;</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> child <span class="token punctuation">(</span> 
-    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> 
-    parent_id <span class="token keyword">INT</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
-    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> 
-    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>parent_id<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> parent<span class="token punctuation">(</span>id<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 存在表新增</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>slave_table<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> <span class="token operator">&lt;</span>foreign_name<span class="token operator">></span>
-<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">)</span> 
-<span class="token keyword">REFERENCES</span> <span class="token operator">&lt;</span>master_table<span class="token operator">></span><span class="token punctuation">(</span><span class="token operator">&lt;</span>master_column<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-联合索引"><a href="#5-联合索引" class="headerlink" title="5. 联合索引"></a>5. 联合索引</h4><p>联合索引查询条件中涉及到的列的顺序需要与索引中建立的列的顺序一致，才能充分利用索引的优势。否则即使该列已经建立了索引，也无法发挥优化效果。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> 
-<span class="token keyword">ON</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> </span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> (column_1, ..., column_n);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">ADD</span> INDEX <span class="operator">&lt;</span>index_name<span class="operator">&gt;</span> (column_1, ..., column_n);</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">ADD</span> <span class="token keyword">INDEX</span> <span class="token operator">&lt;</span>index_name<span class="token operator">></span> <span class="token punctuation">(</span>column_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> column_n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
 <h3 id="五、索引应用"><a href="#五、索引应用" class="headerlink" title="五、索引应用"></a>五、索引应用</h3><h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><p>通过 <code>show index</code> 关键字可以查看对应表已经存在的索引。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> <span class="token keyword">index</span>
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> index</span><br><span class="line"><span class="keyword">from</span> <span class="operator">&lt;</span>table_name<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>通过 <code>force</code> 关键字可以强制语句使用索引。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span>
-    <span class="token operator">*</span>
-<span class="token keyword">from</span>
-    <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">force</span> 
-    <span class="token keyword">index</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>index_name<span class="token operator">></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">	<span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	<span class="operator">&lt;</span>table_name<span class="operator">&gt;</span> </span><br><span class="line">force </span><br><span class="line">	index(<span class="operator">&lt;</span>index_name<span class="operator">&gt;</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="2-失效场景"><a href="#2-失效场景" class="headerlink" title="2. 失效场景"></a>2. 失效场景</h4><p>在实际应用场景中，创建的索引不一定每次都能都能生效，在一些特定的情况下索引可能失效。</p>
 <blockquote>
 <p>索引失效场景包含如下几类：</p>
@@ -798,12 +756,8 @@
 </ul>
 </blockquote>
 <p>这里以索引运算为例，先准备如下测试表并构造一些测试数据。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>tb_user<span class="token punctuation">`</span> <span class="token punctuation">(</span>
-  <span class="token punctuation">`</span>Column1<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
-  <span class="token punctuation">`</span>Column2<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
-  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>Column1<span class="token punctuation">`</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>utf8mb4<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `tb_user` (</span><br><span class="line">  `Column1` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `Column2` <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`Column1`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8mb4;</span><br></pre></td></tr></table></figure>
+
 <p>完成后通过主键执行条件查询，通过执行计划中的 <code>type</code> 与 <code>key</code> 可以看到语句使用了主键索引进行查询。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/5.png"></p>
 <p>现在让我们更换一下查询条件，将条件中的 <code>&#39;1&#39;</code> 替换为 <code>1</code> 并重新查询执行计划，可以看到此时 <code>type = ALL</code> 执行了全表扫描，而这则是因为 <code>Column1</code> 字段类型为 <code>varchar</code>，当通过数字 <code>1</code> 查询时 <code>MySQL</code> 会执行隐式的类型转化从而导致索引失效。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/6.png"></p>
 <p>上述中提到的其余几类索引失效场景这里就不一一进行介绍，感兴趣的话可以自行通过执行计划进行验证。</p>
@@ -1048,54 +1002,6 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/collection/schedule/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/15.png" class="responsive-img" alt="Java定时任务介绍">
-                        
-                        <span class="card-title">Java定时任务介绍</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java定时任务介绍。
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-01
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/db/mysql/storage/">
                     <div class="card-image">
                         
@@ -1111,9 +1017,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-20
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-06-20
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1131,6 +1037,54 @@
                     
                     <a href="/tags/MySQL/">
                         <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/java/basis/feature/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/java/41.png" class="responsive-img" alt="不同版本 JDK 特性介绍">
+                        
+                        <span class="card-title">不同版本 JDK 特性介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            不同版本 JDK 特性介绍。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-06-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1404,7 +1358,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">272.5k</span>
+                <span class="white-color">289.1k</span>
             
             
             
@@ -1662,7 +1616,7 @@ $(function () {
     </script>
     
     <script type="text/javascript"
-       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+       color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
     
 
@@ -1678,6 +1632,6 @@ $(function () {
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(r){r.imageLazyLoadSetting.processImages=t;var e=r.imageLazyLoadSetting.isSPA,n=r.imageLazyLoadSetting.preloadRatio||1,c=a();function a(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(){e&&(c=a());for(var t,o=0;o<c.length;o++)0<=(t=(t=c[o]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(r.innerHeight*n||document.documentElement.clientHeight*n)&&function(){var t,e,n,a,i=c[o];e=function(){c=c.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(n=new Image,a=t.getAttribute("data-original"),n.onload=function(){t.src=a,t.removeAttribute("data-original"),e&&e()},t.src!==a&&(n.src=a))}()}function i(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",i),r.addEventListener("resize",i),r.addEventListener("orientationchange",i)}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 
 </html>
