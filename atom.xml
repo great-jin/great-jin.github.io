@@ -6,7 +6,7 @@
   <link href="https://great-jin.github.io/atom.xml" rel="self"/>
   
   <link href="https://great-jin.github.io/"/>
-  <updated>2024-11-18T14:19:27.965Z</updated>
+  <updated>2024-11-24T12:55:01.824Z</updated>
   <id>https://great-jin.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>ElasticSearch 进阶应用</title>
+    <title>ElasticSearch 结构详解</title>
     <link href="https://great-jin.github.io/db/es/advance/"/>
     <id>https://great-jin.github.io/db/es/advance/</id>
     <published>2024-11-17T16:00:00.000Z</published>
-    <updated>2024-11-18T14:19:27.965Z</updated>
+    <updated>2024-11-24T12:55:01.824Z</updated>
     
     <content type="html"><![CDATA[<p>随着互联网的发展，各类数据库以及模型层出不穷，可谓让开发者眼花缭乱不知如何抉择。</p><p>对于传统的 <code>OLTP(Online Transaction Processing)</code> 关系型数据库例如 <code>MySQL</code>、<code>Oracle</code> 等凭借有效的事务性常作于项目基础数据库，而 Redis 此类数据库通过内存的高性能通常用于作为热点数据缓存节点。</p><p>那么问题来了？<code>Elasticsearch</code> 的优势是什么，又应该在何时引入项目又能解决什么难点？</p><h3 id="一、存储机制"><a href="#一、存储机制" class="headerlink" title="一、存储机制"></a>一、存储机制</h3><p>在 <code>Elasticsearch</code> 中，内存缓冲区和事务日志是确保数据可靠写入和实现“近实时”搜索的两个关键机制。</p><h4 id="1-内存缓冲区"><a href="#1-内存缓冲区" class="headerlink" title="1. 内存缓冲区"></a>1. 内存缓冲区</h4><p>在数据写入上通常可以分为两大类：有序和无序。</p><p>以 <code>Kafka</code> 的无序为例，数据直接添加至文件末端，数据间只存在先后关系而无其它关联。而常见的关系型数据库等存在索引需要将数据以一定规则进行存储，通常会采用缓存 + 异步写入的方式实现，例如 <code>MySQL</code> 中的 <code>Change Buffer</code>。</p><p>在 <code>Elasticsearch</code> 中同样也不例外，当执行数据新增时，会先将数据写入到内存缓冲区中，避免即刻的硬盘 <code>IO</code> 耗时操作，同时也能够提高数据吞吐量。</p><h4 id="2-事务日志"><a href="#2-事务日志" class="headerlink" title="2. 事务日志"></a>2. 事务日志</h4><p>事务日志是为了保证数据可靠性和持久性而存在的日志文件，每当数据写入内存缓冲区后，会根据特定间隔将数据刷入硬盘内。</p><p>在 <code>Elasticsearch</code> 中这个刷新的间隔通过 <code>refresh_interval</code> 参数进行管理，每个索引的刷新时间都是独立的，默认刷新时间为 <code>1s</code>。</p><p>即当用户执行新增时，数据会先行写入内存缓存区中，内存缓冲区中的数据在 <code>1s</code> 内刷新到一个新的 <code>段</code>，并写入磁盘，而这默认 <code>1s</code> 的差额也是 <code>Elasticsearch</code> 被称为近实时搜索引擎一大原因。</p><h3 id="二、应用场景"><a href="#二、应用场景" class="headerlink" title="二、应用场景"></a>二、应用场景</h3><h4 id="1-集成模式"><a href="#1-集成模式" class="headerlink" title="1. 集成模式"></a>1. 集成模式</h4><p>在实际的开发当中，与常见的 <code>MySQL</code> 的等即写即读不同，<code>Elasticsearch</code> 通常采用异步离线写入方式集成于项目。即利用 <code>MySQL</code> 的 <code>binlog</code> 等机制通过 <code>CDC</code> 的模式异步同步数据，而非采用实现的双写模式，从而进一步提高效率。</p><p>当然，对于实时性要求相对较高的场景，采用实时写入的方式也并无不妥。</p><h4 id="2-优势特点"><a href="#2-优势特点" class="headerlink" title="2. 优势特点"></a>2. 优势特点</h4><p>回归到正题，<code>Elasticsearch</code> 拥有哪些优势，以及应该何时选择 <code>Elasticsearch</code>?</p><p>对于 <code>MySQL</code> 相比大家都并不陌生，其最基础的索引即通过索引建从而搜索定位到相应的数据记录，例如主键索引，而此类索引方式又称之为正向索引，通过唯一查询记录。</p><p>而 <code>Elasticsearch</code> 的优势之外在于支持反向搜索，即通过记录关键字反向查询唯一标识。最为常见的例子即全文搜索，若需要在 <code>MySQL</code> 等常见数据库中实现最简单的方式即通过 <code>like %xxx%</code> 实现模糊搜索，但存在索引失效所带来的性能问题。</p><p><code>Elasticsearch</code> 的反向索引强大之处即可以通过分词器进行拆词为关键字，从而为关键字反向关联数据记录，从而实现快速的全文搜索能力。</p><h4 id="3-缺点不足"><a href="#3-缺点不足" class="headerlink" title="3. 缺点不足"></a>3. 缺点不足</h4><p><code>Elasticsearch</code> 虽又有不菲的性能，但也并无铁板一块仍存在自身的不足之处。</p><p>在搜索查询上 <code>Elasticsearch</code> 能够表现出让人眼前一亮的效果，但在面对频繁的删改时却稍逊一筹。同样在事务管理上，并不能像传统的关系型数据一样强大，且其采用最终一致性模型，对于要求高一致性的数据处理或许并非最佳选择。</p><p>因此，基于 <code>Elasticsearch</code> 高效搜索的特性。其通常应用于全文搜索、日志分析以及大数据集的聚合分析之中，其中较为常见的一大应用即 <code>ELK</code> 日志管理，能够实现日志搜索检索。</p>]]></content>
     

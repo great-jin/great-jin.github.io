@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ElasticSearch 接口教程, 布袋青年">
+    <meta name="keywords" content="ElasticSearch 入门教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ElasticSearch 接口教程 | 布袋青年</title>
+    <title>ElasticSearch 入门教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -419,7 +419,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ElasticSearch 接口教程</h1>
+                    <h1 class="description center-align post-title">ElasticSearch 入门教程</h1>
                 </div>
             </div>
         </div>
@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-11-18
+                    2024-11-24
                 </div>
                 
 
@@ -705,8 +705,8 @@
 <br/>
 
 <p>其中较为让人混淆的即分片数 <code>(number_of_shards)</code> 与副本数 <code>(number_of_replicas)</code>，二者具体的配置的值主要依据集群中的节点数量而定，通过 <code>1:1</code> 是一个相对稳定的参照，下面我们着重介绍一下二者的区别。</p>
-<h5 id="1-分区"><a href="#1-分区" class="headerlink" title="(1) 分区"></a>(1) 分区</h5><p><code>number_of_shards</code> 用于执行数据的分片大小，类似于关系型的中的分区操作，以提高存储查询效率。</p>
-<p>例如上述中的 <code>&quot;number_of_shards&quot;: 3</code> 表示分片数为 <code>3</code>，则会将索引下创建 <code>3</code> 个分片，而每个分片可以位于集群中的不同节点，即减少单个数据文件的大小从而提高性能。</p>
+<h5 id="1-分区"><a href="#1-分区" class="headerlink" title="(1) 分区"></a>(1) 分区</h5><p><code>number_of_shards</code> 用于设置数据的分片大小，类似于关系型数据库中的分区或分桶，即通过拆分为多份更小的文件降低数据操作的消耗从而提高性能。</p>
+<p>例如上述中的 <code>&quot;number_of_shards&quot;: 3</code> 则会为对应索引创建 <code>3</code> 个分片，拆分减小单个数据文件的大小从而提高性能，且每个分片可以位于集群中的不同节点。</p>
 <h5 id="2-副本"><a href="#2-副本" class="headerlink" title="(2) 副本"></a>(2) 副本</h5><p><code>number_of_replicas</code> 用于指定副本大小，即集群状态多端副本保证数据的安全性以防止数据丢失或损坏。</p>
 <p>同样以上述的示例为例，索引创建了 <code>3</code> 个分片且副本为 <code>2</code>，即每个分片包括自身存在 <code>2</code> 份备份，且副本通常也分布于集群内不同节点中，当其中一个副本损坏时另一副本可以保证数据的稳定性。</p>
 <h4 id="2-字段映射"><a href="#2-字段映射" class="headerlink" title="2. 字段映射"></a>2. 字段映射</h4><p>在创建索引时除了 <code>settings</code> 配置参数外，也可通过 <code>mapping</code> 参数指定字段映射。</p>
