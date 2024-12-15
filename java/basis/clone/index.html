@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="前后端数据AES加密传输, 布袋青年">
+    <meta name="keywords" content="Java对象拷贝介绍, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>前后端数据AES加密传输 | 布袋青年</title>
+    <title>Java对象拷贝介绍 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -414,12 +414,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/coding/AES.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/32.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">前后端数据AES加密传输</h1>
+                    <h1 class="description center-align post-title">Java对象拷贝介绍</h1>
                 </div>
             </div>
         </div>
@@ -554,10 +554,6 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Vue/">
-                                <span class="chip bg-color">Vue</span>
-                            </a>
-                        
                             <a href="/tags/JAVA/">
                                 <span class="chip bg-color">JAVA</span>
                             </a>
@@ -570,8 +566,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-category">
-                                后端
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                JAVA基础
                             </a>
                         
                     </div>
@@ -583,28 +579,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-13
+                    2023-04-19
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-02-05
+                    2024-12-15
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    744
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    5 分
                 </div>
                 
 
@@ -624,147 +620,133 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>AES 中文译为高级加密标准，是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的 DES(Data Encryption Standard) ，已经被多方分析且广为全世界所使用。2006年，高级加密标准已然成为对称密钥加密中最流行的算法之一。</p>
-</blockquote>
-<p><strong>下面具体介绍一下如何在前后端分离工程中利用AES实现数据加密。</strong></p>
-<h3 id="一、前端配置"><a href="#一、前端配置" class="headerlink" title="一、前端配置"></a>一、前端配置</h3><h4 id="1-AES配置"><a href="#1-AES配置" class="headerlink" title="1. AES配置"></a>1. AES配置</h4><h5 id="1-模块安装"><a href="#1-模块安装" class="headerlink" title="(1) 模块安装"></a>(1) 模块安装</h5><p>在使用 <code>AES</code> 之前需要安装相应的模块依赖。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> crypto-js
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-工具类"><a href="#2-工具类" class="headerlink" title="(2) 工具类"></a>(2) 工具类</h5><p>新建 <code>AES.js</code> 工具文件,需要注意一点的是这里的 <code>keyStr</code> 与 <code>ivStr</code> 长度必须为 <code>16</code> 位。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> CryptoJS <span class="token keyword">from</span> <span class="token string">'crypto-js/crypto-js'</span>
+                <h3 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>在 <code>Java</code> 工程中，我们经常涉及对对象的创建与赋值，今天就详细介绍一下其背后的机制。</p>
+<p>在开始之前我们要了解一个对象在 <code>Java</code> 中是如何进行存储的？对于 <code>int、 byte</code> 等等几类基本数据类型，<code>Java</code> 专门在堆栈中创立了一片常量池，当声明此类数据时对于 <code>Java</code> 内部而言相同的值仅存了一份，它们所指向的内存地址是一致。</p>
+<p>如下示例中的两个赋值语句在 <code>Java</code> 常量池中只存储一个数值 <code>10</code> ，然后将 <code>a</code> 与 <code>b</code> 的引用都指向这个值。若后续 <code>a</code> 的值发生变化，则会在常量池中再存入新的数值，将 <code>a</code> 的引用指向这个新数值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// 默认的 KEY 与 iv， 16 位字符串即可</span>
-<span class="token keyword">const</span> keyStr <span class="token operator">=</span> <span class="token string">'1234567890123456'</span>
-<span class="token keyword">const</span> ivStr <span class="token operator">=</span> <span class="token string">'1234567890123456'</span>
+a <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样做的一大好处即能够大大的节省内存空间，无需为相同的数据分配不同的内存空间。</p>
+<h4 id="2-对象存储"><a href="#2-对象存储" class="headerlink" title="2. 对象存储"></a>2. 对象存储</h4><p>我们都知道当需要创建一个对象时可以通过 <code>new</code> 关键字创建对象，但是与 <code>Java</code> 基本类型不同是其会在内存中为每个对象分配一个单独的空间。</p>
+<p>其中需要特别注意的是 <code>String</code> 类型，因为其不像基本类型都有其对应的封装类如 <code>int</code> 对应的 <code>Integer</code> 。因此对于 <code>String</code> 类型而言，当通过 = 赋值创建时作用效果等同于 <code>int</code> 等基本类型，但通过 <code>new String()</code> 创建时则会为其分配专门的内存空间。</p>
+<p>如下面的示例中使用两种不同方式两个 <code>String</code> 对象，两个对象的内容虽然都一致，但因为 <code>a</code> 是直接赋值的所以则会存在常量池中，而 <code>b</code> 是通过 <code>new</code> 关键字创建所以会为其分配单独的内存空间，二者底层指向的内存地址因此是不同的，所以使用 <code>==</code> 进行引用比较时返回的结果将会是 <code>false</code> 。</p>
+<pre class="line-numbers language-java"><code class="language-java">String a <span class="token operator">=</span> <span class="token string">"test"</span><span class="token punctuation">;</span>
+String b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// false</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、对象引用"><a href="#二、对象引用" class="headerlink" title="二、对象引用"></a>二、对象引用</h3><h4 id="1-介绍-1"><a href="#1-介绍-1" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>在上面我们介绍了数据与对象的基本存储机制，下面再来了解一下对象引用赋值的相关原理。</p>
+<p>在 <code>Java</code> 中通过 <code>=</code> 对对象进行复制时并不会创建一个新的对象，而是将新创建的对象的引用指向原对象的内存引用，如下示例中先创建了 <code>user1</code> ，再通过<code>=</code> 将 <code>user1</code> 赋值给 <code>user2</code> 。</p>
+<pre class="line-numbers language-java"><code class="language-java">User user1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+User user2 <span class="token operator">=</span> user1<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>上述的代码在实际存储中效果如下，因此此时如果改变 <code>user2</code> 的值则 <code>user1</code> 会同步发生变化，在实际开发中要小心防止对象错误变更。<br><img src="/album/loading.gif" data-original="/album/article/java/basis/clone.png"></p>
+<h3 id="三、对象拷贝"><a href="#三、对象拷贝" class="headerlink" title="三、对象拷贝"></a>三、对象拷贝</h3><h4 id="1-浅拷贝"><a href="#1-浅拷贝" class="headerlink" title="1. 浅拷贝"></a>1. 浅拷贝</h4><p>通过上述的例子介绍了对象赋值存在的一些问题，但如果在开发中就是涉及到对象复制呢？根据上面的示例显然不能直接通过 = 直接赋值，有一个最简单的方式就是通过 new 重新创建一个对象。</p>
+<p>如上述例子可以改造成如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">User user1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+User user2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>但很显然这也有一个问题，但对象的属性过多时，这种方式将变得及其繁杂与低效。因此 <code>Java</code> 引入了 <code>Cloneable</code> 接口从而实现这一问题，被克隆对象只需实现 <code>Cloneable</code> 接口并重写 <code>clone()</code> 即可。</p>
+<p>稍微改造一下 <code>User</code> 类为如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Cloneable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 加密</span>
-<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> key <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>keyStr<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> srcs <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> encrypted <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>AES<span class="token punctuation">.</span><span class="token function">encrypt</span><span class="token punctuation">(</span>srcs<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-        iv<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>ivStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        mode<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>mode<span class="token punctuation">.</span>CBC<span class="token punctuation">,</span>
-        padding<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>pad<span class="token punctuation">.</span>ZeroPadding
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">.</span>ciphertext<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment" spellcheck="true">// 解密</span>
-<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Decrypt</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> key <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>keyStr<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> base64 <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>wdataord<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> src <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>base64<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> decrypt <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>AES<span class="token punctuation">.</span><span class="token function">decrypt</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-        iv<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>ivStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        mode<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>mode<span class="token punctuation">.</span>CBC<span class="token punctuation">,</span>
-        padding<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>pad<span class="token punctuation">.</span>ZeroPadding
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">const</span> decryptedStr <span class="token operator">=</span> decrypt<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> decryptedStr<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-AES引用"><a href="#2-AES引用" class="headerlink" title="2. AES引用"></a>2. AES引用</h4><p><code>AES</code> 引用就比较简单了，导入方法后直接调用即可。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 引入模块</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span>Encrypt<span class="token punctuation">,</span>Decrypt<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@/utils/AES.js'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-<span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">{</span>
-        password<span class="token punctuation">:</span> <span class="token string">''</span>
+    <span class="token keyword">public</span> <span class="token function">User</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token function">OK</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">const</span> params <span class="token operator">=</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>password<span class="token punctuation">)</span>
-        <span class="token comment" spellcheck="true">// 打印加密后内容</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、后端配置"><a href="#二、后端配置" class="headerlink" title="二、后端配置"></a>二、后端配置</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>Maven</code> 工程配置文件中导入如下依赖。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.directory.studio<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>org.apache.commons.codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-工具类-1"><a href="#2-工具类-1" class="headerlink" title="2. 工具类"></a>2. 工具类</h4><p>新建 <code>AesUtil.java</code> 工具类，具体代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>binary<span class="token punctuation">.</span>Base64<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>Cipher<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span>IvParameterSpec<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span>SecretKeySpec<span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AesEncryptUtil</span> <span class="token punctuation">{</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 加密
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">encrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> User <span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"AES/CBC/NoPadding"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//"算法/模式/补码方式"NoPadding PkcsPadding</span>
-            <span class="token keyword">int</span> blockSize <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">getBlockSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dataBytes <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> plaintextLength <span class="token operator">=</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>plaintextLength <span class="token operator">%</span> blockSize <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                plaintextLength <span class="token operator">=</span> plaintextLength <span class="token operator">+</span> <span class="token punctuation">(</span>blockSize <span class="token operator">-</span> <span class="token punctuation">(</span>plaintextLength <span class="token operator">%</span> blockSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> plaintext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>plaintextLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>dataBytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> plaintext<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            SecretKeySpec keyspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            IvParameterSpec ivspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>Cipher<span class="token punctuation">.</span>ENCRYPT_MODE<span class="token punctuation">,</span> keyspec<span class="token punctuation">,</span> ivspec<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>plaintext<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeToString</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 解密
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">desEncrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"AES/CBC/NoPadding"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            SecretKeySpec keyspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            IvParameterSpec ivspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>Cipher<span class="token punctuation">.</span>DECRYPT_MODE<span class="token punctuation">,</span> keyspec<span class="token punctuation">,</span> ivspec<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> original <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>encrypted1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            String originalString <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>original<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> originalString<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            User user <span class="token operator">=</span> <span class="token punctuation">(</span>User<span class="token punctuation">)</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">CloneNotSupportedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AssertionError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h4><p>完成上述的工具类封装之后就可以直接使用了，下面是一个简单的使用示例。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 默认的 KEY 与 IV ，统一的 16 位字符串即可</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> String KEY <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> String IV <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这时候即可直接调用 <code>clone()</code> 方法接口实现对象拷贝：</p>
+<pre class="line-numbers language-java"><code class="language-java">User user1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+User user2 <span class="token operator">=</span> user1<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"user1: "</span> <span class="token operator">+</span> user1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"user2: "</span> <span class="token operator">+</span> user2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此时 <code>user1</code> 与 <code>user2</code> 的内存存储示意图如下：<br><img src="/album/loading.gif" data-original="/album/article/java/basis/clone2.png"></p>
+<h4 id="2-深拷贝"><a href="#2-深拷贝" class="headerlink" title="2. 深拷贝"></a>2. 深拷贝</h4><p>所谓深拷贝为相对浅拷贝而言，当一个对象的属性仍为对象时，通过上述 <code>clone()</code> 方式只能实现非对象的子属性赋值，对于属性中的对象其仍会采用 <code>=</code> 的赋值方式。</p>
+<p>假如此时有两个类 <code>User</code> 和 <code>City</code> ，其中 <code>User</code> 属性包含 <code>City</code> 类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Cloneable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> City city<span class="token punctuation">;</span>
 
-<span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    String data <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//... 略去其它代码</span>
+<span class="token punctuation">}</span>
 
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        String enStr <span class="token operator">=</span> <span class="token function">encrypt</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"加密："</span> <span class="token operator">+</span> enStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">City</span> <span class="token punctuation">{</span>
+    String address<span class="token punctuation">;</span>
 
-        String deStr <span class="token operator">=</span> <span class="token function">desEncrypt</span><span class="token punctuation">(</span>enStr<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"解密："</span> <span class="token operator">+</span> deStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//... 略去其它代码</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>首先创建 <code>user1</code> 再通过 <code>clone()</code> 拷贝给 <code>user2</code>，但此时 <code>user1</code> 与 <code>user2</code> 的 <code>City</code> 对象其实指向的是同一个对象，若此时修改 <code>user2</code> 的 <code>City</code> 对象 <code>user1</code> 的也会同步发生变化。</p>
+<pre class="line-numbers language-java"><code class="language-java">User user1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">City</span><span class="token punctuation">(</span><span class="token string">"Beijing"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+User user2 <span class="token operator">=</span> user1<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>因此若包含多层对象嵌套拷贝时每一级的对象类都需要实现 <code>Cloneable</code> 接口并重写 <code>clone()</code> ，同时重写 <code>clone()</code> 方法是也有所区别，如下是修改后的 <code>User</code> 类和 <code>City</code> 类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Cloneable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> City city<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> User <span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            User user <span class="token operator">=</span> <span class="token punctuation">(</span>User<span class="token punctuation">)</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 子对象属性仍需要通过拷贝赋值</span>
+            user<span class="token punctuation">.</span>city <span class="token operator">=</span> city<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> user<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">CloneNotSupportedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AssertionError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<hr>
-<p><strong>参考链接：</strong></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/10d016ce5931">vue实现AES加密</a></li>
-</ol>
+
+<span class="token keyword">class</span> <span class="token class-name">City</span> <span class="token keyword">implements</span> <span class="token class-name">Cloneable</span><span class="token punctuation">{</span>
+    String address<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">//... 略去其它代码</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-序列化拷贝"><a href="#3-序列化拷贝" class="headerlink" title="3. 序列化拷贝"></a>3. 序列化拷贝</h4><p>在深拷贝的例子中可以看到，当多层对象嵌套时使用 <code>clone()</code> 十分繁杂，因此我们还可以采用其它方式实现对象拷贝，即序列化拷贝。</p>
+<p>通过 <code>ByteArrayOutputStream</code> 与 <code>ObjectOutputStream</code> 等 <code>IO</code> 流将对象先进行序列化再实现转化拷贝，缺点显然易见这种方式将会产生额外的 IO 操作，因此需要根据实际情况进行选择。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> User <span class="token function">myClone</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        User newUser <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span>
+                ByteArrayOutputStream bos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                ObjectOutputStream out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectOutputStream</span><span class="token punctuation">(</span>bos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            out<span class="token punctuation">.</span><span class="token function">writeObject</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">(</span>
+                    ByteArrayInputStream bis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>bos<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    ObjectInputStream ois <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectInputStream</span><span class="token punctuation">(</span>bis<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                newUser <span class="token operator">=</span> <span class="token punctuation">(</span>User<span class="token punctuation">)</span> ois<span class="token punctuation">.</span><span class="token function">readObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> newUser<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> <span class="token operator">|</span> ClassNotFoundException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -791,7 +773,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/vue/tool/aes/">https://great-jin.github.io/vue/tool/aes/</a>
+                    <a href="https://great-jin.github.io/java/basis/clone/">https://great-jin.github.io/java/basis/clone/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -828,10 +810,6 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Vue/">
-                                    <span class="chip bg-color">Vue</span>
-                                </a>
                             
                                 <a href="/tags/JAVA/">
                                     <span class="chip bg-color">JAVA</span>
@@ -1010,24 +988,72 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/mysql/basis/">
+                <a href="/java/spring/framework/security/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/mysql/1.png" class="responsive-img" alt="MySQL基础教程">
+                        <img src="/album/banner/java/spring/7.png" class="responsive-img" alt="Spring Security权限认证实战">
                         
-                        <span class="card-title">MySQL基础教程</span>
+                        <span class="card-title">Spring Security权限认证实战</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MySQL数据库基本操作介绍。
+                            Spring Security权限认证实战教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-21
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-22
                         </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    Spring工具
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/db/mysql/advance/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/db/mysql/4.png" class="responsive-img" alt="MySQL进阶教程">
+                        
+                        <span class="card-title">MySQL进阶教程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MySQL数据库进阶教程。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1045,54 +1071,6 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                     
                     <a href="/tags/MySQL/">
                         <span class="chip bg-color">MySQL</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/java/basis/jdbc/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/java/22.png" class="responsive-img" alt="Java JDBC使用详解">
-                        
-                        <span class="card-title">Java JDBC使用详解</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Java JDBC数据库使用详解。
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-19
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
