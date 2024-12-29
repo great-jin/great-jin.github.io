@@ -586,14 +586,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-15
+                    2024-12-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.2k
                 </div>
                 
 
@@ -670,10 +670,9 @@
 <p>将上述提到的思路转化为代码，即可得到下述排序算法：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 类型枚举</span>
 <span class="token keyword">public</span> <span class="token keyword">enum</span> Type <span class="token punctuation">{</span>
-    A<span class="token punctuation">,</span> B<span class="token punctuation">,</span> C<span class="token punctuation">;</span>
+    A<span class="token punctuation">,</span> B<span class="token punctuation">,</span> C<span class="token punctuation">,</span> MAX<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// 集合分组排序</span>
 <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">groupSortData</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>Type<span class="token operator">></span> priority<span class="token punctuation">,</span> 
                            List<span class="token operator">&lt;</span>User<span class="token operator">></span> userList<span class="token punctuation">,</span>
                            Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Type<span class="token operator">></span> typeMap<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -684,30 +683,29 @@
     LinkedHashMap<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>User<span class="token operator">>></span> sortMap <span class="token operator">=</span> userMap<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">sorted</span><span class="token punctuation">(</span><span class="token punctuation">(</span>e1<span class="token punctuation">,</span> e2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-                Type type1 <span class="token operator">=</span> typeMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>e1<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                Type type2 <span class="token operator">=</span> typeMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>e2<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">// 下标作优先级</span>
-                <span class="token keyword">int</span> index1 <span class="token operator">=</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>type1<span class="token punctuation">)</span><span class="token punctuation">)</span> 
-                        <span class="token operator">?</span> Integer<span class="token punctuation">.</span>MAX_VALUE 
-                        <span class="token operator">:</span> priority<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>type1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">int</span> index2 <span class="token operator">=</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>type2<span class="token punctuation">)</span><span class="token punctuation">)</span> 
-                        <span class="token operator">?</span> Integer<span class="token punctuation">.</span>MAX_VALUE 
-                        <span class="token operator">:</span> priority<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>type2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">// 获取数据类型</span>
+                Type type1 <span class="token operator">=</span> typeMap<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>e1<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Integer<span class="token punctuation">.</span>MAX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Type type2 <span class="token operator">=</span> typeMap<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>e2<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Integer<span class="token punctuation">.</span>MAX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                
+                <span class="token comment" spellcheck="true">// 根据类型取优先级</span>
+                <span class="token keyword">int</span> index1 <span class="token operator">=</span> priority<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>type1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">int</span> index2 <span class="token operator">=</span> priority<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>type2<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">return</span> Integer<span class="token punctuation">.</span><span class="token function">compare</span><span class="token punctuation">(</span>index1<span class="token punctuation">,</span> index2<span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toMap</span><span class="token punctuation">(</span>
                     Map<span class="token punctuation">.</span>Entry<span class="token operator">:</span><span class="token operator">:</span>getKey<span class="token punctuation">,</span>
                     Map<span class="token punctuation">.</span>Entry<span class="token operator">:</span><span class="token operator">:</span>getValue<span class="token punctuation">,</span>
                     <span class="token punctuation">(</span>r1<span class="token punctuation">,</span> r2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> r1<span class="token punctuation">,</span>
+                    <span class="token comment" spellcheck="true">// 使用 LinkedHashMap 有序集合</span>
                     LinkedHashMap<span class="token operator">:</span><span class="token operator">:</span><span class="token keyword">new</span>
             <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token comment" spellcheck="true">// 打印输出</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>sortMap<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>下面就让我们验证一下这个思路是否可行，对应的用例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>下面通过示例验证一下这个思路是否可行，通过有序集合 <code>List</code> 定义优先级集合 <code>priority</code>，元素下标越小则优先级越高。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 优先级映射</span>
     Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Type<span class="token operator">></span> typeMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     typeMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">,</span> Type<span class="token punctuation">.</span>A<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -715,8 +713,8 @@
     typeMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"Jack"</span><span class="token punctuation">,</span> Type<span class="token punctuation">.</span>C<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 定义优先级</span>
-    List<span class="token operator">&lt;</span>Type<span class="token operator">></span> priority1 <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
-            Type<span class="token punctuation">.</span>C<span class="token punctuation">,</span> Type<span class="token punctuation">.</span>A<span class="token punctuation">,</span> Type<span class="token punctuation">.</span>B
+    List<span class="token operator">&lt;</span>Type<span class="token operator">></span> priority <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
+        Type<span class="token punctuation">.</span>C<span class="token punctuation">,</span> Type<span class="token punctuation">.</span>A<span class="token punctuation">,</span> Type<span class="token punctuation">.</span>B<span class="token punctuation">,</span> Type<span class="token punctuation">.</span>MAX
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 构造数据</span>
@@ -731,12 +729,12 @@
     <span class="token comment" spellcheck="true">// 排序</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">groupSortData</span><span class="token punctuation">(</span>priority<span class="token punctuation">,</span> userList<span class="token punctuation">,</span> typeMap<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>运行上述示例，在控制台输出下述结果，可以看到结果正是按照所定义的 <code>C &gt; B &gt; A</code> 次序进行排序。</p>
 <pre class="line-numbers language-txt"><code class="language-txt">{
-    Jack=[User{score=3}, User{score=33}], 
-    Alex=[User{score=1}, User{score=11}],
-    Beth=[User{score=2}, User{score=22}]
+    Jack=[User{id=3}, User{id=33}], 
+    Alex=[User{id=1}, User{id=11}],
+    Beth=[User{id=2}, User{id=22}]
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
@@ -1336,7 +1334,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">276.8k</span>
+                <span class="white-color">276.9k</span>
             
             
             

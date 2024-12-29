@@ -586,14 +586,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-21
+                    2024-12-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    2.4k
                 </div>
                 
 
@@ -745,30 +745,30 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token keyword">limit</span> <span class="token number">1</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-数据查询"><a href="#4-数据查询" class="headerlink" title="4. 数据查询"></a>4. 数据查询</h4><h5 id="1-基本查询"><a href="#1-基本查询" class="headerlink" title="(1) 基本查询"></a>(1) 基本查询</h5><p>根据对应条件查询指定字段信息。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span>
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">where</span> <span class="token operator">&lt;</span>condition<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> 
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span>
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">where</span> 
+    <span class="token operator">&lt;</span>condition<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-虚拟表"><a href="#2-虚拟表" class="headerlink" title="(2) 虚拟表"></a>(2) 虚拟表</h5><p>当使用 <code>MySQL</code> 相关函数构造数据并不需要数据来源表时，即可使用虚拟表进行查询，语句格式如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="3-数据去重"><a href="#3-数据去重" class="headerlink" title="(3) 数据去重"></a>(3) 数据去重</h5><p>通过 <code>distinct</code> 关键字可实现重复记录过滤，当同时包含多个列时，只有每个列都不相同才会被判定为重复数据。</p>
+<h5 id="3-Having"><a href="#3-Having" class="headerlink" title="(3) Having"></a>(3) Having</h5><p><code>having</code> 用于给结果过滤，而 <code>where</code> 是针对查询结果的前的数据过滤，配合 <code>group by</code> 关键字即可实现便捷的重复数据查询。</p>
+<p>如下行命令即先根据 <code>name</code> 字段统计数量，再通过 <code>having</code> 筛选出数量大于 <code>1</code> 的记录，即名称重复的数据。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
-    <span class="token keyword">distinct</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span> 
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span> 
-
-<span class="token keyword">select</span> 
-    <span class="token keyword">distinct</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span>
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-区间查询"><a href="#4-区间查询" class="headerlink" title="(4) 区间查询"></a>(4) 区间查询</h5><p>通过 <code>between</code> 关键字查询指定区间的记录，如下查询字段 <code>column</code> 值 <code>大于 1 小于 3</code> 的记录。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">where</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span> <span class="token operator">between</span> <span class="token number">1</span> <span class="token operator">and</span> <span class="token number">3</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h5 id="5-范围查询"><a href="#5-范围查询" class="headerlink" title="(5) 范围查询"></a>(5) 范围查询</h5><p>通过 <code>in</code> 关键字查询指定集合的记录，如下查询字段 <code>column</code> 值为 <code>1 或 3</code> 的记录。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">where</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+    name<span class="token punctuation">,</span> 
+    <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> num 
+<span class="token keyword">from</span> 
+    tb_user
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    name
+<span class="token keyword">having</span> 
+    num <span class="token operator">></span> <span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、高级查询"><a href="#三、高级查询" class="headerlink" title="三、高级查询"></a>三、高级查询</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>当数据库中数据达到一定量级后，通常我们会使用分页查询。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查询前 n 条数据</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">LIMIT</span> <span class="token operator">&lt;</span>num<span class="token operator">></span><span class="token punctuation">;</span>
@@ -779,34 +779,52 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token comment" spellcheck="true">-- 第二条命令的简化写法</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">LIMIT</span> <span class="token operator">&lt;</span><span class="token keyword">start</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">end</span><span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-排序查询"><a href="#2-排序查询" class="headerlink" title="2. 排序查询"></a>2. 排序查询</h4><p>通过 <code>Order By</code> 关键字可对查询结果进行排序，未指定排序方式默认为 <code>升序(aesc)</code> ， <code>desc</code> 表示 <code>降序</code> 排列。</p>
+<h4 id="2-排序查询"><a href="#2-排序查询" class="headerlink" title="2. 排序查询"></a>2. 排序查询</h4><p>通过 <code>Order By</code> 关键字可对查询结果进行排序，未指定排序方式默认为 <code>升序(aesc)</code>，<code>desc</code> 表示 <code>降序</code> 排列。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 升序查询</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">order</span> <span class="token keyword">by</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span><span class="token punctuation">;</span>
+
 
 <span class="token comment" spellcheck="true">-- 降序查询</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span> <span class="token keyword">desc</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">order</span> <span class="token keyword">by</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span> <span class="token keyword">desc</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-分组查询"><a href="#3-分组查询" class="headerlink" title="3. 分组查询"></a>3. 分组查询</h4><h5 id="1-Group-By"><a href="#1-Group-By" class="headerlink" title="(1) Group By"></a>(1) Group By</h5><p>通过 <code>group By</code> 函数可实现数据的分组效果，同时可达到去重效果。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span>
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">group</span> <span class="token keyword">by</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>需要注意当查询字段中包含聚合函数时则未使用聚合函数的字段必须声明在 <code>group by</code> 中。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 如下 id 和 name 必须声明在 group by 之后</span>
-<span class="token keyword">select</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> <span class="token function">sum</span><span class="token punctuation">(</span>score<span class="token punctuation">)</span> <span class="token keyword">as</span> num 
-<span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
-<span class="token keyword">group</span> <span class="token keyword">by</span> id<span class="token punctuation">,</span> name<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-Having"><a href="#2-Having" class="headerlink" title="(2) Having"></a>(2) Having</h5><p><code>having</code> 用于给结果过滤，而 <code>where</code> 是针对查询结果的前的数据过滤，配合 <code>group by</code> 关键字即可实现便捷的重复数据查询。</p>
-<p>如下行命令即先根据 <code>name</code> 字段统计数量，再通过 <code>having</code> 筛选出数量大于 <code>1</code> 的记录，即名称重复的数据。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> name<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> num 
-<span class="token keyword">from</span> tb_user
-<span class="token keyword">group</span> <span class="token keyword">by</span> name
-<span class="token keyword">having</span> num <span class="token operator">></span> <span class="token number">1</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-条件查询"><a href="#4-条件查询" class="headerlink" title="4. 条件查询"></a>4. 条件查询</h4><p>在执行语句查询若需要实现 <code>if else</code> 效果即可通过 <code>case when</code> 语句实现，其基本语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span>
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意当查询字段中包含聚合函数时则未使用聚合函数的字段必须声明在 <code>group by</code> 中，如下 <code>id</code> 和 <code>name</code> 必须声明在 <code>group by</code> 之后。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    id<span class="token punctuation">,</span> 
+    name<span class="token punctuation">,</span> 
+    <span class="token function">sum</span><span class="token punctuation">(</span>score<span class="token punctuation">)</span> <span class="token keyword">as</span> num 
+<span class="token keyword">from</span> 
+    tb_user
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    id<span class="token punctuation">,</span> name<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时若开启了 <code>ONLY_FULL_GROUP_BY</code> 在执行 <code>group by</code> 查询时需要对非分组字段执行取值逻辑，如使用 <code>MAX</code> 或 <code>MIN</code> 函数。</p>
+<p>查看是否开启 <code>ONLY_FULL_GROUP_BY</code> 通过下述命令查询：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看 sql_mode</span>
+<span class="token keyword">SELECT</span> @<span class="token variable">@sql_mode</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">-- 修改 sql_mode</span>
+<span class="token keyword">SET</span> sql_mode  <span class="token operator">=</span> <span class="token string">'xxx'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-条件转化"><a href="#4-条件转化" class="headerlink" title="4. 条件转化"></a>4. 条件转化</h4><p>在执行语句查询若需要实现 <code>if else</code> 效果即可通过 <code>case when</code> 语句实现，其基本语法如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
     <span class="token keyword">case</span> 
         <span class="token keyword">when</span> <span class="token operator">&lt;</span>condition <span class="token number">1</span><span class="token operator">></span> <span class="token keyword">then</span> <span class="token operator">&lt;</span><span class="token keyword">select</span> command<span class="token operator">></span>
@@ -828,10 +846,16 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="1-联合查询"><a href="#1-联合查询" class="headerlink" title="1. 联合查询"></a>1. 联合查询</h4><p>通过 <code>union</code> 可以将多个同结构的结果集合并，需要注意每个子结果集必须包含相同的列数、表达式或聚集函数。</p>
 <p>默认联合查询消除重复行，可以使用 <code>all</code> 关键字表示不消除重复行。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span><span class="token keyword">table</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">table</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span>
 <span class="token keyword">union</span> <span class="token keyword">all</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span><span class="token keyword">table</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">select</span> 
+    <span class="token operator">*</span> 
+<span class="token keyword">from</span> 
+    <span class="token operator">&lt;</span><span class="token keyword">table</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-内连接"><a href="#2-内连接" class="headerlink" title="2. 内连接"></a>2. 内连接</h4><p>只返回两张表中符合条件的数据。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> tb_users u 
 <span class="token keyword">inner</span> <span class="token keyword">join</span> tb_files <span class="token number">f</span>
@@ -1551,7 +1575,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">276.8k</span>
+                <span class="white-color">276.9k</span>
             
             
             

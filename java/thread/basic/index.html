@@ -590,21 +590,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-15
+                    2024-12-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.7k
+                    3.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    15 分
                 </div>
                 
 
@@ -996,26 +996,46 @@
     Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、线程状态"><a href="#六、线程状态" class="headerlink" title="六、线程状态"></a>六、线程状态</h3><h4 id="1-线程中断"><a href="#1-线程中断" class="headerlink" title="1. 线程中断"></a>1. 线程中断</h4><p>当一个线程在运行期间若想停止任务即可通过 <code>interrupt()</code> 中断线程，但中断 <code>interrupt()</code> 只是向线程任务发送一个中断信号，至于线程相应需要根据其自身调度，并不是一发送中断即会中断线程。</p>
-<p>线程中断状态第一次中断后将清除中断标识，后续再读全为 <code>false</code> ，同时当线程处于 <code>sleep(), wait(), join()</code> 等阻塞状态时若中断线程同样会清除中断状态。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
+<h3 id="六、线程状态"><a href="#六、线程状态" class="headerlink" title="六、线程状态"></a>六、线程状态</h3><h4 id="1-线程中断"><a href="#1-线程中断" class="headerlink" title="1. 线程中断"></a>1. 线程中断</h4><p>在线程中每个线程都拥有自己的中断标识，当执行 <code>interrupt()</code> 时将会向线程任务发送一个中断信号，将该标识置为 <code>true</code>。但线程相应需要根据其自身调度，并不是一发送中断即会中断线程。</p>
+<p>在 <code>Java</code> 中判断线程是否中断提供了下述两种方式，同时当线程处于 <code>sleep(), wait(), join()</code> 等阻塞状态时若中断线程同样会清除中断状态。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Thread.interrupted()</td>
+        <td style="text-align: center;">线程是否中断，调用后清除中断标识。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Thread.currentThread().isInterrupted()</td>
+        <td style="text-align: center;">线程是否中断，不会清楚中断标识。</td>
+    </tr>
+</table>
+
+<p>以下述代码为例，在主线程调用 <code>interrupt()</code> 线程中断进而触发子线程的判断分支，由于通过 <code>Thread.currentThread()</code> 方式读取并不会清楚线程状态标识在 <code>2</code> 打印处输出结果将为 <code>true</code>。</p>
+<p>若将子线程条件判断替换为 <code>Thread.interrupted()</code>，其执行完毕后会将中断标识重置为 <code>false</code>，因此在 <code>2</code> 处输出结果也将为 <code>false</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
         <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 判断是否中断</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread is interrupted"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     thread<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 中断线程，响应由调度决定</span>
+    <span class="token comment" spellcheck="true">// 输出 false</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"1: "</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 中断线程</span>
     thread<span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    TimeUnit<span class="token punctuation">.</span>MICROSECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"2: "</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-线程阻塞"><a href="#2-线程阻塞" class="headerlink" title="2. 线程阻塞"></a>2. 线程阻塞</h4><h5 id="1-notify"><a href="#1-notify" class="headerlink" title="(1) notify"></a>(1) notify</h5><p>在上面 <code>wait()</code> 示例中已经介绍了如何使用 <code>notify()</code> ，这里就不再过多介绍。</p>
 <h5 id="2-Condition"><a href="#2-Condition" class="headerlink" title="(2) Condition"></a>(2) Condition</h5><p>在使用 <code>synchronized</code> 实现同步块时可以通过 <code>wait()</code> 实现动态唤醒的效果，而 <code>Condition</code> 则是针对 <code>ReentrantLock</code> 而言，可达到同样效果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -1639,7 +1659,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">276.8k</span>
+                <span class="white-color">276.9k</span>
             
             
             
