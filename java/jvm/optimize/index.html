@@ -586,14 +586,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-10-28
+                    2025-01-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.5k
                 </div>
                 
 
@@ -628,21 +628,30 @@
 <h5 id="2-D-方式"><a href="#2-D-方式" class="headerlink" title="(2) -D 方式"></a>(2) -D 方式</h5><p><code>-D</code> 用于设置系统属性，提供了一种在应用程序中传递配置信息的机制，可以在应用程序中通过 <code>System.getProperty()</code> 方法获取。</p>
 <p>例如 <code>-D&lt;property&gt;=&lt;value&gt;</code>，其中 <code>&lt;property&gt;</code> 是属性名称，<code>&lt;value&gt;</code> 是属性值。</p>
 <h5 id="3-基本格式"><a href="#3-基本格式" class="headerlink" title="(3) 基本格式"></a>(3) 基本格式</h5><p><code>JVM</code> 配置参数通常由 <code>-XX:</code> 开头，基本格式如下：</p>
-<blockquote>
 <ul>
 <li>若用于配置是否启用，由 <code>+ -</code> 分别控制开启与关闭。</li>
 <li>若用于配置大小或数值变量，遵循 <code>&lt;option&gt;=&lt;value&gt;</code> 格式。</li>
 </ul>
-</blockquote>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 表示开启 option 选项</span>
--XX:+<span class="token operator">&lt;</span>option<span class="token operator">></span>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">配置</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+option</td>
+        <td style="text-align: center;">表示开启 option 选项。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:-option</td>
+        <td style="text-align: center;">表示关闭 option 选项。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:option=value</td>
+        <td style="text-align: center;">表示将 option 值赋为 value。</td>
+    </tr>
+</table>
 
-<span class="token comment" spellcheck="true"># 表示关闭 option 选项</span>
--XX:-<span class="token operator">&lt;</span>option<span class="token operator">></span>    
 
-<span class="token comment" spellcheck="true"># 表示将 option 值赋为 value</span>
--XX:<span class="token operator">&lt;</span>option<span class="token operator">>=</span><span class="token operator">&lt;</span>value<span class="token operator">></span>    
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-优先级"><a href="#2-优先级" class="headerlink" title="2. 优先级"></a>2. 优先级</h4><p>在 <code>Java</code> 命令行运行 <code>JAR</code> 包时，<code>JVM</code> 参数可以在 <code>-jar</code> 选项之前或之后指定，这两种方式会影响参数的解析和执行顺序。</p>
 <blockquote>
 <ul>
@@ -658,67 +667,114 @@ java -Xmx512m -jar myapp.jar
 <span class="token comment" spellcheck="true"># 方式二</span>
 java -jar myapp.jar -Xmx1024m
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、常用配置"><a href="#二、常用配置" class="headerlink" title="二、常用配置"></a>二、常用配置</h3><h4 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="1. 内存参数"></a>1. 内存参数</h4><p>在默认的 <code>JVM</code> 服务启动中，如果没有手动指定堆内存值，则默认的取值方式如下：</p>
+<h3 id="二、常用配置"><a href="#二、常用配置" class="headerlink" title="二、常用配置"></a>二、常用配置</h3><h4 id="1-内存参数"><a href="#1-内存参数" class="headerlink" title="1. 内存参数"></a>1. 内存参数</h4><p><code>JVM</code> 中内存常见配置参数如下，其中 <code>-Xss</code> 在相同物理内存下，减小这个值能生成更多的线程，但是操作系统对一个进程内的线程数还是有限制并不能无限生成，经验值在 <code>3000~5000</code> 左右。</p>
+<p>对于 <code>-Xmn</code> 用于调整年轻代内存空间，对于当下使用对象广泛的 <code>Appel</code> 式回收而言对系统性能影响较大，官方推荐配置为整个堆的 <code>3/8</code>。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-Xms1G</td>
+        <td style="text-align: center;">堆内存初始值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-Xmx2G</td>
+        <td style="text-align: center;">堆内存最大值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-Xss512k</td>
+        <td style="text-align: center;">每个线程的堆栈大小，默认 1MB。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-Xmn1024m</td>
+        <td style="text-align: center;">设置年轻代大小，增大年轻代后，将会减小年老代大小。</td>
+    </tr>
+</table>
+</br>
+
+<p>同时在默认的 <code>JVM</code> 服务启动中，如果没有手动指定堆内存值，则默认的 <code>-Xms</code> 与 <code>-Xmx</code> 取值方式如下：</p>
 <ul>
 <li><strong>最小值</strong>：通常是物理内存大小的 <code>1/64</code>，但不超过 <code>1GB</code>，可通过 <code>-Xms</code> 参数指定。</li>
 <li><strong>最大值</strong>：通常是物理内存大小的 <code>1/4</code>，但不超过 <code>32GB</code>，可通过 <code>-Xmx</code> 参数指定。</li>
 </ul>
-<p>常见的 <code>JVM</code> 内存参数如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 堆内存初始值</span>
--Xms1G 
-
-<span class="token comment" spellcheck="true"># 堆内存最大值</span>
--Xmx2G
-
-<span class="token comment" spellcheck="true"># 每个线程的堆栈大小，默认 1MB，在相同物理内存下，减小这个值能生成更多的线程</span>
-<span class="token comment" spellcheck="true"># 但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在 3000~5000 左右</span>
--Xss512k
-
-<span class="token comment" spellcheck="true"># 设置年轻代大小，增大年轻代后，将会减小年老代大小。</span>
-<span class="token comment" spellcheck="true"># 此值对系统性能影响较大，Sun 官方推荐配置为整个堆的 3/8。</span>
--Xmn1024m
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-JVM参数"><a href="#2-JVM参数" class="headerlink" title="2. JVM参数"></a>2. JVM参数</h4><p>针对于 <code>JVM</code> 的内存堆 <code>(Heap)</code> 以及垃圾回收，常见的配置参数如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># CMS垃圾回收器并行线程线，推荐值为CPU核心数。</span>
--XX:ConcGCThreads<span class="token operator">=</span>4
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:ConcGCThreads=4</td>
+        <td style="text-align: center;">CMS 垃圾回收器并行线程线，推荐值为 CPU 核心数。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:ParallelGCThreads=8</td>
+        <td style="text-align: center;">新生代并行收集器的线程数。</td>
+    </tr>
+</table>
+</br>
 
-<span class="token comment" spellcheck="true"># 新生代并行收集器的线程数。</span>
--XX:ParallelGCThreads<span class="token operator">=</span>8
+<p>在基于标记复制的 <code>Appel</code> 式回收方式中较为关键的 <code>JVM</code> 参数为下述三类：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:SurvivorRatio</td>
+        <td style="text-align: center;">设置新生代中 Eden 与 Survivor 的比例，默认为 8:2。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:MaxTenuringThreshold</td>
+        <td style="text-align: center;">设置最大复制次数，超过则复制到老年代，默认为 15。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:PretenureSizeThreshold</td>
+        <td style="text-align: center;">设置忽略 MaxTenuringThreshold 直接晋升到老年代的对象大小。</td>
+    </tr>
+</table>
 
-<span class="token comment" spellcheck="true"># 设置新生代中 Eden 与 Survivor 的比例，默认为 8，即 8:1:1</span>
--XX:SurvivorRatio<span class="token operator">=</span>8
 
-<span class="token comment" spellcheck="true"># 直接晋升到老年代的对象大小</span>
-<span class="token comment" spellcheck="true"># 设置该值后将忽略 MaxTenuringThreshold 设置，当对象大小达到设置值后直接晋升老年代</span>
--XX:PretenureSizeThreshold<span class="token operator">=</span>1m
-
-<span class="token comment" spellcheck="true"># 设置垃圾最大年龄，取值 0~15，默认为 15</span>
--XX:MaxTenuringThreshold<span class="token operator">=</span>10
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-系统参数"><a href="#3-系统参数" class="headerlink" title="3. 系统参数"></a>3. 系统参数</h4><p>常见的系统参数配置参数如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 防止虚拟机阻塞</span>
 -Djava.security.egd<span class="token operator">=</span>file:/dev/./urandom
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="4-GC参数"><a href="#4-GC参数" class="headerlink" title="4. GC参数"></a>4. GC参数</h4><p>常见的虚拟机垃圾回收（<code>GC</code>）参数配置参数如下：</p>
-<p>开启日志后生成的 <code>GC</code> 信息文件可通过工具进行分析，推荐在线分析网站：<code>https://gceasy.io</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 打印 gc 发生的时间戳</span>
--XX:+PrintGCDateStamps
+<p>开启日志后生成的 <code>GC</code> 信息文件推荐 <a target="_blank" rel="noopener" href="https://gceasy.io/">gceasy</a> 进行在线解析，可以生成详细的分析报告。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+PrintGCDateStamps</td>
+        <td style="text-align: center;">打印 gc 发生的时间戳。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+PrintTenuringDistribution</td>
+        <td style="text-align: center;">打印 gc 发生时的分代信息。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+PrintGCApplicationStoppedTime</td>
+        <td style="text-align: center;">打印 gc 停顿时长。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+PrintGCApplicationConcurrentTime</td>
+        <td style="text-align: center;">打印 gc 间隔的服务运行时长。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-XX:+PrintGCDetails</td>
+        <td style="text-align: center;">打印 gc 详情，包括 gc 前/内存等。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-Xloggc:./gclogs/gc.log</td>
+        <td style="text-align: center;">指定 gc log 的路径，支持相对路径与绝对路径。</td>
+    </tr>
+</table>
 
-<span class="token comment" spellcheck="true"># 打印 gc 发生时的分代信息</span>
--XX:+PrintTenuringDistribution
 
-<span class="token comment" spellcheck="true"># 打印 gc 停顿时长</span>
--XX:+PrintGCApplicationStoppedTime
 
-<span class="token comment" spellcheck="true"># 打印 gc 间隔的服务运行时长</span>
--XX:+PrintGCApplicationConcurrentTime
-
-<span class="token comment" spellcheck="true"># 打印 gc 详情，包括 gc 前/内存等</span>
--XX:+PrintGCDetails
-
-<span class="token comment" spellcheck="true"># 指定 gc log 的路径，存放于当前 gclogs 目录下的 gc.log.date 文件</span>
--Xloggc:./gclogs/gc.log.date
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、JDK工具"><a href="#三、JDK工具" class="headerlink" title="三、JDK工具"></a>三、JDK工具</h3><h4 id="1-Jinfo"><a href="#1-Jinfo" class="headerlink" title="1. Jinfo"></a>1. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>Java</code> 虚拟机（<code>JVM</code>）的配置信息。</p>
 <p>通过 <code>jinfo</code> 可以获取和修改正在运行的 <code>Java</code> 进程的虚拟机配置参数，对于调优和诊断 <code>Java</code> 应用程序是很有帮助的。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看进程的虚拟机参数信息</span>
@@ -755,70 +811,158 @@ jstat -gc <span class="token operator">&lt;</span>pid<span class="token operator
 <span class="token comment" spellcheck="true"># Simple info</span>
 jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">&lt;</span>interval<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/31.png"><br><img src="/album/loading.gif" data-original="/album/article/java/jvm/32.png"></p>
-<hr>
-<ul>
-<li><strong>S0C</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）的容量 (KB) 。</li>
-<li><strong>S1C</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）的容量 (KB)。</li>
-<li><strong>S0U</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）目前已使用空间 (KB) 。</li>
-<li><strong>S1U</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）目前已使用空间 (KB) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>EC</strong>：年轻代中 <code>Eden</code>（伊甸园）的容量 (KB) 。</li>
-<li><strong>EU</strong>：年轻代中 <code>Eden</code>（伊甸园）目前已使用空间 (KB)。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>OC</strong>：<code>Old</code> 代的容量 (KB) 。</li>
-<li><strong>OU</strong>：<code>Old</code> 代目前已使用空间 (KB) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>MC</strong>：元数据区的容量 (KB) 。</li>
-<li><strong>MU</strong>：元数据区目前已使用空间 (KB) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>YGC</strong>：从应用程序启动到采样时年轻代中 <code>GC</code> 次数 。</li>
-<li><strong>YGCT</strong>：从应用程序启动到采样时年轻代中 <code>GC</code> 所用时间(秒) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>FGC</strong>：从应用程序启动到采样时 <code>Old</code> 代 <code>Full GC</code> 次数 。</li>
-<li><strong>FGCT</strong>：从应用程序启动到采样时 <code>Old</code> 代 <code>Full GC</code> 所用时间(秒) 。</li>
-<li><strong>GCT</strong>：从应用程序启动到采样时 <code>GC</code> 用的总时间(s) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>NGCMN</strong>：年轻代 (<code>Young</code>) 中初始化(最小)的大小 (字节) 。</li>
-<li><strong>NGCMX</strong>：年轻代 (<code>Young</code>) 的最大容量 (字节) 。</li>
-<li><strong>NGC</strong>：年轻代 (<code>Young</code>) 中当前的容量 (字节) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>OGCMN</strong>：<code>Old</code> 代中初始化(最小)的大小 (字节) 。</li>
-<li><strong>OGCMX</strong>：<code>Old</code> 代的最大容量 (字节) 。</li>
-<li><strong>OGC</strong>：<code>Old</code> 代当前新生成的容量 (字节) 。</li>
-<li><strong>O</strong>：<code>Old</code> 代已使用的占当前容量百分比。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>S0</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）已使用的占当前容量百分比。</li>
-<li><strong>S1</strong>：年轻代中第二个 <code>Survivor</code>（幸存区）已使用的占当前容量百分比 。</li>
-<li><strong>S0CMX</strong>：年轻代中第一个 <code>Survivor</code>（幸存区）的最大容量 (字节) 。</li>
-<li><strong>S1CMX</strong> ：年轻代中第二个 <code>Survivor</code>（幸存区）的最大容量 (字节) 。</li>
-<li><strong>E</strong>：年轻代中 <code>Eden</code>（伊甸园）已使用的占当前容量百分比 。</li>
-<li><strong>ECMX</strong>：年轻代中 <code>Eden</code>（伊甸园）的最大容量 (字节) 。</li>
-</ul>
-<hr>
-<ul>
-<li><strong>DSS</strong>：当前需要 <code>Survivor</code>（幸存区）的容量 (字节)（ <code>Eden</code> 区已满）。</li>
-<li><strong>TT</strong>： 持有次数限制。</li>
-<li><strong>MTT</strong> ： 最大持有次数限制。</li>
-</ul>
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/31.png" alt="详细输出"></p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">列</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S0C</td>
+        <td style="text-align: center;">年轻代中第一个 Survivor 的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S1C</td>
+        <td style="text-align: center;">年轻代中第二个 Survivor 的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S0U</td>
+        <td style="text-align: center;">年轻代中第一个 Survivor 目前已使用空间 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S1U</td>
+        <td style="text-align: center;">年轻代中第二个 Survivor 目前已使用空间 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">EC</td>
+        <td style="text-align: center;">年轻代中 Eden 的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">EU</td>
+        <td style="text-align: center;">年轻代中 Eden 目前已使用空间 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OC</td>
+        <td style="text-align: center;">老年代的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OU</td>
+        <td style="text-align: center;">老年代目前已使用空间 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MC</td>
+        <td style="text-align: center;">元数据区的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MU</td>
+        <td style="text-align: center;">元数据区目前已使用空间 (KB)。</td>
+    </tr>
+</table>
+</br>
+
+<p>其中 <code>GC</code> 垃圾回收相关列描述如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">列</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">YGC</td>
+        <td style="text-align: center;">从应用程序启动到采样时年轻代中 GC 次数。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">YGCT</td>
+        <td style="text-align: center;">从应用程序启动到采样时年轻代中 GC 所用时间(秒)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">FGC</td>
+        <td style="text-align: center;">从应用程序启动到采样时老年代 Full GC 次数。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">FGCT</td>
+        <td style="text-align: center;">从应用程序启动到采样时老年代 Full GC 所用时间(秒)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">GCT</td>
+        <td style="text-align: center;">从应用程序启动到采样时 GC 用的总时间(秒)。</td>
+    </tr>
+</table>
+
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/32.png" alt="简要输出"></p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">列</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S0</td>
+        <td style="text-align: center;">年轻代中第一个 Survivor 已使用的占当前容量百分比。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S1</td>
+        <td style="text-align: center;">年轻代中第二个 Survivor 已使用的占当前容量百分比。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S0CMX</td>
+        <td style="text-align: center;">年轻代中第二个 Survivor 已使用的占当前容量百分比。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">S1CMX</td>
+        <td style="text-align: center;">年轻代中第二个 Survivor 的最大容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">E</td>
+        <td style="text-align: center;">年轻代中 Eden 已使用的占当前容量百分比。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">ECMX</td>
+        <td style="text-align: center;">年轻代中 Eden 的最大容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OGCMN</td>
+        <td style="text-align: center;">老年代中初始化(最小)的大小 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OGCMX</td>
+        <td style="text-align: center;">老年代的最大容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OGC</td>
+        <td style="text-align: center;">老年代当前新生成的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">O</td>
+        <td style="text-align: center;">老年代已使用的占当前容量百分比。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NGCMN</td>
+        <td style="text-align: center;">年轻代中初始化(最小)的大小 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NGCMX</td>
+        <td style="text-align: center;">年轻代的最大容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NGC</td>
+        <td style="text-align: center;">年轻代中当前的容量 (KB)。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DSS</td>
+        <td style="text-align: center;">当前需要 Survivor 的容量 (KB)（ Eden 区已满）。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">TT</td>
+        <td style="text-align: center;">持有次数限制。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MTT</td>
+        <td style="text-align: center;">最大持有次数限制。</td>
+    </tr>
+</table>
+
+
 <h4 id="3-Jstack"><a href="#3-Jstack" class="headerlink" title="3. Jstack"></a>3. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
-<p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。</p>
+<p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。注意这里的 <code>pid</code> 需要为十六进制形式，在 <code>Linux</code> 中可通过 <code>printf &#39;%x\n&#39; &lt;pid&gt;</code> 命令将对应 <code>pid</code> 转为十六进制。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查询进程堆栈信息</span>
 jstack <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 
@@ -826,22 +970,32 @@ jstack <span class="token punctuation">[</span>options<span class="token punctua
 <span class="token comment" spellcheck="true"># &lt;line num>: 限制显示行数</span>
 <span class="token comment" spellcheck="true"># &lt;pid_16>: 进程转十六进制</span>
 jstack <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">|</span> <span class="token function">grep</span> -A <span class="token operator">&lt;</span>line num<span class="token operator">></span> <span class="token operator">&lt;</span>pid_16_hex<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>jstack</code> 命令相关参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">命令</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">jstack -l (pid)</td>
+        <td style="text-align: center;">除了线程堆栈外，还显示关于锁的附加信息，这将显示每个锁的拥有者和等待者。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">jstack -e (pid)</td>
+        <td style="text-align: center;">打印线程的锁信息。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">jstack -F (pid)</td>
+        <td style="text-align: center;">当进程无响应时，强制生成线程转储，在进程卡死或无响应时非常有用。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">jstack -m (pid)</td>
+        <td style="text-align: center;">打印 Java 和本地 C/C++ 帧的混合堆栈。</td>
+    </tr>
+</table>
 
-<span class="token comment" spellcheck="true"># 转十六进制</span>
-<span class="token function">printf</span> <span class="token string">'%x\n'</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="1-l"><a href="#1-l" class="headerlink" title="(1) -l"></a>(1) -l</h5><p>除了线程堆栈外，还显示关于锁的附加信息，这将显示每个锁的拥有者和等待者。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jstack -l <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-F"><a href="#2-F" class="headerlink" title="(2) -F"></a>(2) -F</h5><p>当进程无响应时，强制生成线程转储，在进程卡死或无响应时非常有用。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jstack -F <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="3-m"><a href="#3-m" class="headerlink" title="(3) -m"></a>(3) -m</h5><p>打印 <code>Java</code> 和本地 <code>C/C++</code> 帧的混合堆栈。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jstack -m <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="4-e"><a href="#4-e" class="headerlink" title="(4) -e"></a>(4) -e</h5><p>打印线程的锁信息。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jstack -e <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h4 id="4-JMap"><a href="#4-JMap" class="headerlink" title="4. JMap"></a>4. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
 <p>这个快照通常称为 <code>heap dump</code>，它是 <code>Java</code> 堆内存的详细信息，包括对象的数量、类型、分布等，对于分析内存泄漏和性能问题非常有用。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jmap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
@@ -897,7 +1051,7 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/advance/optimize/">https://great-jin.github.io/java/advance/optimize/</a>
+                    <a href="https://great-jin.github.io/java/jvm/optimize/">https://great-jin.github.io/java/jvm/optimize/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1112,18 +1266,18 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/design/enum/">
+                <a href="/linux/docker/docker%20compose/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/38.png" class="responsive-img" alt="枚举实现优雅的验证">
+                        <img src="/album/banner/linux/docker/6.png" class="responsive-img" alt="Docker Compose基础">
                         
-                        <span class="card-title">枚举实现优雅的验证</span>
+                        <span class="card-title">Docker Compose基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java枚举实现优雅的验证模式。
+                            Docker Compose使用介绍。
                         
                     </div>
                     <div class="publish-info">
@@ -1134,8 +1288,8 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
-                                    设计模式
+                            <a href="/categories/Linux%E8%BF%90%E7%BB%B4/" class="post-category">
+                                    Linux运维
                                 </a>
                             
                             
@@ -1145,8 +1299,12 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/Linux/">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
                     </a>
                     
                 </div>
@@ -1376,7 +1534,7 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
             <!-- 版权信息. -->
             Copyright&nbsp;
             
-                <span id="year">2021-2024</span>
+                <span id="year">2021-2025</span>
             
             &nbsp;
             <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
@@ -1468,7 +1626,7 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">276.9k</span>
+                <span class="white-color">277.3k</span>
             
             
             

@@ -590,7 +590,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-29
+                    2025-01-01
                 </div>
                 
 
@@ -1014,7 +1014,6 @@
 </table>
 
 <p>以下述代码为例，在主线程调用 <code>interrupt()</code> 线程中断进而触发子线程的判断分支，由于通过 <code>Thread.currentThread()</code> 方式读取并不会清楚线程状态标识在 <code>2</code> 打印处输出结果将为 <code>true</code>。</p>
-<p>若将子线程条件判断替换为 <code>Thread.interrupted()</code>，其执行完毕后会将中断标识重置为 <code>false</code>，因此在 <code>2</code> 处输出结果也将为 <code>false</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     Thread thread <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1036,6 +1035,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"2: "</span> <span class="token operator">+</span> thread<span class="token punctuation">.</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若此时将上述示例子线程中条件判断替换为 <code>Thread.interrupted()</code>，其执行完毕后会将中断标识重置为 <code>false</code>，最终输出的结果在 <code>2</code> 处输出结果也将变为 <code>false</code>。</p>
 <h4 id="2-线程阻塞"><a href="#2-线程阻塞" class="headerlink" title="2. 线程阻塞"></a>2. 线程阻塞</h4><h5 id="1-notify"><a href="#1-notify" class="headerlink" title="(1) notify"></a>(1) notify</h5><p>在上面 <code>wait()</code> 示例中已经介绍了如何使用 <code>notify()</code> ，这里就不再过多介绍。</p>
 <h5 id="2-Condition"><a href="#2-Condition" class="headerlink" title="(2) Condition"></a>(2) Condition</h5><p>在使用 <code>synchronized</code> 实现同步块时可以通过 <code>wait()</code> 实现动态唤醒的效果，而 <code>Condition</code> 则是针对 <code>ReentrantLock</code> 而言，可达到同样效果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -1567,7 +1567,7 @@
             <!-- 版权信息. -->
             Copyright&nbsp;
             
-                <span id="year">2021-2024</span>
+                <span id="year">2021-2025</span>
             
             &nbsp;
             <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
@@ -1659,7 +1659,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">276.9k</span>
+                <span class="white-color">277.3k</span>
             
             
             
