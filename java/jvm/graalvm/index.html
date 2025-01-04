@@ -552,12 +552,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JVM%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-category">
+                                JVM虚拟机
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -566,28 +579,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2025-01-02
+                    2025-01-04
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-02
+                    2025-01-04
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -607,7 +620,45 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>对于每一位 <code>Javer</code> 而言，想必对于 <code>JVM</code> 都并不陌生，即使在实际开发中并没有深入研究，但或多或少对其仍有一定的了解。</p>
+<p>所谓 <code>JVM</code> 缩写于 <code>Java Virtual Machine</code> 即 <code>Java</code> 虚拟机，所以开发的程序都是运行于此虚拟机之前，也是 <code>Java</code> 引以为傲的特性即一次编译任意运行，作为应用程序于操作系统之间沟通的桥梁，只需安装了 <code>JRE</code> 环境即可跨平台运行。</p>
+<h4 id="1-JIT编译"><a href="#1-JIT编译" class="headerlink" title="1. JIT编译"></a>1. JIT编译</h4><p>若提到 <code>JVM</code>，那必然绕不开 <code>JIT(Just In Time)</code> 编译，故名思意即时编译。</p>
+<p>我们都知道开发的应用程序想要运行在 <code>JVM</code> 之上，需要先将 <code>.java</code> 文件编译为 <code>.class</code> 字节文件。当编译完成之后，程序的字节文件则可在任意的 <code>JVM</code> 环境上运行，由 <code>JVM</code> 负责解析字节文件交由操作系统执行。</p>
+<p>让我们将目光聚焦到 <code>JVM</code> 与操作系统交互上，操作系统并不认识编译之后的 <code>.class</code> 文件，需要由 <code>JVM</code> 承担其转译的工作，但通过此方式虽达到了效果但性能却并不令人满意。</p>
+<p>那有什么方式能够解决呢？最简单的方式即将编译后的字节文件再次转译为操作系统可识别的底层汇编机器码，则操作系统可直接进行执行，省去了 <code>JVM</code> 解释的这一动作，而这个过程即称为 <code>JIT</code> 编译。</p>
+<h4 id="2-编译类型"><a href="#2-编译类型" class="headerlink" title="2. 编译类型"></a>2. 编译类型</h4><p>简单来讲，<code>JIT</code> 的工作即将字节文件转化为操作系统可直接执行的机器码。</p>
+<p>在之前介绍垃圾回收器的时候提到过程序的启动支持 <code>Client</code> 与 <code>Server</code> 两种模式，而同样 <code>JIT</code> 对应的也有 <code>C1</code> 与 <code>C2</code> 模式。</p>
+<p>二者的区别在于 <code>Server</code> 模式即 <code>C2</code> 相对于 <code>C1</code> 而言在解析编译为机器码时做出更多的编译优化，对于长期运行于服务器上的引用而言相对更为合适。</p>
+<h4 id="3-编译优化"><a href="#3-编译优化" class="headerlink" title="3. 编译优化"></a>3. 编译优化</h4><p>但在具体的场景中相对更为复杂，两种编译模式更多的是搭配进行。</p>
+<p>当我们将编写程序编译为字节文件时，此时编译执行的策略是 <code>C1</code> 模式，即与实际编写的代码并无差异。而在 <code>JVM</code> 实时运行过程中，当 <code>JVM</code> 检测到某一代码块的执行频率提高时，则会动态基于 C2 模式实时调整优化，这也是即时编译名称的由来。</p>
+<p>对于 <code>JIT</code> 编译的优化可谓门道颇深，在 <code>《Effective Java》</code> 第 <code>66</code> 节中也提到 <code>JIT</code> 优化中的一种 <code>hoisting</code> 即优化提升，感兴趣的可自行查看原文。</p>
+<p>这里举个示例进行演示:</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述示例中循环执行了 <code>1000</code> 次打印输出，按照直觉而言 <code>for</code> 循环结束判断的表达式 <code>10*100</code> 每次循环都执行计算一次，但实际上并非如此。</p>
+<p>正是由于 JIT 编译优化的存在的，实际运行生效的结果将为下述代码，即 <code>hoisting</code> 优化提升会将计算前置，从而整个循环过程计算只会执行一次。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-GraalVM"><a href="#4-GraalVM" class="headerlink" title="4. GraalVM"></a>4. GraalVM</h4><p>那讲了这么多 <code>JIT</code> 究竟和 <code>GraalVM</code> 又有什么关系呢？</p>
+<p>我们都知道 <code>Java</code> 已诞生发展数十年，且随着技术的不断演进想要在原有的 <code>JIT</code> 基础之上提出更多的特性以及优化所需要付出成本是十分高昂的，那最简单的方式就是推到重来。</p>
+<p>这也是 <code>GraalVM</code> 所诞生的由来，同时不同与 <code>JVM</code> 的有 <code>C++</code> 实现，<code>GraalVM</code> 更是实现了自举即其通过 <code>Java</code> 进行开发，属于套娃了。</p>
+<p><code>GraalVM</code> 同样具备 <code>C2</code> 中编译优化特性，同时引入新的虚拟机接口规范 <code>JVMCI(JVM Compiler Interface)</code>，拥有更良好的设计规范从而降低维护成本。</p>
+<p>更多的 <code>GraalVM</code> 信息这里就不再详细展开了，如果感兴趣的可以去官网或 <code>GitHub</code> 仓库上查看具体的设计实现：<a target="_blank" rel="noopener" href="https://github.com/oracle/graal">GraalVM GitHub</a>。</p>
+<hr>
+<p><strong>参考链接</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.baeldung.com/graal-java-jit-compiler">Deep Dive Into the New Java JIT Compiler – Graal</a></li>
+</ol>
+
                 
             </div>
             <hr/>
@@ -633,7 +684,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/todo/java/graalvm.html">https://great-jin.github.io/todo/java/graalvm.html</a>
+                    <a href="https://great-jin.github.io/java/jvm/graalvm/">https://great-jin.github.io/java/jvm/graalvm/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -670,7 +721,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -845,7 +900,7 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/todo/java/graalvm.html">
+                <a href="/java/jvm/graalvm/">
                     <div class="card-image">
                         
                         <img src="/album/banner/java/51.png" class="responsive-img" alt="GraalVM，自举的诞生！">
@@ -861,17 +916,29 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-04
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JVM%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-category">
+                                    JVM虚拟机
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -879,36 +946,47 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/todo/java/graalvm.html">
+                <a href="/java/collection/map/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/51.png" class="responsive-img" alt="GraalVM，自举的诞生！">
+                        <img src="/album/banner/java/50.png" class="responsive-img" alt="不可不知的 Map 技巧">
                         
-                        <span class="card-title">GraalVM，自举的诞生！</span>
+                        <span class="card-title">不可不知的 Map 技巧</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            GraalVM，自举的诞生！。
+                            不可不知的 Map 开发技巧。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-12-15
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            烽火戏诸诸诸侯
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JAVA%E9%9B%86%E5%90%88/" class="post-category">
+                                    JAVA集合
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -1179,7 +1257,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">277.7k</span>
+                <span class="white-color">278.8k</span>
             
             
             

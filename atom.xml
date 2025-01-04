@@ -6,7 +6,7 @@
   <link href="https://great-jin.github.io/atom.xml" rel="self"/>
   
   <link href="https://great-jin.github.io/"/>
-  <updated>2024-12-15T12:44:33.994Z</updated>
+  <updated>2025-01-04T13:43:59.787Z</updated>
   <id>https://great-jin.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GraalVM，自举的诞生！</title>
+    <link href="https://great-jin.github.io/java/jvm/graalvm/"/>
+    <id>https://great-jin.github.io/java/jvm/graalvm/</id>
+    <published>2025-01-03T16:00:00.000Z</published>
+    <updated>2025-01-04T13:43:59.787Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于每一位 <code>Javer</code> 而言，想必对于 <code>JVM</code> 都并不陌生，即使在实际开发中并没有深入研究，但或多或少对其仍有一定的了解。</p><p>所谓 <code>JVM</code> 缩写于 <code>Java Virtual Machine</code> 即 <code>Java</code> 虚拟机，所以开发的程序都是运行于此虚拟机之前，也是 <code>Java</code> 引以为傲的特性即一次编译任意运行，作为应用程序于操作系统之间沟通的桥梁，只需安装了 <code>JRE</code> 环境即可跨平台运行。</p><h4 id="1-JIT编译"><a href="#1-JIT编译" class="headerlink" title="1. JIT编译"></a>1. JIT编译</h4><p>若提到 <code>JVM</code>，那必然绕不开 <code>JIT(Just In Time)</code> 编译，故名思意即时编译。</p><p>我们都知道开发的应用程序想要运行在 <code>JVM</code> 之上，需要先将 <code>.java</code> 文件编译为 <code>.class</code> 字节文件。当编译完成之后，程序的字节文件则可在任意的 <code>JVM</code> 环境上运行，由 <code>JVM</code> 负责解析字节文件交由操作系统执行。</p><p>让我们将目光聚焦到 <code>JVM</code> 与操作系统交互上，操作系统并不认识编译之后的 <code>.class</code> 文件，需要由 <code>JVM</code> 承担其转译的工作，但通过此方式虽达到了效果但性能却并不令人满意。</p><p>那有什么方式能够解决呢？最简单的方式即将编译后的字节文件再次转译为操作系统可识别的底层汇编机器码，则操作系统可直接进行执行，省去了 <code>JVM</code> 解释的这一动作，而这个过程即称为 <code>JIT</code> 编译。</p><h4 id="2-编译类型"><a href="#2-编译类型" class="headerlink" title="2. 编译类型"></a>2. 编译类型</h4><p>简单来讲，<code>JIT</code> 的工作即将字节文件转化为操作系统可直接执行的机器码。</p><p>在之前介绍垃圾回收器的时候提到过程序的启动支持 <code>Client</code> 与 <code>Server</code> 两种模式，而同样 <code>JIT</code> 对应的也有 <code>C1</code> 与 <code>C2</code> 模式。</p><p>二者的区别在于 <code>Server</code> 模式即 <code>C2</code> 相对于 <code>C1</code> 而言在解析编译为机器码时做出更多的编译优化，对于长期运行于服务器上的引用而言相对更为合适。</p><h4 id="3-编译优化"><a href="#3-编译优化" class="headerlink" title="3. 编译优化"></a>3. 编译优化</h4><p>但在具体的场景中相对更为复杂，两种编译模式更多的是搭配进行。</p><p>当我们将编写程序编译为字节文件时，此时编译执行的策略是 <code>C1</code> 模式，即与实际编写的代码并无差异。而在 <code>JVM</code> 实时运行过程中，当 <code>JVM</code> 检测到某一代码块的执行频率提高时，则会动态基于 C2 模式实时调整优化，这也是即时编译名称的由来。</p><p>对于 <code>JIT</code> 编译的优化可谓门道颇深，在 <code>《Effective Java》</code> 第 <code>66</code> 节中也提到 <code>JIT</code> 优化中的一种 <code>hoisting</code> 即优化提升，感兴趣的可自行查看原文。</p><p>这里举个示例进行演示:</p><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>上述示例中循环执行了 <code>1000</code> 次打印输出，按照直觉而言 <code>for</code> 循环结束判断的表达式 <code>10*100</code> 每次循环都执行计算一次，但实际上并非如此。</p><p>正是由于 JIT 编译优化的存在的，实际运行生效的结果将为下述代码，即 <code>hoisting</code> 优化提升会将计算前置，从而整个循环过程计算只会执行一次。</p><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span>    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="4-GraalVM"><a href="#4-GraalVM" class="headerlink" title="4. GraalVM"></a>4. GraalVM</h4><p>那讲了这么多 <code>JIT</code> 究竟和 <code>GraalVM</code> 又有什么关系呢？</p><p>我们都知道 <code>Java</code> 已诞生发展数十年，且随着技术的不断演进想要在原有的 <code>JIT</code> 基础之上提出更多的特性以及优化所需要付出成本是十分高昂的，那最简单的方式就是推到重来。</p><p>这也是 <code>GraalVM</code> 所诞生的由来，同时不同与 <code>JVM</code> 的有 <code>C++</code> 实现，<code>GraalVM</code> 更是实现了自举即其通过 <code>Java</code> 进行开发，属于套娃了。</p><p><code>GraalVM</code> 同样具备 <code>C2</code> 中编译优化特性，同时引入新的虚拟机接口规范 <code>JVMCI(JVM Compiler Interface)</code>，拥有更良好的设计规范从而降低维护成本。</p><p>更多的 <code>GraalVM</code> 信息这里就不再详细展开了，如果感兴趣的可以去官网或 <code>GitHub</code> 仓库上查看具体的设计实现：<a href="https://github.com/oracle/graal">GraalVM GitHub</a>。</p><hr><p><strong>参考链接</strong></p><ol><li><a href="https://www.baeldung.com/graal-java-jit-compiler">Deep Dive Into the New Java JIT Compiler – Graal</a></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;对于每一位 &lt;code&gt;Javer&lt;/code&gt; 而言，想必对于 &lt;code&gt;JVM&lt;/code&gt; 都并不陌生，即使在实际开发中并没有深入研究，但或多或少对其仍有一定的了解。&lt;/p&gt;
+&lt;p&gt;所谓 &lt;code&gt;JVM&lt;/code&gt; 缩写于 &lt;code&gt;Java Virtual</summary>
+      
+    
+    
+    
+    <category term="JVM虚拟机" scheme="https://great-jin.github.io/categories/JVM%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+    <category term="JAVA" scheme="https://great-jin.github.io/tags/JAVA/"/>
+    
+  </entry>
   
   <entry>
     <title>不可不知的 Map 技巧</title>
@@ -482,31 +507,6 @@
     
     
     <category term="JAVA" scheme="https://great-jin.github.io/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Kafka零拷贝详解</title>
-    <link href="https://great-jin.github.io/db/kafka/zerocopy/"/>
-    <id>https://great-jin.github.io/db/kafka/zerocopy/</id>
-    <published>2024-04-13T16:00:00.000Z</published>
-    <updated>2024-12-15T08:57:10.683Z</updated>
-    
-    <content type="html"><![CDATA[<p>在 <code>Kafka</code> 的数据传输过程中，零拷贝为数据传输的高性能扮演着至关重要的角色，今天就让我们来揭开零拷贝的神秘面纱。</p><h3 id="一、数据读写"><a href="#一、数据读写" class="headerlink" title="一、数据读写"></a>一、数据读写</h3><h4 id="1-传统方式"><a href="#1-传统方式" class="headerlink" title="1. 传统方式"></a>1. 传统方式</h4><p>首先让我们看一下不做任何特殊处理的数据流读取方式，以文件下载请求为例，其大致流程如下：</p><ul><li>用户端发送 <code>read()</code> 请求读取数据；</li><li><code>CPU</code> 在接收到该请求后向磁盘发出 <code>IO</code> 请求；</li><li>磁盘接收到 <code>CPU</code> 发出的 <code>IO</code> 请求后读取数据并存入磁盘缓存区，并在完成后向 <code>CPU</code> 发送响应；</li><li><code>CPU</code> 接收到响应后读取磁盘缓存区数据至 <code>Page Cache</code>;</li><li>读取至 <code>Page Cache</code> 后需要再次拷贝至用户缓存区；<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/1.png"></li></ul><p>了解大致流程之后你可能会疑惑，为什么数据读取至磁盘缓冲区之后 <code>CPU</code> 不直接拷贝至用户缓存区，而是要先拷贝到 <code>Page Cache</code>？原因其实也很简单，因为用户缓存区权限相对较低，无法直接与磁盘交互，必须通过内核层进行中转，而 <code>Page Cache</code> 则是内核态的一种缓存优化方式。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/2.png"></p><h4 id="2-DMA技术"><a href="#2-DMA技术" class="headerlink" title="2. DMA技术"></a>2. DMA技术</h4><p>在上述的流程中可以看到，在整个数据的拷贝过程中 <code>CPU</code> 都占据着主导地位，即干了所有的重活并一直处于阻塞状态，在此期间 <code>CPU</code> 将无法处理其它任务。很显然这种方式相对较为低效，因此 <code>DMA(Direct Memory Access)</code> 应运而生，它接替了 <code>CPU</code> 在 <code>IO</code> 操作中大部分繁重搬运任务，而 <code>CPU</code> 的核心任务则为确定的需要传输的数据以及数据的去向。</p><blockquote><p>同样以之前的 <code>read()</code> 读取为例，与之前的不同的区别如下：</p></blockquote><ul><li><code>CPU</code> 接收到 <code>IO</code> 请求后转发至 <code>DMA</code>，由其向磁盘发出 <code>IO</code> 请求；</li><li>磁盘读取完成后通知 <code>DMA</code> 执行拷贝，此过程 <code>CPU</code> 不参与搬运任务；<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/3.png"></li></ul><p>可以看到以一次读取为例，<code>CPU</code> 的拷贝频次由 <code>2</code> 次降为 <code>1</code> 次，而通常读取伴随着写入操作，也就意味着一次完整的读写操作就能让 <code>CPU</code> 闲置出 <code>2</code> 两次搬运操作从而执行其它任务。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/4.png"></p><h4 id="3-数据缓冲"><a href="#3-数据缓冲" class="headerlink" title="3. 数据缓冲"></a>3. 数据缓冲</h4><p>上述提到的两种方式中都涉及到一个概念——内核缓冲区 <code>(Page Cache)</code>，我们都知道内存的读取效率远超于磁盘。因此，若能够在内存中操作磁盘数据效率将大大提升，而 <code>Page Cache</code> 则是磁盘数据在内存中的暂存空间。</p><p>通过 <code>Page Cache</code> 将磁盘上的数据缓存在内存中，系统可以避免频繁地访问慢速的磁盘，从而减少了 <code>I/O</code> 操作的次数，加快了数据的访问速度。当进程再次访问相同的数据时，系统可以直接从 <code>Page Cache</code> 中读取，而不必再次从磁盘中加载，从而节省了大量的时间。</p><p><code>Page Cache</code> 是一种按需加载的缓存机制，它会根据系统内存的可用情况来管理缓存。当系统内存不足时，操作系统会根据一定的策略来释放 <code>Page Cache</code> 中的部分数据，以确保系统的正常运行。</p><h3 id="二、模式优化"><a href="#二、模式优化" class="headerlink" title="二、模式优化"></a>二、模式优化</h3><h4 id="1-内存映射"><a href="#1-内存映射" class="headerlink" title="1. 内存映射"></a>1. 内存映射</h4><p>虽然 <code>DMA</code> 技术降低了 <code>CPU</code> 负载压力，让其能够执行更多的系统任务，但针对于 <code>IO</code> 操作读写任务而言，整体流程上的搬运工作并没有减轻，一次完成的读写操作仍需要搬运 <code>4</code> 次。因此，想要提高 <code>IO</code> 流程的效率，需要的是减少重复数据拷贝工作。</p><p>由于用户层与内核、磁盘之间的权限问题，导致同一份数据在此期间执行了多次搬运拷贝，以之前的提到的图示为例，如果用户层能够直接读取内核层数据，那么 <code>CPU</code> 即可省去将数据由内核层拷贝至用户层这一操作。</p><p>而 <code>mmap(Memory-mapped file support)</code> 内存映射则正是实现了这一点，其将内核缓冲区里的数据映射到用户层，从而实现在用户层即可访问内核层数据，也就节省了一次 <code>CPU</code> 数据拷贝。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/6.png"></p><h4 id="2-sendfile"><a href="#2-sendfile" class="headerlink" title="2. sendfile"></a>2. sendfile</h4><p>在 <code>linux</code> 中提供了专门的文件传输函数 <code>sendfile()</code> 可用于替代 <code>read()</code> 与 <code>write()</code> 操作。该函数能够直接实现两个内核态的数据拷贝，从而减少了 <code>1</code> 次用户态层级切换，在 <code>Java</code> 的 <code>NIO</code> 中也涉及到该函数的封装调用，后面会详细介绍。</p><p>在 <code>Nginx</code> 的配置文件中经常可以看到下述配置，其即代表使用 <code>sendfile</code> 执行传输。</p><pre class="line-numbers language-conf"><code class="language-conf">http {    sendfile        on;}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h3 id="三、Java实现"><a href="#三、Java实现" class="headerlink" title="三、Java实现"></a>三、Java实现</h3><h4 id="1-NIO接口"><a href="#1-NIO接口" class="headerlink" title="1. NIO接口"></a>1. NIO接口</h4><p>在上述提到 <code>linux</code> 中提供了 <code>sendfile()</code> 替换了 <code>read()</code> 和 <code>write()</code> 从而减少状态的切换，在 <code>NIO</code> 中的 <code>FileChannel</code> 正利用了这一方式提高了传输效率。</p><p>在 <code>FileChannelImpl</code> 的 <code>transferTo()</code> 方法中正是封装利用这一特性执行数据的传输，通过下述图示了解其类的层级结构。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/10.png"></p><p><code>transferTo()</code> 方法的内部实现逻辑此处不具体展开描述，感兴趣的朋友可以自行查看 <code>JDk</code> 源码，这里以简洁的图示描述其执行调用路径。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/11.png"></p><h4 id="2-源码解读"><a href="#2-源码解读" class="headerlink" title="2. 源码解读"></a>2. 源码解读</h4><p><code>NIO</code> 的 <code>transferTo()</code> 方法调用执行最终定格在 <code>transferTo0()</code> 方法，可以看到该方法为 <code>native</code> 关键字声明，表明其为原生 <code>c++</code> 方式实现。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/12.png"></p><p>为了查看其具体内容，我们需要查看 <code>openjdk</code> 的源码，此版本为开源版本，而日常使用的并不开源也就无法查看具体 <code>native</code> 实现逻辑，具体的实现代码内容链接：<a href="https://hg.openjdk.org/jdk8/jdk8/jdk/file/687fd7c7986d/src/solaris/native/sun/nio/ch/FileChannelImpl.c">c++源码实现</a>。</p><p>这里为了更方便查看我截图部分关键代码，可以看到在 <code>Linux</code> 系统下其正是通过调用 <code>sendfile()</code> 实现。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/13.png"></p><h3 id="四、大文件传输"><a href="#四、大文件传输" class="headerlink" title="四、大文件传输"></a>四、大文件传输</h3><h4 id="1-直接IO"><a href="#1-直接IO" class="headerlink" title="1. 直接IO"></a>1. 直接IO</h4><p>之前提到了 <code>Page Cache</code> 技术通过内存方式提高了数据读取效率，但对于大文件的场景下，显然此方式不太合适。若在传输的大文件时仍采取 <code>Page Cache</code> 暂存，显然内存空间是及其有限的且不论能否完整存入，其还可能触发空间的回收导致其他任务缓存的小文件内容遭到回收。</p><p>因此，对于大文件的数据读取传输，更为高效的方式即通过 <code>直接IO</code> 将磁盘缓冲区文件直接拷贝至用户缓存区。而针对大文件的直接 <code>IO</code> 方式通常使用异步进行，当完成数据到用户缓冲区的拷贝后通知用户读取数据，在此之前 <code>CPU</code> 可执行其它进程任务。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/copy/7.png"></p><hr><p><strong>参考链接</strong></p><ol><li><a href="https://mp.weixin.qq.com/s/FgBCop2zFfcX5ZszE0NoCQ">傻瓜三歪让我教他「零拷贝」</a></li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;在 &lt;code&gt;Kafka&lt;/code&gt; 的数据传输过程中，零拷贝为数据传输的高性能扮演着至关重要的角色，今天就让我们来揭开零拷贝的神秘面纱。&lt;/p&gt;
-&lt;h3 id=&quot;一、数据读写&quot;&gt;&lt;a href=&quot;#一、数据读写&quot; class=&quot;headerlink&quot; title=&quot;一</summary>
-      
-    
-    
-    
-    <category term="大数据" scheme="https://great-jin.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
-    
-    <category term="Kafka" scheme="https://great-jin.github.io/tags/Kafka/"/>
     
   </entry>
   
