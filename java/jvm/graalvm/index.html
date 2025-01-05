@@ -586,7 +586,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-04
+                    2025-01-05
                 </div>
                 
 
@@ -630,7 +630,7 @@
 <p>在之前介绍垃圾回收器的时候提到过程序的启动支持 <code>Client</code> 与 <code>Server</code> 两种模式，而同样 <code>JIT</code> 对应的也有 <code>C1</code> 与 <code>C2</code> 模式。</p>
 <p>二者的区别在于 <code>Server</code> 模式即 <code>C2</code> 相对于 <code>C1</code> 而言在解析编译为机器码时做出更多的编译优化，对于长期运行于服务器上的引用而言相对更为合适。</p>
 <h4 id="3-编译优化"><a href="#3-编译优化" class="headerlink" title="3. 编译优化"></a>3. 编译优化</h4><p>但在具体的场景中相对更为复杂，两种编译模式更多的是搭配进行。</p>
-<p>当我们将编写程序编译为字节文件时，此时编译执行的策略是 <code>C1</code> 模式，即与实际编写的代码并无差异。而在 <code>JVM</code> 实时运行过程中，当 <code>JVM</code> 检测到某一代码块的执行频率提高时，则会动态基于 C2 模式实时调整优化，这也是即时编译名称的由来。</p>
+<p>当我们将编写程序编译为字节文件时，此时编译执行的策略是 <code>C1</code> 模式，即与实际编写的代码并无差异。而在 <code>JVM</code> 实时运行过程中，当 <code>JVM</code> 检测到某一代码块的执行频率提高时，则会动态基于 <code>C2</code> 模式实时调整优化，这也是即时编译名称的由来。</p>
 <p>对于 <code>JIT</code> 编译的优化可谓门道颇深，在 <code>《Effective Java》</code> 第 <code>66</code> 节中也提到 <code>JIT</code> 优化中的一种 <code>hoisting</code> 即优化提升，感兴趣的可自行查看原文。</p>
 <p>这里举个示例进行演示:</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -640,7 +640,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述示例中循环执行了 <code>1000</code> 次打印输出，按照直觉而言 <code>for</code> 循环结束判断的表达式 <code>10*100</code> 每次循环都执行计算一次，但实际上并非如此。</p>
-<p>正是由于 JIT 编译优化的存在的，实际运行生效的结果将为下述代码，即 <code>hoisting</code> 优化提升会将计算前置，从而整个循环过程计算只会执行一次。</p>
+<p>正是由于 <code>JIT</code> 编译优化的存在的，实际运行生效的结果将为下述代码，即 <code>hoisting</code> 优化提升会将计算前置，从而整个循环过程计算只会执行一次。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -648,6 +648,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>想要了解更多的推荐去看周志明老师出版的 <code>《深入理解 Java 虚拟机》</code>，在第 <code>11</code> 章详细介绍了 <code>JIT</code> 内容。</p>
 <h4 id="4-GraalVM"><a href="#4-GraalVM" class="headerlink" title="4. GraalVM"></a>4. GraalVM</h4><p>那讲了这么多 <code>JIT</code> 究竟和 <code>GraalVM</code> 又有什么关系呢？</p>
 <p>我们都知道 <code>Java</code> 已诞生发展数十年，且随着技术的不断演进想要在原有的 <code>JIT</code> 基础之上提出更多的特性以及优化所需要付出成本是十分高昂的，那最简单的方式就是推到重来。</p>
 <p>这也是 <code>GraalVM</code> 所诞生的由来，同时不同与 <code>JVM</code> 的有 <code>C++</code> 实现，<code>GraalVM</code> 更是实现了自举即其通过 <code>Java</code> 进行开发，属于套娃了。</p>
@@ -1257,7 +1258,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">279.1k</span>
+                <span class="white-color">279.2k</span>
             
             
             
