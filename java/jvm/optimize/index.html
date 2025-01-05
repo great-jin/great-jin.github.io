@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-04
+                    2025-01-05
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    12 分
                 </div>
                 
 
@@ -775,33 +775,224 @@ java -jar myapp.jar -Xmx1024m
 
 
 
-<h3 id="三、JDK工具"><a href="#三、JDK工具" class="headerlink" title="三、JDK工具"></a>三、JDK工具</h3><h4 id="1-Jinfo"><a href="#1-Jinfo" class="headerlink" title="1. Jinfo"></a>1. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>Java</code> 虚拟机（<code>JVM</code>）的配置信息。</p>
+<h3 id="三、服务模式"><a href="#三、服务模式" class="headerlink" title="三、服务模式"></a>三、服务模式</h3><h4 id="1-启动模式"><a href="#1-启动模式" class="headerlink" title="1. 启动模式"></a>1. 启动模式</h4><p>自 <code>Java 9</code> 开始 <code>JDK</code> 默认使用的垃圾收集器取决于所选择的 <code>JVM</code> 启动模式，有两种启动模式可供选择：</p>
+<blockquote>
+<p><strong>服务器模式</strong>不同 <code>JDK</code> 版本默认垃圾收集器如下：</p>
+</blockquote>
+<ul>
+<li><code>Server</code> 模式，这是 <code>JDK</code> 默认的启动模式，适用于长时间运行的服务器应用程序。</li>
+<li><code>Java 8</code> 及之前的版本，默认使用 <code>Parallel</code> （基于标记复制） 垃圾收集器。</li>
+<li><code>Java 9</code> 及之后默认使用的垃圾收集器是 <code>G1</code> 垃圾收集器。</li>
+</ul>
+<blockquote>
+<p><strong>客户端模式</strong>不同 <code>JDK</code> 版本默认垃圾收集器如下：</p>
+</blockquote>
+<ul>
+<li><code>Client</code> 模式，这是面向桌面应用程序和短期运行的应用程序的启动模式。</li>
+<li><code>Java 8</code> 及之前的版本，默认使用 <code>Serial</code> （基于标记清除）垃圾收集器。</li>
+<li><code>Java 9</code> 及之后的版本，默认使用 <code>Serial/Serial Old</code> 垃圾收集器组合。</li>
+</ul>
+<h4 id="2-模式查看"><a href="#2-模式查看" class="headerlink" title="2. 模式查看"></a>2. 模式查看</h4><p>那如何查看当前 <code>JVM</code> 的启动方式呢？方法其实很简单直接通过 <code>java -version</code> 命令即可。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/11.png"></p>
+<p>可以看到上图的最后一行中有 <code>64-Bit Server VM</code> 字样，即代表当前 <code>JVM</code> 默认的启动模式为服务器模式，简单的讲即当前通过 <code>java -jar</code> 命令运行的程序其 <code>JVM</code> 模式为服务器模式。</p>
+<p>而针对正在运行中的程序，则可以通过 <code>jcmd</code> 命令进行查看，命令格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jcmd <span class="token operator">&lt;</span>pid<span class="token operator">></span> VM.version
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>执行后可以看到返回的信息和上述 <code>java -version</code> 结果类似，同样为 <code>Server VM</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/12.png"></p>
+<p>如果你不想以默认的模式启动，则可以在执行运行命令时通过 <code>-client</code> 或 <code>-server</code> 指定模式。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 以客户端模式启动</span>
+java -client -jar test.jar
+
+<span class="token comment" spellcheck="true"># 以服务器模式启动</span>
+java -server -jar test.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-应用选择"><a href="#3-应用选择" class="headerlink" title="3. 应用选择"></a>3. 应用选择</h4><p>在上面的内容中洋洋洒洒的介绍了一系列垃圾回收器，那在实际的开发中，<code>JVM</code> 又是如何选择垃圾回收器呢？</p>
+<p>其实很简单，<code>JVM</code> 使用的垃圾回收器跟 <code>JDK</code> 版本息息相关，对应的版本参照下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">JDK 版本</td>
+        <th style="text-align: center;">默认回收器</td>
+        <th style="text-align: center;">可选回收器</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JDK 8</td>
+        <td style="text-align: center;">Parallel GC</td>
+        <td style="text-align: center;">Serial GC、CMS</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JDK 9</td>
+        <td style="text-align: center;">G1 GC</td>
+        <td style="text-align: center;">Parallel GC、CMS</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JDK 11</td>
+        <td style="text-align: center;">G1 GC</td>
+        <td style="text-align: center;">Serial GC、Parallel GC</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JDK 17</td>
+        <td style="text-align: center;">G1 GC</td>
+        <td style="text-align: center;">ZGC、Shenandoah GC</td>
+    </tr>
+</table>
+</br>
+
+<p>可以看到在 <code>JDK 8</code> 之后 <code>G1 GC</code> 成为了默认 <code>JVM</code> 垃圾回收器，同时从 <code>JDK 11</code> 开始 <code>CMS</code> 已被标记为弃用。而 <code>ZGC</code> 在 <code>JDK 11</code> 中首次引入，经过多个版本的迭代，在 <code>JDK 17</code> 中已经发展完善拥有客观的性能。</p>
+<p>如果想要更换默认生效的垃圾回收器，可以通过 <code>-XX:+Use</code> 命令进行指定。</p>
+<p>例如在 <code>JDK 17</code> 中 <code>JVM</code> 默认生效的垃圾回收器为 <code>G1 GC</code>，那么在启动程序时，可通过下述命令将默认生效的垃圾回收器替换为 <code>ZGC</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 使用 ZGC </span>
+java -XX:+UseZGC -jar app.jar   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="四、JDK工具"><a href="#四、JDK工具" class="headerlink" title="四、JDK工具"></a>四、JDK工具</h3><h4 id="1-Jinfo"><a href="#1-Jinfo" class="headerlink" title="1. Jinfo"></a>1. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>Java</code> 虚拟机（<code>JVM</code>）的配置信息。</p>
 <p>通过 <code>jinfo</code> 可以获取和修改正在运行的 <code>Java</code> 进程的虚拟机配置参数，对于调优和诊断 <code>Java</code> 应用程序是很有帮助的。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看进程的虚拟机参数信息</span>
 jinfo <span class="token operator">&lt;</span>options<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h5 id="1-flags"><a href="#1-flags" class="headerlink" title="(1) flags"></a>(1) flags</h5><p>显示所有可用的虚拟机参数及其当前值。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jinfo -flags <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/1.png"></p>
-<h5 id="2-flag"><a href="#2-flag" class="headerlink" title="(2) flag"></a>(2) flag</h5><p>显示指定标志的值。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jinfo -flag <span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<p>其中 <code>options</code> 可选参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-flag</td>
+        <td style="text-align: center;">显示所有可用的虚拟机参数及其当前值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-flag (name)</td>
+        <td style="text-align: center;">显示虚拟机指定参数的值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-flag [+|-] (name)</td>
+        <td style="text-align: center;">启用或禁用指定的标志。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-sysprops</td>
+        <td style="text-align: center;">显示 Java 系统属性的值。</td>
+    </tr>
+</table>
+</br>
 
-<span class="token comment" spellcheck="true"># 查看 pid 为 123 的 ThreadStackSize 参数信息</span>
-<span class="token comment" spellcheck="true"># 输出: -XX:ThreadStackSize=1024</span>
-jinfo -flag ThreadStackSize 123
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-flag"><a href="#3-flag" class="headerlink" title="(3) -flag [+|-]"></a>(3) -flag [+|-]</h5><p>启用或禁用指定的标志。</p>
+<p>例如下图中即显示进程 <code>22788</code> 进程所有虚拟机参数。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/1.png"></p>
+<p>同时可以通过下述方式动态调整进程的执行虚拟机参数。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 开启配置</span>
 jinfo -flag +<span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 
 <span class="token comment" spellcheck="true"># 关闭配置</span>
 jinfo -flag -<span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-sysprops"><a href="#4-sysprops" class="headerlink" title="(4) sysprops"></a>(4) sysprops</h5><p>显示 <code>Java</code> 系统属性的值。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jinfo -sysprops <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<h4 id="2-JMap"><a href="#2-JMap" class="headerlink" title="2. JMap"></a>2. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
+<p>这个快照通常称为 <code>heap dump</code>，它是 <code>Java</code> 堆内存的详细信息，包括对象的数量、类型、分布等，对于分析内存泄漏和性能问题非常有用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="2-Jstat"><a href="#2-Jstat" class="headerlink" title="2. Jstat"></a>2. Jstat</h4><p><code>jstat</code> 是 <code>JDK</code> 中的一个命令行工具，用于监视 <code>Java</code> 虚拟机 <code>(JVM)</code> 的各种统计信息。</p>
+<p>其中 <code>options</code> 可选参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-heap</td>
+        <td style="text-align: center;">打印堆内存的概要信息，包括堆的使用情况和配置。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-histo</td>
+        <td style="text-align: center;">打印堆内存中对象的直方图，显示每个类的实例数量和占用的内存大小。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-F</td>
+        <td style="text-align: center;">当进程无响应时，强制执行。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-dump</td>
+        <td style="text-align: center;">生成堆内存信息文件。</td>
+    </tr>
+</table>
+</br>
+
+<p>通过 <code>-heap</code> 得到堆内存信息如下图所示，其中参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MinHeapFreeRatio</td>
+        <td style="text-align: center;">设置堆中最小空闲空间的比例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MaxHeapFreeRatio</td>
+        <td style="text-align: center;">设置堆中最大空闲空间的比例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MaxHeapSize</td>
+        <td style="text-align: center;">JVM 堆的最大大小，即堆内存的最大限制。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NewSize</td>
+        <td style="text-align: center;">年轻代的初始大小。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MaxNewSize</td>
+        <td style="text-align: center;">年轻代的最大值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">OldSize</td>
+        <td style="text-align: center;">老年代的初始大小。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NewRatio</td>
+        <td style="text-align: center;">年轻代与老年代的大小比例，默认 1:2。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">SurvivorRatio</td>
+        <td style="text-align: center;">Eden 与 Survivor 的比例，默认 8:2。</td>
+    </tr>
+</table>
+
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/3.png"></p>
+<p>在通过 <code>-dump</code> 参数生成文件后，这里推送意见在线文件分析网站：<code>https://heaphero.io/index.jsp</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmap -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>export_path<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># 生成堆栈信息日志</span>
+jmap -dump:format<span class="token operator">=</span>b,file<span class="token operator">=</span>./dump.bin 1234
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-Jstack"><a href="#3-Jstack" class="headerlink" title="3. Jstack"></a>3. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
+<p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。注意这里的 <code>pid</code> 需要为十六进制形式，在 <code>Linux</code> 中可通过 <code>printf &#39;%x\n&#39; &lt;pid&gt;</code> 命令将对应 <code>pid</code> 转为十六进制。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查询进程堆栈信息</span>
+jstack <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># &lt;line num>: 限制显示行数</span>
+<span class="token comment" spellcheck="true"># &lt;pid_16>: 进程转十六进制</span>
+jstack <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">|</span> <span class="token function">grep</span> -A <span class="token operator">&lt;</span>line num<span class="token operator">></span> <span class="token operator">&lt;</span>pid_16_hex<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中 <code>options</code> 可选参数参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-l</td>
+        <td style="text-align: center;">除了线程堆栈外，还显示关于锁的附加信息，这将显示每个锁的拥有者和等待者。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-e</td>
+        <td style="text-align: center;">打印线程的锁信息。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-F</td>
+        <td style="text-align: center;">当进程无响应时，强制生成线程转储，在进程卡死或无响应时非常有用。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">-m</td>
+        <td style="text-align: center;">打印 Java 和本地 C/C++ 帧的混合堆栈。</td>
+    </tr>
+</table>
+
+
+<h4 id="4-Jstat"><a href="#4-Jstat" class="headerlink" title="4. Jstat"></a>4. Jstat</h4><p><code>jstat</code> 是 <code>JDK</code> 中的一个命令行工具，用于监视 <code>Java</code> 虚拟机 <code>(JVM)</code> 的各种统计信息。</p>
 <p>它提供了对堆内存、垃圾回收、类装载、<code>JIT</code> 编译等方面的实时性能数据，帮助开发人员和系统管理员诊断和分析 <code>Java</code> 应用程序的性能问题。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># &lt;pid>: jps process id</span>
 <span class="token comment" spellcheck="true"># &lt;interval>: time interval, ms</span>
@@ -960,64 +1151,6 @@ jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token oper
     </tr>
 </table>
 
-
-<h4 id="3-Jstack"><a href="#3-Jstack" class="headerlink" title="3. Jstack"></a>3. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
-<p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。注意这里的 <code>pid</code> 需要为十六进制形式，在 <code>Linux</code> 中可通过 <code>printf &#39;%x\n&#39; &lt;pid&gt;</code> 命令将对应 <code>pid</code> 转为十六进制。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查询进程堆栈信息</span>
-jstack <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-
-
-<span class="token comment" spellcheck="true"># &lt;line num>: 限制显示行数</span>
-<span class="token comment" spellcheck="true"># &lt;pid_16>: 进程转十六进制</span>
-jstack <span class="token operator">&lt;</span>pid<span class="token operator">></span> <span class="token operator">|</span> <span class="token function">grep</span> -A <span class="token operator">&lt;</span>line num<span class="token operator">></span> <span class="token operator">&lt;</span>pid_16_hex<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>jstack</code> 命令相关参数参考下表：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">命令</td>
-        <th style="text-align: center;">作用</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">jstack -l (pid)</td>
-        <td style="text-align: center;">除了线程堆栈外，还显示关于锁的附加信息，这将显示每个锁的拥有者和等待者。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">jstack -e (pid)</td>
-        <td style="text-align: center;">打印线程的锁信息。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">jstack -F (pid)</td>
-        <td style="text-align: center;">当进程无响应时，强制生成线程转储，在进程卡死或无响应时非常有用。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">jstack -m (pid)</td>
-        <td style="text-align: center;">打印 Java 和本地 C/C++ 帧的混合堆栈。</td>
-    </tr>
-</table>
-
-
-<h4 id="4-JMap"><a href="#4-JMap" class="headerlink" title="4. JMap"></a>4. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
-<p>这个快照通常称为 <code>heap dump</code>，它是 <code>Java</code> 堆内存的详细信息，包括对象的数量、类型、分布等，对于分析内存泄漏和性能问题非常有用。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jmap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="1-heap"><a href="#1-heap" class="headerlink" title="(1) -heap"></a>(1) -heap</h5><p>打印 <code>Java</code> 堆内存的概要信息，包括堆的使用情况和配置。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jmap -heap <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
-<h5 id="2-histo"><a href="#2-histo" class="headerlink" title="(2) -histo"></a>(2) -histo</h5><p>打印 <code>Java</code> 堆内存中对象的直方图，显示每个类的实例数量和占用的内存大小。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jmap -histo <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="3-dump"><a href="#3-dump" class="headerlink" title="(3) -dump"></a>(3) -dump</h5><p>生成堆转储文件，将 <code>Java</code> 堆内存的详细信息保存到指定的文件中。</p>
-<p>在线 <code>dump</code> 文件分析工具：<code>https://heaphero.io/index.jsp</code>。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jmap -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>export_path<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-
-
-<span class="token comment" spellcheck="true"># 生成堆栈信息日志</span>
-jmap -dump:format<span class="token operator">=</span>b,file<span class="token operator">=</span>./dump.bin 123
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="4-F"><a href="#4-F" class="headerlink" title="(4) -F"></a>(4) -F</h5><p>当进程无响应时，强制生成堆转储，在处理无响应或死锁的情况下很有用。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">jmap -F -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>dumpfile<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <hr>
 <p><strong>参考文档</strong></p>
 <ol>
@@ -1266,18 +1399,18 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/linux/docker/docker%20compose/">
+                <a href="/java/design/enum/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/linux/docker/6.png" class="responsive-img" alt="Docker Compose基础">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="枚举实现优雅的验证">
                         
-                        <span class="card-title">Docker Compose基础</span>
+                        <span class="card-title">枚举实现优雅的验证</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Docker Compose使用介绍。
+                            Java枚举实现优雅的验证模式。
                         
                     </div>
                     <div class="publish-info">
@@ -1288,8 +1421,8 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Linux%E8%BF%90%E7%BB%B4/" class="post-category">
-                                    Linux运维
+                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
+                                    设计模式
                                 </a>
                             
                             
@@ -1299,12 +1432,8 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Linux/">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                    <a href="/tags/Docker/">
-                        <span class="chip bg-color">Docker</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1626,7 +1755,7 @@ jmap -dump:format<span class="token operator">=</span>b,file<span class="token o
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">278.8k</span>
+                <span class="white-color">279.2k</span>
             
             
             
