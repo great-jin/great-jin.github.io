@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-05
+                    2025-01-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.3k
+                    3.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    13 分
                 </div>
                 
 
@@ -741,7 +741,7 @@ java -jar myapp.jar -Xmx1024m
 -Djava.security.egd<span class="token operator">=</span>file:/dev/./urandom
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="4-GC参数"><a href="#4-GC参数" class="headerlink" title="4. GC参数"></a>4. GC参数</h4><p>常见的虚拟机垃圾回收（<code>GC</code>）参数配置参数如下：</p>
-<p>开启日志后生成的 <code>GC</code> 信息文件推荐 <a target="_blank" rel="noopener" href="https://gceasy.io/">gceasy</a> 进行在线解析，可以生成详细的分析报告。</p>
+<p>开启日志后生成的 <code>GC</code> 文件推荐 <a target="_blank" rel="noopener" href="https://gceasy.io/">gceasy</a> 在线解析网站，可以生成详细的分析报告。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">参数</td>
@@ -842,7 +842,23 @@ java -server -jar test.jar
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 使用 ZGC </span>
 java -XX:+UseZGC -jar app.jar   
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="四、JDK工具"><a href="#四、JDK工具" class="headerlink" title="四、JDK工具"></a>四、JDK工具</h3><h4 id="1-Jinfo"><a href="#1-Jinfo" class="headerlink" title="1. Jinfo"></a>1. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>Java</code> 虚拟机（<code>JVM</code>）的配置信息。</p>
+<h3 id="四、JDK工具"><a href="#四、JDK工具" class="headerlink" title="四、JDK工具"></a>四、JDK工具</h3><p>安装 <code>JDK</code> 环境之后，在其 <code>bin</code> 目录下提供了丰富工具可用于查看程序运行状况，下面介绍几类常用的命令。</p>
+<h4 id="1-版本"><a href="#1-版本" class="headerlink" title="1. 版本"></a>1. 版本</h4><p>在不同的 <code>JDK</code> 版本中使用方式略有差异，尤其在 <code>JDK 11</code> 之后工具进行了重新整合，后面介绍的几种方式都是基于 <code>JDK 8</code> 版本而言。</p>
+<p>例如 <code>jinfo</code> 命令在 <code>JDK 8</code> 之前执行方式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jinfo <span class="token operator">&lt;</span>options<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>而在 <code>JDK 11</code> 之后的版本，需要通过下述方式执行，可以看到需通过 <code>jhsdb</code> 执行，同时通过 <code>--pid</code> 参数用于指定进程号。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jhsdb jinfo <span class="token operator">&lt;</span>option<span class="token operator">></span> --pid <span class="token operator">&lt;</span>pid<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>同时 <code>&lt;option&gt;</code> 的取值也略有不同，需要将 <code>-</code> 替换为 <code>--</code>，例如下述示例中 <code>JDK 11</code> 之后需要将 <code>-flags</code> 替换为 <code>--flags</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># JDK 8</span>
+jinfo -flags 12345
+
+
+<span class="token comment" spellcheck="true"># JDK 11 以上</span>
+jhsdb jinfo --flags --pid 12345
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-Jinfo"><a href="#2-Jinfo" class="headerlink" title="2. Jinfo"></a>2. Jinfo</h4><p><code>jinfo</code> 是 <code>JDK</code>中的一个命令行工具，用于实时查看和调整 <code>JVM</code> 的配置信息。</p>
 <p>通过 <code>jinfo</code> 可以获取和修改正在运行的 <code>Java</code> 进程的虚拟机配置参数，对于调优和诊断 <code>Java</code> 应用程序是很有帮助的。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看进程的虚拟机参数信息</span>
 jinfo <span class="token operator">&lt;</span>options<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
@@ -880,7 +896,7 @@ jinfo -flag +<span class="token operator">&lt;</span>name<span class="token oper
 <span class="token comment" spellcheck="true"># 关闭配置</span>
 jinfo -flag -<span class="token operator">&lt;</span>name<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-JMap"><a href="#2-JMap" class="headerlink" title="2. JMap"></a>2. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
+<h4 id="3-JMap"><a href="#3-JMap" class="headerlink" title="3. JMap"></a>3. JMap</h4><p><code>jmap</code> 是 <code>JDK</code> 中的一个命令行工具，用于生成 <code>Java</code> 进程的内存转储快照。</p>
 <p>这个快照通常称为 <code>heap dump</code>，它是 <code>Java</code> 堆内存的详细信息，包括对象的数量、类型、分布等，对于分析内存泄漏和性能问题非常有用。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jmap <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -950,14 +966,14 @@ jinfo -flag -<span class="token operator">&lt;</span>name<span class="token oper
 </table>
 
 <p><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/3.png"></p>
-<p>在通过 <code>-dump</code> 参数生成文件后，这里推送意见在线文件分析网站：<code>https://heaphero.io/index.jsp</code>。</p>
+<p>针对 <code>-dump</code> 生成文件，这里推送一个在线文件分析网站：<a target="_blank" rel="noopener" href="https://heaphero.io/index.jsp">heaphero</a>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">jmap -dump:file<span class="token operator">=</span><span class="token operator">&lt;</span>export_path<span class="token operator">></span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
 
 
 <span class="token comment" spellcheck="true"># 生成堆栈信息日志</span>
 jmap -dump:format<span class="token operator">=</span>b,file<span class="token operator">=</span>./dump.bin 1234
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-Jstack"><a href="#3-Jstack" class="headerlink" title="3. Jstack"></a>3. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
+<h4 id="4-Jstack"><a href="#4-Jstack" class="headerlink" title="4. Jstack"></a>4. Jstack</h4><p><code>jstack</code> 是 <code>JDK</code>中的一个命令行工具，用于生成 <code>Java</code> 进程的线程转储（<code>thread dump</code>）。</p>
 <p>线程转储是一个描述 <code>Java</code> 虚拟机中所有线程当前状态的快照，包括线程的堆栈信息。注意这里的 <code>pid</code> 需要为十六进制形式，在 <code>Linux</code> 中可通过 <code>printf &#39;%x\n&#39; &lt;pid&gt;</code> 命令将对应 <code>pid</code> 转为十六进制。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查询进程堆栈信息</span>
 jstack <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>pid<span class="token operator">></span>
@@ -992,7 +1008,7 @@ jstack <span class="token operator">&lt;</span>pid<span class="token operator">>
 </table>
 
 
-<h4 id="4-Jstat"><a href="#4-Jstat" class="headerlink" title="4. Jstat"></a>4. Jstat</h4><p><code>jstat</code> 是 <code>JDK</code> 中的一个命令行工具，用于监视 <code>Java</code> 虚拟机 <code>(JVM)</code> 的各种统计信息。</p>
+<h4 id="5-Jstat"><a href="#5-Jstat" class="headerlink" title="5. Jstat"></a>5. Jstat</h4><p><code>jstat</code> 是 <code>JDK</code> 中的一个命令行工具，用于监视 <code>Java</code> 虚拟机 <code>(JVM)</code> 的各种统计信息。</p>
 <p>它提供了对堆内存、垃圾回收、类装载、<code>JIT</code> 编译等方面的实时性能数据，帮助开发人员和系统管理员诊断和分析 <code>Java</code> 应用程序的性能问题。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># &lt;pid>: jps process id</span>
 <span class="token comment" spellcheck="true"># &lt;interval>: time interval, ms</span>
@@ -1399,18 +1415,18 @@ jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token oper
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/linux/docker/docker%20compose/">
+                <a href="/java/design/enum/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/linux/docker/6.png" class="responsive-img" alt="Docker Compose基础">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="枚举实现优雅的验证">
                         
-                        <span class="card-title">Docker Compose基础</span>
+                        <span class="card-title">枚举实现优雅的验证</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Docker Compose使用介绍。
+                            Java枚举实现优雅的验证模式。
                         
                     </div>
                     <div class="publish-info">
@@ -1421,8 +1437,8 @@ jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token oper
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Linux%E8%BF%90%E7%BB%B4/" class="post-category">
-                                    Linux运维
+                            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-category">
+                                    设计模式
                                 </a>
                             
                             
@@ -1432,12 +1448,8 @@ jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token oper
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Linux/">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                    <a href="/tags/Docker/">
-                        <span class="chip bg-color">Docker</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1759,7 +1771,7 @@ jstat -gcutil <span class="token operator">&lt;</span>pid<span class="token oper
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">279.4k</span>
+                <span class="white-color">280k</span>
             
             
             

@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-05
+                    2025-01-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.8k
+                    5.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
+                    18 分
                 </div>
                 
 
@@ -765,6 +765,12 @@
 <li><p><strong>筛选回收</strong>: 负责更新 <code>Region</code> 的统计数据，对各个 <code>Region</code> 的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个 <code>Region</code> 构成回收集，然后把决定回收的那一部分 <code>Region</code> 的存活对象复制到空的 <code>Region</code> 中，再清理掉整个旧 <code>Region</code> 的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。</p>
 </li>
 </ul>
+<h4 id="3-示例演示-1"><a href="#3-示例演示-1" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>同样，这边以具体的示例来介绍 <code>G1</code> 回收器的具体信息。</p>
+<p>以 <code>JDK 17</code> 运行一个 <code>demo</code> 工程，通过 <code>jhsdb jmap --heap --pid &lt;pid&gt;</code> 命令打印程序的堆内存信息如下。</p>
+<p>从图中可以看出在 <code>Heap Configuration</code> 部分与上述提到的 <code>Appel</code> 式回收大体上一致，额外多了一个 <code>G1HeapRegionSize</code> 用于配置单个 <code>Region</code> 的大小。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/13.png"></p>
+<p>让我们将目光放到 <code>G1</code> 内存使用上，可以看到由于堆内存最大值为 <code>8128MB</code> 且单个 <code>Region</code> 大小为 <code>4MB</code>，因此总共划分了 <code>2032</code> 个 <code>Regison</code> 块。</p>
+<p>与 <code>Appel</code> 式回收相同的是 <code>G1</code> 也分为新生代 <code>(Young Generation)</code> 与老年代 <code>(Old Generation)</code>，且新生代中又分 <code>Eden</code> 与 <code>Survivor</code> 区域，但不同是的每个区域以 <code>Region</code> 为单位划分更为细致。</p>
+<p>如下图中所示当前 <code>Eden</code> 区域大小为 <code>3</code> 个 <code>Region</code>，即内存空间为 <code>3*4MB=12MB</code>。但你可能会发现 <code>Eden</code> 实际空间并不是 <code>12MB</code> 而是 <code>32MB</code>，这是因为显示的内存空间还额外包含之前提到的记录集及其它内部结构，因此实际的内存空间相较于 <code>Region</code> 数量计算值会更大。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/14.png"></p>
 <h3 id="六、ZGC收集器"><a href="#六、ZGC收集器" class="headerlink" title="六、ZGC收集器"></a>六、ZGC收集器</h3><p><code>ZGC</code> 收集器是一款在 <code>JDK 11</code> 中新加入的具有实验性质的低延迟垃圾收集器，是由 <code>Oracle</code> 公司研发的，目的是在尽可能对吞吐量影响不太大的前提下实现在任意堆内存大小下都可以把垃圾收集的停顿时间限制在十毫秒以内的低延迟。</p>
 <h4 id="1-Region-1"><a href="#1-Region-1" class="headerlink" title="1. Region"></a>1. Region</h4><p><code>ZGC</code> 收集器中对 <code>Region</code> 实现了更细的划分，分为小、中、大型三种。</p>
 <blockquote>
@@ -1385,7 +1391,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">279.4k</span>
+                <span class="white-color">280k</span>
             
             
             

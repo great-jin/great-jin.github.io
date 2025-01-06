@@ -586,21 +586,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-04
+                    2025-01-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.6k
+                    5.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    19 分
+                    20 分
                 </div>
                 
 
@@ -648,20 +648,11 @@
 </ul>
 <p>在 <code>JDK 8</code> 之前方法区中数据存储于 <code>JVM</code> 的堆内存中，因此其内存空间局限于 <code>JVM</code> 堆的内存空间，而元空间改为使用本地内存 <code>(Native memory)</code>，即物理内存，意味着只要本地内存足够就不会出现 <code>OOM</code> 错误。</p>
 <h3 id="二、对象布局"><a href="#二、对象布局" class="headerlink" title="二、对象布局"></a>二、对象布局</h3><h4 id="1-对象头"><a href="#1-对象头" class="headerlink" title="1. 对象头"></a>1. 对象头</h4><p><code>Java</code> 的对象头中定义了两个重要字段：运行时数据 <code>(Mark Word)</code> 与类型指针 <code>(Klass)</code>，若为数组对象则还会额外包含一个字段存储数组大小。</p>
-<blockquote>
-<p><strong>(Ⅰ) Mark Word</strong></p>
-</blockquote>
-<p><code>Mark Word</code> 字段存储了如哈希码 <code>(HashCode)</code> 、<code>GC</code> 分代年龄、锁状态标志、线程持有的锁、偏向线程 <code>ID</code>、偏向时间戳等信息，官方称它为 <code>Mark Word</code>。</p>
+<h5 id="1-Mark-Word"><a href="#1-Mark-Word" class="headerlink" title="(1) Mark Word"></a>(1) Mark Word</h5><p><code>Mark Word</code> 字段存储了如哈希码 <code>(HashCode)</code> 、<code>GC</code> 分代年龄、锁状态标志、线程持有的锁、偏向线程 <code>ID</code>、偏向时间戳等信息，官方称它为 <code>Mark Word</code>。</p>
 <p><code>Mark Word</code> 占用大小为 <code>32bit</code>，其中 <code>25bit</code> 用于存储对象哈希码，<code>4bit</code> 用于存储对象分代年龄，<code>2bit</code> 用于存储锁标志位，<code>1bit</code> 固定为 <code>0</code>，这部分的数据在 <code>32</code> 位和 <code>64</code> 位的虚拟机（未开启压缩指针）中分别为 <code>32bit</code> 和 <code>64bit</code>。</p>
-<blockquote>
-<p><strong>(Ⅱ) Klass</strong></p>
-</blockquote>
-<p><code>Klass</code> 字段存储了指向对象所属类的元数据的指针，也称为类的元数据指针（通过这个指针来确定该对象是哪个类的实例），允许 <code>Java</code> 虚拟机在运行时获取对象的类信息，并进行相应的操作。</p>
+<h5 id="2-Klass"><a href="#2-Klass" class="headerlink" title="(2) Klass"></a>(2) Klass</h5><p><code>Klass</code> 字段存储了指向对象所属类的元数据的指针，也称为类的元数据指针（通过这个指针来确定该对象是哪个类的实例），允许 <code>Java</code> 虚拟机在运行时获取对象的类信息，并进行相应的操作。</p>
 <p>在 <code>HotSpot</code> 虚拟机中的 <code>Java</code> 对象头中 <code>Klass</code> 字段是指对象的元数据信息，用于管理对象的信息，存储指向该对象类的元数据指针。对象的元数据指针大小同载体的机器指针大小，如 <code>32</code> 位虚拟机指针大小即为 <code>32bit</code>，<code>64</code> 位虚拟机对应大小为 <code>64bit</code>，可通过指针压缩实现 <code>64bit</code> 对象的指针压缩。</p>
-<blockquote>
-<p><strong>(Ⅲ) 数组长度</strong></p>
-</blockquote>
-<p>当对象为 <code>Java</code> 数组时，则对象头必须多一块空间存储数组长度，若为普通对象则可省略。</p>
+<h5 id="3-数组长度"><a href="#3-数组长度" class="headerlink" title="(3) 数组长度"></a>(3) 数组长度</h5><p>当对象为 <code>Java</code> 数组时，则对象头必须多一块空间存储数组长度，若为普通对象则可省略。</p>
 <h4 id="2-实例数据"><a href="#2-实例数据" class="headerlink" title="2. 实例数据"></a>2. 实例数据</h4><p>实例数据部分是对象真正存储的有效信息，即存储在程序代码里面所定义的各种类型的字段内容，无论是从父类继承下来的，还是在子类中定义的字段都必须记录起来。</p>
 <h4 id="3-对齐填充"><a href="#3-对齐填充" class="headerlink" title="3. 对齐填充"></a>3. 对齐填充</h4><p>这并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/10.png"></p>
 <h4 id="4-初始对象"><a href="#4-初始对象" class="headerlink" title="4. 初始对象"></a>4. 初始对象</h4><p>在为对象分配完内存之后，虚拟机必须将分配到的内存空间（但不包括对象头）都初始化为零值，如果使用了 <code>TLAB</code> 的话，这一项工作也可以提前至 <code>TLAB</code> 分配时顺便进行。这步操作保证了对象的实例字段在 <code>Java</code> 代码中可以不赋初始值就直接使用，使程序能访问到这些字段的数据类型所对应的零值。</p>
@@ -691,12 +682,32 @@
     </tr>
     <tr>
         <td style="text-align: center;">-XX:CompressedClassSpaceSize=1G</td>
-        <td style="text-align: center;">指定对象元数据空间大小，默认为 1G，避免超过 3G。</td>
+        <td style="text-align: center;">指定对象元数据指针压缩空间大小，默认为 1G，避免超过 3G。</td>
+    </tr>
+</table>
+</br>
+
+<p>在运行的 <code>Java</code> 进程中通过 <code>jmap</code> 命令即可查看进程的堆内存信息，从下述中则可看到相应信息，同时注意到 <code>MaxMetaspaceSize</code> 值十分巨大，可以理解为其大小默认无限制。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MetaspaceSize</td>
+        <td style="text-align: center;">对象元空间大小。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MaxMetaspaceSize</td>
+        <td style="text-align: center;">对象元空间最大值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">CompressedClassSpaceSize</td>
+        <td style="text-align: center;">元数据指针压缩空间大小。</td>
     </tr>
 </table>
 
-
-
+<p><img src="/album/loading.gif" data-original="/album/article/java/jvm/15.png"></p>
 <h3 id="三、对象管理"><a href="#三、对象管理" class="headerlink" title="三、对象管理"></a>三、对象管理</h3><h4 id="1-对象创建"><a href="#1-对象创建" class="headerlink" title="1. 对象创建"></a>1. 对象创建</h4><p>当 <code>JVM</code> 加载至一条 <code>new</code> 指令时将会为对象分配相应内存空间，常见的分配方式有以下两类。</p>
 <h5 id="1-指针碰撞"><a href="#1-指针碰撞" class="headerlink" title="(1) 指针碰撞"></a>(1) 指针碰撞</h5><p>假设 <code>Java</code> 堆中内存是绝对规整的，所有被使用过的内存都被放在一边，空闲的内存被放在另一边，中间放着一个指针作为分界点的指示器，那所分配内存就仅仅是把那个指针向空闲空间方向挪动一段与对象大小相等的距离，这种分配方式称为“指针碰撞 <code>(Bump The Pointer)</code>。</p>
 <h5 id="2-空闲列表"><a href="#2-空闲列表" class="headerlink" title="(2) 空闲列表"></a>(2) 空闲列表</h5><p>如果 <code>Java</code> 堆中的内存并不是规整的，已被使用的内存和空闲的内存相互交错在一起，那就没有办法简单地进行指针碰撞了，虚拟机就必须维护一个列表，记录上哪些内存块是可用的，在分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的记录，这种分配方式称为空闲列表 <code>(Free List)</code>。</p>
@@ -1410,7 +1421,7 @@ prime <span class="token operator">=</span> null<span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">279.4k</span>
+                <span class="white-color">280k</span>
             
             
             
