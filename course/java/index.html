@@ -193,17 +193,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/thanks" class="waves-effect waves-light">
-      
-      <i class="fas fa-gift" style="zoom: 0.6;"></i>
-      
-      <span>致谢</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -358,17 +347,6 @@
           <i class="fa-fw fas fa-heart"></i>
           
           友链
-        </a>
-        
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/thanks" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-gift"></i>
-          
-          致谢
         </a>
         
             </li>
@@ -573,21 +551,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-27
+                    2025-01-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.7k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    10 分
                 </div>
                 
 
@@ -794,6 +772,95 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、变换计算"><a href="#四、变换计算" class="headerlink" title="四、变换计算"></a>四、变换计算</h3><h4 id="1-位与操作"><a href="#1-位与操作" class="headerlink" title="1. 位与操作"></a>1. 位与操作</h4><p>位与即对两个操作数的每个位执行逻辑与操作，只有在对应的位都是 <code>1</code> 时，结果才为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/1.png"></p>
+<p>对应 <code>Java</code> 操作示例如下，通过 <code>&amp;</code> 执行位与操作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+
+    <span class="token keyword">int</span> resultAnd <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 0001，即 1</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise AND: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultAnd<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultAnd<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-位或操作"><a href="#2-位或操作" class="headerlink" title="2. 位或操作"></a>2. 位或操作</h4><p>位或即对两个操作数的每个位执行逻辑或操作，只要对应的位有一个为 <code>1</code>，结果就为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/2.png"></p>
+<p>对应 <code>Java</code> 操作示例如下，通过 <code>|</code> 执行位或操作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+
+    <span class="token keyword">int</span> resultOr <span class="token operator">=</span> a <span class="token operator">|</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1101，即 13</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise OR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultOr<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultOr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-异或操作"><a href="#3-异或操作" class="headerlink" title="3. 异或操作"></a>3. 异或操作</h4><p>亦或即比对相同位置的数，两个数相同时为 <code>0</code>，不同时为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/3.png"></p>
+<p>对应 <code>Java</code> 操作示例如下，通过 <code>^</code> 执行亦或操作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+
+    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-位非操作"><a href="#4-位非操作" class="headerlink" title="4. 位非操作"></a>4. 位非操作</h4><p>位非即对操作数的每个位执行取反操作，<code>0</code> 变 <code>1</code>，<code>1</code> 变 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/4.png"></p>
+<h3 id="五、位移计算"><a href="#五、位移计算" class="headerlink" title="五、位移计算"></a>五、位移计算</h3><h4 id="1-正数位移"><a href="#1-正数位移" class="headerlink" title="1. 正数位移"></a>1. 正数位移</h4><h5 id="1-左移"><a href="#1-左移" class="headerlink" title="(1) 左移"></a>(1) 左移</h5><p>通过符号 <code>&lt;&lt;</code> 表示左移，正数左移在末尾补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/5.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 10, 1010</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">int</span> a2 <span class="token operator">=</span> a1 <span class="token operator">&lt;&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span>  
+    <span class="token comment" spellcheck="true">// 40, 101000</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a3<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-右移"><a href="#2-右移" class="headerlink" title="(2) 右移"></a>(2) 右移</h5><p>通过符号 <code>&gt;&gt;</code> 表示右移，正数右移最高位补符号位 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/6.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 10, 1010</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">int</span> a3 <span class="token operator">=</span> a1 <span class="token operator">>></span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 2, 10</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a3<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a3<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-负数位移"><a href="#2-负数位移" class="headerlink" title="2. 负数位移"></a>2. 负数位移</h4><p>开始前先看一下如何计算负数的二进制，其步骤如下：</p>
+<ul>
+<li>计算其对应绝对值的二进制值；</li>
+<li>对得到的值执行取反操作，即每一位都取其相反值；</li>
+<li>对得到的反码值加一得到补码，该补码即负数其对应的二进制；</li>
+</ul>
+<p>注意计算补码加一时，若对应位计算结果大于 <code>1</code> 则对应计算结果为 <code>0</code> 并向前一位加 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/7.png"></p>
+<h5 id="1-左移-1"><a href="#1-左移-1" class="headerlink" title="(1) 左移"></a>(1) 左移</h5><p>通过符号 <code>&lt;&lt;</code> 表示左移，负数左移在末尾补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/8.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+
+    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-右移-1"><a href="#2-右移-1" class="headerlink" title="(2) 右移"></a>(2) 右移</h5><p>通过符号 <code>&gt;&gt;</code> 表示右移，负数右移最高位补符号位 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/9.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
+    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+
+    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-无符号位移"><a href="#3-无符号位移" class="headerlink" title="3. 无符号位移"></a>3. 无符号位移</h4><p>对于无符号右移 <code>&gt;&gt;&gt;</code>，无论是正数还是负数, 右移最高位一律补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/10.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 10, 1010</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">int</span> a4 <span class="token operator">=</span> a1 <span class="token operator">>>></span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 2, 10</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a4<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a4<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -977,7 +1044,7 @@
     <div id="rewardModal" class="modal">
         <div class="modal-content">
             <a class="close modal-close"><i class="fas fa-times"></i></a>
-            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <h4 class="reward-title">Buy me a coffee</h4>
             <div class="reward-content">
                 <div class="reward-tabs">
                     <ul class="tabs row">
@@ -1368,7 +1435,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">280k</span>
+                <span class="white-color">280.3k</span>
             
             
             

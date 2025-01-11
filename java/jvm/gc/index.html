@@ -193,17 +193,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/thanks" class="waves-effect waves-light">
-      
-      <i class="fas fa-gift" style="zoom: 0.6;"></i>
-      
-      <span>致谢</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -358,17 +347,6 @@
           <i class="fa-fw fas fa-heart"></i>
           
           友链
-        </a>
-        
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/thanks" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-gift"></i>
-          
-          致谢
         </a>
         
             </li>
@@ -586,7 +564,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-06
+                    2025-01-11
                 </div>
                 
 
@@ -684,7 +662,7 @@
 
 <p>通过刚才的了解我们知道在垃圾回收时一个存活的对象会被先复制到 <code>To Space</code> 区域，当达到 <code>MaxTenuringThreshold</code> 所配置的次数或 <code>To Space</code> 空间不足时将被移到老年代，而 <code>PretenureSizeThreshold</code> 参数则可跳过此阶段。</p>
 <p>例如将其值配置为 <code>1m</code>，那么当对象超过 <code>1m</code> 时则会直接移至老年代而跳过年轻代中 <code>To Space</code> 的复制动作，这样的好处就是对于大对象可以降低操作频次从而提高性能。</p>
-<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>在 <code>JDK 8</code> 中的虚拟机默认为 <code>Parallel GC</code>，其正是基于 <code>Appel</code> 式回收实现，通过 <code>jmap</code> 命令: <code>jmap -heap &lt;pid&gt;</code> 即可查询当前虚拟机的堆内存分布，结果如下：<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
+<h4 id="3-示例分析"><a href="#3-示例分析" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>在 <code>JDK 8</code> 中的虚拟机默认为 <code>Parallel GC</code>，其正是基于 <code>Appel</code> 式回收实现，通过 <code>jmap</code> 命令: <code>jmap -heap &lt;pid&gt;</code> 即可查询当前虚拟机的堆内存分布，结果如下：<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
 <p>我们主要关注下表中的几个参数，可以看到 <code>NewRatio=2</code> 且 <code>NewSize</code> 与 <code>OldSize</code> 的比例正好为 <code>1:2</code>。</p>
 <p>需要注意一点老年代 <code>(OldSize)</code> 并非直接设置而来，而是通过 <code>NewSize</code> 与 <code>NewRatio</code> 共同进行控制，因此参数中并无 <code>MaxOldSize</code> 项。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -760,7 +738,7 @@
 <li><p><strong>筛选回收</strong>: 负责更新 <code>Region</code> 的统计数据，对各个 <code>Region</code> 的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个 <code>Region</code> 构成回收集，然后把决定回收的那一部分 <code>Region</code> 的存活对象复制到空的 <code>Region</code> 中，再清理掉整个旧 <code>Region</code> 的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。</p>
 </li>
 </ul>
-<h4 id="3-示例演示-1"><a href="#3-示例演示-1" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>同样，这边以具体的示例来介绍 <code>G1</code> 回收器的具体信息。</p>
+<h4 id="3-示例分析-1"><a href="#3-示例分析-1" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>同样，这边以具体的示例来介绍 <code>G1</code> 回收器的具体信息。</p>
 <p>以 <code>JDK 17</code> 运行一个 <code>demo</code> 工程，通过 <code>jhsdb jmap --heap --pid &lt;pid&gt;</code> 命令打印程序的堆内存信息如下。</p>
 <p>从图中可以看出在 <code>Heap Configuration</code> 部分与上述提到的 <code>Appel</code> 式回收大体上一致，额外多了一个 <code>G1HeapRegionSize</code> 用于配置单个 <code>Region</code> 的大小。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/13.png"></p>
 <p>让我们将目光放到 <code>G1</code> 内存使用上，可以看到由于堆内存最大值为 <code>8128MB</code> 且单个 <code>Region</code> 大小为 <code>4MB</code>，因此总共划分了 <code>2032</code> 个 <code>Regison</code> 块。</p>
@@ -976,7 +954,7 @@
     <div id="rewardModal" class="modal">
         <div class="modal-content">
             <a class="close modal-close"><i class="fas fa-times"></i></a>
-            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <h4 class="reward-title">Buy me a coffee</h4>
             <div class="reward-content">
                 <div class="reward-tabs">
                     <ul class="tabs row">
@@ -1386,7 +1364,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">280k</span>
+                <span class="white-color">280.3k</span>
             
             
             

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="二进制位移介绍, 布袋青年">
+    <meta name="keywords" content="Java 模块化特性, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>二进制位移介绍 | 布袋青年</title>
+    <title>Java 模块化特性 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -193,17 +193,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/thanks" class="waves-effect waves-light">
-      
-      <i class="fas fa-gift" style="zoom: 0.6;"></i>
-      
-      <span>致谢</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -364,17 +353,6 @@
             
       <li class="m-nav-item">
         
-        <a href="/thanks" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-gift"></i>
-          
-          致谢
-        </a>
-        
-            </li>
-            
-      <li class="m-nav-item">
-        
         <a href="/about" class="waves-effect waves-light">
           
           <i class="fa-fw fas fa-user-circle"></i>
@@ -414,12 +392,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/38.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">二进制位移介绍</h1>
+                    <h1 class="description center-align post-title">Java 模块化特性</h1>
                 </div>
             </div>
         </div>
@@ -579,28 +557,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-04-20
+                    2025-01-12
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-10-14
+                    2025-01-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    792
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -615,95 +593,98 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、变换计算"><a href="#一、变换计算" class="headerlink" title="一、变换计算"></a>一、变换计算</h3><h4 id="1-位与操作"><a href="#1-位与操作" class="headerlink" title="1. 位与操作"></a>1. 位与操作</h4><p>位与即对两个操作数的每个位执行逻辑与操作，只有在对应的位都是 <code>1</code> 时，结果才为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/1.png"></p>
-<p>对应 <code>Java</code> 操作示例如下，通过 <code>&amp;</code> 执行位与操作。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
-    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+                <p>在 <code>Java</code> 的不断更新迭代中 <code>JDK</code> 加入了一系列新的特性，而在 <code>JDK 9</code> 中则引入了全新的模块化特性，为工程结构管理提供了基础保障。</p>
+<p>我们都知道在 <code>Maven</code> 中可以通过 <code>module</code> 实现模块的管理，<code>JDK</code> 的模块化则有异曲同工之妙。</p>
+<p>下面就让我们来看一下模块块的作用以及引入其的目的。</p>
+<h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>首先让我们看一下在 <code>JDK 8</code> 以及之前 <code>Java</code> 类的存储方式，在 <code>Java</code> 的安装目录下，可以看到所有的 <code>Java</code> 类都被放在 <code>src.zip</code> 文件。<br><img src="/album/loading.gif" data-original="/album/article/java/module/1.png"></p>
+<p>再看一下 <code>JDK 9</code> 之后的安装目录，这里以 <code>JDK 11</code> 为例，你会发现此时  <code>src.zip</code> 文件已然不存在，取而代之是新增了 <code>jmods</code> 目录，目录下存放着一系列 <code>.jmod</code> 文件。<br><img src="/album/loading.gif" data-original="/album/article/java/module/2.png"></p>
+<p>那这些 <code>jmod</code> 文件又是什么？这个正是本文的重点，也是模块化的核心。</p>
+<p>在 <code>JDK 8</code> 之前所有模块都是打包为一个文件，即便是只用到单个类，仍需要全局依赖。同时，在之前的版本中对于作用域的限制过于宽泛，虽然 <code>private</code> 等可以实现访问限制，但反射的存在让这个限制形同虚设。</p>
+<p>因此，在 <code>JDK 9</code> 中引入了模块化概念，将 <code>src.zip</code> 拆分为独立的 <code>jmod</code> 文件，每个子模块之间相互独立，使得工程管理更为轻量化。</p>
+<h4 id="2-模块创建"><a href="#2-模块创建" class="headerlink" title="2. 模块创建"></a>2. 模块创建</h4><p>了解了模块化的基本信息，让我们来看一下如何创建一个模块化工程？</p>
+<p>实现方式也十分简单，通过 <code>module-info.java</code> 文件进程模块内类的管理，如果你打开上述提到的 <code>jmod</code> 文件，即可发现文件内正包含此文件。<br><img src="/album/loading.gif" data-original="/album/article/java/module/3.png"></p>
+<p>接下来让我们来看一下 <code>module-info.java</code> 文件的内容结构，其定义模板如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">module</td>
+        <td style="text-align: center;">指定当前模块的模块名。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">requires</td>
+        <td style="text-align: center;">定义此模块所依赖的模块。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">exports</td>
+        <td style="text-align: center;">定义此模块对外可以访问的包路径。</td>
+    </tr>
+</table>
+</br>
 
-    <span class="token keyword">int</span> resultAnd <span class="token operator">=</span> a <span class="token operator">&amp;</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 0001，即 1</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise AND: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultAnd<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultAnd<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java"><code class="language-java">module <span class="token operator">&lt;</span>module<span class="token punctuation">.</span>name<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    requires <span class="token operator">&lt;</span>other<span class="token punctuation">.</span>module<span class="token punctuation">.</span>name<span class="token operator">></span><span class="token punctuation">;</span>
+
+    exports <span class="token operator">&lt;</span><span class="token keyword">package</span><span class="token punctuation">.</span>name<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果一个类所在的包路径没有通过 <code>exports</code> 对外暴露，则其它模块无法使用此类，对于类的访问进一步作出限制，即便通过反射方式调用仍无法访问。</p>
+<p>在 <code>exports</code> 中同时提供了 <code>to</code> 关键字用于配置将包只暴露给指定的模块，实现更精细化的控制，如下述示例中即只将包 <code>xyz.ibudai.test</code> 开放给 <code>my.mod</code> 模块。</p>
+<pre class="line-numbers language-java"><code class="language-java">module test<span class="token punctuation">.</span>mod <span class="token punctuation">{</span>
+
+    exports xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>test to my<span class="token punctuation">.</span>mod<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时每个模块默认都隐式依赖 <code>java.base</code> 模块，因此 <code>requires java.base;</code> 无需手动声明。</p>
+<p>而 <code>java.base</code> 模块则正是 <code>Java</code> 的核心基础类模块，查看该模块文件即可看到其通过 <code>exports</code> 对外开放了 <code>java.lang</code> 等一系列核心包。<br><img src="/album/loading.gif" data-original="/album/article/java/module/4.png"></p>
+<h4 id="3-模块编译"><a href="#3-模块编译" class="headerlink" title="3. 模块编译"></a>3. 模块编译</h4><p>那如何将编译自己的 <code>jmod</code> 模块文件呢？其实也十分简单，首先将工程编译为 <code>jar</code> 文件，再由 <code>jmod create</code> 命令即可，格式如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">jmod create --class-path <span class="token operator">&lt;</span>target.jar<span class="token operator">></span> <span class="token operator">&lt;</span>target.jmod<span class="token operator">></span>
+
+
+<span class="token comment" spellcheck="true"># Example</span>
+jmod create --class-path hello.jar hello.jmod
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-示例分析"><a href="#4-示例分析" class="headerlink" title="4. 示例分析"></a>4. 示例分析</h4><p>下面通过示例演示模块化的效果。</p>
+<p>新建工程 <code>module-1</code>，并创建包目录 <code>xyz.ibudai.practice.jdk.pack1</code> 并定义类 <code>Demo1</code>，代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>pack1<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo1</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Demo 1 say hello."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同理，新建包目录 <code>xyz.ibudai.practice.jdk.pack2</code> 并定义两个类 <code>Demo2</code>，这里就不再展示代码内容。</p>
+<p>接下来让我们定义对应的 <code>module-info.java</code> 模块文件，注意文件名是固定的。在模块文件中通过 <code>exports</code> 关键字将包 <code>xyz.ibudai.practice.jdk.pack1</code> 对外暴露。</p>
+<pre class="line-numbers language-java"><code class="language-java">module ibudai<span class="token punctuation">.</span>base1 <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">/* 默认依赖 java.base，可省略 */</span>
+    requires java<span class="token punctuation">.</span>base<span class="token punctuation">;</span>
+
+    exports xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>practice<span class="token punctuation">.</span>jdk<span class="token punctuation">.</span>pack1<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-位或操作"><a href="#2-位或操作" class="headerlink" title="2. 位或操作"></a>2. 位或操作</h4><p>位或即对两个操作数的每个位执行逻辑或操作，只要对应的位有一个为 <code>1</code>，结果就为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/2.png"></p>
-<p>对应 <code>Java</code> 操作示例如下，通过 <code>|</code> 执行位或操作。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
-    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
+<p>新建另一工程 <code>module-2</code>，配置其模块文件 <code>module-info.java</code> 内容如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">module ibudai<span class="token punctuation">.</span>base2 <span class="token punctuation">{</span>
 
-    <span class="token keyword">int</span> resultOr <span class="token operator">=</span> a <span class="token operator">|</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1101，即 13</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise OR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultOr<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultOr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">/* 依赖 ibudai.base1 */</span>
+    requires ibudai<span class="token punctuation">.</span>base1<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-异或操作"><a href="#3-异或操作" class="headerlink" title="3. 异或操作"></a>3. 异或操作</h4><p>亦或即比对相同位置的数，两个数相同时为 <code>0</code>，不同时为 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/3.png"></p>
-<p>对应 <code>Java</code> 操作示例如下，通过 <code>^</code> 执行亦或操作。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
-    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
-
-    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-位非操作"><a href="#4-位非操作" class="headerlink" title="4. 位非操作"></a>4. 位非操作</h4><p>位非即对操作数的每个位执行取反操作，<code>0</code> 变 <code>1</code>，<code>1</code> 变 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/4.png"></p>
-<h3 id="二、位移计算"><a href="#二、位移计算" class="headerlink" title="二、位移计算"></a>二、位移计算</h3><h4 id="1-正数位移"><a href="#1-正数位移" class="headerlink" title="1. 正数位移"></a>1. 正数位移</h4><h5 id="1-左移"><a href="#1-左移" class="headerlink" title="(1) 左移"></a>(1) 左移</h5><p>通过符号 <code>&lt;&lt;</code> 表示左移，正数左移在末尾补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/5.png"></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 10, 1010</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    
-    <span class="token keyword">int</span> a2 <span class="token operator">=</span> a1 <span class="token operator">&lt;&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span>  
-    <span class="token comment" spellcheck="true">// 40, 101000</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a3<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-右移"><a href="#2-右移" class="headerlink" title="(2) 右移"></a>(2) 右移</h5><p>通过符号 <code>&gt;&gt;</code> 表示右移，正数右移最高位补符号位 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/6.png"></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 10, 1010</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">int</span> a3 <span class="token operator">=</span> a1 <span class="token operator">>></span> <span class="token number">2</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 2, 10</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a3<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a3<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-负数位移"><a href="#2-负数位移" class="headerlink" title="2. 负数位移"></a>2. 负数位移</h4><p>开始前先看一下如何计算负数的二进制，其步骤如下：</p>
-<ul>
-<li>计算其对应绝对值的二进制值；</li>
-<li>对得到的值执行取反操作，即每一位都取其相反值；</li>
-<li>对得到的反码值加一得到补码，该补码即负数其对应的二进制；</li>
-</ul>
-<p>注意计算补码加一时，若对应位计算结果大于 <code>1</code> 则对应计算结果为 <code>0</code> 并向前一位加 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/7.png"></p>
-<h5 id="1-左移-1"><a href="#1-左移-1" class="headerlink" title="(1) 左移"></a>(1) 左移</h5><p>通过符号 <code>&lt;&lt;</code> 表示左移，负数左移在末尾补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/8.png"></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
-    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
-
-    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-右移-1"><a href="#2-右移-1" class="headerlink" title="(2) 右移"></a>(2) 右移</h5><p>通过符号 <code>&gt;&gt;</code> 表示右移，负数右移最高位补符号位 <code>1</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/9.png"></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 1001</span>
-    <span class="token keyword">int</span> b <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二进制表示为 0101</span>
-
-    <span class="token keyword">int</span> resultXor <span class="token operator">=</span> a <span class="token operator">^</span> b<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 结果为 1100，即 12</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bitwise XOR: %s, \tBit: %s\n"</span><span class="token punctuation">,</span> resultXor<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>resultXor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-无符号位移"><a href="#3-无符号位移" class="headerlink" title="3. 无符号位移"></a>3. 无符号位移</h4><p>对于无符号右移 <code>&gt;&gt;&gt;</code>，无论是正数还是负数, 右移最高位一律补 <code>0</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/bit/10.png"></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> a1 <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 10, 1010</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a1<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">int</span> a4 <span class="token operator">=</span> a1 <span class="token operator">>>></span> <span class="token number">2</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 2, 10</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s, %s\n"</span><span class="token punctuation">,</span> a4<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span><span class="token function">toBinaryString</span><span class="token punctuation">(</span>a4<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在此新工程中新建测试类执行调用 <code>Demo1</code> 的静态方法能够正常执行，但如果尝试调用 <code>Demo2</code> 编译器则会提升包未对外导出。<br><img src="/album/loading.gif" data-original="/album/article/java/module/5.png"></p>
+<h4 id="5-强制访问"><a href="#5-强制访问" class="headerlink" title="5. 强制访问"></a>5. 强制访问</h4><p>作为一身反骨的 <code>Javaer</code> 而言，如果某个包没有对外暴露，那应该如何解决？</p>
+<p><code>Java</code> 仍给我们留了一条后路，在编译时添加下述命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">--add-exports ibudai.base/xyz.ibudai.practice.jdk.pack2<span class="token operator">=</span>ALL-UNNAMED
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/module/6.png"></p>
+<p>在启动时添加下述命令：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">--add-opens ibudai.base/xyz.ibudai.practice.jdk.pack2<span class="token operator">=</span>ALL-UNNAMED
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/module/7.png"></p>
 
                 
             </div>
@@ -730,7 +711,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/basis/bitwise/">https://great-jin.github.io/java/basis/bitwise/</a>
+                    <a href="https://great-jin.github.io/java/jdk/module/">https://great-jin.github.io/java/jdk/module/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -891,7 +872,7 @@
     <div id="rewardModal" class="modal">
         <div class="modal-content">
             <a class="close modal-close"><i class="fas fa-times"></i></a>
-            <h4 class="reward-title">觉得不错可以请我喝杯咖啡</h4>
+            <h4 class="reward-title">Buy me a coffee</h4>
             <div class="reward-content">
                 <div class="reward-tabs">
                     <ul class="tabs row">
@@ -941,45 +922,47 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/db/sharding/">
+                <a href="/java/jdk/module/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/util/sharding.png" class="responsive-img" alt="Sharding Sphere教程">
+                        <img src="/album/banner/java/38.png" class="responsive-img" alt="Java 模块化特性">
                         
-                        <span class="card-title">Sharding Sphere教程</span>
+                        <span class="card-title">Java 模块化特性</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Sharding Sphere分库分表教程。
+                            Java 模块化特性介绍。
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-04-26
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
-                                    中间件
+                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    JAVA基础
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -993,30 +976,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/db/kafka/zerocopy/">
+                <a href="/java/jvm/graalvm/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/kafka/5.png" class="responsive-img" alt="Kafka零拷贝详解">
+                        <img src="/album/banner/java/51.png" class="responsive-img" alt="GraalVM，自举的诞生！">
                         
-                        <span class="card-title">Kafka零拷贝详解</span>
+                        <span class="card-title">GraalVM，自举的诞生！</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            一文带你扒光Kafka零拷贝的底裤。
+                            GraalVM，自举的诞生！
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-04-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-01-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
-                                    大数据
+                            <a href="/categories/JVM%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-category">
+                                    JVM虚拟机
                                 </a>
                             
                             
@@ -1026,8 +1009,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Kafka/">
-                        <span class="chip bg-color">Kafka</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1301,7 +1284,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">280k</span>
+                <span class="white-color">280.3k</span>
             
             
             
