@@ -564,21 +564,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-14
+                    2025-01-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    6 分
                 </div>
                 
 
@@ -595,7 +595,7 @@
             <div id="articleContent">
                 <p>对于每一位 <code>Javer</code> 而言，想必对于 <code>JVM</code> 都并不陌生，即使在实际开发中并没有深入研究，但或多或少对其仍有一定的了解。</p>
 <p>所谓 <code>JVM</code> 缩写于 <code>Java Virtual Machine</code> 即 <code>Java</code> 虚拟机，所以开发的程序都是运行于此虚拟机之前，也是 <code>Java</code> 引以为傲的特性即一次编译任意运行，作为应用程序于操作系统之间沟通的桥梁，只需安装了 <code>JRE</code> 环境即可跨平台运行。</p>
-<h4 id="1-JIT编译"><a href="#1-JIT编译" class="headerlink" title="1. JIT编译"></a>1. JIT编译</h4><p>若提到 <code>JVM</code>，那必然绕不开 <code>JIT(Just In Time)</code> 编译，故名思意即时编译。</p>
+<h3 id="一、JIT编译"><a href="#一、JIT编译" class="headerlink" title="一、JIT编译"></a>一、JIT编译</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>若提到 <code>JVM</code>，那必然绕不开 <code>JIT(Just In Time)</code> 编译，故名思意即时编译。</p>
 <p>我们都知道开发的应用程序想要运行在 <code>JVM</code> 之上，需要先将 <code>.java</code> 文件编译为 <code>.class</code> 字节文件。当编译完成之后，程序的字节文件则可在任意的 <code>JVM</code> 环境上运行，由 <code>JVM</code> 负责解析字节文件交由操作系统执行。</p>
 <p>让我们将目光聚焦到 <code>JVM</code> 与操作系统交互上，操作系统并不认识编译之后的 <code>.class</code> 文件，需要由 <code>JVM</code> 承担其转译的工作，但通过此方式虽达到了效果但性能却并不令人满意。</p>
 <p>那有什么方式能够解决呢？最简单的方式即将编译后的字节文件再次转译为操作系统可识别的底层汇编机器码，则操作系统可直接进行执行，省去了 <code>JVM</code> 解释的这一动作，而这个过程即称为 <code>JIT</code> 编译。</p>
@@ -614,6 +614,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述示例中循环执行了 <code>1000</code> 次打印输出，按照直觉而言 <code>for</code> 循环结束判断的表达式 <code>10*100</code> 每次循环都执行计算一次，但实际上并非如此。</p>
 <p>正是由于 <code>JIT</code> 编译优化的存在的，实际运行生效的结果将为下述代码，即 <code>hoisting</code> 优化提升会将计算前置，从而整个循环过程计算只会执行一次。</p>
+<p>想要了解更多的推荐去看周志明老师出版的 <code>《深入理解 Java 虚拟机》</code>，在第 <code>11</code> 章详细介绍了 <code>JIT</code> 内容。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -621,12 +622,38 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>想要了解更多的推荐去看周志明老师出版的 <code>《深入理解 Java 虚拟机》</code>，在第 <code>11</code> 章详细介绍了 <code>JIT</code> 内容。</p>
-<h4 id="4-GraalVM"><a href="#4-GraalVM" class="headerlink" title="4. GraalVM"></a>4. GraalVM</h4><p>那讲了这么多 <code>JIT</code> 究竟和 <code>GraalVM</code> 又有什么关系呢？</p>
-<p>我们都知道 <code>Java</code> 已诞生发展数十年，且随着技术的不断演进想要在原有的 <code>JIT</code> 基础之上提出更多的特性以及优化所需要付出成本是十分高昂的，那最简单的方式就是推到重来。</p>
-<p>这也是 <code>GraalVM</code> 所诞生的由来，同时不同与 <code>JVM</code> 的有 <code>C++</code> 实现，<code>GraalVM</code> 更是实现了自举即其通过 <code>Java</code> 进行开发，属于套娃了。</p>
-<p><code>GraalVM</code> 同样具备 <code>C2</code> 中编译优化特性，同时引入新的虚拟机接口规范 <code>JVMCI(JVM Compiler Interface)</code>，拥有更良好的设计规范从而降低维护成本。</p>
-<p>更多的 <code>GraalVM</code> 信息这里就不再详细展开了，如果感兴趣的可以去官网或 <code>GitHub</code> 仓库上查看具体的设计实现：<a target="_blank" rel="noopener" href="https://github.com/oracle/graal">GraalVM GitHub</a>。</p>
+<h3 id="二、AOT编译"><a href="#二、AOT编译" class="headerlink" title="二、AOT编译"></a>二、AOT编译</h3><h4 id="1-预编译"><a href="#1-预编译" class="headerlink" title="1. 预编译"></a>1. 预编译</h4><p>那讲了这么多 <code>JIT</code> 究竟和 <code>GraalVM</code> 又有什么关系呢？</p>
+<p>我们都知道 <code>Java</code> 已诞生发展数十年，且随着技术的不断演进想要在原有的 <code>JIT</code> 基础之上提出更多的特性以及优化所需要付出成本是十分高昂的，那最简单的方式就是推到重来。这也是 <code>GraalVM</code> 所诞生的由来，同时不同与 <code>JVM</code> 的有 <code>C++</code> 实现，<code>GraalVM</code> 更是实现了自举即其通过 <code>Java</code> 进行开发，同时引入新的虚拟机接口规范 <code>JVMCI(JVM Compiler Interface)</code>，拥有更良好的设计规范从而降低维护难度。</p>
+<p>而 <code>GraalVM</code> 与 <code>JVM</code> 一大不同之前其编译模型取而代之是 <code>AOP(Ahead-Of-Time)</code> 即预编译。不像 <code>JIT</code> 中的 <code>C2</code> 一样为运行时实时动态调整，<code>AOT</code> 在编译构建时即会对代码进行分析优化后编译，程序运行时则不再动态调整。、</p>
+<p>因此，通过 <code>AOT</code> 方式在编译构建时耗时将高于 <code>JIT</code> 模型，但带来的收益即运行时性能得到进一步提升。当然 <code>AOT</code> 也有自己的弊端，由于是预编译，对于热点代码无法像 <code>JIT</code> 一样动态优化调整，完全取决于最初的编译效果。</p>
+<h4 id="2-原生镜像"><a href="#2-原生镜像" class="headerlink" title="2. 原生镜像"></a>2. 原生镜像</h4><p>在 <code>GraalVM</code> 中除了 <code>AOT</code> 之外还引入了另一个特性：<code>Native Images</code>。</p>
+<p>随着层出不从的云原生概念以及容器化技术，<code>GraalVM</code> 也算是搭上了顺风车。所谓 <code>Native Images</code> 即将程序直接构建为镜像容器文件，与传统的可执行文件不同，此时 <code>Native Images</code> 运行不再依赖于 <code>JVM</code> 虚拟机可独立运行。</p>
+<p>而 <code>Native Images</code> 的构建方式也并不复杂，在安装完 <code>GraalVM</code> 变量配置之后，通过下述命令即可将可执行文件编译为  <code>Native Images</code>，执行后会生成同名的可执行文件。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">native-image -jar <span class="token operator">&lt;</span>target-file<span class="token operator">></span>.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当然你也可以选择同 <code>Maven</code> 执行 <code>mvn clean package -Pnative</code> 实现构建。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.graalvm.nativeimage<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>native-image-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>executions</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>execution</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>goals</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>goal</span><span class="token punctuation">></span></span>native-image<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>goal</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>goals</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>execution</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>executions</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于 <code>Native Image</code> 是静态编译的，任何在运行时使用的反射、动态代理等特性都需要显式声明。否则，<code>GraalVM</code> 编译器无法知道它们的存在。</p>
+<p>通过下述方式使用 <code>native-image-agent</code> 来自动生成反射和动态代理的配置文件：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">java -agentlib:native-image-agent<span class="token operator">=</span>config-output-dir<span class="token operator">=</span>./configs -jar <span class="token operator">&lt;</span>target-file<span class="token operator">></span>.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>运行后 <code>configs</code> 目录中会生成配置文件如 <code>reflection-config.json</code> 和 <code>proxy-config.json</code>，可以将这些配置文件一起包含在原生镜像构建过程中。</p>
+<p>在构建可以使用 <code>-H:ConfigurationFileDirectories=./configs</code> 选项将这些配置文件包含到构建过程中：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">native-image -jar <span class="token operator">&lt;</span>target-file<span class="token operator">></span>.jar -H:ConfigurationFileDirectories<span class="token operator">=</span>./configs
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <hr>
 <p><strong>参考链接</strong></p>
 <ol>
@@ -1229,7 +1256,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">280.3k</span>
+                <span class="white-color">282.3k</span>
             
             
             

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring Retry实现优雅的重试, 布袋青年">
+    <meta name="keywords" content="Spring优雅的异常重试, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring Retry实现优雅的重试 | 布袋青年</title>
+    <title>Spring优雅的异常重试 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -397,7 +397,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring Retry实现优雅的重试</h1>
+                    <h1 class="description center-align post-title">Spring优雅的异常重试</h1>
                 </div>
             </div>
         </div>
@@ -564,14 +564,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-14
+                    2025-01-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    733
+                    728
                 </div>
                 
 
@@ -595,13 +595,13 @@
             <div id="articleContent">
                 <h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在业务常见开发中经常我们会涉及到失败重试的逻辑，如当发送通知失败后再次尝试。</p>
 <p>针对此类场景最简单粗暴的方式即 <code>CV</code> 大法，但显然这种方式不够优雅，为此 <code>Spring Boot</code> 中提供了 <code>Retry</code> 从而实现优雅的异常失败重试。</p>
-<h4 id="2-依赖导入"><a href="#2-依赖导入" class="headerlink" title="2. 依赖导入"></a>2. 依赖导入</h4><p>在开始前在 <code>Spring Boot</code> 工程中引入相应的 <code>Retry</code> 依赖。</p>
+<p>在开始前在 <code>Spring Boot</code> 工程中引入相应的 <code>Retry</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.retry<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-retry<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-异常处理"><a href="#3-异常处理" class="headerlink" title="3. 异常处理"></a>3. 异常处理</h4><p><code>Spring Retry</code> 的使用也及其简单，通过 <code>@Retryable</code> 注解配置，其基本配置参考下表。</p>
+<h4 id="2-异常处理"><a href="#2-异常处理" class="headerlink" title="2. 异常处理"></a>2. 异常处理</h4><p><code>Spring Retry</code> 的使用也及其简单，通过 <code>@Retryable</code> 注解配置，其基本配置参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">参数</td>
@@ -659,7 +659,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-恢复事件"><a href="#4-恢复事件" class="headerlink" title="4. 恢复事件"></a>4. 恢复事件</h4><p>重试的恢复事件由 <code>@Recover</code> 注解控制，即当 <code>@Retryable</code> 方法达到重试次数仍失败时触发。</p>
+<h4 id="3-恢复事件"><a href="#3-恢复事件" class="headerlink" title="3. 恢复事件"></a>3. 恢复事件</h4><p>重试的恢复事件由 <code>@Recover</code> 注解控制，即当 <code>@Retryable</code> 方法达到重试次数仍失败时触发。</p>
 <p>需要注意的是 <code>@Recover</code> 注解的标注的方法第一个参数必须与 <code>@Retryable</code> 中的 <code>value</code> 类型一致，剩余参数则必须与 <code>@Retryable</code> 修饰的方法入参一致。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryService</span> <span class="token punctuation">{</span>
@@ -690,7 +690,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-配置管理"><a href="#5-配置管理" class="headerlink" title="5. 配置管理"></a>5. 配置管理</h4><p>除了在方法上通过 <code>@Retryable</code> 注解显式设置尝试策略，也可通过全局的配置修改默认的尝试次数与间隔时间等信息。</p>
+<h4 id="4-配置管理"><a href="#4-配置管理" class="headerlink" title="4. 配置管理"></a>4. 配置管理</h4><p>除了在方法上通过 <code>@Retryable</code> 注解显式设置尝试策略，也可通过全局的配置修改默认的尝试次数与间隔时间等信息。</p>
 <p>新建配置类 <code>AppConfig</code>，具体的配置内容参考下述示例，此处的配置将全局生效，当然仍可在方法处通过 <code>@Retryable</code> 注解覆盖配置。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableRetry</span>
 <span class="token annotation punctuation">@Configuration</span>
@@ -1309,7 +1309,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">280.3k</span>
+                <span class="white-color">282.3k</span>
             
             
             
