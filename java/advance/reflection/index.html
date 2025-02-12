@@ -182,17 +182,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-heart" style="zoom: 0.6;"></i>
-      
-      <span>友链</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -338,17 +327,6 @@
                   
                 </ul>
               
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/friends" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-heart"></i>
-          
-          友链
-        </a>
-        
             </li>
             
       <li class="m-nav-item">
@@ -557,28 +535,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-12-04
+                    2022-09-02
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-07-21
+                    2025-02-12
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.7k
+                    4.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    19 分
+                    17 分
                 </div>
                 
 
@@ -743,6 +721,7 @@
     Field score <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"score"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Set accessible.</span>
     score<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token comment" spellcheck="true">// Update Filed value</span>
     score<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>std<span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// Get field value</span>
@@ -750,7 +729,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>std<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-方法调用"><a href="#2-方法调用" class="headerlink" title="2. 方法调用"></a>2. 方法调用</h4><p>对象的方式反射与字段类似，同样提供了四类获取方式，这里不再重复介绍，这里重点介绍一下在通过反射获取方法对象之后如何进行调用。</p>
 <p>在反射的 <code>Method</code> 对象中为方法调用提供了 <code>invoke()</code> 方法，即通过其实现方法的调用。</p>
 <blockquote>
@@ -855,54 +834,7 @@
             caller<span class="token punctuation">.</span><span class="token function">getClassName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> caller<span class="token punctuation">.</span><span class="token function">getMethodName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> caller<span class="token punctuation">.</span><span class="token function">getFileName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、动态代理"><a href="#三、动态代理" class="headerlink" title="三、动态代理"></a>三、动态代理</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>Java</code> 中通过 <code>Proxy</code> 类提供了动态代理的方式，其提供了一种运行时修改程序的功能，在远程服务调用 <code>(RPC)</code> 与 <code>AOP</code> 切面等等中都设计到该操作。</p>
-<h4 id="2-示例演示"><a href="#2-示例演示" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>首先定义一个接口类 <code>ProxyService</code> 并实现 <code>sayHi()</code> 进行简短的信息打印。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ProxyService</span> <span class="token punctuation">{</span>
-    <span class="token keyword">void</span> <span class="token function">sayHi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ProxyServiceImpl</span> <span class="token keyword">implements</span> <span class="token class-name">ProxyService</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>动态代理的重点来了，新建类 <code>MyInvokeHandler</code> 并实现于 <code>InvocationHandler</code>。</p>
-<p>其中 <code>invoke()</code> 即动态代理的核心，由动态代理申请的对象在执行方法前将触发此处的 <code>invoke()</code>，由此即可实现切面等功能，这里我设置当执行 <code>sayHi()</code> 方法时打印信息将由 <code>Hi</code> 改为 <code>Hello</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyInvokeHandler</span> <span class="token keyword">implements</span> <span class="token class-name">InvocationHandler</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">private</span> Object target<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token function">MyInvokeHandler</span><span class="token punctuation">(</span>Object target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>target <span class="token operator">=</span> target<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> Object <span class="token function">invoke</span><span class="token punctuation">(</span>Object proxy<span class="token punctuation">,</span> Method method<span class="token punctuation">,</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Throwable <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"sayHi"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token keyword">return</span> method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通过 <code>Proxy.newProxyInstance()</code> 方法即可实现声明一个动态对象，该对象在执行方法时将会触发上述定义的 <code>invoke()</code> 方法。</p>
-<p>运行下述示例代码即可发现打印信息由 <code>ProxyService</code> 中定义的 <code>Hi</code> 变为 <code>Hello</code>，即通过动态代理我们实现的不修改源程序的情况下更改的程序逻辑实现。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">invokeDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>ProxyService<span class="token operator">></span> clazz <span class="token operator">=</span> ProxyService<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    ProxyService service <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ProxyServiceImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    MyInvokeHandler handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyInvokeHandler</span><span class="token punctuation">(</span>service<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Use "Proxy.newProxyInstance()" to dynamic generate a proxy instance</span>
-    ProxyService proxyService <span class="token operator">=</span> <span class="token punctuation">(</span>ProxyService<span class="token punctuation">)</span> Proxy<span class="token punctuation">.</span><span class="token function">newProxyInstance</span><span class="token punctuation">(</span>clazz<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span>clazz<span class="token punctuation">}</span><span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Call method</span>
-    proxyService<span class="token punctuation">.</span><span class="token function">sayHi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、高级应用"><a href="#四、高级应用" class="headerlink" title="四、高级应用"></a>四、高级应用</h3><h4 id="1-依赖引用"><a href="#1-依赖引用" class="headerlink" title="1. 依赖引用"></a>1. 依赖引用</h4><p>在默认的 <code>JDK</code> 中可利用反射从而实现类的动态获取或创建等操作，而 <code>org.reflections</code> 类库在此基础上提供更丰富的操作。如虽然默认的 <code>JDK</code> 中提供 <code>getInterfaces()</code> 与 <code>getSuperclass()</code> 可以获取当前类实现的接口与父类，却无法查询根据接口或类查询哪些类实现或继承于其。</p>
+<h3 id="三、反射工具"><a href="#三、反射工具" class="headerlink" title="三、反射工具"></a>三、反射工具</h3><h4 id="1-依赖集成"><a href="#1-依赖集成" class="headerlink" title="1. 依赖集成"></a>1. 依赖集成</h4><p>在默认的 <code>JDK</code> 中可利用反射从而实现类的动态获取或创建等操作，而 <code>org.reflections</code> 类库在此基础上提供更丰富的操作。如虽然默认的 <code>JDK</code> 中提供 <code>getInterfaces()</code> 与 <code>getSuperclass()</code> 可以获取当前类实现的接口与父类，却无法查询根据接口或类查询哪些类实现或继承于其。</p>
 <p>在开始之前现在工程中导入下述 <code>Maven</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.reflections<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -910,7 +842,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.10.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2. 初始化"></a>2. 初始化</h4><p><code>org.reflections</code> 类库的核心处理基于 <code>Reflections</code> 对象，通过其指定反射作用对象。</p>
+<h4 id="2-对象实例"><a href="#2-对象实例" class="headerlink" title="2. 对象实例"></a>2. 对象实例</h4><p><code>org.reflections</code> 类库的核心处理基于 <code>Reflections</code> 对象，通过其指定反射作用对象。</p>
 <p>在传统的反射中通过 <code>Class&lt;?&gt;</code> 针对的是单个类的反射操作，而 <code>Reflections</code> 则更多的应用场景为针对包 <code>package</code> 而言，如下实例中创建了 <code>Reflections</code> 作用于 <code>xyz.ibudai.service</code> 包路径。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String packageName <span class="token operator">=</span> <span class="token string">"xyz.ibudai.service"</span><span class="token punctuation">;</span>
@@ -934,7 +866,7 @@
 </table>
 
 
-<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>在开始之前先创建如下测试接口类 <code>HelloService</code> 及其相应的两个测试实现类用于后续操作。</p>
+<h4 id="3-示例分析"><a href="#3-示例分析" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>在开始之前先创建如下测试接口类 <code>HelloService</code> 及其相应的两个测试实现类用于后续操作。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> xyz<span class="token punctuation">.</span>ibudai<span class="token punctuation">.</span>service<span class="token punctuation">;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">HelloService</span> <span class="token punctuation">{</span>
@@ -988,7 +920,44 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、Unsafe"><a href="#五、Unsafe" class="headerlink" title="五、Unsafe"></a>五、Unsafe</h3><p>反射一个较为常见的用法即用于获取 <code>Unsafe</code> 实例，因为其并不提供直接的构造方法用于初始化。<code>Unsafe</code> 类虽然类名为不安全，但并非表示这个类不安全，而是 <code>Unsafe</code> 常涉及到内存等敏感操作，因此称其非安全类。</p>
+<h3 id="四、Spring反射"><a href="#四、Spring反射" class="headerlink" title="四、Spring反射"></a>四、Spring反射</h3><h4 id="1-bean获取"><a href="#1-bean获取" class="headerlink" title="1. bean获取"></a>1. bean获取</h4><p>在 <code>Spring</code> 工程中获取已注入的 <code>Bean</code> 对象可通过 <code>@Autowired</code> 获取应用上下文对象 <code>applicationContext</code>，再通过其 <code>getBean()</code> 方式即可获取相应的 <code>Bean</code> 对象。</p>
+<p>具体的示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanService</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 通过装配获取上下文对象
+     */</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> ApplicationContext applicationContext<span class="token punctuation">;</span>
+        
+    <span class="token comment" spellcheck="true">/**
+     * 通过名称获取 bean 对象
+     */</span>
+    <span class="token keyword">public</span> Object <span class="token function">getBean</span><span class="token punctuation">(</span>String bean<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> applicationContext<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span>bean<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-反射代理"><a href="#2-反射代理" class="headerlink" title="2. 反射代理"></a>2. 反射代理</h4><p>在获取 <code>Bean</code> 对象之后，即可通过反射实现方法的执行调用。</p>
+<p>相应的示例代码如下，其中 <code>methodName</code> 为 <code>bean</code> 对象中所要执行的方法， <code>params</code> 为方法的参数。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> Object <span class="token function">springInvokeMethod</span><span class="token punctuation">(</span>String serviceName<span class="token punctuation">,</span> String methodName<span class="token punctuation">,</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Object service <span class="token operator">=</span> <span class="token function">getBean</span><span class="token punctuation">(</span>serviceName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> paramClass <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>params <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> length <span class="token operator">=</span> params<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+        paramClass <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            paramClass<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> params<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Find target method</span>
+    Method method <span class="token operator">=</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">findMethod</span><span class="token punctuation">(</span>service<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> methodName<span class="token punctuation">,</span> paramClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Executed method</span>
+    <span class="token keyword">assert</span> method <span class="token operator">!=</span> null<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">invokeMethod</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> service<span class="token punctuation">,</span> params<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、Unsafe操作"><a href="#五、Unsafe操作" class="headerlink" title="五、Unsafe操作"></a>五、Unsafe操作</h3><p>获取 <code>Unsafe</code> 实例，因为其并不提供直接的构造方法用于初始化。<code>Unsafe</code> 类虽然类名为不安全，但并非表示这个类不安全，而是 <code>Unsafe</code> 常涉及到内存等敏感操作，因此称其非安全类。</p>
 <h4 id="1-实例获取"><a href="#1-实例获取" class="headerlink" title="1. 实例获取"></a>1. 实例获取</h4><p><code>Unsafe</code> 无法直接通过 <code>new</code> 实现对象创建，只能通过反射的方式获取。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
  * 通过反射获取 Unsafe 实例
@@ -999,7 +968,7 @@
     Unsafe unsafe <span class="token operator">=</span> <span class="token punctuation">(</span>Unsafe<span class="token punctuation">)</span> field<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><p>在获取 <code>unsafe</code> 实例之后即可利用其实现一系列操作，如常见的的 <code>CAS</code> 等等。</p>
+<h4 id="2-CAS操作"><a href="#2-CAS操作" class="headerlink" title="2. CAS操作"></a>2. CAS操作</h4><p>在获取 <code>unsafe</code> 实例之后即可利用其实现一系列操作，如常见的的 <code>CAS</code> 等等。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchFieldException <span class="token punctuation">{</span>
     MyEntity entity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyEntity</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">long</span> offset <span class="token operator">=</span> unsafe<span class="token punctuation">.</span><span class="token function">objectFieldOffset</span><span class="token punctuation">(</span>MyEntity<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1094,42 +1063,6 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、Spring反射"><a href="#六、Spring反射" class="headerlink" title="六、Spring反射"></a>六、Spring反射</h3><h4 id="1-bean获取"><a href="#1-bean获取" class="headerlink" title="1. bean获取"></a>1. bean获取</h4><p>在 <code>Spring</code> 工程中获取已注入的 <code>Bean</code> 对象可通过 <code>@Autowired</code> 获取应用上下文对象 <code>applicationContext</code>，再通过其 <code>getBean()</code> 方式即可获取相应的 <code>Bean</code> 对象。</p>
-<p>具体的示例如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanService</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">/**
-     * 通过装配获取上下文对象
-     */</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token keyword">private</span> ApplicationContext applicationContext<span class="token punctuation">;</span>
-        
-    <span class="token comment" spellcheck="true">/**
-     * 通过名称获取 bean 对象
-     */</span>
-    <span class="token keyword">public</span> Object <span class="token function">getBean</span><span class="token punctuation">(</span>String bean<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> applicationContext<span class="token punctuation">.</span><span class="token function">getBean</span><span class="token punctuation">(</span>bean<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-反射代理"><a href="#2-反射代理" class="headerlink" title="2. 反射代理"></a>2. 反射代理</h4><p>在获取 <code>Bean</code> 对象之后，即可通过反射实现方法的执行调用。</p>
-<p>相应的示例代码如下，其中 <code>methodName</code> 为 <code>bean</code> 对象中所要执行的方法， <code>params</code> 为方法的参数。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> Object <span class="token function">springInvokeMethod</span><span class="token punctuation">(</span>String serviceName<span class="token punctuation">,</span> String methodName<span class="token punctuation">,</span> Object<span class="token punctuation">[</span><span class="token punctuation">]</span> params<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Object service <span class="token operator">=</span> <span class="token function">getBean</span><span class="token punctuation">(</span>serviceName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> paramClass <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>params <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> length <span class="token operator">=</span> params<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-        paramClass <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            paramClass<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> params<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">// Find target method</span>
-    Method method <span class="token operator">=</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">findMethod</span><span class="token punctuation">(</span>service<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> methodName<span class="token punctuation">,</span> paramClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Executed method</span>
-    <span class="token keyword">assert</span> method <span class="token operator">!=</span> null<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">invokeMethod</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> service<span class="token punctuation">,</span> params<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1371,30 +1304,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/java/advance/annotation/">
+                <a href="/db/es/spring/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/31.png" class="responsive-img" alt="Java注解基础介绍">
+                        <img src="/album/banner/db/es/2.png" class="responsive-img" alt="Spring Boot集成ElasticSearch">
                         
-                        <span class="card-title">Java注解基础介绍</span>
+                        <span class="card-title">Spring Boot集成ElasticSearch</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java注解定义使用基本介绍。
+                            Spring Boot集成ElasticSearch示例教程。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-06
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-03
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
-                                    JAVA进阶
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
                                 </a>
                             
                             
@@ -1404,8 +1337,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/Spring-Boot/">
+                        <span class="chip bg-color">Spring Boot</span>
+                    </a>
+                    
+                    <a href="/tags/Elasticsearch/">
+                        <span class="chip bg-color">Elasticsearch</span>
                     </a>
                     
                 </div>
@@ -1419,30 +1356,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/db/es/analysis/">
+                <a href="/windows/system/link/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/es/3.png" class="responsive-img" alt="Elasticsearch分词器">
+                        <img src="/album/banner/win/5.png" class="responsive-img" alt="鼠标右击快速打开项目">
                         
-                        <span class="card-title">Elasticsearch分词器</span>
+                        <span class="card-title">鼠标右击快速打开项目</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Elasticsearch分词器介绍。
+                            Windows 鼠标右击快速打开项目。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
-                                    大数据
+                            <a href="/categories/Windows/" class="post-category">
+                                    Windows
                                 </a>
                             
                             
@@ -1452,8 +1389,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Elasticsearch/">
-                        <span class="chip bg-color">Elasticsearch</span>
+                    <a href="/tags/Windows/">
+                        <span class="chip bg-color">Windows</span>
                     </a>
                     
                 </div>
@@ -1727,7 +1664,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.4k</span>
+                <span class="white-color">283.3k</span>
             
             
             

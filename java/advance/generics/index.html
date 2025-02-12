@@ -182,17 +182,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-heart" style="zoom: 0.6;"></i>
-      
-      <span>友链</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -338,17 +327,6 @@
                   
                 </ul>
               
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/friends" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-heart"></i>
-          
-          友链
-        </a>
-        
             </li>
             
       <li class="m-nav-item">
@@ -557,28 +535,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-09-02
+                    2022-12-04
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-11-04
+                    2025-02-12
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -679,8 +657,8 @@
     <span class="token keyword">return</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span> object<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、泛型类"><a href="#三、泛型类" class="headerlink" title="三、泛型类"></a>三、泛型类</h3><h4 id="1-基础介绍-1"><a href="#1-基础介绍-1" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>泛型类的定义泛型方法类似，不同之处在于泛型类的作用域是针对于整个类。</p>
-<p>下述通过一个简单示例看下泛型类的定义方式，首先当然是新建一个接口类并定义一些常用的增删改方法，这里的类名后多了 <code>&lt;T&gt;</code> ，与上面的的泛型接口相似。</p>
+<h3 id="三、泛型类"><a href="#三、泛型类" class="headerlink" title="三、泛型类"></a>三、泛型类</h3><h4 id="1-示例分析"><a href="#1-示例分析" class="headerlink" title="1. 示例分析"></a>1. 示例分析</h4><p>泛型类的定义泛型方法类似，不同之处在于泛型类的作用域是针对于整个类。</p>
+<p>下述通过一个示例了解泛型类的定义方式，首先当然是新建一个接口类并定义一些常用的增删改方法，这里的类名后多了 <code>&lt;T&gt;</code> ，与上面的的泛型接口相似。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Repository</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
 
     T <span class="token function">get</span><span class="token punctuation">(</span>Serializable id<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -691,6 +669,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>新建一个实现类并实现上面新建的接口类并重写其方法，在此即可定义相同的基本业务处理逻辑，也是当下流行 <code>ORM</code> 工具的实现方式之一。</p>
+<p>此处仅为说明，故略去各方法体具体实现内容，在实际开发中可抽象公共实现。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractRepository</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">Repository</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -712,21 +691,41 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-类型获取-1"><a href="#2-类型获取-1" class="headerlink" title="2. 类型获取"></a>2. 类型获取</h4><p>相对于泛型接口而言，在泛型类中若需要获取对应的泛型指代类信息则更为困难。因此，在泛型类中获取泛型指代类通常是通过继承方法实现。</p>
-<p>下面通过一个示例介绍如果获取泛型指代类信息：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 定义泛型类</span>
-<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractReflect</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+<p>完成上述步骤基础内容定义之后，新建具体的实现类继承刚才定义的 <code>AbstractRepository</code>，可以看到类中无需定义任何内容，其将继承父类中已定义的增删改实现。</p>
+<p>如此一来，我们便实现了基础方法的统一抽象实现，使得代码更为简洁紧凑。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserRepository</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractRepository</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">abstract</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// 继承泛型类</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StrReflectApi</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractReflect</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">final</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> type<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 实例化示例</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Repository repository <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserRepository</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        repository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userRepository<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        repository<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-类型获取-1"><a href="#2-类型获取-1" class="headerlink" title="2. 类型获取"></a>2. 类型获取</h4><p>相对于泛型接口而言，在泛型类中若需要获取对应的泛型指代类信息则更为困难。</p>
+<p>由于泛型是在运行时转化获取具体的类型，因此在开发时并无法获取泛型类的具体类型。以下述代码为例，无法实现在当前类获取具体的 <code>T</code> 指代的 <code>Class</code> 对象类型。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AbstractReflect</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获取当前 T 的类型</span>
+        
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那倘若需要实现此功能又该如何实现呢？方法其实也并不难，通常采用采用继承的方法实现。</p>
+<p>下面通过示例演示如何获取泛型指代类信息，在类的构造函数中获取父类的类型，也就是指代的 <code>T</code>。同时，因为只定义的一个泛型参数，因此只取数组的第一个元素。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AbstractReflect</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
+    
+    <span class="token keyword">protected</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> type<span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token function">StrReflectApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">AbstractReflect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// Get super class generic class</span>
         ParameterizedType type <span class="token operator">=</span> <span class="token punctuation">(</span>ParameterizedType<span class="token punctuation">)</span> <span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getGenericSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// Get first class type</span>
@@ -738,32 +737,26 @@
         <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在上述的示例中，即可通过实例化 <code>StrReflectApi</code> 对象并通过 <code>getType()</code> 方法获取对应的泛型指代类。</p>
-<p>如果需要在运行是动态获取 <code>AbstractReflect&lt;T&gt;</code> 类的泛型指代信息，在默认的 <code>JDK</code> 中并不提供该方式。</p>
-<h4 id="3-应用场景-1"><a href="#3-应用场景-1" class="headerlink" title="3. 应用场景"></a>3. 应用场景</h4><p>新建一个普通的接口类，并继承之前创建的泛型接口类。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserRepository</span> <span class="token keyword">extends</span> <span class="token class-name">Repository</span><span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token punctuation">{</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>看到这你或许会疑惑，这不是和刚才的提到相互矛盾类，泛型类无法获取自身类型吗？</p>
+<p>是的，这个是没错但让我们继续往下看。</p>
+<p>新建子类 <code>StringReflectApi</code> 并继承与 <code>AbstractReflect</code>，注意此时 <code>AbstractReflect</code> 参数中已经为具体的类而非 <code>T</code> 指代了。同时，定义类构造函数调用父类的构造器，也就是上述所定义类型获取实现。</p>
+<p>在此时当执行上述的构造器中的 <code>getClass()</code> 返回实例将为 <code>StringReflectApi</code> 而非 <code>AbstractReflect</code>，因此在执行 <code>type.getActualTypeArguments()[0]</code> 返回的将为下述中定义的 <code>String.class</code>。</p>
+<p>经过我们一顿猛如虎的操作，便巧妙的利用继承实现的泛型类的类型获取。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StringReflectApi</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractReflect</span><span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token comment" spellcheck="true">// 可以在此定义 UserRepository 特有的方法</span>
-    <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">StringReflectApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        AbstractReflect api <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringReflectApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        api<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>新建一个实现类继承 <code>AbstractRepository</code> 并实现 <code>UserRepository</code> 接口，根据继承的传递性，其会同时包含 <code>AbstractRepository</code> 中定义的泛型方法。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserRepositoryImpl</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractRepository</span><span class="token operator">&lt;</span>User<span class="token operator">></span> 
-        <span class="token keyword">implements</span> <span class="token class-name">UserRepository</span> <span class="token punctuation">{</span>
-
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>此时通过实例化 <code>UserRepositoryImpl</code> 对象你可以发现在 <code>UserRepository</code> 并没有定义相关的接口方法却我们却调用相应的增删改方法。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    UserRepositoryImpl userRepository <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">userRepository</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    userRepository<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    userRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    userRepository<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    userRepository<span class="token punctuation">.</span><span class="token function">deleted</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、泛型边界"><a href="#四、泛型边界" class="headerlink" title="四、泛型边界"></a>四、泛型边界</h3><p>在定义泛型方法或泛型类时通常使用 <code>T</code> 指代传入的对象类型，即默认对象为 <code>Object</code> 即可，而通过泛型边界可以限制传入的对象类型。</p>
 <p>既然作为边界，理所应当的其提供了上行边界与下行边界，下面将分别进行介绍。</p>
 <h4 id="1-上行边界"><a href="#1-上行边界" class="headerlink" title="1. 上行边界"></a>1. 上行边界</h4><p>泛型的上行边界由 <code>extends</code> 关键字实现，即传入的泛型对象必须继承于指定类。</p>
@@ -1036,30 +1029,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/es/spring/">
+                <a href="/java/advance/annotation/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/es/2.png" class="responsive-img" alt="Spring Boot集成ElasticSearch">
+                        <img src="/album/banner/java/31.png" class="responsive-img" alt="Java注解基础介绍">
                         
-                        <span class="card-title">Spring Boot集成ElasticSearch</span>
+                        <span class="card-title">Java注解基础介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Boot集成ElasticSearch示例教程。
+                            Java注解定义使用基本介绍。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-06
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
-                                    中间件
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
                                 </a>
                             
                             
@@ -1069,12 +1062,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
-                    </a>
-                    
-                    <a href="/tags/Elasticsearch/">
-                        <span class="chip bg-color">Elasticsearch</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1088,30 +1077,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/windows/system/link/">
+                <a href="/db/es/analysis/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/win/5.png" class="responsive-img" alt="鼠标右击快速打开项目">
+                        <img src="/album/banner/db/es/3.png" class="responsive-img" alt="Elasticsearch分词器">
                         
-                        <span class="card-title">鼠标右击快速打开项目</span>
+                        <span class="card-title">Elasticsearch分词器</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Windows 鼠标右击快速打开项目。
+                            Elasticsearch分词器介绍。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Windows/" class="post-category">
-                                    Windows
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
+                                    大数据
                                 </a>
                             
                             
@@ -1121,8 +1110,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Windows/">
-                        <span class="chip bg-color">Windows</span>
+                    <a href="/tags/Elasticsearch/">
+                        <span class="chip bg-color">Elasticsearch</span>
                     </a>
                     
                 </div>
@@ -1396,7 +1385,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.4k</span>
+                <span class="white-color">283.3k</span>
             
             
             

@@ -182,17 +182,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-heart" style="zoom: 0.6;"></i>
-      
-      <span>友链</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -338,17 +327,6 @@
                   
                 </ul>
               
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/friends" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-heart"></i>
-          
-          友链
-        </a>
-        
             </li>
             
       <li class="m-nav-item">
@@ -564,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-09-07
+                    2025-02-12
                 </div>
                 
 
@@ -594,14 +572,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p><code>Spring IOC</code>（Inversion of Control，控制反转）容器是 <code>Spring</code> 框架的核心组件之一，用于管理和组织应用程序中的对象（<code>bean</code>），它负责创建、配置和管理这些对象，以实现对象之间的解耦和依赖注入。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/ioc.png"></p>
-<h3 id="一、基本介绍"><a href="#一、基本介绍" class="headerlink" title="一、基本介绍"></a>一、基本介绍</h3><h4 id="1-主要功能"><a href="#1-主要功能" class="headerlink" title="1. 主要功能"></a>1. 主要功能</h4><p><code>Spring IOC</code> 容器的主要功能包括下述几点：</p>
-<ul>
-<li><strong>实例化对象</strong>： <code>IOC</code> 容器负责实例化应用程序中定义的 <code>bean</code> 对象。它根据配置文件或注解信息创建对象的实例。</li>
-<li><strong>管理生命周期</strong>： <code>IOC</code> 容器负责管理 <code>bean</code> 对象的生命周期，包括对象的创建、初始化和销毁。容器可以根据配置指定对象的初始化方法和销毁方法，确保对象在正确的时机被创建和销毁。</li>
-<li><strong>依赖注入</strong>： <code>IOC</code> 容器实现了依赖注入（<code>DI</code>）机制，它通过自动将对象的依赖注入到相应的位置，消除了手动编写代码进行依赖关系的管理。</li>
-<li><strong>解耦和松耦合</strong>： <code>IOC</code> 容器通过控制对象的创建和依赖注入，实现了对象之间的解耦。它使得对象的配置和使用可以独立于彼此进行修改，提高了代码的灵活性和可维护性。</li>
-</ul>
-<h4 id="2-生命周期"><a href="#2-生命周期" class="headerlink" title="2. 生命周期"></a>2. 生命周期</h4><p><code>Spring</code> 中的 <code>Bean</code> 生命周期包括以下五个阶段：</p>
+<h3 id="一、核心概念"><a href="#一、核心概念" class="headerlink" title="一、核心概念"></a>一、核心概念</h3><h4 id="1-生命周期"><a href="#1-生命周期" class="headerlink" title="1. 生命周期"></a>1. 生命周期</h4><p><code>Spring</code> 中的 <code>Bean</code> 生命周期包括以下五个阶段：</p>
 <ul>
 <li><p><strong>实例化(Instantiation)：</strong> 这是 <code>Bean</code> 对象被创建的阶段。在这个阶段 <code>Spring</code> 使用 <code>Bean</code> 的构造方法来实例化对象，可以通过构造函数、静态工厂方法或者工厂 <code>Bean</code> 来创建实例。</p>
 </li>
@@ -614,11 +585,77 @@
 <li><p><strong>销毁(Destruction)：</strong> 这是 <code>Bean</code> 生命周期的最后阶段。在这个阶段 <code>Spring</code> 会调用 <code>Bean</code> 的销毁方法，该方法可以是通过配置文件中的 <code>destroy-method</code> 属性指定，也可以是实现了 <code>DisposableBean</code> 接口的 <code>destroy</code> 方法。</p>
 </li>
 </ul>
-<h3 id="二、装配获取"><a href="#二、装配获取" class="headerlink" title="二、装配获取"></a>二、装配获取</h3><p><code>Spring</code> 提供了多个 <code>IOC</code> 容器实现，最常用的是基于 <code>XML</code> 配置的 <code>ApplicationContext</code>，此外还提供了 <code>Java</code> 配置类（如 <code>@Configuration、@Bean</code> 等）方式进行配置。</p>
-<h4 id="1-装配方式"><a href="#1-装配方式" class="headerlink" title="1. 装配方式"></a>1. 装配方式</h4><blockquote>
-<p><strong>(Ⅰ) XML方式装配</strong></p>
-</blockquote>
-<p>首先先回顾一下传统 <code>xml</code> 配置文件装配 <code>bean</code> 对象，在工程 <code>resources</code> 下新建 <code>spring-context.xml</code> 文件，其对应的文件内容如下:</p>
+<h4 id="2-功能特性"><a href="#2-功能特性" class="headerlink" title="2. 功能特性"></a>2. 功能特性</h4><p><code>Spring IOC</code> 容器的主要功能包括下述几点：</p>
+<ul>
+<li><strong>实例化对象</strong>： <code>IOC</code> 容器负责实例化应用程序中定义的 <code>bean</code> 对象。它根据配置文件或注解信息创建对象的实例。</li>
+<li><strong>管理生命周期</strong>： <code>IOC</code> 容器负责管理 <code>bean</code> 对象的生命周期，包括对象的创建、初始化和销毁。容器可以根据配置指定对象的初始化方法和销毁方法，确保对象在正确的时机被创建和销毁。</li>
+<li><strong>依赖注入</strong>： <code>IOC</code> 容器实现了依赖注入（<code>DI</code>）机制，它通过自动将对象的依赖注入到相应的位置，消除了手动编写代码进行依赖关系的管理。</li>
+<li><strong>解耦和松耦合</strong>： <code>IOC</code> 容器通过控制对象的创建和依赖注入，实现了对象之间的解耦。它使得对象的配置和使用可以独立于彼此进行修改，提高了代码的灵活性和可维护性。</li>
+</ul>
+<h4 id="3-二级缓存"><a href="#3-二级缓存" class="headerlink" title="3. 二级缓存"></a>3. 二级缓存</h4><p>在 <code>Spring</code> 中为了解决循环依赖的问题引入了二级缓存从而解决该问题。</p>
+<p>首先我们先看一下循环依赖带来的问题，假设存在两个 <code>Bean</code> 实例，其中 <code>BeanA</code> 中依赖了 <code>BeanB</code>，而 <code>BeanB</code> 又依赖了 <code>BeanA</code>，代码描述如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanA</span> <span class="token punctuation">{</span>
+    BeanB beanB<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanB</span> <span class="token punctuation">{</span>
+    BeanA beanA<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>二者对象的依赖关系图示如下：<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/1.png"></p>
+<p>在使用 <code>IOC</code> 容器注入 <code>BeanA</code> 实例时，当为其注入属性时由于其又依赖于 <code>BeanB</code>，因此需要先创建出 <code>BeanB</code> 实例，而 <code>BeanB</code> 又依赖于 <code>BeanA</code> 二者则陷入了死循环，这也是循环依赖所带来的问题。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/2.png"></p>
+<p>那二级缓存又是如何解决如何这个问题的呢？让我们一步一步来拆解。</p>
+<p>循环依赖问题在于属性注入阶段对象属性与自身互为成员变量，那么只需每次在在创建 <code>bean</code> 实例后将其存入一份至缓存中（<code>Spring</code> 中通过 <code>Map</code> 对象缓存），后续在执行属性注入时若需要依赖了直接读取缓存即可，避免了相互依赖导致的死循环。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/3.png"></p>
+<h4 id="4-三级缓存"><a href="#4-三级缓存" class="headerlink" title="4. 三级缓存"></a>4. 三级缓存</h4><p>既然二级缓存已经解决了循环依赖的问题那为什么还需要引入三级缓存？三级缓存的引入主要是为了解决切面等动态代理生成的 <code>bean</code> 对象。</p>
+<p>先看下图中两个流程，第一个为普通的 <code>bean</code> 实例创建流程，第二为包含动态代理等操作时的流程。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/4.png"></p>
+<p>在二级缓存中讲过了缓存的存入时间在实例创建之后放入，而当包含动态代理时存入缓存的实例与最终存入 <code>IOC</code> 容器的对象显然不是同一个，这就造成了一个缓存不一致的原因，因此在此需要引入三级缓存从而解决缓存对象不一致。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/5.png"></p>
+<h3 id="二、Bean定义"><a href="#二、Bean定义" class="headerlink" title="二、Bean定义"></a>二、Bean定义</h3><p>在 <code>IOC</code> 容器中 <code>Bean</code> 对象存在两个十分重要的定义，即 <code>BeanDefinitionHolder</code> 和 <code>BeanDefinition</code>，二者都是关于 <code>Bean</code> 元信息的类，它们的主要作用是描述和持有 <code>Bean</code> 的定义信息。</p>
+<h4 id="1-对象定义"><a href="#1-对象定义" class="headerlink" title="1. 对象定义"></a>1. 对象定义</h4><p>在 <code>Spring</code> 中每个注册到 <code>IOC</code> 容器中的 <code>Bean</code> 都有一个关联的 <code>BeanDefinition</code> 对象，该对象描述了如何创建和配置该 <code>Bean</code>。其定义了 <code>Bean</code> 的属性、依赖关系、作用域（<code>scope</code>）、初始化方法、销毁方法等配置信息。</p>
+<p><code>BeanDefinition</code> 中包含的主要方法即描述参考下标：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getBeanClassName()</td>
+        <td style="text-align: center;">获取 Bean 的类名。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getScope()</td>
+        <td style="text-align: center;">获取 Bean 的作用域。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isSingleton()</td>
+        <td style="text-align: center;">判断是否是单例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isPrototype()</td>
+        <td style="text-align: center;">判断是否是原型。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getConstructorArgumentValues()</td>
+        <td style="text-align: center;">获取构造函数参数值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getPropertyValues()</td>
+        <td style="text-align: center;">获取属性值。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getInitMethodName()</td>
+        <td style="text-align: center;">获取初始化方法名。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getDestroyMethodName()</td>
+        <td style="text-align: center;">获取销毁方法名。</td>
+    </tr>
+</table>
+
+
+<h4 id="2-定义包装"><a href="#2-定义包装" class="headerlink" title="2. 定义包装"></a>2. 定义包装</h4><p><code>BeanDefinitionHolder</code> 是对 <code>BeanDefinition</code> 的包装，同时持有一个 <code>String</code> 类型的 <code>beanName</code>，通常在 <code>Spring</code> 容器中扫描、注册或管理 <code>Bean</code> 时使用。</p>
+<p>在 <code>Spring</code> 中，通常在注册 <code>Bean</code> 定义时会使用 <code>BeanDefinitionHolder</code>，将 <code>Bean</code> 的定义信息和名称一并封装，然后一起注册到容器中，从而更方便管理和操作 <code>Bean</code>。</p>
+<h3 id="三、装配获取"><a href="#三、装配获取" class="headerlink" title="三、装配获取"></a>三、装配获取</h3><p><code>Spring</code> 提供了多个 <code>IOC</code> 容器实现，最常用的是基于 <code>XML</code> 配置的 <code>ApplicationContext</code>，此外还提供了 <code>Java</code> 配置类（如 <code>@Configuration、@Bean</code> 等）方式进行配置。</p>
+<h4 id="1-XML装配"><a href="#1-XML装配" class="headerlink" title="1. XML装配"></a>1. XML装配</h4><p>首先先回顾一下传统 <code>xml</code> 配置文件装配 <code>bean</code> 对象，在工程 <code>resources</code> 下新建 <code>spring-context.xml</code> 文件，其对应的文件内容如下:</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>beans</span> <span class="token attr-name">...</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>testBean<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>xyz.ibudai.bean.User<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -639,10 +676,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>(Ⅱ) 注解方式装配</strong></p>
-</blockquote>
-<p>在 <code>Spring Boot</code> 可配合 <code>@Configuration</code> 与 <code>@Bean</code> 注解可达到同样效果。</p>
+<h4 id="2-注解装配"><a href="#2-注解装配" class="headerlink" title="2. 注解装配"></a>2. 注解装配</h4><p>除上述提到的 <code>XML</code> 方式装配之外，在 <code>Spring Boot</code> 中更让人熟知的便是通过注解实现，配合 <code>@Configuration</code> 与 <code>@Bean</code> 注解可达到上述 <code>XML</code> 同样效果。</p>
 <h5 id="1-Configuration"><a href="#1-Configuration" class="headerlink" title="(1) @Configuration"></a>(1) @Configuration</h5><ul>
 <li>作用于类上， 用于配置 <code>Spring</code> 容器应用上下文。</li>
 <li>作用效果等价于 <code>xml</code> 配置文件中的 <code>beans</code> 标签。</li>
@@ -707,30 +741,24 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-装配类型"><a href="#2-装配类型" class="headerlink" title="2. 装配类型"></a>2. 装配类型</h4><p><code>Bean</code> 的装配一共存在两种类型，分别为 <code>ByName</code> 与 <code>ByType</code>。</p>
-<blockquote>
-<p><strong>(Ⅰ) ByName（按名称注入）</strong></p>
-</blockquote>
+<h4 id="3-注入方式"><a href="#3-注入方式" class="headerlink" title="3. 注入方式"></a>3. 注入方式</h4><p><code>Spring</code> 在装配 <code>bean</code> 的时提供了两种方式，但需要注意无论通过哪种方式其对应的对象需要在 <code>IOC</code> 容器中存在，否则需要加上属性  <code>required=false</code> 表示忽略当前要注入的  <code>bean</code> ，否则程序将无法正常运行。</p>
+<h5 id="1-Resource"><a href="#1-Resource" class="headerlink" title="(1) @Resource"></a>(1) @Resource</h5><p><code>@Resource</code> 是由 <code>J2EE</code> 本身提供的，注解默认通过 <code>byName</code> 方式注入，当存在多个类型不同但名称相同的 <code>bean</code> 对象时此方式注入将会抛出异常。</p>
+<p>其中按名称注入 <code>(ByName)</code> 其定义如下：</p>
 <ul>
 <li>根据依赖的名称来查找与之匹配的 <code>bean</code> 对象进行注入。</li>
 <li><code>ByName</code> 要求依赖的名称在容器中是唯一的或者能够通过自动装配策略 <code>(@Qualifier)</code> 解决。</li>
 <li>通过名字查找与属性完全一致的 <code>bean</code> ，并将其与属性自动装配。 </li>
 <li>若容器中找不到与依赖名称匹配的 <code>bean</code> 对象则会抛出异常；如果存在多个与依赖名称匹配的 <code>bean</code> 对象，会根据自动装配策略进行选择。</li>
 </ul>
-<blockquote>
-<p><strong>(Ⅱ) ByType（按类型注入）</strong></p>
-</blockquote>
+<h5 id="2-Autowired"><a href="#2-Autowired" class="headerlink" title="(2) @Autowired"></a>(2) @Autowired</h5><p><code>@Autowired</code> 是由 <code>Spring</code> 提供的，注解默认通过 <code>byType</code> 方式注入。</p>
+<p>其中按类型注入 <code>(ByType)</code> 其定义如下：</p>
 <ul>
 <li>根据依赖的类型 <code>(class)</code> 来查找与之匹配的 <code>bean</code> 对象进行注入。</li>
 <li><code>ByType</code> 要求依赖的类型在容器中是唯一的或者明确指定了所需的 <code>bean</code> 对象。</li>
 <li>通过类型查找与属性完全一致的 <code>bean</code> ，并将其与属性自动装配。 </li>
 <li>如果存在多个该类型 <code>bean</code> 则会抛出异常，并指出不能使用 <code>byType</code> 方式进行自动装配；如果没有匹配的 <code>bean</code> 对象，会将依赖设置为 <code>null</code>。</li>
 </ul>
-<h4 id="3-注入方式"><a href="#3-注入方式" class="headerlink" title="3. 注入方式"></a>3. 注入方式</h4><p><code>Spring</code> 在装配 <code>bean</code> 的时提供了两种方式，但需要注意无论通过哪种方式其对应的对象需要在 <code>IOC</code> 容器中存在，否则需要加上属性  <code>required=false</code> 表示忽略当前要注入的  <code>bean</code> ，否则程序将无法正常运行。</p>
-<h5 id="1-Resource"><a href="#1-Resource" class="headerlink" title="(1) @Resource"></a>(1) @Resource</h5><p><code>@Resource</code> 是由 <code>J2EE</code> 本身提供的，注解默认通过 <code>byName</code> 方式注入。</p>
-<p>当存在多个类型不同但名称相同的 <code>bean</code> 对象时此方式注入将会抛出异常。</p>
-<h5 id="2-Autowired"><a href="#2-Autowired" class="headerlink" title="(2) @Autowired"></a>(2) @Autowired</h5><p><code>@Autowired</code> 是由 <code>Spring</code> 提供的，注解默认通过 <code>byType</code> 方式注入。</p>
-<p><code>@Autowired</code> 默认读取与声明实例变量同名的 <code>bean</code> 对象，当工程中同时包含多个实例时必须指明实例名否则将会异常报错，可以通过 <code>@Qualifier</code> 指定实例名。</p>
+<p>需注意 <code>@Autowired</code> 默认读取与声明实例变量同名的 <code>bean</code> 对象，当工程中同时包含多个实例时必须指明实例名否则将会异常报错，可以通过 <code>@Qualifier</code> 指定实例名。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 创建两个同类型实例</span>
 <span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"userService1"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserServiceImpl1</span> <span class="token keyword">implements</span> <span class="token class-name">UserService</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
@@ -742,9 +770,11 @@
 <span class="token comment" spellcheck="true">// 测试类</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
 
+    <span class="token comment" spellcheck="true">// 合法，变量名为 bean 名称</span>
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token keyword">private</span> UserService userService1<span class="token punctuation">;</span>
-        
+
+    <span class="token comment" spellcheck="true">// 合法，Qualifier 指定 bean 名称</span>
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token annotation punctuation">@Qualifier</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"userService2"</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> UserService userService<span class="token punctuation">;</span>
@@ -753,7 +783,7 @@
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token keyword">private</span> UserService userService<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-Bean获取"><a href="#4-Bean获取" class="headerlink" title="4. Bean获取"></a>4. Bean获取</h4><p>在上面介绍了 <code>bean</code> 的注入和装配， <code>Spring</code> 中同时也提供通过 <code>bean</code> 名称直接获取 <code>bean</code> 对象，通常搭配反射等特性使用，下面介绍两种的不同的 <code>bean</code> 对象获取方式。</p>
 <blockquote>
 <p><strong>(Ⅰ) 接口方式获取 Bean 实例</strong></p>
@@ -800,7 +830,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、Bean导入"><a href="#三、Bean导入" class="headerlink" title="三、Bean导入"></a>三、Bean导入</h3><h4 id="1-默认导入"><a href="#1-默认导入" class="headerlink" title="1. 默认导入"></a>1. 默认导入</h4><p>在 <code>Spring</code> 中除了 <code>@Bean</code> 注解还提供 <code>@Import</code> 注入 <code>bean</code> 对象，其使用方式与前者类似，默认注入的 <code>bean</code> 对象名为类的完整限定民。</p>
+<h3 id="四、Bean导入"><a href="#四、Bean导入" class="headerlink" title="四、Bean导入"></a>四、Bean导入</h3><h4 id="1-默认导入"><a href="#1-默认导入" class="headerlink" title="1. 默认导入"></a>1. 默认导入</h4><p>在 <code>Spring</code> 中除了 <code>@Bean</code> 注解还提供 <code>@Import</code> 注入 <code>bean</code> 对象，其使用方式与前者类似，默认注入的 <code>bean</code> 对象名为类的完整限定民。</p>
 <p>如下示例中即注入了一个 <code>User</code> 对象，若 <code>User</code> 类的完整包路径为：<code>xyz.ibudai</code>，则对应的 <code>bean</code> 名称为：<code>xyz.ibudai.User</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
@@ -840,69 +870,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、容器缓存"><a href="#四、容器缓存" class="headerlink" title="四、容器缓存"></a>四、容器缓存</h3><h4 id="1-二级缓存"><a href="#1-二级缓存" class="headerlink" title="1. 二级缓存"></a>1. 二级缓存</h4><p>在 <code>Spring</code> 中为了解决循环依赖的问题引入了二级缓存从而解决该问题。</p>
-<p>首先我们先看一下循环依赖带来的问题，假设存在两个 <code>Bean</code> 实例，其中 <code>BeanA</code> 中依赖了 <code>BeanB</code>，而 <code>BeanB</code> 又依赖了 <code>BeanA</code>，代码描述如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanA</span> <span class="token punctuation">{</span>
-    BeanB beanB<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BeanB</span> <span class="token punctuation">{</span>
-    BeanA beanA<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>二者对象的依赖关系图示如下：<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/1.png"></p>
-<p>在使用 <code>IOC</code> 容器注入 <code>BeanA</code> 实例时，当为其注入属性时由于其又依赖于 <code>BeanB</code>，因此需要先创建出 <code>BeanB</code> 实例，而 <code>BeanB</code> 又依赖于 <code>BeanA</code> 二者则陷入了死循环，这也是循环依赖所带来的问题。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/2.png"></p>
-<p>那二级缓存又是如何解决如何这个问题的呢？让我们一步一步来拆解。</p>
-<p>循环依赖问题在于属性注入阶段对象属性与自身互为成员变量，那么只需每次在在创建 <code>bean</code> 实例后将其存入一份至缓存中（<code>Spring</code> 中通过 <code>Map</code> 对象缓存），后续在执行属性注入时若需要依赖了直接读取缓存即可，避免了相互依赖导致的死循环。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/3.png"></p>
-<h4 id="2-三级缓存"><a href="#2-三级缓存" class="headerlink" title="2. 三级缓存"></a>2. 三级缓存</h4><p>既然二级缓存已经解决了循环依赖的问题那为什么还需要引入三级缓存？三级缓存的引入主要是为了解决切面等动态代理生成的 <code>bean</code> 对象。</p>
-<p>先看下图中两个流程，第一个为普通的 <code>bean</code> 实例创建流程，第二为包含动态代理等操作时的流程。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/4.png"></p>
-<p>在二级缓存中讲过了缓存的存入时间在实例创建之后放入，而当包含动态代理时存入缓存的实例与最终存入 <code>IOC</code> 容器的对象显然不是同一个，这就造成了一个缓存不一致的原因，因此在此需要引入三级缓存从而解决缓存对象不一致。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/bean/5.png"></p>
-<h3 id="五、Bean定义"><a href="#五、Bean定义" class="headerlink" title="五、Bean定义"></a>五、Bean定义</h3><p>在 <code>IOC</code> 容器中 <code>Bean</code> 对象存在两个十分重要的定义，即 <code>BeanDefinitionHolder</code> 和 <code>BeanDefinition</code>，二者都是关于 <code>Bean</code> 元信息的类，它们的主要作用是描述和持有 <code>Bean</code> 的定义信息。</p>
-<h4 id="1-对象定义"><a href="#1-对象定义" class="headerlink" title="1. 对象定义"></a>1. 对象定义</h4><p>在 <code>Spring</code> 中每个注册到 <code>IOC</code> 容器中的 <code>Bean</code> 都有一个关联的 <code>BeanDefinition</code> 对象，该对象描述了如何创建和配置该 <code>Bean</code>。其定义了 <code>Bean</code> 的属性、依赖关系、作用域（<code>scope</code>）、初始化方法、销毁方法等配置信息。</p>
-<p><code>BeanDefinition</code> 中包含的主要方法即描述参考下标：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">方法</td>
-        <th style="text-align: center;">作用</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getBeanClassName()</td>
-        <td style="text-align: center;">获取 Bean 的类名。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getScope()</td>
-        <td style="text-align: center;">获取 Bean 的作用域。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">isSingleton()</td>
-        <td style="text-align: center;">判断是否是单例。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">isPrototype()</td>
-        <td style="text-align: center;">判断是否是原型。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getConstructorArgumentValues()</td>
-        <td style="text-align: center;">获取构造函数参数值。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getPropertyValues()</td>
-        <td style="text-align: center;">获取属性值。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getInitMethodName()</td>
-        <td style="text-align: center;">获取初始化方法名。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">getDestroyMethodName()</td>
-        <td style="text-align: center;">获取销毁方法名。</td>
-    </tr>
-</table>
-
-
-<h4 id="2-定义包装"><a href="#2-定义包装" class="headerlink" title="2. 定义包装"></a>2. 定义包装</h4><p><code>BeanDefinitionHolder</code> 是对 <code>BeanDefinition</code> 的包装，同时持有一个 <code>String</code> 类型的 <code>beanName</code>，通常在 <code>Spring</code> 容器中扫描、注册或管理 <code>Bean</code> 时使用。</p>
-<p>在 <code>Spring</code> 中，通常在注册 <code>Bean</code> 定义时会使用 <code>BeanDefinitionHolder</code>，将 <code>Bean</code> 的定义信息和名称一并封装，然后一起注册到容器中，从而更方便管理和操作 <code>Bean</code>。</p>
-<h3 id="六、动态导入"><a href="#六、动态导入" class="headerlink" title="六、动态导入"></a>六、动态导入</h3><p>基于 <code>@Import</code> 的功能特性，即可实现动态的 <code>Bean</code> 注册，扫描指定包路径下的类并注册到 <code>Spring</code> 容器。</p>
+<h3 id="五、动态导入"><a href="#五、动态导入" class="headerlink" title="五、动态导入"></a>五、动态导入</h3><p>基于 <code>@Import</code> 的功能特性，即可实现动态的 <code>Bean</code> 注册，扫描指定包路径下的类并注册到 <code>Spring</code> 容器。</p>
 <h4 id="1-注解定义"><a href="#1-注解定义" class="headerlink" title="1. 注解定义"></a>1. 注解定义</h4><p>定义 <code>@BeanScan</code> 注解用于标注目标类包路径，以及 <code>@BeanItem</code> 注解标注需要被扫描的类。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
@@ -1320,30 +1288,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/es/basic/">
+                <a href="/java/advance/proxy/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/es/4.png" class="responsive-img" alt="ElasticSearch 入门教程">
+                        <img src="/album/banner/java/32.png" class="responsive-img" alt="Java 动态代理剖析">
                         
-                        <span class="card-title">ElasticSearch 入门教程</span>
+                        <span class="card-title">Java 动态代理剖析</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ElasticSearch 入门教程。
+                            Java 动态代理剖析。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-12-17
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-11-18
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
-                                    大数据
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
                                 </a>
                             
                             
@@ -1353,8 +1321,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Elasticsearch/">
-                        <span class="chip bg-color">Elasticsearch</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1676,7 +1644,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.4k</span>
+                <span class="white-color">283.3k</span>
             
             
             
