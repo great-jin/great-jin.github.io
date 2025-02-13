@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-02-12
+                    2025-02-13
                 </div>
                 
 
@@ -963,7 +963,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-结果回调"><a href="#2-结果回调" class="headerlink" title="2. 结果回调"></a>2. 结果回调</h4><p>在提交任务之后于 <code>Future</code> 类似，<code>CompletableFuture</code> 同样提供了一系列方法用于获取执行结果以及事件回调，具体内容参考下表。</p>
-<p>需要基于 <code>runAsync()</code> 提交的任务通过 <code>handle()</code> 监听时只能捕获到时候异常而执行结果。</p>
+<p>注意基于 <code>runAsync()</code> 方式提交的任务在通过 <code>handle()</code> 监听时只能捕获到时候异常而执行结果为空。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -1080,7 +1080,7 @@
 </table>
 </br>
 
-<h5 id="1-applyToEither"><a href="#1-applyToEither" class="headerlink" title="(1) applyToEither()"></a>(1) applyToEither()</h5><p>如下述示例中无论是 <code>f1.applyToEither(f2)</code> 还是 <code>f2.applyToEither(f1)</code> 最终输出的结果的 <code>future = Task-1</code>，因为 <code>f1</code> 总是在在 <code>f2</code> 前执行完成。</p>
+<h5 id="1-applyToEither"><a href="#1-applyToEither" class="headerlink" title="(1) applyToEither()"></a>(1) applyToEither()</h5><p>下述示例中无论是 <code>f1.applyToEither(f2)</code> 还是 <code>f2.applyToEither(f1)</code> 最终输出的结果的 <code>future = Task-1</code>，因为 <code>f1</code> 总是在在 <code>f2</code> 前执行完成。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">applyToEitherDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     CompletableFuture<span class="token operator">&lt;</span>String<span class="token operator">></span> f1 <span class="token operator">=</span> CompletableFuture<span class="token punctuation">.</span><span class="token function">supplyAsync</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
