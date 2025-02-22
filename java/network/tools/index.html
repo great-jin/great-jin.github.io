@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-12-15
+                    2025-02-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    534
+                    668
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -572,17 +572,8 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>在 <code>Java</code> 中网络管理与 <code>IO</code> 流一样拥有着错综复杂的分支，虽平日涉及的网络开发更多的是使用 <code>okhttp</code> 等工具库，但对于部分基础场景，<code>Java</code> 自带功能即可满足，下面就让我们了解一番。</p>
-<h4 id="1-URI"><a href="#1-URI" class="headerlink" title="1. URI"></a>1. URI</h4><p><code>URI</code> 在 <code>Java</code> 中用于标识统一资源的位置和标识符, 如文件、网页、电子邮件。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">uriDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        File file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"src\\main\\resources\\info.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"URI: "</span> <span class="token operator">+</span> file<span class="token punctuation">.</span><span class="token function">toURI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 <code>JDK</code> 中除了 <code>URI</code> 同时还提供了 <code>URL</code> 专门针对网络资源，可以理解为 <code>URI</code> 的子集。</p>
+<h4 id="1-资源服务"><a href="#1-资源服务" class="headerlink" title="1. 资源服务"></a>1. 资源服务</h4><h5 id="1-URI"><a href="#1-URI" class="headerlink" title="(1) URI"></a>(1) URI</h5><p><code>URI</code> 在 <code>Java</code> 中用于标识统一资源的位置和标识符, 如文件、网页、电子邮件。</p>
+<h5 id="2-URL"><a href="#2-URL" class="headerlink" title="(2) URL"></a>(2) URL</h5><p>除了 <code>URI</code> 同时还提供了 <code>URL</code> 专门针对网络资源，可以理解为 <code>URI</code> 的子集。</p>
 <p><code>URL</code> 的基本使用示例如下，通过其可以验证 <code>URL</code> 资源的合法性以及其基本信息：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">urlDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String http <span class="token operator">=</span> <span class="token string">"http://127.0.0.1:8080/api/user/list"</span><span class="token punctuation">;</span>
@@ -608,21 +599,45 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-IP查询"><a href="#2-IP查询" class="headerlink" title="2. IP查询"></a>2. IP查询</h4><p>通过 <code>InetAddress</code> 类可以获取当前服务的 <code>IP</code> 地址，具体示例如下：</p>
+<h5 id="3-IP查询"><a href="#3-IP查询" class="headerlink" title="(3) IP查询"></a>(3) IP查询</h5><p>通过 <code>InetAddress</code> 类可以获取当前本机服务的 <code>IP</code> 等信息。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getLocalHost()</td>
+        <td style="text-align: center;">获取本机服务信息实例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getHostName()</td>
+        <td style="text-align: center;">获取本机 hostname。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getHostAddress()</td>
+        <td style="text-align: center;">获取服务 IP 信息。</td>
+    </tr>
+</table>
+</br>
+
+<p>相应的代码示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> demo <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     InetAddress localHost <span class="token operator">=</span> InetAddress<span class="token punctuation">.</span><span class="token function">getLocalHost</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    String host <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>localHost<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token comment" spellcheck="true">// Host: node102/192.168.0.103</span>
+    String host <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>localHost<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Host: "</span> <span class="token operator">+</span> host<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    String hostName <span class="token operator">=</span> localHost<span class="token punctuation">.</span><span class="token function">getHostName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token comment" spellcheck="true">// Host name: node103</span>
+    String hostName <span class="token operator">=</span> localHost<span class="token punctuation">.</span><span class="token function">getHostName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Host name: "</span> <span class="token operator">+</span> hostName<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    String ipAddress <span class="token operator">=</span> localHost<span class="token punctuation">.</span><span class="token function">getHostAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
     <span class="token comment" spellcheck="true">// IP: 192.168.0.103</span>
+    String ipAddress <span class="token operator">=</span> localHost<span class="token punctuation">.</span><span class="token function">getHostAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"IP: "</span> <span class="token operator">+</span> ipAddress<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-PING"><a href="#3-PING" class="headerlink" title="3. PING"></a>3. PING</h4><p>通过 <code>isReachable()</code> 方法测试当前服务能否访问目标 <code>IP</code> ，作用效果类似于 <code>PING</code> 命令。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-服务测试"><a href="#3-服务测试" class="headerlink" title="3. 服务测试"></a>3. 服务测试</h4><h5 id="1-PING"><a href="#1-PING" class="headerlink" title="(1) PING"></a>(1) PING</h5><p>通过 <code>isReachable()</code> 方法测试当前服务能否访问目标 <code>IP</code> ，作用效果类似于 <code>PING</code> 命令。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">pingHost</span><span class="token punctuation">(</span>String ip<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">boolean</span> isConnected<span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -634,7 +649,7 @@
     <span class="token keyword">return</span> isConnected<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-Telnet"><a href="#4-Telnet" class="headerlink" title="4. Telnet"></a>4. Telnet</h4><p>通过 <code>connect()</code> 方法测试当前服务能否访问目标 <code>IP</code> 与端口，作用效果类似于 <code>Telnet</code> 命令。</p>
+<h5 id="2-Telnet"><a href="#2-Telnet" class="headerlink" title="(2) Telnet"></a>(2) Telnet</h5><p>通过 <code>connect()</code> 方法测试当前服务能否访问目标 <code>IP</code> 与端口，作用效果类似于 <code>Telnet</code> 命令。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">telnetHost</span><span class="token punctuation">(</span>String ip<span class="token punctuation">,</span> <span class="token keyword">int</span> port<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">boolean</span> isConnected<span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>Socket socket <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Socket</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -647,21 +662,56 @@
     <span class="token keyword">return</span> isConnected<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-API测试"><a href="#5-API测试" class="headerlink" title="5. API测试"></a>5. API测试</h4><p>通过 <code>openConnection()</code> 方法测试当前服务是否能正常访问，如测试 <code>http://127.0.0.1:8080/demo</code> 页面服务是否正常。</p>
+<h4 id="3-网络请求"><a href="#3-网络请求" class="headerlink" title="3. 网络请求"></a>3. 网络请求</h4><p><code>HttpURLConnection</code> 是 <code>JDK</code> 自带的网络请求工具类，常见方法参考下表。</p>
+<p>注意针对创建的连接复用取决于是否开启了长连接，以及是否关闭了 <code>getInputStream()</code> 返回的流对象，详细说明可以参考官方文档：<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/6/docs/technotes/guides/net/http-keepalive.html">链接直达</a>.</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">openConnection()</td>
+        <td style="text-align: center;">新建网络连接服务。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setRequestMethod()</td>
+        <td style="text-align: center;">设置请求方式，默认 GET。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setConnectTimeout()</td>
+        <td style="text-align: center;">设置连接超时时间。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">setReadTimeout()</td>
+        <td style="text-align: center;">设置读取超时时间。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getInputStream()</td>
+        <td style="text-align: center;">读取连接返回流数据。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">disconnect()</td>
+        <td style="text-align: center;">关闭连接。</td>
+    </tr>
+</table>
+</br>
+
+<p>如测试 <code>http://127.0.0.1:8080/demo</code> 页面服务是否正常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">testUrl</span><span class="token punctuation">(</span>String urlAddr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">boolean</span> isConnected<span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">{</span>
         URL url <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>urlAddr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        HttpURLConnection oc <span class="token operator">=</span> <span class="token punctuation">(</span>HttpURLConnection<span class="token punctuation">)</span> url<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        oc<span class="token punctuation">.</span><span class="token function">setUseCaches</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        oc<span class="token punctuation">.</span><span class="token function">setConnectTimeout</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        isConnected <span class="token operator">=</span> <span class="token number">200</span> <span class="token operator">==</span> oc<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        HttpURLConnection conn <span class="token operator">=</span> <span class="token punctuation">(</span>HttpURLConnection<span class="token punctuation">)</span> url<span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        conn<span class="token punctuation">.</span><span class="token function">setConnectTimeout</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        conn<span class="token punctuation">.</span><span class="token function">setReadTimeout</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        isConnected <span class="token operator">=</span> <span class="token number">200</span> <span class="token operator">==</span> conn<span class="token punctuation">.</span><span class="token function">getResponseCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        conn<span class="token punctuation">.</span><span class="token function">disconnect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         isConnected <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> isConnected<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1263,7 +1313,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">283.3k</span>
+                <span class="white-color">283.6k</span>
             
             
             
