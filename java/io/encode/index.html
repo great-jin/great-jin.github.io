@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-13
+                    2025-03-29
                 </div>
                 
 
@@ -659,13 +659,14 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-Deflater"><a href="#3-Deflater" class="headerlink" title="3. Deflater"></a>3. Deflater</h4><p><code>Deflater</code> 为 <code>Java</code> 标准库提供的压缩/解压缩算法，基于 <code>DEFLATE</code> 算法实现，可以通过设置压缩级别来控制压缩率和压缩速度。</p>
-<h5 id="1-压缩"><a href="#1-压缩" class="headerlink" title="(1) 压缩"></a>(1) 压缩</h5><p><code>Deflater</code> 在初始化时可设置压缩级别，取值 <code>0~9</code>，数值越大压缩率越高效率越慢。</p>
+<h4 id="3-数据压缩"><a href="#3-数据压缩" class="headerlink" title="3. 数据压缩"></a>3. 数据压缩</h4><p><code>Deflater</code> 为 <code>Java</code> 标准库提供的压缩/解压缩算法，基于 <code>DEFLATE</code> 算法实现，可以通过设置压缩级别来控制压缩率和压缩速度。</p>
+<h5 id="1-Deflater"><a href="#1-Deflater" class="headerlink" title="(1) Deflater"></a>(1) Deflater</h5><p><code>Deflater</code> 在初始化时可设置压缩级别，取值 <code>0~9</code>，数值越大压缩率越高但效率越慢。</p>
 <p>初始化第二个参数 <code>nowap</code> 用于指定是否使用 <code>ZLIB</code> 头和尾来解压缩数据，默认值为 <code>false</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">compress</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Deflater deflater <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Deflater</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     deflater<span class="token punctuation">.</span><span class="token function">setInput</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
     deflater<span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token keyword">try</span> <span class="token punctuation">(</span>ByteArrayOutputStream bos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
         <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>deflater<span class="token punctuation">.</span><span class="token function">finished</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -677,11 +678,12 @@
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-解压缩"><a href="#2-解压缩" class="headerlink" title="(2) 解压缩"></a>(2) 解压缩</h5><p><code>Inflater</code> 初始化中的 <code>nowap</code> 参数需要与 <code>Deflater</code> 一致，否则将会抛出异常。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-Inflater"><a href="#2-Inflater" class="headerlink" title="(2) Inflater"></a>(2) Inflater</h5><p><code>Inflater</code> 初始化中的 <code>nowap</code> 参数需要与 <code>Deflater</code> 一致，否则将会抛出异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">decompress</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> compressedData<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
     Inflater inflater <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Inflater</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     inflater<span class="token punctuation">.</span><span class="token function">setInput</span><span class="token punctuation">(</span>compressedData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token keyword">try</span> <span class="token punctuation">(</span>ByteArrayOutputStream bos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span>compressedData<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
         <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>inflater<span class="token punctuation">.</span><span class="token function">finished</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -693,7 +695,7 @@
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、加密算法"><a href="#二、加密算法" class="headerlink" title="二、加密算法"></a>二、加密算法</h3><h4 id="1-哈希算法"><a href="#1-哈希算法" class="headerlink" title="1. 哈希算法"></a>1. 哈希算法</h4><p>哈希算法即通过一定的算法规则为目标数据生成一串指定的哈希编码，最常见的即 <code>MD5</code> 与 <code>SHA-256</code>，在许多网站下载文件时通常会标注文件对应的 <code>MD5</code> 等信息，可供检验文件是否被恶意篡改。</p>
 <p>其核心在于相同数据文件经过哈希算法得到的哈希值一定是固定的，当应用发行商发布文件时同时公布其文件的哈希值，用户下载后可通过哈希加密工具执行计算得到一串哈希值，若与发行商的不一致则代表文件数据可能被人为篡改不安全。</p>
 <h4 id="2-对称加密"><a href="#2-对称加密" class="headerlink" title="2. 对称加密"></a>2. 对称加密</h4><p>对称加密即传统意义上的数据加密，对称加密中的对称即代表加密和解密的密钥是一致，即存在一份密钥同时用于数据加密和解密，如常见的 <code>AES</code> 和 <code>DES</code> 算法等等。</p>
@@ -1528,7 +1530,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">283.5k</span>
+                <span class="white-color">283.8k</span>
             
             
             

@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-10-28
+                    2025-03-29
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.9k
+                    2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -673,7 +673,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、文件解析"><a href="#二、文件解析" class="headerlink" title="二、文件解析"></a>二、文件解析</h3><p>在 <code>java.util.jar</code> 包下提供了 <code>ZipFile</code> 与 <code>JarFile</code> 用便捷的文件读取，可实现压缩文件内的文件读取。</p>
+<h3 id="二、压缩文件"><a href="#二、压缩文件" class="headerlink" title="二、压缩文件"></a>二、压缩文件</h3><p>在 <code>java.util.jar</code> 包下提供了 <code>ZipFile</code> 与 <code>JarFile</code> 用便捷的文件读取，可实现压缩文件内的文件读取。</p>
 <h4 id="1-ZipFile"><a href="#1-ZipFile" class="headerlink" title="1. ZipFile"></a>1. ZipFile</h4><p><code>ZipFile</code> 可实现在不解压文件的前提下读取压缩包中的文件，其常用方法参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -784,6 +784,48 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-文件创建"><a href="#4-文件创建" class="headerlink" title="4. 文件创建"></a>4. 文件创建</h4><p>在多文件的下载场景下，通过会采用合并压缩包为单份文件的形式实现，从而达到一次下载多份文件的效果。</p>
+<p>首先定义 <code>ZipElement</code> 类用于声明需要写入压缩包内的元素信息，如文件名与流内容，其定义如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ZipElement</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 写入后的文件名
+     */</span>
+    <span class="token keyword">private</span> String fileName<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 目标文件流
+     */</span>
+    <span class="token keyword">private</span> InputStream inputStream<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于 <code>ZIP</code> 文件而言，压缩包内的每一份文件都是一个 <code>ZipEntry</code>，因此只需要循环创建 <code>ZipEntry</code> 元素并添加即可，实现代码如下： </p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> InputStream <span class="token function">mergeFiles</span><span class="token punctuation">(</span>ZipElement<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> elements<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>
+        ByteArrayOutputStream out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ZipOutputStream zipOut <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ZipOutputStream</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>ZipElement element <span class="token operator">:</span> elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try</span> <span class="token punctuation">(</span>InputStream in <span class="token operator">=</span> element<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 创建 ZIP 内文件</span>
+                ZipEntry zipEntry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ZipEntry</span><span class="token punctuation">(</span>element<span class="token punctuation">.</span>getFileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                zipOut<span class="token punctuation">.</span><span class="token function">putNextEntry</span><span class="token punctuation">(</span>zipEntry<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token keyword">int</span> chunk<span class="token punctuation">;</span>
+                <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token number">8192</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>chunk <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">// 写入流内容</span>
+                    zipOut<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> chunk<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                zipOut<span class="token punctuation">.</span><span class="token function">closeEntry</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+            
+        <span class="token comment" spellcheck="true">// 返回合并后的 ZIP 流</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>out<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、资源拆合"><a href="#三、资源拆合" class="headerlink" title="三、资源拆合"></a>三、资源拆合</h3><h4 id="1-文件拆分"><a href="#1-文件拆分" class="headerlink" title="1. 文件拆分"></a>1. 文件拆分</h4><p>针对大文件的处理，通常都会涉及到拆分与合并从而降低系统资源占用与提高服务性能。</p>
 <p>对于文件的拆分，首先确定拆分的思路：即先按照文件的大小等分确定拆分块的大小，如 <code>95MB</code> 的文件限制单个块大小不超过 <code>10MB</code>，则应该拆分为 <code>10</code> 个块，最后一个块不足 <code>10MB</code> 仍单独为一个文件块。确认文件块后即可开始按序读取文件内容，当读取的内容值到达文件块限制时则创建一个新文件。为了获取更高的性能，针对单个文件快仍采用类似的拆分写入，即分批不断添加数据至文件末端。</p>
 <p>将上述的逻辑转化为相应的代码如下，这里采用 <code>RandomAccessFile</code> 进行文件的读取，并将读取的内容拆分为多个文件，拆分后每个文件名形式如：<code>split.0，split.1</code>。同时这里 <code>BufferedOutputStream</code> 最终输出为单个文件块，若需要上传至 <code>OSS</code> 系统可替换该部分将 <code>RandomAccessFile</code> 读取数据转为 <code>InputStream</code>。</p>
@@ -1529,7 +1571,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">283.5k</span>
+                <span class="white-color">283.8k</span>
             
             
             
