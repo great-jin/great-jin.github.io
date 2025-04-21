@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-01-18
+                    2025-04-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.2k
                 </div>
                 
 
@@ -591,11 +591,16 @@
 <p>如果你在打包时你设置了外置配置文件，那么需要将 <code>application.yml</code> 文件与 <code>jar</code> 包上传到同级目录下。</p>
 <h4 id="2-启动脚本"><a href="#2-启动脚本" class="headerlink" title="2. 启动脚本"></a>2. 启动脚本</h4><p>为了方便项目启动，新建一个启动脚本 <code>start.sh</code> 用于快速运行项目。</p>
 <p>脚本内容很简单，先查询项目是否运行，如果是则先通过 <code>kill</code> 命令停止，如果不是则启动项目，同时将运行日志输出到同级目录的 <code>application-info.log</code> 文件中。</p>
-<p>需要注意如果在最后启动命令中没有使用 <code>$(pwd)</code> 而是使用相对路径则启动之后通过 <code>jps</code> 命令查看进程得到的进程名为 <code>-jar</code>，需要通过 <code>jps -l</code> 查看。</p>
+<p>首先创建文件 <code>start.sh</code> 文件并赋予执行权限，命令如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建启动脚本</span>
 <span class="token function">vi</span> start.sh
 
-<span class="token comment" spellcheck="true">#!/bin/bash </span>
+<span class="token comment" spellcheck="true"># 添加可执行权限</span>
+<span class="token function">chmod</span> +x start.sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成后通过 <code>vi</code> 命令编辑写入启动脚本，脚本内容如下所示。</p>
+<p>注意如果在最后启动命令中没有使用 <code>$(pwd)</code> 而是使用相对路径则启动之后通过 <code>jps</code> 命令查看进程得到的进程名为 <code>-jar</code>，需要通过 <code>jps -l</code> 查看。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span> 
 <span class="token comment" spellcheck="true"># 替换 jar 包名称</span>
 APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
 
@@ -617,12 +622,16 @@ tpid<span class="token operator">=</span>`ps -ef<span class="token operator">|</
 <span class="token comment" spellcheck="true"># 后台启动程序</span>
 <span class="token function">nohup</span> java -jar <span class="token variable"><span class="token variable">$(</span><span class="token function">pwd</span><span class="token variable">)</span></span>/<span class="token variable">$APP_NAME</span> <span class="token operator">></span> application-info.log 2<span class="token operator">></span><span class="token operator">&amp;</span>1 <span class="token operator">&amp;</span>
 <span class="token keyword">fi</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-停止脚本"><a href="#3-停止脚本" class="headerlink" title="3. 停止脚本"></a>3. 停止脚本</h4><p>同理再新建一个停止脚本文件 <code>stop.sh</code> 。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-停止脚本"><a href="#3-停止脚本" class="headerlink" title="3. 停止脚本"></a>3. 停止脚本</h4><p>同理再新建一个停止脚本 <code>stop.sh</code> 文件。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建停止脚本</span>
 <span class="token function">vi</span> stop.sh
 
-<span class="token comment" spellcheck="true">#!/bin/sh</span>
+<span class="token comment" spellcheck="true"># 添加可执行权限</span>
+<span class="token function">chmod</span> +x stop.sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>脚本内容并不复杂，同 <code>ps</code> 命令查询对应进程号后使用 <code>kill</code> 关闭进程，完整内容如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
 <span class="token comment" spellcheck="true"># 将 spring-test-1.0.0-SNAPSHOT.jar 修改为自己的 jar 包名</span>
 APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
 
@@ -634,14 +643,9 @@ PID<span class="token operator">=</span><span class="token punctuation">$(</span
 <span class="token keyword">echo</span> <span class="token function">kill</span> <span class="token variable">$PID</span>
 <span class="token function">kill</span> <span class="token variable">$PID</span>
 <span class="token keyword">fi</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-工程启动"><a href="#4-工程启动" class="headerlink" title="4. 工程启动"></a>4. 工程启动</h4><p>完成脚本创建之后启动和停止服务直接运行脚本即可。</p>
-<h5 id="1-文件授权"><a href="#1-文件授权" class="headerlink" title="(1) 文件授权"></a>(1) 文件授权</h5><p>在运行脚本之前需要给脚本文件授予可执行文件。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">chmod</span> +x start.sh
-
-<span class="token function">chmod</span> +x stop.sh        
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-项目启动"><a href="#2-项目启动" class="headerlink" title="(2) 项目启动"></a>(2) 项目启动</h5><p>运行启动脚本之后通过 <code>jps</code> 查看 <code>Java</code> 进程，如果能看到你的 <code>jar</code> 包表明启动成功。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-服务启动"><a href="#4-服务启动" class="headerlink" title="4. 服务启动"></a>4. 服务启动</h4><p>完成脚本创建之后启动和停止服务直接运行脚本即可。</p>
+<p>运行启动脚本之后通过 <code>jps</code> 查看 <code>Java</code> 进程，如果能看到你的 <code>jar</code> 包表明启动成功。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 项目启动</span>
 ./start.sh             
 
@@ -684,7 +688,7 @@ docker build -t demo:1.0 <span class="token keyword">.</span>
 <span class="token comment" spellcheck="true"># 查看已有镜像</span>
 docker images       
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-服务启动"><a href="#4-服务启动" class="headerlink" title="4. 服务启动"></a>4. 服务启动</h4><p>完成镜像构建之后通过 <code>run</code> 命令直接运行即可。</p>
+<h4 id="4-服务启动-1"><a href="#4-服务启动-1" class="headerlink" title="4. 服务启动"></a>4. 服务启动</h4><p>完成镜像构建之后通过 <code>run</code> 命令直接运行即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
 --name demo \
 -p 9090:9090 \
@@ -1287,7 +1291,7 @@ demo:1.0
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">283.8k</span>
+                <span class="white-color">283.9k</span>
             
             
             
