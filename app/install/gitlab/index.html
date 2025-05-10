@@ -163,16 +163,16 @@
       </li>
       
       <li>
-        <a href="/resource/site">
+        <a href="/resource/tool">
           
-          <span>站点资源</span>
+          <span>应用程序</span>
         </a>
       </li>
       
       <li>
-        <a href="/resource/tool">
+        <a href="/resource/site">
           
-          <span>软件工具</span>
+          <span>插件工具</span>
         </a>
       </li>
       
@@ -312,16 +312,16 @@
                     </li>
                    <li>
     
-          <a href="/resource/site " style="margin-left:75px">
+          <a href="/resource/tool " style="margin-left:75px">
               
-                  <span>站点资源</span>
+                  <span>应用程序</span>
                       </a>
                     </li>
                    <li>
     
-          <a href="/resource/tool " style="margin-left:75px">
+          <a href="/resource/site " style="margin-left:75px">
               
-                  <span>软件工具</span>
+                  <span>插件工具</span>
                       </a>
                     </li>
                   
@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-12
+                    2025-05-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    431
+                    445
                 </div>
                 
 
@@ -571,7 +571,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍 <code>Docker</code> 方式部署。</p>
+                <p><code>Gitlab</code> 是一款广受好评的 <code>GIT</code> 项目管理平台，其中 <code>Gitlab-CE</code> 为免费版本，下面介绍如何通过 <code>Docker</code> 实现 <code>Gitlab</code> 服务部署。</p>
 <h4 id="1-目录创建"><a href="#1-目录创建" class="headerlink" title="1. 目录创建"></a>1. 目录创建</h4><p>老规矩第一步还是先创建数据目录用于文件映射。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/config
 <span class="token function">mkdir</span> -p /usr/local/dockerdata/gitlab/data
@@ -591,10 +591,11 @@
 -v /usr/local/dockerdata/gitlab/data:/var/opt/gitlab \
 gitlab/gitlab-ce
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 gitlab 映射的文件目录中编辑配置信息。</p>
+<h4 id="3-配置修改"><a href="#3-配置修改" class="headerlink" title="3. 配置修改"></a>3. 配置修改</h4><p>启动容器后进入会 <code>Gitlab</code> 映射的文件目录中编辑配置信息。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> /usr/local/dockerdata/gitlab/config/gitlab.rb
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>，保存后通过 <code>docker restart gitlab</code> 重启服务使其生效。</p>
+<p>修改文件中的下述内容，将 <code>192.168.0.20</code> 替换为你的服务器 <code>IP</code>。</p>
+<p>完成后保存退出，并通过 <code>docker restart gitlab</code> 重启服务使其生效。</p>
 <pre class="line-numbers language-txt"><code class="language-txt">external_url 'http://192.168.0.20'
 
 gitlab_rails['gitlab_ssh_host'] = '192.168.0.20'
@@ -604,18 +605,19 @@ gitlab_rails['gitlab_shell_ssh_port'] = 8082
 
 gitlab_rails['time_zone'] = 'Asia/Shanghai'  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>gitlab</code> 容器内，配置服务对应的端口信息。</p>
+<h4 id="4-端口修改"><a href="#4-端口修改" class="headerlink" title="4. 端口修改"></a>4. 端口修改</h4><p>完成上述步骤后进入 <code>Gitlab</code> 容器内，配置服务对应的端口信息。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it gitlab <span class="token function">bash</span>
 
 <span class="token function">vi</span> /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值，完成后在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p>
+<p>修改配置文件的 <code>port</code> 值，将其改成之前启动容器时 <code>80</code> 端口映射的值。</p>
+<p>完成后同样在容器中通过 <code>gitlab-ctl restart</code> 重启服务。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">production</span><span class="token punctuation">:</span> <span class="token important">&amp;base</span>
   <span class="token key atrule">gitlab</span><span class="token punctuation">:</span>
     <span class="token comment" spellcheck="true"># 替换为 80 端口映射的值</span>
    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>ip:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p>
+<h4 id="5-用户账号"><a href="#5-用户账号" class="headerlink" title="5. 用户账号"></a>5. 用户账号</h4><p>完成上述配置之后即可浏览器访问 <code>IP:8080</code>，默认用户名为 <code>root</code>，密码通过下述命令查看：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker <span class="token function">exec</span> -it <span class="token operator">&lt;</span>container_id<span class="token operator">></span> <span class="token function">grep</span> <span class="token string">'Password:'</span> /etc/gitlab/initial_root_password
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -1215,7 +1217,7 @@ gitlab_rails['time_zone'] = 'Asia/Shanghai'
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.6k</span>
+                <span class="white-color">284.9k</span>
             
             
             

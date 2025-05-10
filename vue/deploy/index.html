@@ -163,16 +163,16 @@
       </li>
       
       <li>
-        <a href="/resource/site">
+        <a href="/resource/tool">
           
-          <span>站点资源</span>
+          <span>应用程序</span>
         </a>
       </li>
       
       <li>
-        <a href="/resource/tool">
+        <a href="/resource/site">
           
-          <span>软件工具</span>
+          <span>插件工具</span>
         </a>
       </li>
       
@@ -312,16 +312,16 @@
                     </li>
                    <li>
     
-          <a href="/resource/site " style="margin-left:75px">
+          <a href="/resource/tool " style="margin-left:75px">
               
-                  <span>站点资源</span>
+                  <span>应用程序</span>
                       </a>
                     </li>
                    <li>
     
-          <a href="/resource/tool " style="margin-left:75px">
+          <a href="/resource/site " style="margin-left:75px">
               
-                  <span>软件工具</span>
+                  <span>插件工具</span>
                       </a>
                     </li>
                   
@@ -522,8 +522,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                前端
+                            <a href="/categories/%E7%BC%96%E8%AF%91%E6%9E%84%E5%BB%BA/" class="post-category">
+                                编译构建
                             </a>
                         
                     </div>
@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-06-15
+                    2025-05-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    704
+                    875
                 </div>
                 
 
@@ -571,7 +571,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、项目配置"><a href="#一、项目配置" class="headerlink" title="一、项目配置"></a>一、项目配置</h3><h4 id="1-路由变更"><a href="#1-路由变更" class="headerlink" title="1. 路由变更"></a>1. 路由变更</h4><p>修改前端项目的路由模式为 <code>Hash</code>，文件在 <code>src/router/index.js</code>，下述是 <code>Vue3</code> 的配置:</p>
+                <p>在使用 <code>Vue</code> 开发工程之后，若想要成为浏览器能够访问的资源，就需要对工程进行编译。</p>
+<p>编译的思路并不复杂，通过对应配置及命令打包构建静态资源文件，也就是场景的 <code>hmtl</code>，<code>css</code> 与 <code>js</code> 等文件，之后通过 <code>Nginx</code> 服务实现资源代理即可。</p>
+<p>下面就让我们开始实操演示如何编译以及部署。</p>
+<h3 id="一、项目配置"><a href="#一、项目配置" class="headerlink" title="一、项目配置"></a>一、项目配置</h3><h4 id="1-路由变更"><a href="#1-路由变更" class="headerlink" title="1. 路由变更"></a>1. 路由变更</h4><p>修改前端项目的路由模式为 <code>Hash</code>，文件在 <code>src/router/index.js</code>，下述是 <code>Vue3</code> 的配置:</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>createRouter<span class="token punctuation">,</span> createWebHashHistory<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue-router'</span>
 
 <span class="token keyword">const</span> routes <span class="token operator">=</span> pathArray
@@ -585,7 +588,7 @@
 <span class="token keyword">export</span> <span class="token keyword">default</span> router
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-服务配置"><a href="#2-服务配置" class="headerlink" title="2. 服务配置"></a>2. 服务配置</h4><p>修改项目根目录下的 <code>vue.config.js</code> 文件，注意将其中的 <code>192.168.0.100</code> 替换为你自己的服务器 <code>IP</code>。</p>
-<p>其中 <code>8080</code> 是前端的访问端口，<code>9090</code> 为后端服务端口，<code>/daily-word</code> 为前端接口前缀，<code>/dailyWord</code> 为后端配置的 <code>servlet:context-path</code>。</p>
+<p>其中 <code>8080</code> 是前端的访问端口，<code>9090</code> 为后端服务端口，<code>/daily-word</code> 为前端接口前缀，此项通常关联于工程中 <code>Axios</code> 请求文件中所配置值，而 <code>/dailyWord</code> 为后端服务的 <code>servlet:context-path</code>。</p>
 <pre class="line-numbers language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token function">defineConfig</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   devServer<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     open<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
@@ -638,7 +641,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、服务部署"><a href="#三、服务部署" class="headerlink" title="三、服务部署"></a>三、服务部署</h3><h4 id="1-Nginx代理"><a href="#1-Nginx代理" class="headerlink" title="1. Nginx代理"></a>1. Nginx代理</h4><p>上述打包完成后的文件为静态资源，因此这里选择通过 <code>Nginx</code> 实现页面的访问，具体的 <code>Nginx</code> 部署教程之前的文章已经详细介绍过，这里不再重复详细展开，链接直达：<a href="https://great-jin.github.io/linux/nginx/">Nginx教程</a>。</p>
-<h4 id="2-请求转发"><a href="#2-请求转发" class="headerlink" title="2. 请求转发"></a>2. 请求转发</h4><p>由于 <code>Nginx</code> 静态资源不支持 <code>Post</code> 接口请求，因此需要将请求进行转发。</p>
+<h4 id="2-请求转发"><a href="#2-请求转发" class="headerlink" title="2. 请求转发"></a>2. 请求转发</h4><p>由于 <code>Nginx</code> 静态资源不支持 <code>Post</code> 接口请求，在默认配置执行 <code>Post</code> 请求将返回 <code>405</code> 异常，因此需要将请求进行转发。</p>
 <pre class="line-numbers language-conf"><code class="language-conf">location / {
     #root   html;
     #index  index.html index.htm;
@@ -647,7 +650,7 @@
 }
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-完整配置"><a href="#3-完整配置" class="headerlink" title="3. 完整配置"></a>3. 完整配置</h4><p>完成的 <code>Nginx</code> 配置文件如下，其中 <code>8080</code> 为页面访问地址，需要和第一步中配置的一致，<code>root</code> 配置打包上传的 <code>dist</code> 目录路径。</p>
-<p>注意将其中的 <code>192.168.0.100</code> 替换为你自己的服务器 <code>IP</code>。</p>
+<p>注意将其中的 <code>192.168.0.100</code> 替换为你自己的服务器 <code>IP</code>，完成下述配置之后重启 <code>Nginx</code> 便可通过 <code>IP</code> 及端口访问服务。</p>
 <pre class="line-numbers language-conf"><code class="language-conf">server {
     listen       8080;
     server_name  localhost;
@@ -668,7 +671,8 @@
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        # ip为后端服务地址
+        
+        # IP 为后端服务地址
         proxy_pass http://192.168.0.100:9090$request_uri;
     }
 
@@ -677,7 +681,7 @@
         root   html;
     }
 }
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1275,7 +1279,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.6k</span>
+                <span class="white-color">284.9k</span>
             
             
             

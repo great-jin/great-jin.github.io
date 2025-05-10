@@ -163,16 +163,16 @@
       </li>
       
       <li>
-        <a href="/resource/site">
+        <a href="/resource/tool">
           
-          <span>站点资源</span>
+          <span>应用程序</span>
         </a>
       </li>
       
       <li>
-        <a href="/resource/tool">
+        <a href="/resource/site">
           
-          <span>软件工具</span>
+          <span>插件工具</span>
         </a>
       </li>
       
@@ -312,16 +312,16 @@
                     </li>
                    <li>
     
-          <a href="/resource/site " style="margin-left:75px">
+          <a href="/resource/tool " style="margin-left:75px">
               
-                  <span>站点资源</span>
+                  <span>应用程序</span>
                       </a>
                     </li>
                    <li>
     
-          <a href="/resource/tool " style="margin-left:75px">
+          <a href="/resource/site " style="margin-left:75px">
               
-                  <span>软件工具</span>
+                  <span>插件工具</span>
                       </a>
                     </li>
                   
@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2024-04-30
+                    2025-05-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    1.4k
                 </div>
                 
 
@@ -611,8 +611,8 @@
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@WebFilter</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter1</span> <span class="token keyword">implements</span> <span class="token class-name">Filter</span> <span class="token punctuation">{</span>
-
     <span class="token comment" spellcheck="true">// 略去实现逻辑</span>
+
 <span class="token punctuation">}</span>
 
 <span class="token annotation punctuation">@ServletComponentScan</span>
@@ -646,9 +646,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-资源忽略"><a href="#3-资源忽略" class="headerlink" title="3. 资源忽略"></a>3. 资源忽略</h4><p>在上面的示例中通过 <code>setUrlPatterns()</code> 配置了拦截作用域，但拦截器并没有提供提供显式的白名单配置接口。</p>
-<p>因此为了只能另辟蹊径实现白名单效果，你可以在过滤器的 <code>doFilter()</code> 中通过 <code>req.getRequestURI()</code> 获取请求的资源实现判断过滤，从而实现白名单效果。</p>
-<p>下面介绍另一种方法，自定义过滤器类并继承 <code>OncePerRequestFilter</code> 类，将白名单配置策略配置于 <code>shouldNotFilter()</code> 中。</p>
+<h4 id="3-过滤优化"><a href="#3-过滤优化" class="headerlink" title="3. 过滤优化"></a>3. 过滤优化</h4><p>除了上述提到的 <code>Filter</code> 类，在 <code>Spring</code> 中提供了更为便捷的 <code>OncePerRequestFilter</code> 实现了每个请求都只会执行一遍，避免了由于重定向等操作导致的过滤器重复执行。</p>
+<p>其使用方式与上述类似，业务逻辑定义于 <code>doFilterInternal()</code> 中，同时其提供了 <code>shouldNotFilter()</code> 方法用于配置过滤器白名单策略。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyFilter2</span> <span class="token keyword">extends</span> <span class="token class-name">OncePerRequestFilter</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -1333,7 +1332,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">282.6k</span>
+                <span class="white-color">284.9k</span>
             
             
             
