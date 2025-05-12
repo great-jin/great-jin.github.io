@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-05-12
                 </div>
                 
 
@@ -667,7 +667,7 @@ rabbitmq:management
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-模糊匹配"><a href="#2-模糊匹配" class="headerlink" title="2. 模糊匹配"></a>2. 模糊匹配</h4><p>在 <code>TopicExchange</code> 传输模式中，除了与 <code>DirectExchange</code> 的精准匹配外，支持根据路由键模糊匹配。</p>
-<p>如定义了路由键: <code>test.1.1</code>、<code>test.1.2</code> 与 <code>test.2.1</code>，在发送消息时将路由键配置为 <code>test.1.*</code> 则不会发送至 <code>test.2.1</code>。</p>
+<p>如定义了路由键: <code>test.m1.1</code>、<code>test.m1.2</code> 与 <code>test.m2.1</code>，在发送消息时将路由键配置为 <code>test.m1.*</code> 则可以同时发送消息至 <code>test.m1.1</code> 与 <code>test.m1.2</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RabbitConfig</span> <span class="token punctuation">{</span>
 
@@ -829,11 +829,14 @@ rabbitmq:management
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token keyword">private</span> RabbitTemplate secondaryRabbitTemplate<span class="token punctuation">;</span>
 
+
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> <span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        primaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> <span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        secondaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> <span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-消费实例"><a href="#2-消费实例" class="headerlink" title="2. 消费实例"></a>2. 消费实例</h4><p>同样的，在创建了多个连接实例后相应的也需要创建对应的消息接收工厂。</p>
 <p>在之前 <code>@RabbitListener</code> 注解接收消息示例中，通过 <code>queues</code> 指定消息队列。而在多连接实例下，则可通过 <code>containerFactory</code> 配置对应的服务实例。</p>
 <p>完成的配置示例如下，其中 <code>ConnectionFactory</code> 即上述的连接服务实例。</p>

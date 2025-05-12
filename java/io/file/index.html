@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-05-12
                 </div>
                 
 
@@ -827,7 +827,8 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、资源拆合"><a href="#三、资源拆合" class="headerlink" title="三、资源拆合"></a>三、资源拆合</h3><h4 id="1-文件拆分"><a href="#1-文件拆分" class="headerlink" title="1. 文件拆分"></a>1. 文件拆分</h4><p>针对大文件的处理，通常都会涉及到拆分与合并从而降低系统资源占用与提高服务性能。</p>
-<p>对于文件的拆分，首先确定拆分的思路：即先按照文件的大小等分确定拆分块的大小，如 <code>95MB</code> 的文件限制单个块大小不超过 <code>10MB</code>，则应该拆分为 <code>10</code> 个块，最后一个块不足 <code>10MB</code> 仍单独为一个文件块。确认文件块后即可开始按序读取文件内容，当读取的内容值到达文件块限制时则创建一个新文件。为了获取更高的性能，针对单个文件快仍采用类似的拆分写入，即分批不断添加数据至文件末端。</p>
+<p>对于文件的拆分，首先确定拆分的思路：即先按照文件的大小等分确定拆分块的大小，如 <code>35MB</code> 的文件限制单个块大小不超过 <code>10MB</code>，则应该拆分为 <code>4</code> 个块，最后一个块不足 <code>10MB</code> 仍单独为一个文件块。<br><img src="/album/loading.gif" data-original="/album/article/java/io/3.png"></p>
+<p>确认文件块后即可开始按序读取文件内容，当读取的内容值到达文件块限制时则创建一个新文件。为了获取更高的性能，针对单个文件快仍采用类似的拆分写入，即分批不断添加数据至文件末端。</p>
 <p>将上述的逻辑转化为相应的代码如下，这里采用 <code>RandomAccessFile</code> 进行文件的读取，并将读取的内容拆分为多个文件，拆分后每个文件名形式如：<code>split.0，split.1</code>。同时这里 <code>BufferedOutputStream</code> 最终输出为单个文件块，若需要上传至 <code>OSS</code> 系统可替换该部分将 <code>RandomAccessFile</code> 读取数据转为 <code>InputStream</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileSplitTest</span> <span class="token punctuation">{</span>
 
@@ -873,7 +874,7 @@
                 <span class="token punctuation">}</span>
             <span class="token punctuation">}</span>
 
-            <span class="token comment" spellcheck="true">// write the remain data that size less than a buffer</span>
+            <span class="token comment" spellcheck="true">// 不足块大小文件单独写入</span>
             <span class="token keyword">if</span> <span class="token punctuation">(</span>remainingBytes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
                 String location <span class="token operator">=</span> splitDir <span class="token operator">+</span> File<span class="token punctuation">.</span>separator <span class="token operator">+</span> splitPrefix <span class="token operator">+</span> <span class="token punctuation">(</span>numSplits <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">try</span> <span class="token punctuation">(</span>
