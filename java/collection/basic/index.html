@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java集合知识梳理, 布袋青年">
+    <meta name="keywords" content="Java集合容器梳理, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java集合知识梳理 | 布袋青年</title>
+    <title>Java集合容器梳理 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -375,7 +375,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java集合知识梳理</h1>
+                    <h1 class="description center-align post-title">Java集合容器梳理</h1>
                 </div>
             </div>
         </div>
@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-05-19
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.6k
+                    4.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    18 分
+                    16 分
                 </div>
                 
 
@@ -576,9 +576,10 @@
 <p>列表底层实现逻辑为链表，在插入删除时只需更新指针指向，显然效果高于数组，但在随机读取时因为链表特性需要从头逐一遍历因此效率低于数组。</p>
 <p>因此二者并没有孰优孰略，应根据不同的业务场景选择合适的实现方式。</p>
 <blockquote>
-<p>下面依次介绍 Java 中常用的集合对象。</p>
+<p>下面分别盘点 Java 中常用的集合容器。</p>
 </blockquote>
-<h3 id="一、枚举数据"><a href="#一、枚举数据" class="headerlink" title="一、枚举数据"></a>一、枚举数据</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>枚举你可以简单的理解为一个常量数组。举个简单例子，你需要定义 <code>4</code> 种颜色，则只需要通过一个枚举即可，然后通过 <code>枚举名.变量名</code> 进行访问，使得代码更具可读性。</p>
+<h3 id="一、枚举数据"><a href="#一、枚举数据" class="headerlink" title="一、枚举数据"></a>一、枚举数据</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>枚举你可以简单的理解为一个赋予特殊含义的常量数组，经典的魔法值杀手。</p>
+<p>举个简单例子，你需要定义 <code>4</code> 种颜色，则只需要通过一个枚举即可，然后通过 <code>枚举名.变量名</code> 进行访问，使得代码更具可读性。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EnumTest</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         Color color <span class="token operator">=</span> Color<span class="token punctuation">.</span>Blue<span class="token punctuation">;</span>
@@ -598,16 +599,15 @@
 <h4 id="2-应用"><a href="#2-应用" class="headerlink" title="2. 应用"></a>2. 应用</h4><p>在实际工程中在记录状态时通常都是通过数值存储于数据库之间，而在代码中若直接读取数据进行操作虽然可行但可读性相对较低。</p>
 <p>在一个复杂的工程中，常会使用到各种状态值，但如果使用简单数值标识可读性又相对较差，针对此类情况通过为不同状态码定义相应枚举元素，即可实现更高的代码可读性。</p>
 <p>下面看一个示例，通过使用枚举为不同 <code>HTTP</code> 请求状态码提供更详细的描述。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">enum</span> RequestStatus <span class="token punctuation">{</span>
-    <span class="token function">SUCCESS</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"请求成功。"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">PARAMS_ERROR</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">,</span> <span class="token string">"请求参数有误。"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">NOT_FOUND</span><span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"请求地址不存在。"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">NOT_RECOGNIZE</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">"无法识别请求。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">enum</span> HttpStatus <span class="token punctuation">{</span>
+    <span class="token function">SUCCESS</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"success"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">NOT_FOUND</span><span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"not found"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">ERROR</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">"internal error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">int</span> code<span class="token punctuation">;</span>
     <span class="token keyword">private</span> <span class="token keyword">final</span> String describe<span class="token punctuation">;</span>
 
-    <span class="token function">Weekday</span><span class="token punctuation">(</span><span class="token keyword">int</span> code<span class="token punctuation">,</span> String describe<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">HttpStatus</span><span class="token punctuation">(</span><span class="token keyword">int</span> code<span class="token punctuation">,</span> String describe<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>code <span class="token operator">=</span> code<span class="token punctuation">;</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>describe <span class="token operator">=</span> describe<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
@@ -624,57 +624,57 @@
         <span class="token keyword">int</span> code <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
         <span class="token keyword">switch</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>SUCCESS<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"请求成功。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"请求成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
             <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>NOT_FOUND<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"请求地址不存在。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"资源不存在"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>NOT_RECOGNIZE<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"无法识别请求。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>ERROR<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"服务内部异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
             <span class="token keyword">default</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"无效状态码。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"无效状态码"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、数组集合"><a href="#二、数组集合" class="headerlink" title="二、数组集合"></a>二、数组集合</h3><h4 id="1-Array"><a href="#1-Array" class="headerlink" title="1. Array"></a>1. Array</h4><p>数组作为基本的数据结构之一其底层逻辑为一片连续的物理存储空间，在随机访问时拥有不俗的性能，常见的声明方式共有两种：一种为在创建时仅声明大小不定义内容，另一种为同时声明大小和内容。</p>
-<p>需要注意的是无论哪种方式都必须在创建时定义长度，后续只允许修改数组内容，并不允许修改数组长度，<font color="Red">即数组为定长集合且大小在初始化时确定</font>。</p>
+<p>需要注意的是无论哪种方式都必须在创建时定义长度，后续只允许修改数组内容，并不允许修改数组长度。</p>
+<p>简而言之，<font color="Red">即数组为定长集合且大小在初始化时确定</font>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
- * 仅声明大小
+ * 声明容量后再赋值
  */</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String<span class="token punctuation">[</span><span class="token punctuation">]</span> strArr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
     strArr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"Hello"</span><span class="token punctuation">;</span>
     strArr<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"World"</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>strArr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
 <span class="token comment" spellcheck="true">/**
- * 同时定义大小和内容
+ * 同时定义大小和内容，以下两种定义方式等价
  */</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// 以下两种定义方式等价</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String<span class="token punctuation">[</span><span class="token punctuation">]</span> arr1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"World"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
     String<span class="token punctuation">[</span><span class="token punctuation">]</span> arr2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"World"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>arr1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>arr2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="1-类型转化"><a href="#1-类型转化" class="headerlink" title="(1) 类型转化"></a>(1) 类型转化</h5><p>通过 <code>Arrays.asList()</code> 可以将数组与列表之间进行转化，但转化后对于底层而言仍为数组，无法使用 <code>add()</code> 等系列操作，必须通过流 <code>stream</code> 的方式转化才允许。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="1-类型转化"><a href="#1-类型转化" class="headerlink" title="(1) 类型转化"></a>(1) 类型转化</h5><p>通过 <code>Arrays.asList()</code> 可以将数组与列表之间进行转化。</p>
+<p>需注意转化后对于底层而言仍为数组，无法使用 <code>add()</code> 等操作，须通过 <code>stream</code> 流的方式转化才允许。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">arrayToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String<span class="token punctuation">[</span><span class="token punctuation">]</span> str <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"path1"</span><span class="token punctuation">,</span> <span class="token string">"path2"</span><span class="token punctuation">,</span> <span class="token string">"path3"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    
+    <span class="token comment" spellcheck="true">// add() 非法</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list1 <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 下行语句非法</span>
-    <span class="token comment" spellcheck="true">// list.add("path4");</span>
+    list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"path4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+    <span class="token comment" spellcheck="true">// add() 合法</span>
     List<span class="token operator">&lt;</span>String<span class="token operator">></span> list2 <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     list2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"path4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-Vector"><a href="#2-Vector" class="headerlink" title="2. Vector"></a>2. Vector</h4><p><code>Vector</code> 底层封装了数组，在此基础上新增了扩容操作，弥补了普通数据必须在定义时固定长度的缺点，且元素操作封装了 <code>synchronized</code> 因此为线程安全容器，在多线程并发情况下可替代 <code>ArrayList</code> 容器。</p>
 <p>但由于 <code>Vector</code> 的锁是通过 <code>synchronized</code> 并基于类层级的，虽实现了线程安全当频繁操作时性能相对较低，在现行的编程中用到的较少。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// Vector addElement 源码实现，通过 synchronized 保证原子性</span>
@@ -759,25 +759,41 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-LinkedList"><a href="#2-LinkedList" class="headerlink" title="2. LinkedList"></a>2. LinkedList</h4><p><code>LinkedList</code> 同样是 <code>List</code> 的接口实现类，底层实现为 <code>链表</code>，可以在任意位置进行高效插入删除操作。</p>
-<p>由于链表的自身特性，其相邻元素间通过指针连接，故不支持下标随机访问，即获取元素时只能通过首节点依次遍历指针往后读取，但对于插入与新增则通过变化指针指向即可，所以 <code>LinkedList</code> 在读取频繁的场景下性能低于 <code>ArrayList</code>，但在写入或修改的情景下拥有不错的性能。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">linkedListDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    LinkedList<span class="token operator">&lt;</span>String<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Mark"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p><code>LinkedList</code> 常见操作方法参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">addFirst()</td>
+        <td style="text-align: center;">在链头插入元素。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getFirst()</td>
+        <td style="text-align: center;">获取链头元素。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">removeFirst()</td>
+        <td style="text-align: center;">移除链头元素。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">addLast()</td>
+        <td style="text-align: center;">在链尾插入元素。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getLast()</td>
+        <td style="text-align: center;">获取链尾元素。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">removeLast()</td>
+        <td style="text-align: center;">移除链尾元素。</td>
+    </tr>
+</table>
+</br>
 
-    <span class="token comment" spellcheck="true">// 操作头</span>
-    list<span class="token punctuation">.</span><span class="token function">addFirst</span><span class="token punctuation">(</span><span class="token string">"Great"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">removeFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 操作尾</span>
-    list<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token string">"Beth"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    list<span class="token punctuation">.</span><span class="token function">removeLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于链表的自身特性，其相邻元素间通过指针连接，故不支持下标随机访问，即获取元素时只能通过首节点依次遍历指针往后读取，但对于插入与新增则通过变化指针指向即可。</p>
+<p>因此，<code>LinkedList</code> 在读取频繁的场景下性能低于 <code>ArrayList</code>，但在写入或修改的情景下拥有不错的性能。</p>
 <h4 id="3-CopyOnWriteArrayList"><a href="#3-CopyOnWriteArrayList" class="headerlink" title="3. CopyOnWriteArrayList"></a>3. CopyOnWriteArrayList</h4><p><code>CopyOnWriteArrayList</code> 进一步扩展了 <code>ArrayList</code> 操作接口，在操作元素时会先复制一份原集合，将待执行操作在复制的容器中执行，最后再将旧容器的引用指向新容器。</p>
 <p>通过复制可以解决多线程并发 <code>读取</code> ，但同时复制会导致内存资源占用，且只能保证数据最终一致性，无法保证实时一致性。</p>
 <p>观察其添加方法<code> add()</code> 可以看出在添加元素时通过 <code>synchronized</code> 实现加锁，保证同一时刻只有单个线程在操作，然后将原容器通过 <code>Arrays.copyOf()</code> 实现复制并将新元素添加至复制的容器中，最后将旧容器的引用指向复制添加后的新容器。</p>
@@ -866,46 +882,15 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-LinkedHashSet"><a href="#2-LinkedHashSet" class="headerlink" title="2. LinkedHashSet"></a>2. LinkedHashSet</h4><p><code>LinkedHashSet</code> 在基于链表扩展实现，因此其为有序集合，按照存入的顺序存放元素，与 <code>HashSet</code> 类似其不允许重复元素，性能方面略低于 <code>HashSet</code>。</p>
 <p>如存入按照 <code>A, B, C</code> 顺序存入三个对象至 <code>LinkedHashSet</code> 集合，则最后输出的结果一定是 <code>[A, B, C]</code>，倘若换为 <code>HashSet</code>，则输出的结果顺序为 <code>A, B, C</code> 的排列组合，每一次输出的结果都将不一致。</p>
-<h4 id="3-TreeSet"><a href="#3-TreeSet" class="headerlink" title="3. TreeSet"></a>3. TreeSet</h4><p><code>TreeSet</code> 是 <code>SortedSet</code> 接口的唯一实现类，基于红黑树对存入的元素进行排序存储。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">treeSetDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Set set <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TreeSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// [A, B, C]</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>set<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-TreeSet"><a href="#3-TreeSet" class="headerlink" title="3. TreeSet"></a>3. TreeSet</h4><p><code>TreeSet</code> 是 <code>SortedSet</code> 接口的唯一实现类，对存入的元素基于红黑树排序存储。</p>
 <h4 id="4-CopyOnWriteArraySet"><a href="#4-CopyOnWriteArraySet" class="headerlink" title="4. CopyOnWriteArraySet"></a>4. CopyOnWriteArraySet</h4><p><code>CopyOnWriteArraySet</code> 作用效果与 <code>CopyOnWriteArrayList</code> 效果类似，这里不再详细介绍。</p>
 <h3 id="五、Map对象"><a href="#五、Map对象" class="headerlink" title="五、Map对象"></a>五、Map对象</h3><h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p><code>HashMap</code> 底层实现主要分为部分：数组和链表/红黑树。数组是 <code>HashMap</code> 的主体，链表和红黑树是为了解决哈希冲突而存在的辅助结构。</p>
 <p>当我们向 <code>HashMap</code> 中 <code>put</code> 键值对时， <code>HashMap</code> 会根据键的哈希值算出其在数组中的位置，然后将键值对存储在数组的对应位置上。如果发生哈希冲突 <code>HashMap</code> 会将发生冲突的键值对以链表的形式存储在对应位置上。但是，如果链表中的元素超过了一定的数量，为了提高查询效率， <code>HashMap</code> 会将链表转换为红黑树。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/map.png" alt="HashMap示意图"></p>
-<h4 id="2-HashMap"><a href="#2-HashMap" class="headerlink" title="2. HashMap"></a>2. HashMap</h4><p><code>HashMap</code> 是一种无序序列（根据哈希值进行排序存储）的数据结构，数据以键值对形式存储，非线程安全。</p>
-<p>其中 <code>key</code> 值不允许重复，对于存入 <code>key </code> 重复的元素进行覆盖，有且仅有一个元素的的 <code>key</code> 值为 <code>null</code> 。</p>
-<p><code>HashMap</code> 容器的存储效率由 <code>capacity</code> 与 <code>loadFactor</code> 变量控制，前者为容器的大小，默认为 <code>16</code>，后者为容器的扩容策略，取值范围为 <code>0~1</code>，默认值为 <code>0.75</code>，当容器的内的元素数量达到 <code>capacity*loadFactor</code> 时将自动扩容为 <code>2*capacity</code>。如默认初始化容器大小为 <code>16</code>，当存入的个数超过 <code>12(16*0.75)</code> 时，容器大小将扩容至 <code>32(16*2)</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">hashMapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Bob"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 重复 Key 重写值</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"Mark"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-HashMap"><a href="#2-HashMap" class="headerlink" title="2. HashMap"></a>2. HashMap</h4><p><code>HashMap</code> 是一种无序序列（根据哈希值进行排序存储）的数据结构，数据以键值对形式存储，非线程安全。其中 <code>key</code> 值不允许重复，对于存入 <code>key </code> 重复的元素进行覆盖，并有且仅有一个元素的的 <code>key</code> 值可为 <code>null</code> 。</p>
+<p><code>HashMap</code> 容器的存储效率由 <code>capacity</code> 与 <code>loadFactor</code> 变量控制，前者为容器的大小，默认为 <code>16</code>，后者为容器的扩容策略，取值范围为 <code>0~1</code>，默认值为 <code>0.75</code>，当容器的内的元素数量达到 <code>capacity*loadFactor</code> 时将自动扩容为 <code>2*capacity</code>。</p>
+<p>即默认初始化容器大小为 <code>16</code>，当存入的个数超过 <code>12(16*0.75)</code> 时，容器大小将扩容至 <code>32(16*2)</code>，以此类推。</p>
 <h4 id="3-LinkedHashMap"><a href="#3-LinkedHashMap" class="headerlink" title="3. LinkedHashMap"></a>3. LinkedHashMap</h4><p><code>LinkedHashMap</code> 与之前提到的 <code>LinkedHashSet</code> 类似，其底层基于链表实现，因此其容器内存储的数据并非和 <code>HashMap</code> 一样无序，而是根据存入的先后顺序而定。</p>
-<h4 id="4-TreeMap"><a href="#4-TreeMap" class="headerlink" title="4. TreeMap"></a>4. TreeMap</h4><p><code>TreeMap</code> 基于红黑树实现，对于存入的元素根据元素的 <code>Key</code> 进行排序，性能低于 <code>HashMap</code>。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">rreeMapDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TreeMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Bob"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"Mark"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 输出 (1, "Bob") (2, "Alex") (3, "Mark")</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-TreeMap"><a href="#4-TreeMap" class="headerlink" title="4. TreeMap"></a>4. TreeMap</h4><p><code>TreeMap</code> 基于红黑树实现，与 <code>TreeSet</code> 容器类似其对于存入的元素根据元素的 <code>Key</code> 进行排序，正因有序的特性，故其性能自然也低于 <code>HashMap</code>。</p>
 <h4 id="5-HashTable"><a href="#5-HashTable" class="headerlink" title="5. HashTable"></a>5. HashTable</h4><p><code>HashTable</code> 与 <code>HashMap</code> 类似，但其操作使用 <code>synchronized</code> 关键字保证多线程的数据原子性。</p>
 <p>具象的使用示例不再重复介绍，这里分析一下其对应的源码实现。打开 <code>HashTable</code> 的源码，可以看见几乎所有操作方法都被 <code>synchronized</code> 关键字修饰，因此在并发的情景下仅有一个线程能取得锁实现对应操作，从而达到线程安全的效果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> V <span class="token function">get</span><span class="token punctuation">(</span>Object key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -961,12 +946,12 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="7-Properties"><a href="#7-Properties" class="headerlink" title="7. Properties"></a>7. Properties</h4><p><code>Properties</code> 类继承于 <code>Hashtable</code>，因此使用起来二者其实差别并不大，但 <code>Properties</code> 为我们额外封装的一些方法可应用于部分业务场景。</p>
-<p>通过 <code>Properties</code> 类的 <code>load()</code> 方法可以便捷的将 <code>.conf</code> 、<code>.properties</code> 等配置文件以键值对的形式加载，如下示例中则读取 <code>boostrap.conf</code> 文件的内容并赋值 <code>Properties</code> 对象。</p>
+<p>通过 <code>Properties</code> 类的 <code>load()</code> 方法可以便捷的将 <code>.conf</code>、<code>.properties</code> 等配置文件以键值对的形式加载。</p>
+<p>如下示例中则读取 <code>boostrap.conf</code> 文件的内容并赋值 <code>Properties</code> 对象。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">propertiesDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
-    String location <span class="token operator">=</span> <span class="token string">"E:\\Workspace\\bootstrap.conf"</span><span class="token punctuation">;</span>
-    Path path <span class="token operator">=</span> Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String location <span class="token operator">=</span> <span class="token string">"/data/bootstrap.conf"</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>
-            InputStream in <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">newInputStream</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            InputStream in <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">newInputStream</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
             InputStreamReader reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">)</span> <span class="token punctuation">{</span>
         Properties props <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -976,7 +961,7 @@
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>与之相似，除了从配置文件中读取信息， <code>Properties</code> 支持将信息持久化保存至本地空间。</p>
 <p>如下示例中将 <code>Properties</code> 对象内容以文件访问保存至 <code>src\\main\\resources</code> 目录下。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">propertiesDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -984,90 +969,42 @@
     prop<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"key3"</span><span class="token punctuation">,</span> <span class="token string">"value3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     prop<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"key4"</span><span class="token punctuation">,</span> <span class="token string">"value4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     prop<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"key5"</span><span class="token punctuation">,</span> <span class="token string">"value5"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 导出为 xml 文件</span>
-    prop<span class="token punctuation">.</span><span class="token function">storeToXML</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token string">"src\\main\\resources\\test.xml"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token string">"配置文件"</span><span class="token punctuation">,</span>
-                <span class="token string">"GBK"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 导出文件</span>
+    String location <span class="token operator">=</span> <span class="token string">"/data/bootstrap.conf"</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span>OutputStream out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token string">"src\\main\\resources\\test.xml"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        prop<span class="token punctuation">.</span><span class="token function">store</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> <span class="token string">" Configuration file"</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><h4 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1. 基本结构"></a>1. 基本结构</h4><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
 <p>如存在一组数据 <code>[1, 2, 3, ..., n]</code> 并按照顺序压入栈内，则读取的顺序则正好相反为  <code>[n, ..., 3, 2, 1]</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/stack.png"></p>
-<h4 id="2-操作示例"><a href="#2-操作示例" class="headerlink" title="2. 操作示例"></a>2. 操作示例</h4><p><code>Stack</code> 具体定义方式与常见操作如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">stackDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Stack<span class="token operator">&lt;</span>String<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 访问栈顶元素</span>
-    stack<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 弹出栈顶元素并返回值</span>
-    stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 添加元素</span>
-    stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">"alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 返回对应元素的位置</span>
-    stack<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span><span class="token string">"alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">boolean</span> isEmpty <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="七、队列集合"><a href="#七、队列集合" class="headerlink" title="七、队列集合"></a>七、队列集合</h3><h4 id="1-单端队列"><a href="#1-单端队列" class="headerlink" title="1. 单端队列"></a>1. 单端队列</h4><p>单端队列即为我们最常见队列结构，与日常生活中的排队是类似，只有一端能进另一端能出。</p>
-<p>如存在一组数据 <code>[1, 2, 3, ..., n]</code> 并按照顺序存入队列，则出队的顺序应为 <code>[1, 2, 3, ..., n]</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/queue.png" alt="单端队列（先进先出）"></p>
-<h4 id="2-双端队列"><a href="#2-双端队列" class="headerlink" title="2. 双端队列"></a>2. 双端队列</h4><p>双端队列和单端队列最根本的区别就是前者在队列的任何一端都可进行插入删除操作，示意图如下：<br><img src="/album/loading.gif" data-original="/album/article/java/collect/dequeue.png" alt="双端队列"></p>
-<p>因此双端队列的基本操作方法只是增加了头尾的区别声明，示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">dequeueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Deque<span class="token operator">&lt;</span>Integer<span class="token operator">></span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 插入对头</span>
-    queue<span class="token punctuation">.</span><span class="token function">offerFirst</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 插入对尾</span>
-    queue<span class="token punctuation">.</span><span class="token function">offerLast</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-基本操作"><a href="#3-基本操作" class="headerlink" title="3. 基本操作"></a>3. 基本操作</h4><p>队列基本的入队出队方法与描述信息参考下表。</p>
+<h4 id="2-操作方式"><a href="#2-操作方式" class="headerlink" title="2. 操作方式"></a>2. 操作方式</h4><p><code>Stack</code> 容器常见操作参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
         <th style="text-align: center;">作用</td>
     </tr>
     <tr>
-        <td style="text-align: center;">offer()</td>
-        <td style="text-align: center;">添加元素至队列，失败返回 false。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">add()</td>
-        <td style="text-align: center;">添加元素队列，失败会抛出异常。</td>
-    </tr>
-    <tr>
         <td style="text-align: center;">peek()</td>
-        <td style="text-align: center;">获取队头元素，容量为 0 的时候返回 null。</td>
+        <td style="text-align: center;">访问栈顶元素。</td>
     </tr>
     <tr>
-        <td style="text-align: center;">element()</td>
-        <td style="text-align: center;">获取队头元素，容量为 0 的时候会抛出异常。</td>
+        <td style="text-align: center;">pop()</td>
+        <td style="text-align: center;">弹出栈顶元素并返回值。</td>
     </tr>
     <tr>
-        <td style="text-align: center;">poll()</td>
-        <td style="text-align: center;">删除队头元素并返回值，容量为 0 的时候返回 false。</td>
+        <td style="text-align: center;">push()</td>
+        <td style="text-align: center;">添加元素。</td>
     </tr>
     <tr>
-        <td style="text-align: center;">remove()</td>
-        <td style="text-align: center;">删除队头元素并返回值，容量为 0 的时候会抛出异常。</td>
+        <td style="text-align: center;">search()</td>
+        <td style="text-align: center;">返回对应元素的位置。</td>
     </tr>
 </table>
-
-<p>表中涉及方法操作示例代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">queueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Queue<span class="token operator">&lt;</span>Integer<span class="token operator">></span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 数据入队</span>
-    queue<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    queue<span class="token punctuation">.</span><span class="token function">offer</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 获取队列元素</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 数据出队</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</br>
 
                 
             </div>
@@ -1665,7 +1602,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">287.8k</span>
+                <span class="white-color">287.7k</span>
             
             
             
