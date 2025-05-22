@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Oracle基础教程, 布袋青年">
+    <meta name="keywords" content="集合随机取数算法, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Oracle基础教程 | 布袋青年</title>
+    <title>集合随机取数算法 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -370,12 +370,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/db/oracle/1.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/52.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Oracle基础教程</h1>
+                    <h1 class="description center-align post-title">集合随机取数算法</h1>
                 </div>
             </div>
         </div>
@@ -510,8 +510,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Oracle/">
-                                <span class="chip bg-color">Oracle</span>
+                            <a href="/tags/JAVA/">
+                                <span class="chip bg-color">JAVA</span>
                             </a>
                         
                     </div>
@@ -522,8 +522,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
+                            <a href="/categories/JAVA%E9%9B%86%E5%90%88/" class="post-category">
+                                JAVA集合
                             </a>
                         
                     </div>
@@ -535,21 +535,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-02
+                    2025-05-22
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-05-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    892
+                    972
                 </div>
                 
 
@@ -571,157 +571,76 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、数据操作"><a href="#一、数据操作" class="headerlink" title="一、数据操作"></a>一、数据操作</h3><h4 id="1-虚拟表"><a href="#1-虚拟表" class="headerlink" title="1. 虚拟表"></a>1. 虚拟表</h4><p>类似于 <code>MySQL</code> 当我们不根据已有的表进行查询时，即可通过虚拟表的方式实现。</p>
-<p>虚拟表查询格式如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span>列<span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token string">''</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span>列n<span class="token operator">></span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>例如下行命结果为：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">'Alex'</span> <span class="token keyword">as</span> name<span class="token punctuation">,</span> <span class="token string">'12'</span> <span class="token keyword">as</span> age <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+                <p>默认 <code>JDK</code> 中提供了丰富的集合容器，每个都足以让人眼花缭乱，各自在适用于不同的场景之下。</p>
+<p>在许多的业务中，常常会涉及到随机取数的需求场景，最为典型的莫过于抽奖，更进一步的如题库选题等等。</p>
+<p>面对此类场景基本思路大概分为两类：使用无序集合或打乱有序集合。</p>
+<h4 id="1-无序集合"><a href="#1-无序集合" class="headerlink" title="1. 无序集合"></a>1. 无序集合</h4><p>让我们从最简单的无序集合开始，在 <code>JDK</code> 中最为基础的无序集合莫过于 <code>Set</code> 与 <code>Map</code>。</p>
+<p>如常用的 <code>HashSet</code> 与 <code>HashMap</code> 容器中，其并不以存入的顺序排列，而是以元素的哈希值为依据。</p>
+<p>以 <code>HashSet</code> 为例，下述示例以倒叙存入容器，但输出的结果并非 <code>[5, 4, 3, 2, 1]</code> 而是 <code>[1, 2, 3, 4, 5]</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Set<span class="token operator">&lt;</span>Integer<span class="token operator">></span> set <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> j <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">------------------- </span>
-<span class="token operator">|</span>   name  <span class="token operator">|</span>  age  <span class="token operator">|</span>
-<span class="token comment" spellcheck="true">------------------- </span>
-<span class="token operator">|</span>   Alex  <span class="token operator">|</span>  <span class="token number">12</span>   <span class="token operator">|</span>  
-<span class="token comment" spellcheck="true">------------------- </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-增量变更"><a href="#2-增量变更" class="headerlink" title="2. 增量变更"></a>2. 增量变更</h4><p><code>Merge</code> 函数可以对新增的记录进行判断，如果满足设定条件（如 <code>ID</code> 已存在），则进行更新操作，否则进行插入操作。通过 <code>Merge</code> 可以利用一条语句实现多种效果。</p>
-<h5 id="1-语法"><a href="#1-语法" class="headerlink" title="(1) 语法"></a>(1) 语法</h5><p><code>Merge</code> 基本语法结构如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">merge</span> <span class="token keyword">into</span> <span class="token operator">&lt;</span>t_table<span class="token operator">></span> <span class="token operator">&lt;</span>t_alias<span class="token operator">></span>
-<span class="token keyword">using</span> <span class="token operator">&lt;</span>s_table<span class="token operator">></span> <span class="token operator">&lt;</span>s_alias<span class="token operator">></span>
-<span class="token keyword">on</span><span class="token punctuation">(</span> 
-   <span class="token operator">&lt;</span>addition<span class="token operator">></span> 
-<span class="token punctuation">)</span> 
-<span class="token keyword">when</span> <span class="token keyword">matched</span> 
-<span class="token keyword">then</span>
-   <span class="token keyword">update</span> <span class="token keyword">set</span> <span class="token operator">&lt;</span>t_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token operator">&lt;</span>s_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>t_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span> <span class="token operator">=</span> <span class="token operator">&lt;</span>s_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span>
-<span class="token keyword">when</span> <span class="token operator">not</span> <span class="token keyword">matched</span> 
-<span class="token keyword">then</span> 
-   <span class="token keyword">insert</span> <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>t_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>s_alias<span class="token punctuation">.</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-示例"><a href="#2-示例" class="headerlink" title="(2) 示例"></a>(2) 示例</h5><p>假如目标表 <code>TB_TEST</code> 与来源表 <code>TB_TEMP</code> 如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-------------------------          ------------------------- </span>
-<span class="token operator">|</span>   id  <span class="token operator">|</span>  name  <span class="token operator">|</span>  age <span class="token operator">|</span>          <span class="token operator">|</span>   id  <span class="token operator">|</span>  name  <span class="token operator">|</span>  age <span class="token operator">|</span>
-<span class="token comment" spellcheck="true">-------------------------          -------------------------</span>
-<span class="token operator">|</span>   <span class="token number">1</span>   <span class="token operator">|</span>  Alex  <span class="token operator">|</span>  <span class="token number">18</span>  <span class="token operator">|</span>          <span class="token operator">|</span>   <span class="token number">2</span>   <span class="token operator">|</span>  Jack  <span class="token operator">|</span>  <span class="token number">30</span>  <span class="token operator">|</span>
-<span class="token operator">|</span>   <span class="token number">2</span>   <span class="token operator">|</span>  Mark  <span class="token operator">|</span>  <span class="token number">22</span>  <span class="token operator">|</span>          <span class="token operator">|</span>   <span class="token number">3</span>   <span class="token operator">|</span>  Beth  <span class="token operator">|</span>  <span class="token number">42</span>  <span class="token operator">|</span>
-<span class="token comment" spellcheck="true">-------------------------          -------------------------</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>我们希望的结果时将 <code>TB_TEMP</code> 的数据添加到 <code>TB_TEST</code> 中，但对于 <code>ID</code> 重复的数据进行更新操作，新数据则进行插入。即我们预期得到如下数据：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">------------------------- </span>
-<span class="token operator">|</span>   id  <span class="token operator">|</span>  name  <span class="token operator">|</span>  age <span class="token operator">|</span>
-<span class="token comment" spellcheck="true">------------------------- </span>
-<span class="token operator">|</span>   <span class="token number">1</span>   <span class="token operator">|</span>  Alex  <span class="token operator">|</span>  <span class="token number">18</span>  <span class="token operator">|</span>
-<span class="token operator">|</span>   <span class="token number">2</span>   <span class="token operator">|</span>  Jack  <span class="token operator">|</span>  <span class="token number">30</span>  <span class="token operator">|</span>
-<span class="token operator">|</span>   <span class="token number">3</span>   <span class="token operator">|</span>  Beth  <span class="token operator">|</span>  <span class="token number">42</span>  <span class="token operator">|</span>
-<span class="token comment" spellcheck="true">-------------------------</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>最终实现的 <code>SQL</code> 语句如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">merge</span> <span class="token keyword">into</span> tb_test t 
-<span class="token keyword">using</span> tb_temp p
-<span class="token keyword">on</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>id<span class="token punctuation">)</span> 
-<span class="token keyword">when</span> <span class="token keyword">matched</span> <span class="token keyword">then</span>
-   <span class="token keyword">update</span> <span class="token keyword">set</span> t<span class="token punctuation">.</span>name <span class="token operator">=</span> p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> t<span class="token punctuation">.</span>age <span class="token operator">=</span> p<span class="token punctuation">.</span>age
-<span class="token keyword">when</span> <span class="token operator">not</span> <span class="token keyword">matched</span> <span class="token keyword">then</span> 
-   <span class="token keyword">insert</span> <span class="token keyword">values</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> p<span class="token punctuation">.</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、常用函数"><a href="#二、常用函数" class="headerlink" title="二、常用函数"></a>二、常用函数</h3><h4 id="1-日期函数"><a href="#1-日期函数" class="headerlink" title="1. 日期函数"></a>1. 日期函数</h4><p><code>Oracle</code> 中常用的时间函数存在三类，描述信息参考下表：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">函数</td>
-        <th style="text-align: center;">描述</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">to_char()</td>
-        <td style="text-align: center;">用于将时间类型字段数据转化为指定格式的字符串。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">to_date()</td>
-        <td style="text-align: center;">用于将字符串按一定格式转化为时间类型。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">to_timestamp()</td>
-        <td style="text-align: center;">用于将字符串按一定格式转化为时间戳类型。</td>
-    </tr>
-</table>
-
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 将时间转为字符串</span>
-<span class="token keyword">select</span> to_char<span class="token punctuation">(</span>sysdate<span class="token punctuation">,</span> <span class="token string">'yyyy-mm-dd hh24:mi:ss'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> tt <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 将字符串转为日期</span>
-<span class="token keyword">select</span> to_date<span class="token punctuation">(</span><span class="token string">'2022-06-10 02:17:54'</span><span class="token punctuation">,</span> <span class="token string">'yyyy-mm-dd hh24:mi:ss'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> tt <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">-- 字符串转时间戳</span>
-<span class="token keyword">select</span> to_timestamp<span class="token punctuation">(</span><span class="token string">'2022-06-10 02:17:54.123'</span><span class="token punctuation">,</span> <span class="token string">'yyyy-mm-dd hh24:mi:ss.ff'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> tt <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>set<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-字符函数"><a href="#2-字符函数" class="headerlink" title="2. 字符函数"></a>2. 字符函数</h4><h5 id="1-instr"><a href="#1-instr" class="headerlink" title="(1) instr()"></a>(1) instr()</h5><p><code>instr(source, target)</code>: 在 <code>source</code> 中搜索 <code>target</code> 第一次出现的位置。</p>
-<p><code>instr(source, target, m, n)</code>: 在 <code>source</code> 中第 <code>m</code> 个位置搜索 <code>target</code> 第 <code>n</code> 次出现的位置。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查找第一次出现的 'a' 的位置</span>
-<span class="token keyword">select</span> instr<span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> result <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+<p>或许你可能也发现了，这类随机其实是一种伪随机。容器中元素不以存入的顺序排列，但仍然依照某类特地规则，如此处即以哈希值为排列依据。</p>
+<p>因此，即便对于无序集合，实现随机访问通常配合 <code>Random</code> 等随机工具类。</p>
+<p>如下述示例即利用 <code>stream</code> 与 <code>Random</code> 实现随机元素取值：</p>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Set<span class="token operator">&lt;</span>Integer<span class="token operator">></span> set <span class="token operator">=</span> Set<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 第 2 位开始，查找第二次出现的 'a' 的位置</span>
-<span class="token keyword">select</span> instr<span class="token punctuation">(</span><span class="token string">'abcafga'</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-substr"><a href="#2-substr" class="headerlink" title="(2) substr()"></a>(2) substr()</h5><p><code>substr(source, m, n)</code>: 截取字符串 <code>source</code> 下标为 <code>m</code> 至 <code>n</code> 间的内容。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 从第 0 位截取到第 3 位</span>
-<span class="token keyword">select</span> substr<span class="token punctuation">(</span><span class="token string">'HelloWorld'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">value</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="三、分析统计"><a href="#三、分析统计" class="headerlink" title="三、分析统计"></a>三、分析统计</h3><h4 id="1-数据分析"><a href="#1-数据分析" class="headerlink" title="1. 数据分析"></a>1. 数据分析</h4><p>通过执行分析即可手动触发元数据表信息的更新，语句基本格式如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql">dbms_stats<span class="token punctuation">.</span>gather_table_stats<span class="token punctuation">(</span>
-    ownname <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'&lt;schema>'</span><span class="token punctuation">,</span>
-    tabname <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'&lt;table_name>'</span><span class="token punctuation">,</span>
-    block_sample <span class="token operator">=</span><span class="token operator">></span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    granularity <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'GLOBAL'</span><span class="token punctuation">,</span>
-    method_opt <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'for all indexed columns'</span><span class="token punctuation">,</span>
-    <span class="token keyword">cascade</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    degree <span class="token operator">=</span><span class="token operator">></span> <span class="token number">10</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>上述中分析语句中涉及的参数及其描述如下：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">参数</td>  
-        <th style="text-align: center;">描述</td> 
-    </tr>
-    <tr>
-        <td style="text-align: center;">ownname</td>  
-        <td style="text-align: center;">所要分析的目标的表的 Schema。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">tabname</td>  
-        <td style="text-align: center;">所要分析的目标的表表名。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">block_sample</td>  
-        <td style="text-align: center;">是否用块采样代替行采样。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">granularity</td>  
-        <td style="text-align: center;">要收集的统计信息的粒度，针对分区表使用。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">method_opt</td>  
-        <td style="text-align: center;">决定 histograms 信息是怎样被统计的，默认值为 FOR ALL COLUMNS SIZE AUTO</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">cascade</td>  
-        <td style="text-align: center;">是否收集索引的信息，默认为 FALSE。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">degree</td>  
-        <td style="text-align: center;">决定并行度，默认值为 null。</td>  
-    </tr>
-</table>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>set<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>set<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">findFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-洗牌算法"><a href="#2-洗牌算法" class="headerlink" title="2. 洗牌算法"></a>2. 洗牌算法</h4><p>针对有序集合的随机取数，最简单方式即打散顺序后访问，实现访问相同位置得到不同的结果。</p>
+<p>在 <code>JDK</code> 中自带了 <code>java.util.Collections#shuffle</code> 方法，基于 <code>Fisher-Yates</code> 算法实现打乱集合顺序。</p>
+<p>针对 <code>ArrayList</code> 容器为例，其实现于 <code>RandomAccess</code> 支持随机访问，底层数据结构为数组即连续的存储空间。从实现源码可以看出，实现逻辑并不复杂，遍历数组并通过 <code>Random</code> 类随机交换两个位置上的元素值从而实现打印的效果。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">shuffle</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> list<span class="token punctuation">,</span> Random rnd<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> size <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">&lt;</span> SHUFFLE_THRESHOLD <span class="token operator">||</span> list <span class="token keyword">instanceof</span> <span class="token class-name">RandomAccess</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span>size<span class="token punctuation">;</span> i<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">swap</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> rnd<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>        
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> i<span class="token punctuation">,</span> <span class="token keyword">int</span> j<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">final</span> List l <span class="token operator">=</span> list<span class="token punctuation">;</span>
+    l<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> l<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>j<span class="token punctuation">,</span> l<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成容器元素的顺序打印之后，实现随机取值的则通过 <code>get()</code> 访问即可，每次洗牌后的集合顺序都并会相同，访问同一位置的元素返回的值也将不一样。</p>
+<p>若要批量随机取数，则可对洗牌后的集合通过 <code>subList()</code> 取子集合实现。</p>
+<h4 id="3-随机取数"><a href="#3-随机取数" class="headerlink" title="3. 随机取数"></a>3. 随机取数</h4><p>在 <code>shuffle()</code> 洗牌方法中，可以看出算法的时间复杂为 <code>O(n)</code>，那是否有更优的方式。</p>
+<p>以实际业务场景为例，系统中存在一个 <code>1w</code> 大小的题库，每次需要从中抽取 <code>20</code> 道不重复题目。若采用 <code>shuffle</code> 方式显然每次都需对原集合打乱，造成一定的性能浪费。</p>
+<p>因此，对于一个大小为 <code>m</code> 的容器，且需随机取 <code>n</code> 个元素，若 <code>m &gt;&gt; n</code> 则显然洗牌算法并不适用。</p>
+<p>对于此类场景，最合适的方案以利用数组支持随机访问的特性，变量容器身上聚焦于抽取的元素上。</p>
+<p>如下述代码示例即基于 <code>Random</code> 实现了有序集合的随机取 <code>5</code> 个数，而时间复杂度则无关容器大小，只与取数数量正相关。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<h4 id="2-元数据表"><a href="#2-元数据表" class="headerlink" title="2. 元数据表"></a>2. 元数据表</h4><p><code>Oracle</code> 元数据表 <code>ALL_TABLES</code> 中存放数据库表的基本信息。</p>
-<p>如下语句查询 <code>BUDAI</code> 用户下所有表的元数据基本信息。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
-    <span class="token operator">*</span>
-<span class="token keyword">FROM</span>
-    ALL_TABLES
-<span class="token keyword">WHERE</span>
-    OWNER <span class="token operator">=</span> <span class="token string">'&lt;schema>'</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    Set<span class="token operator">&lt;</span>Integer<span class="token operator">></span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span>list<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Integer ele <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>ele<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 存在则跳过</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        result<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ele<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -748,7 +667,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/db/oracle/basis/">https://great-jin.github.io/db/oracle/basis/</a>
+                    <a href="https://great-jin.github.io/java/collection/random/">https://great-jin.github.io/java/collection/random/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -786,8 +705,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Oracle/">
-                                    <span class="chip bg-color">Oracle</span>
+                                <a href="/tags/JAVA/">
+                                    <span class="chip bg-color">JAVA</span>
                                 </a>
                             
                         </div>
@@ -959,49 +878,47 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/vue/basis/">
+                <a href="/java/collection/random/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/front/vue/7.png" class="responsive-img" alt="Vue零杂知识合集">
+                        <img src="/album/banner/java/52.png" class="responsive-img" alt="集合随机取数算法">
                         
-                        <span class="card-title">Vue零杂知识合集</span>
+                        <span class="card-title">集合随机取数算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录 Vue 及 HTML 等零杂知识点。
+                            Java集合随机取数算法。
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-05
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    前端
+                            <a href="/categories/JAVA%E9%9B%86%E5%90%88/" class="post-category">
+                                    JAVA集合
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Vue/">
-                        <span class="chip bg-color">Vue</span>
-                    </a>
-                    
-                    <a href="/tags/HTML/">
-                        <span class="chip bg-color">HTML</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1015,30 +932,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/io/io/">
+                <a href="/build/pkg/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/4.png" class="responsive-img" alt="Java IO知识梳理">
+                        <img src="/album/banner/java/32.png" class="responsive-img" alt="JavaPackager 使用教程">
                         
-                        <span class="card-title">Java IO知识梳理</span>
+                        <span class="card-title">JavaPackager 使用教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java 输入输出流相关知识梳理。
+                            JavaPackager 插件使用教程。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2025-05-11
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
+                            <a href="/categories/%E7%BC%96%E8%AF%91%E6%9E%84%E5%BB%BA/" class="post-category">
+                                    编译构建
                                 </a>
                             
                             
@@ -1047,6 +964,10 @@
                 </div>
                 
                 <div class="card-action article-tags">
+                    
+                    <a href="/tags/Windows/">
+                        <span class="chip bg-color">Windows</span>
+                    </a>
                     
                     <a href="/tags/JAVA/">
                         <span class="chip bg-color">JAVA</span>
