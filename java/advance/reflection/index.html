@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-06-03
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.3k
+                    3.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    17 分
+                    14 分
                 </div>
                 
 
@@ -957,112 +957,6 @@
     <span class="token keyword">return</span> ReflectionUtils<span class="token punctuation">.</span><span class="token function">invokeMethod</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> service<span class="token punctuation">,</span> params<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、Unsafe操作"><a href="#五、Unsafe操作" class="headerlink" title="五、Unsafe操作"></a>五、Unsafe操作</h3><p>获取 <code>Unsafe</code> 实例，因为其并不提供直接的构造方法用于初始化。<code>Unsafe</code> 类虽然类名为不安全，但并非表示这个类不安全，而是 <code>Unsafe</code> 常涉及到内存等敏感操作，因此称其非安全类。</p>
-<h4 id="1-实例获取"><a href="#1-实例获取" class="headerlink" title="1. 实例获取"></a>1. 实例获取</h4><p><code>Unsafe</code> 无法直接通过 <code>new</code> 实现对象创建，只能通过反射的方式获取。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
- * 通过反射获取 Unsafe 实例
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchFieldException<span class="token punctuation">,</span> IllegalAccessException <span class="token punctuation">{</span>
-    Field field <span class="token operator">=</span> Unsafe<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"theUnsafe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    field<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Unsafe unsafe <span class="token operator">=</span> <span class="token punctuation">(</span>Unsafe<span class="token punctuation">)</span> field<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-CAS操作"><a href="#2-CAS操作" class="headerlink" title="2. CAS操作"></a>2. CAS操作</h4><p>在获取 <code>unsafe</code> 实例之后即可利用其实现一系列操作，如常见的的 <code>CAS</code> 等等。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchFieldException <span class="token punctuation">{</span>
-    MyEntity entity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyEntity</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">long</span> offset <span class="token operator">=</span> unsafe<span class="token punctuation">.</span><span class="token function">objectFieldOffset</span><span class="token punctuation">(</span>MyEntity<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Get object value</span>
-    String str <span class="token operator">=</span> <span class="token punctuation">(</span>String<span class="token punctuation">)</span> unsafe<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span>entity<span class="token punctuation">,</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// Put object value</span>
-    unsafe<span class="token punctuation">.</span><span class="token function">putObject</span><span class="token punctuation">(</span>entity<span class="token punctuation">,</span> offset<span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>entity<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// CAS: 保证操作原子性</span>
-    unsafe<span class="token punctuation">.</span><span class="token function">compareAndSwapObject</span><span class="token punctuation">(</span>entity<span class="token punctuation">,</span> offset<span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token string">"Jack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>entity<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">MyEntity</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">public</span> String name<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token function">MyEntity</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-内存操作"><a href="#3-内存操作" class="headerlink" title="3. 内存操作"></a>3. 内存操作</h4><p><code>Unsafe</code> 之所以被称为非安全的一大重要原因即它提供了直接操作内存的能力，那就让我们看一下它究竟是怎么个操作法。</p>
-<blockquote>
-<p><code>Unsafe</code> 针对内存操作的常用方法如下：</p>
-<ul>
-<li><strong>allocateMemory()</strong>: 分配一块连续的直接内存块，不受堆内存与 <code>GC</code> 的管控，返回内存块的起始地址。</li>
-<li><strong>freeMemory(address)</strong>: 根据传入的内存地址释放内存资源，在分配内存后一定要进行释放。</li>
-<li><strong>putByte(address, data)</strong>: 在指定内存处写入一字节数据。</li>
-<li><strong>getByte(address, data)</strong>: 在指定内存处读取一字节数据。</li>
-</ul>
-</blockquote>
-<p>如下述示例即通过 <code>unsafe</code> 对象手动声明了一块直接内存，并存储一个 <code>entity</code> 对象，其中 <code>convertObj</code> 与 <code>byteToObject</code> 即利用 <code>ByteArrayInputStream</code> 与 <code>ByteArrayOutputStream</code> 对 <code>Java</code> 对象进行二进制的转化，因为内存中存储的数据必须为字节数据。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">memoryDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    MyEntity entity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyEntity</span><span class="token punctuation">(</span><span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data <span class="token operator">=</span> ObjSerialize<span class="token punctuation">.</span><span class="token function">convertObj</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Allocate native memory, return the memory start address</span>
-    <span class="token keyword">long</span> address <span class="token operator">=</span> unsafe<span class="token punctuation">.</span><span class="token function">allocateMemory</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">try</span><span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// Put real data to memory</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token comment" spellcheck="true">// putByte(val1, val2):</span>
-            <span class="token comment" spellcheck="true">// ==> val1: the memory address</span>
-            <span class="token comment" spellcheck="true">// ==> val2: the data</span>
-            unsafe<span class="token punctuation">.</span><span class="token function">putByte</span><span class="token punctuation">(</span>address <span class="token operator">+</span> i<span class="token punctuation">,</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> origin <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>data<span class="token punctuation">.</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> origin<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token comment" spellcheck="true">// Read data from native memory</span>
-            origin<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> unsafe<span class="token punctuation">.</span><span class="token function">getByte</span><span class="token punctuation">(</span>address <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        MyEntity result <span class="token operator">=</span> ObjSerialize<span class="token punctuation">.</span><span class="token function">byteToObject</span><span class="token punctuation">(</span>origin<span class="token punctuation">,</span> MyEntity<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Result: "</span> <span class="token operator">+</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> ignored<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// Release the memory, important!!!</span>
-        unsafe<span class="token punctuation">.</span><span class="token function">freeMemory</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-内存对齐"><a href="#4-内存对齐" class="headerlink" title="4. 内存对齐"></a>4. 内存对齐</h4><p>在 <code>Unsafe</code> 中通过 <code>allocateMemory()</code> 申请的内存属于直接内存，是未经任何初始化的内存空间。</p>
-<p>在计算机系统中，有些硬件操作要求数据以特定的字节对齐方式存储，这可以提高数据读取和写入的效率。因此对于 <code>allocateMemory()</code> 申请的内存空间，通常为了更好的性能会利用空数据进行对齐填充操作，以确保数据存储在内存中时满足特定的对齐要求，进而提高了程序的执行效率。</p>
-<p>如下示例即对与 <code>unsafe</code> 申请的内存空间进行对齐填充操作。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> Unsafe unsafe<span class="token punctuation">;</span>
-
-<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">long</span> address<span class="token punctuation">;</span>
-
-<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">;</span>
-
-<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">preFillData</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> position <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> dataLen <span class="token operator">=</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> dataLen <span class="token operator">-</span> position <span class="token operator">>=</span> <span class="token number">8</span><span class="token punctuation">;</span> position<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        unsafe<span class="token punctuation">.</span><span class="token function">putLong</span><span class="token punctuation">(</span>address <span class="token operator">+</span> position<span class="token punctuation">,</span> 0L<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> dataLen <span class="token operator">-</span> position <span class="token operator">>=</span> <span class="token number">4</span><span class="token punctuation">;</span> position<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        unsafe<span class="token punctuation">.</span><span class="token function">putInt</span><span class="token punctuation">(</span>address <span class="token operator">+</span> position<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> dataLen <span class="token operator">-</span> position <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> position<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        unsafe<span class="token punctuation">.</span><span class="token function">putByte</span><span class="token punctuation">(</span>address <span class="token operator">+</span> position<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1304,18 +1198,18 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/es/spring/">
+                <a href="/java/advance/unsafe/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/es/2.png" class="responsive-img" alt="Spring Boot集成ElasticSearch">
+                        <img src="/album/banner/java/53.png" class="responsive-img" alt="Unsafe 类详解">
                         
-                        <span class="card-title">Spring Boot集成ElasticSearch</span>
+                        <span class="card-title">Unsafe 类详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Boot集成ElasticSearch示例教程。
+                            Unsafe 类详解及应用。
                         
                     </div>
                     <div class="publish-info">
@@ -1326,8 +1220,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
-                                    中间件
+                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
+                                    JAVA进阶
                                 </a>
                             
                             
@@ -1337,12 +1231,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
-                    </a>
-                    
-                    <a href="/tags/Elasticsearch/">
-                        <span class="chip bg-color">Elasticsearch</span>
+                    <a href="/tags/JAVA/">
+                        <span class="chip bg-color">JAVA</span>
                     </a>
                     
                 </div>
@@ -1664,7 +1554,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">288.7k</span>
+                <span class="white-color">287.7k</span>
             
             
             

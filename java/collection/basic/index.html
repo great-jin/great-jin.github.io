@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-19
+                    2025-06-03
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.1k
+                    3.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    14 分
                 </div>
                 
 
@@ -578,68 +578,7 @@
 <blockquote>
 <p>下面分别盘点 Java 中常用的集合容器。</p>
 </blockquote>
-<h3 id="一、枚举数据"><a href="#一、枚举数据" class="headerlink" title="一、枚举数据"></a>一、枚举数据</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h4><p>枚举你可以简单的理解为一个赋予特殊含义的常量数组，经典的魔法值杀手。</p>
-<p>举个简单例子，你需要定义 <code>4</code> 种颜色，则只需要通过一个枚举即可，然后通过 <code>枚举名.变量名</code> 进行访问，使得代码更具可读性。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EnumTest</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Color color <span class="token operator">=</span> Color<span class="token punctuation">.</span>Blue<span class="token punctuation">;</span>
-
-        <span class="token comment" spellcheck="true">// 枚举下标，从 0 开始</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>color<span class="token punctuation">.</span><span class="token function">ordinal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 两种比较方式等价</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>color <span class="token operator">==</span> Color<span class="token punctuation">.</span>Blue<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>color<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>Blue<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">enum</span> Color <span class="token punctuation">{</span>
-    Red<span class="token punctuation">,</span> Blue<span class="token punctuation">,</span> White<span class="token punctuation">,</span> Black
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-应用"><a href="#2-应用" class="headerlink" title="2. 应用"></a>2. 应用</h4><p>在实际工程中在记录状态时通常都是通过数值存储于数据库之间，而在代码中若直接读取数据进行操作虽然可行但可读性相对较低。</p>
-<p>在一个复杂的工程中，常会使用到各种状态值，但如果使用简单数值标识可读性又相对较差，针对此类情况通过为不同状态码定义相应枚举元素，即可实现更高的代码可读性。</p>
-<p>下面看一个示例，通过使用枚举为不同 <code>HTTP</code> 请求状态码提供更详细的描述。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">enum</span> HttpStatus <span class="token punctuation">{</span>
-    <span class="token function">SUCCESS</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">,</span> <span class="token string">"success"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">NOT_FOUND</span><span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"not found"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">ERROR</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">,</span> <span class="token string">"internal error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">int</span> code<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">final</span> String describe<span class="token punctuation">;</span>
-
-    <span class="token function">HttpStatus</span><span class="token punctuation">(</span><span class="token keyword">int</span> code<span class="token punctuation">,</span> String describe<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>code <span class="token operator">=</span> code<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>describe <span class="token operator">=</span> describe<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>describe<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EnumTest</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">int</span> code <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
-        <span class="token keyword">switch</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>SUCCESS<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"请求成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>NOT_FOUND<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"资源不存在"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">case</span> RequestStatus<span class="token punctuation">.</span>ERROR<span class="token punctuation">.</span><span class="token function">getCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"服务内部异常"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token keyword">default</span><span class="token operator">:</span>
-                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"无效状态码"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、数组集合"><a href="#二、数组集合" class="headerlink" title="二、数组集合"></a>二、数组集合</h3><h4 id="1-Array"><a href="#1-Array" class="headerlink" title="1. Array"></a>1. Array</h4><p>数组作为基本的数据结构之一其底层逻辑为一片连续的物理存储空间，在随机访问时拥有不俗的性能，常见的声明方式共有两种：一种为在创建时仅声明大小不定义内容，另一种为同时声明大小和内容。</p>
+<h3 id="一、数组容器"><a href="#一、数组容器" class="headerlink" title="一、数组容器"></a>一、数组容器</h3><h4 id="1-Array"><a href="#1-Array" class="headerlink" title="1. Array"></a>1. Array</h4><p>数组作为基本的数据结构之一其底层逻辑为一片连续的物理存储空间，在随机访问时拥有不俗的性能，常见的声明方式共有两种：一种为在创建时仅声明大小不定义内容，另一种为同时声明大小和内容。</p>
 <p>需要注意的是无论哪种方式都必须在创建时定义长度，后续只允许修改数组内容，并不允许修改数组长度。</p>
 <p>简而言之，<font color="Red">即数组为定长集合且大小在初始化时确定</font>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
@@ -684,7 +623,7 @@
     elementData<span class="token punctuation">[</span>elementCount<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>通过 <code>new Vector&lt;&gt;()</code> 创建的容器默认大小为 <code>10</code>，也可通过 <code>new Vector&lt;&gt;(init, increase)</code> 指定初始容量与递增量，当数组长度达到 <code>init</code> 大小后，将会根据自动扩容 <code>increase</code> 个空间，若未指定默认的初始容量为 `10``，增长量为当前容量的一倍。</p>
+<p>通过 <code>new Vector&lt;&gt;()</code> 创建的容器默认大小为 <code>10</code>，也可通过 <code>new Vector&lt;&gt;(init, increase)</code> 指定初始容量与递增量，当数组长度达到 <code>init</code> 大小后，将会根据自动扩容 <code>increase</code> 个空间，若未指定默认的初始容量为 <code>10</code>，增长量为当前容量的一倍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">vectorDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 初始化长度 4, 超过则再扩容 5 个单位</span>
     Vector<span class="token operator">&lt;</span>Integer<span class="token operator">></span> vector <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -704,7 +643,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>vector<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、列表集合"><a href="#三、列表集合" class="headerlink" title="三、列表集合"></a>三、列表集合</h3><h4 id="1-ArrayList"><a href="#1-ArrayList" class="headerlink" title="1. ArrayList"></a>1. ArrayList</h4><p><code>ArrayList</code> 是 <code>List</code> 的接口实现类，按照存入的顺序存放元素，是有序集合且允许重复元素。</p>
+<h3 id="二、List容器"><a href="#二、List容器" class="headerlink" title="二、List容器"></a>二、List容器</h3><h4 id="1-ArrayList"><a href="#1-ArrayList" class="headerlink" title="1. ArrayList"></a>1. ArrayList</h4><p><code>ArrayList</code> 是 <code>List</code> 的接口实现类，按照存入的顺序存放元素，是有序集合且允许重复元素。</p>
 <p><code>ArrayList</code> 是非线程安全容器，在多线程并发下将会抛出异常，并发场景下可考虑选用 <code>Vector</code> 或 <code>CopyOnWriteArrayList</code> 容器进行替代。</p>
 <p>常见方法接口参考下表内容。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -860,7 +799,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、Set集合"><a href="#四、Set集合" class="headerlink" title="四、Set集合"></a>四、Set集合</h3><h4 id="1-HashSet"><a href="#1-HashSet" class="headerlink" title="1. HashSet"></a>1. HashSet</h4><p><code>HashSet</code> 是无序集合，根据数据的哈希值进行排序存储，不允许存入重复元素，非线程安全。</p>
+<h3 id="三、Set容器"><a href="#三、Set容器" class="headerlink" title="三、Set容器"></a>三、Set容器</h3><h4 id="1-HashSet"><a href="#1-HashSet" class="headerlink" title="1. HashSet"></a>1. HashSet</h4><p><code>HashSet</code> 是无序集合，根据数据的哈希值进行排序存储，不允许存入重复元素，非线程安全。</p>
 <p>如果你查看 <code>HashSet</code> 的源码即可发现其是基于 <code>HashMap</code> 结构进行存储，其中对应的 <code>Key</code> 即为存入的数据，而 <code>value</code> 则填充了一个空对象，而 <code>HashMap</code> 是基于哈希值进行存储的，因此在去重或判断值等操作上 <code>HashSet</code> 往往相较于 <code>ArrayList</code> 拥有更好的性能。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// ============ HashSet 源码片段截取 ============</span>
 <span class="token keyword">private</span> <span class="token keyword">transient</span> HashMap<span class="token operator">&lt;</span>E<span class="token punctuation">,</span>Object<span class="token operator">></span> map<span class="token punctuation">;</span>
@@ -884,7 +823,7 @@
 <p>如存入按照 <code>A, B, C</code> 顺序存入三个对象至 <code>LinkedHashSet</code> 集合，则最后输出的结果一定是 <code>[A, B, C]</code>，倘若换为 <code>HashSet</code>，则输出的结果顺序为 <code>A, B, C</code> 的排列组合，每一次输出的结果都将不一致。</p>
 <h4 id="3-TreeSet"><a href="#3-TreeSet" class="headerlink" title="3. TreeSet"></a>3. TreeSet</h4><p><code>TreeSet</code> 是 <code>SortedSet</code> 接口的唯一实现类，对存入的元素基于红黑树排序存储。</p>
 <h4 id="4-CopyOnWriteArraySet"><a href="#4-CopyOnWriteArraySet" class="headerlink" title="4. CopyOnWriteArraySet"></a>4. CopyOnWriteArraySet</h4><p><code>CopyOnWriteArraySet</code> 作用效果与 <code>CopyOnWriteArrayList</code> 效果类似，这里不再详细介绍。</p>
-<h3 id="五、Map对象"><a href="#五、Map对象" class="headerlink" title="五、Map对象"></a>五、Map对象</h3><h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p><code>HashMap</code> 底层实现主要分为部分：数组和链表/红黑树。数组是 <code>HashMap</code> 的主体，链表和红黑树是为了解决哈希冲突而存在的辅助结构。</p>
+<h3 id="四、Map对象"><a href="#四、Map对象" class="headerlink" title="四、Map对象"></a>四、Map对象</h3><h4 id="1-数据结构"><a href="#1-数据结构" class="headerlink" title="1. 数据结构"></a>1. 数据结构</h4><p><code>HashMap</code> 底层实现主要分为部分：数组和链表/红黑树。数组是 <code>HashMap</code> 的主体，链表和红黑树是为了解决哈希冲突而存在的辅助结构。</p>
 <p>当我们向 <code>HashMap</code> 中 <code>put</code> 键值对时， <code>HashMap</code> 会根据键的哈希值算出其在数组中的位置，然后将键值对存储在数组的对应位置上。如果发生哈希冲突 <code>HashMap</code> 会将发生冲突的键值对以链表的形式存储在对应位置上。但是，如果链表中的元素超过了一定的数量，为了提高查询效率， <code>HashMap</code> 会将链表转换为红黑树。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/map.png" alt="HashMap示意图"></p>
 <h4 id="2-HashMap"><a href="#2-HashMap" class="headerlink" title="2. HashMap"></a>2. HashMap</h4><p><code>HashMap</code> 是一种无序序列（根据哈希值进行排序存储）的数据结构，数据以键值对形式存储，非线程安全。其中 <code>key</code> 值不允许重复，对于存入 <code>key </code> 重复的元素进行覆盖，并有且仅有一个元素的的 <code>key</code> 值可为 <code>null</code> 。</p>
 <p><code>HashMap</code> 容器的存储效率由 <code>capacity</code> 与 <code>loadFactor</code> 变量控制，前者为容器的大小，默认为 <code>16</code>，后者为容器的扩容策略，取值范围为 <code>0~1</code>，默认值为 <code>0.75</code>，当容器的内的元素数量达到 <code>capacity*loadFactor</code> 时将自动扩容为 <code>2*capacity</code>。</p>
@@ -979,7 +918,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="六、栈结构"><a href="#六、栈结构" class="headerlink" title="六、栈结构"></a>六、栈结构</h3><h4 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1. 基本结构"></a>1. 基本结构</h4><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
+<h3 id="五、栈结构"><a href="#五、栈结构" class="headerlink" title="五、栈结构"></a>五、栈结构</h3><h4 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1. 基本结构"></a>1. 基本结构</h4><p>栈 <code>(Stack)</code> 是一种单向通道 <code>先进后出</code> 的线性结构，先入栈的元素在栈底。</p>
 <p>如存在一组数据 <code>[1, 2, 3, ..., n]</code> 并按照顺序压入栈内，则读取的顺序则正好相反为  <code>[n, ..., 3, 2, 1]</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/collect/stack.png"></p>
 <h4 id="2-操作方式"><a href="#2-操作方式" class="headerlink" title="2. 操作方式"></a>2. 操作方式</h4><p><code>Stack</code> 容器常见操作参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -1602,7 +1541,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">288.7k</span>
+                <span class="white-color">287.7k</span>
             
             
             
