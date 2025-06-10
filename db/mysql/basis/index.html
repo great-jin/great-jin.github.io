@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-06-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    11 分
                 </div>
                 
 
@@ -571,10 +571,50 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>MySQL 凭借小巧且开源的优势，是目前 Web 开发中最为流行的关系型数据库之一，本文将对 MySQL 基本操作进行简单介绍。</p>
-</blockquote>
-<h3 id="一、DDL操作"><a href="#一、DDL操作" class="headerlink" title="一、DDL操作"></a>一、DDL操作</h3><h4 id="1-表创建"><a href="#1-表创建" class="headerlink" title="1. 表创建"></a>1. 表创建</h4><p>以下为建表语句中表字段属性常用约束：</p>
+                <p><code>MySQL</code> 凭借小巧且开源的优势，是目前 <code>Web</code> 开发中最为流行的关系型数据库之一，下面就让我们了解一下其相应基本语法。</p>
+<h3 id="一、字符集"><a href="#一、字符集" class="headerlink" title="一、字符集"></a>一、字符集</h3><h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h4><p>在 MySQL 中字符集定义了数据内容的存储格式，不同的字符集代表了不同的表达方式。</p>
+<p>在系统开发中最为常见的即 <code>utf8</code> 与 <code>utf8mb4</code> 两类字符集，其中 <code>utf8mb4</code> 是真正完整的 <code>UTF-8</code> 实现，支持所有 <code>Unicode</code> 字符（包括 <code>Emoji</code> 和部分中文扩展字符）。</p>
+<p>在 <code>InnoDB</code> 对于单列索引，最大索引长度分别如下：</p>
+<ul>
+<li><code>767</code> 字节（在 <code>COMPACT</code> 或 <code>REDUNDANT</code> 行格式）;</li>
+<li><code>3072</code> 字节（在 <code>DYNAMIC</code> 或 <code>COMPRESSED</code> 行格式，且 <code>innodb_large_prefix=ON</code>）;</li>
+</ul>
+<p>而 <code>utf8</code> 与 <code>utf8mb4</code> 每个字符所占的字节分别为 <code>3</code>，<code>4</code> 字节，意味着二者的最大索引字段长度也不相同。</p>
+<p>以未开启 <code>innodb_large_prefix</code> 为例，二者字符集下索引字段长度最大值分别为：<code>255(767/3)</code> 与 <code>191(767/4)</code>。</p>
+<p>因此，像下面这种情况可能会报错，因为索引字段长度超过限制。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tb_test <span class="token punctuation">(</span>
+  usernmae <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span> <span class="token keyword">CHARACTER SET</span> utf8mb4<span class="token punctuation">,</span>
+  <span class="token keyword">INDEX</span><span class="token punctuation">(</span>usernmae<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-符集变更"><a href="#2-符集变更" class="headerlink" title="2. 符集变更"></a>2. 符集变更</h4><h5 id="1-Database"><a href="#1-Database" class="headerlink" title="(1) Database"></a>(1) Database</h5><p>修改数据库的字符集，语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">DATABASE</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span> 
+<span class="token keyword">DEFAULT</span> CHARACTER 
+<span class="token keyword">SET</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span> 
+<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="2-Table"><a href="#2-Table" class="headerlink" title="(2) Table"></a>(2) Table</h5><p>修改表的字符集，语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token keyword">CONVERT</span> <span class="token keyword">TO</span> CHARACTER
+<span class="token keyword">SET</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span> 
+<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="3-Column"><a href="#3-Column" class="headerlink" title="(3) Column"></a>(3) Column</h5><p>修改列的字符集，语法如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+CHANGE <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span>column_type<span class="token operator">></span>
+<span class="token keyword">CHARACTER SET</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span>  
+<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="二、DDL操作"><a href="#二、DDL操作" class="headerlink" title="二、DDL操作"></a>二、DDL操作</h3><p><code>DDL</code> 缩写于 <code>Data Definition Language</code>，即数据定义语言。故名思意即定义/修改表的结构、数据类型等操作。</p>
+<h4 id="1-表创建"><a href="#1-表创建" class="headerlink" title="1. 表创建"></a>1. 表创建</h4><p>通过 <code>create table</code> 关键字创建表，语法格式如下：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
+<span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">constraint</span><span class="token operator">></span> <span class="token keyword">COMMENT</span> <span class="token string">'&lt;comment>'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">constraint</span><span class="token operator">></span> <span class="token keyword">COMMENT</span> <span class="token string">'&lt;comment>'</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中字段常用约束 <code>constraint</code> 参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">关键字</td>
@@ -602,65 +642,34 @@
     </tr>
 </table>
 
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token punctuation">(</span>
-    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
-    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token keyword">COMMENT</span> <span class="token string">'字段2'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="2-表修改"><a href="#2-表修改" class="headerlink" title="2. 表修改"></a>2. 表修改</h4><p>通过 <code>alter</code> 关键字即实现对表结构的编辑，语法格式如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 新增列并指定字段类型</span>
-<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">add</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 新增字段</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">add</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 修改字段类型</span>
-<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">modify</span> <span class="token keyword">column</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span>new_type<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- 修改类型</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">modify</span> <span class="token keyword">column</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span>new_type<span class="token operator">></span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 修改字段属性名</span>
-<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-change <span class="token keyword">column</span> <span class="token operator">&lt;</span>old_column<span class="token operator">></span> <span class="token operator">&lt;</span>new_column<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- 修改名称</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> change <span class="token keyword">column</span> <span class="token operator">&lt;</span>old_column<span class="token operator">></span> <span class="token operator">&lt;</span>new_column<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">-- 删除字段</span>
-<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">drop</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-表删除"><a href="#3-表删除" class="headerlink" title="3. 表删除"></a>3. 表删除</h4><h5 id="1-drop"><a href="#1-drop" class="headerlink" title="(1) drop"></a>(1) drop</h5><p><code>drop</code> 会删除表的结构及其所依赖的约束、索引等，并将表所占用的空间全释放掉。</p>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">drop</span> <span class="token operator">&lt;</span>column_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-表删除"><a href="#3-表删除" class="headerlink" title="3. 表删除"></a>3. 表删除</h4><p><code>drop</code> 会删除表的结构及其所依赖的约束、索引等，并将表所占用的空间全释放掉。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">drop</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-truncate"><a href="#2-truncate" class="headerlink" title="(2) truncate"></a>(2) truncate</h5><p><code>truncate</code> 只能作用于表，会清空表中的所有行，但表结构及其约束、索引等保持不变。</p>
-<p>同时 <code>truncate</code> 会将表的自增值重置，且不会激活与表有关的删除触发器，并使表和索引所占用的空间会恢复到初始大小。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">truncate</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="4-字符集"><a href="#4-字符集" class="headerlink" title="4. 字符集"></a>4. 字符集</h4><h5 id="1-Database"><a href="#1-Database" class="headerlink" title="(1) Database"></a>(1) Database</h5><p>修改数据库的字符集，语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token operator">&lt;</span>db_name<span class="token operator">></span> 
-<span class="token keyword">default</span> character 
-<span class="token keyword">set</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span> 
-<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-Table"><a href="#2-Table" class="headerlink" title="(2) Table"></a>(2) Table</h5><p>修改表的字符集，语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-<span class="token keyword">CONVERT</span> <span class="token keyword">TO</span> CHARACTER
-<span class="token keyword">set</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span> 
-<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="3-Column"><a href="#3-Column" class="headerlink" title="(3) Column"></a>(3) Column</h5><p>修改列的字符集，语法如下：</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
-CHANGE <span class="token operator">&lt;</span>column_name<span class="token operator">></span> <span class="token operator">&lt;</span>column_type<span class="token operator">></span>
-<span class="token keyword">CHARACTER SET</span> <span class="token operator">&lt;</span>old_character_set<span class="token operator">></span>  
-<span class="token keyword">COLLATE</span> <span class="token operator">&lt;</span>new_character_set<span class="token operator">></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、DML操作"><a href="#二、DML操作" class="headerlink" title="二、DML操作"></a>二、DML操作</h3><h4 id="1-数据新增"><a href="#1-数据新增" class="headerlink" title="1. 数据新增"></a>1. 数据新增</h4><p>当插入新增的记录包含所有字段时，表名后无需跟字段名，当只插入部分数据时需指定字段名。</p>
+<h3 id="三、DML操作"><a href="#三、DML操作" class="headerlink" title="三、DML操作"></a>三、DML操作</h3><p>相应的，<code>DML(Data Manipulation Language)</code> 为数据操纵语言，主要是对数据的增删改查等操作。</p>
+<h4 id="1-数据新增"><a href="#1-数据新增" class="headerlink" title="1. 数据新增"></a>1. 数据新增</h4><p>当插入新增的记录包含所有字段时，表名后无需跟字段名，当只插入部分数据时需指定字段名。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 指定字段插入数据</span>
 <span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span> 
 <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
+
 <span class="token comment" spellcheck="true">-- 未指定插入字段时必须新增数据需包含所有字段</span>
 <span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span>
 <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span><span class="token number">2</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token keyword">value</span><span class="token operator">-</span>n<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="1-增量新增"><a href="#1-增量新增" class="headerlink" title="(1) 增量新增"></a>(1) 增量新增</h5><p>通过基础的 <code>insert</code> 语法可实现数据的新增，但是当数据的主键冲突时则无法执行插入，因而 <code>MySQL</code> 提供了 <code>on duplicate</code> 与 <code>replace into</code> 两种方式实现增量新增。</p>
 <blockquote>
 <p>二者的主要区别如下：</p>
@@ -690,11 +699,15 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token keyword">limit</span> <span class="token number">1</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-数据删除"><a href="#3-数据删除" class="headerlink" title="3. 数据删除"></a>3. 数据删除</h4><p>通过 <code>delete</code> 关键字删除记录值，删除并不会清空表的自增值。</p>
-<p>在使用 <code>delete</code> 删除数据时，数据并没有真正意义上的从硬盘上移除，而是将删除的数据区域标记为可覆盖，当有新的数据时则可存入该区域。</p>
+<p>使用 <code>delete</code> 删除数据时，数据并没有真正意义上的从硬盘上移除，而是将删除的数据区域标记为可覆盖，当有新的数据时则可存入该区域。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">delete</span> <span class="token keyword">from</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> 
 <span class="token keyword">where</span> <span class="token operator">&lt;</span>condition<span class="token operator">></span>
 <span class="token keyword">limit</span> <span class="token number">1</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h5 id="1-truncate"><a href="#1-truncate" class="headerlink" title="(1) truncate"></a>(1) truncate</h5><p>除 <code>delete</code> 外 <code>truncate</code> 同样可实现删除，其会清空表中的所有行。</p>
+<p>与 <code>delete</code> 删除不同的是 <code>truncate</code> 会将表的自增值重置，且不会激活与表有关的删除触发器，并使表和索引所占用的空间会恢复到初始大小。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">truncate</span> <span class="token keyword">table</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h4 id="4-数据查询"><a href="#4-数据查询" class="headerlink" title="4. 数据查询"></a>4. 数据查询</h4><h5 id="1-基本查询"><a href="#1-基本查询" class="headerlink" title="(1) 基本查询"></a>(1) 基本查询</h5><p>根据对应条件查询指定字段信息。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
     <span class="token operator">&lt;</span><span class="token keyword">column</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">></span><span class="token punctuation">,</span> 
@@ -720,7 +733,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token keyword">having</span> 
     num <span class="token operator">></span> <span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、高级查询"><a href="#三、高级查询" class="headerlink" title="三、高级查询"></a>三、高级查询</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>当数据库中数据达到一定量级后，通常我们会使用分页查询。</p>
+<h3 id="四、高级查询"><a href="#四、高级查询" class="headerlink" title="四、高级查询"></a>四、高级查询</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>当数据库中数据达到一定量级后，通常我们会使用分页查询。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查询前 n 条数据</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">LIMIT</span> <span class="token operator">&lt;</span>num<span class="token operator">></span><span class="token punctuation">;</span>
 
@@ -785,7 +798,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
     <span class="token keyword">end</span> <span class="token keyword">as</span> <span class="token operator">&lt;</span>alia<span class="token operator">></span>
 <span class="token keyword">from</span> <span class="token operator">&lt;</span><span class="token keyword">table</span> name<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、多表查询"><a href="#四、多表查询" class="headerlink" title="四、多表查询"></a>四、多表查询</h3><p>当多张表存在关联字段时，即可根据关联字段进行条件查询，准备以下两张数据表：</p>
+<h3 id="五、多表查询"><a href="#五、多表查询" class="headerlink" title="五、多表查询"></a>五、多表查询</h3><p>当多张表存在关联字段时，即可根据关联字段进行条件查询，准备以下两张数据表：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 用户表 tb_users                  -- 关联表 tb_files</span>
 <span class="token comment" spellcheck="true">---------------------------        ----------------------------- </span>
 <span class="token operator">|</span>   user_id  <span class="token operator">|</span>  password  <span class="token operator">|</span>        <span class="token operator">|</span>   upload_id  <span class="token operator">|</span> file_name  <span class="token operator">|</span>
@@ -857,7 +870,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
     <span class="token keyword">SELECT</span> username <span class="token keyword">FROM</span> tb_user 
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、常用函数"><a href="#五、常用函数" class="headerlink" title="五、常用函数"></a>五、常用函数</h3><h4 id="1-时间函数"><a href="#1-时间函数" class="headerlink" title="1. 时间函数"></a>1. 时间函数</h4><h5 id="1-date-format"><a href="#1-date-format" class="headerlink" title="(1) date_format()"></a>(1) date_format()</h5><p>通过 <code>date_format()</code> 函数实现时间格式化。</p>
+<h3 id="六、常用函数"><a href="#六、常用函数" class="headerlink" title="六、常用函数"></a>六、常用函数</h3><h4 id="1-时间函数"><a href="#1-时间函数" class="headerlink" title="1. 时间函数"></a>1. 时间函数</h4><h5 id="1-date-format"><a href="#1-date-format" class="headerlink" title="(1) date_format()"></a>(1) date_format()</h5><p>通过 <code>date_format()</code> 函数实现时间格式化。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token string">'2022-06-10 02:17:54'</span><span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d %H:00:00'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time1<span class="token punctuation">;</span>
    
 <span class="token comment" spellcheck="true">---------------------------</span>
@@ -1195,12 +1208,12 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%AE%97%E6%B3%95/">
-                        <span class="chip bg-color">算法</span>
-                    </a>
-                    
                     <a href="/tags/C/">
                         <span class="chip bg-color">C++</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
@@ -1526,7 +1539,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">287.7k</span>
+                <span class="white-color">288k</span>
             
             
             

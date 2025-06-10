@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-06-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    618
+                    597
                 </div>
                 
 
@@ -571,25 +571,40 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、登录配置"><a href="#一、登录配置" class="headerlink" title="一、登录配置"></a>一、登录配置</h3><h4 id="1-免密登录"><a href="#1-免密登录" class="headerlink" title="1. 免密登录"></a>1. 免密登录</h4><p>在配置文件中添加 <code>skip-grant-tables</code> 配置。</p>
+                <h3 id="一、登录配置"><a href="#一、登录配置" class="headerlink" title="一、登录配置"></a>一、登录配置</h3><h4 id="1-免密登录"><a href="#1-免密登录" class="headerlink" title="1. 免密登录"></a>1. 免密登录</h4><p>在 <code>.cnf</code> 配置文件末尾添加 <code>skip-grant-tables</code> 配置跳过登录。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">which</span> mysql                 <span class="token comment" spellcheck="true"># 查看mysql位置</span>
 
 vim /etc/mysql/my.cnf       <span class="token comment" spellcheck="true"># 编辑配置文件</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>修改完重启 <code>MySQL</code> 服务即可生效。</p>
+<p>保存修改后重启 <code>MySQL</code> 服务即可生效。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">systemctl restart mysqld         <span class="token comment" spellcheck="true"># 重启服务</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><p>下面为通过命令行方式查询数据库与表等信息，除登录外每行命令都必须以 <code>;</code> 分号结尾。</p>
-<pre class="line-numbers language-sql"><code class="language-sql">mysql <span class="token operator">-</span>u root <span class="token operator">-</span>p        <span class="token comment" spellcheck="true"># 登录</span>
+<h4 id="2-基本操作"><a href="#2-基本操作" class="headerlink" title="2. 基本操作"></a>2. 基本操作</h4><p>常用的数据库及数据表命令如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">命令</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">mysql -u root -p</td>
+        <td style="text-align: center;">登录</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">show databases;</td>
+        <td style="text-align: center;">进入对应数据库</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">show tables;</td>
+        <td style="text-align: center;">查看所有数据表</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">describe table_name;</td>
+        <td style="text-align: center;">查看相应表结构</td>
+    </tr>
+</table>
+</br>
 
-<span class="token keyword">show</span> <span class="token keyword">databases</span><span class="token punctuation">;</span>         <span class="token comment" spellcheck="true"># 查看所有数据库</span>
 
-<span class="token keyword">use</span> <span class="token operator">&lt;</span><span class="token keyword">database</span><span class="token operator">></span><span class="token punctuation">;</span>         <span class="token comment" spellcheck="true"># 进入对应数据库</span>
-
-<span class="token keyword">show</span> <span class="token keyword">tables</span><span class="token punctuation">;</span>            <span class="token comment" spellcheck="true"># 查看所有数据表</span>
-
-<span class="token keyword">describe</span> <span class="token operator">&lt;</span><span class="token keyword">table</span><span class="token operator">></span><span class="token punctuation">;</span>       <span class="token comment" spellcheck="true"># 查看相应表结构</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-开放连接"><a href="#3-开放连接" class="headerlink" title="3. 开放连接"></a>3. 开放连接</h4><p>其中 <code>%</code> 表示开放给任何 <code>IP</code> 地址，此方法不建议在生产环境上操作，建议对指定 <code>IP</code> 进行配置。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">use</span> mysql<span class="token punctuation">;</span>
 
@@ -601,7 +616,7 @@ vim /etc/mysql/my.cnf       <span class="token comment" spellcheck="true"># 编�
 <span class="token comment" spellcheck="true">-- 开放给指定 IP</span>
 <span class="token keyword">update</span> <span class="token keyword">user</span> <span class="token keyword">set</span> host <span class="token operator">=</span> <span class="token string">'192.168.0.21'</span> <span class="token keyword">where</span> <span class="token keyword">user</span> <span class="token operator">=</span><span class="token string">'root'</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- 刷洗生效</span>
+<span class="token comment" spellcheck="true">-- 刷新生效</span>
 flush <span class="token keyword">privileges</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二、权限管理"><a href="#二、权限管理" class="headerlink" title="二、权限管理"></a>二、权限管理</h3><h4 id="1-用户创建"><a href="#1-用户创建" class="headerlink" title="1. 用户创建"></a>1. 用户创建</h4><h5 id="1-新建用户"><a href="#1-新建用户" class="headerlink" title="(1) 新建用户"></a>(1) 新建用户</h5><p>其中 <code>host</code> 表示该用户允许通过哪个 <code>IP</code> 地址进行连接，如果需设置放行所有 <code>IP</code> 则替换为 <code>%</code>，生产环境中应针对具体情况设置指定 <code>IP</code>。</p>
@@ -1261,7 +1276,7 @@ flush <span class="token keyword">privileges</span><span class="token punctuatio
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">287.7k</span>
+                <span class="white-color">288k</span>
             
             
             
