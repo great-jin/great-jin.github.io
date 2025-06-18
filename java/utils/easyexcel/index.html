@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-06-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    9 分
                 </div>
                 
 
@@ -769,8 +769,24 @@ ExcelTypeEnum.XLSX
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、注解使用"><a href="#三、注解使用" class="headerlink" title="三、注解使用"></a>三、注解使用</h3><p>上面的读写示例中都是采用默认的实体类属性映射方式，但 <code>EasyExcel</code> 提供了更灵活的注解用于字段映射，下面将分别进行介绍。</p>
-<h4 id="1-ExcelProperty"><a href="#1-ExcelProperty" class="headerlink" title="1. ExcelProperty"></a>1. ExcelProperty</h4><p><code>@ExcelProperty</code> 注解存在 <code>value</code> 与 <code>order</code> 两个属性，前者用于设置别名而后者用于设置列顺序。</p>
-<p>通过此属性即可指定列与实体字段的映射关系，同时默认的字段的映射顺序是与属性的定义顺序相关，因此通过 <code>order</code> 属性可灵活的修改映射顺序。</p>
+<h4 id="1-ExcelProperty"><a href="#1-ExcelProperty" class="headerlink" title="1. ExcelProperty"></a>1. ExcelProperty</h4><p><code>@ExcelProperty</code> 注解可指定列与实体字段的映射关系，默认的字段的映射顺序是与属性的定义顺序相关。</p>
+<p>默认生成的文件表头字段取相应的成员变量名称，可通过 <code>value</code> 配置别名，同时 <code>order</code> 可修改表头顺序。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">属性</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">value</td>
+        <td style="text-align: center;">定义表头，输入多个则合并单元格。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">order</td>
+        <td style="text-align: center;">设置属性对应的顺序。</td>
+    </tr>
+</table>
+</br>
+
 <p>如下示例中则最后生成 <code>Excel</code> 文件中列名分别为 <code>编号</code> 与 <code>姓名</code>，其中第一列为 <code>编号</code>，第二列为 <code>姓名</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExcelUser</span> <span class="token punctuation">{</span>
 
@@ -801,48 +817,7 @@ ExcelTypeEnum.XLSX
     <span class="token keyword">private</span> Date birthday<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-应用示例"><a href="#4-应用示例" class="headerlink" title="4. 应用示例"></a>4. 应用示例</h4><p>下面通过示例演示注解的具体应用方式。</p>
-<p>同样的创建的 <code>User</code> 实体类，通过 <code>@ExcelProperty</code> 注解此时则无需担心属性的定义顺序，而是可以通过 <code>order</code> 指定顺序。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@ExcelProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"生日"</span><span class="token punctuation">,</span> order <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">)</span>
-    <span class="token annotation punctuation">@DateTimeFormat</span><span class="token punctuation">(</span><span class="token string">"yyy-MM-dd"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> Date birthday<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@ExcelProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"性别"</span><span class="token punctuation">,</span> order <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@ExcelProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"姓名"</span><span class="token punctuation">,</span> order <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@ExcelProperty</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"编号"</span><span class="token punctuation">,</span> order <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>类似的，准备一份 <code>Excel</code> 文件，数据内容如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">编号    姓名     性别       生日
-1     User-1    Male    2024-01-29
-2     User-2    Male    2024-01-29
-3     User-3    Male    2024-01-29
-4     User-4    Male    2024-01-29
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>对应的读取实现如下，可以发现与之前的读取代码完全一致。类似的，在写入时通过上述的注解属性映射的方式，可以数据文件的表头由默认的实体类属性名转为我们配置的 <code>value</code> 值。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    String fileLocate <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\data.xls"</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">(</span>InputStream in <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">newInputStream</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>fileLocate<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>User<span class="token operator">></span> list <span class="token operator">=</span> EasyExcel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">head</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">sheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">doReadSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、事件监听"><a href="#四、事件监听" class="headerlink" title="四、事件监听"></a>四、事件监听</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>EasyExcel</code> 中执行数据的读取写入时，其也提供了监听器用于在读写过程中的操作。</p>
+<h3 id="四、读取监听"><a href="#四、读取监听" class="headerlink" title="四、读取监听"></a>四、读取监听</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>EasyExcel</code> 中执行数据的读取写入时，其也提供了监听器用于在读写过程中的操作。</p>
 <p>监听器的声明方式十分简单，通过继承 <code>AnalysisEventListener&lt;&gt;</code> 泛型接口即可，如下述示例中即定义了一个针对 <code>User</code> 类数据读取的监听器。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReadListener</span> <span class="token keyword">extends</span> <span class="token class-name">AnalysisEventListener</span><span class="token operator">&lt;</span>AnnoUser<span class="token operator">></span> <span class="token punctuation">{</span>
 
@@ -1540,7 +1515,7 @@ ExcelTypeEnum.XLSX
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">289.8k</span>
+                <span class="white-color">289.5k</span>
             
             
             
