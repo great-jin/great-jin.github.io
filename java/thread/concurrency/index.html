@@ -748,7 +748,7 @@ Key: {Jack}, Failed: {[5]}, Success: {[6, 7]}
                 set<span class="token punctuation">.</span><span class="token function">removeAll</span><span class="token punctuation">(</span>inputs<span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
                 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasException<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token comment" spellcheck="true">// 仅清楚成功内容</span>
+                    <span class="token comment" spellcheck="true">// 仅清除成功内容</span>
                     set<span class="token punctuation">.</span><span class="token function">removeAll</span><span class="token punctuation">(</span>success<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token punctuation">}</span>
             <span class="token punctuation">}</span>
@@ -769,13 +769,12 @@ Key: {Jack}, Failed: {[5]}, Success: {[6, 7]}
 
     TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-
-运行上述用例代码，可以看到后续两次重复提交都能按照设计被成功拦截。
-```txt
-Key<span class="token operator">:</span> <span class="token punctuation">{</span>Alex<span class="token punctuation">}</span><span class="token punctuation">,</span> Failed<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span> Success<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
-Key<span class="token operator">:</span> <span class="token punctuation">{</span>Alex<span class="token punctuation">}</span><span class="token punctuation">,</span> Failed<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span> Success<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
-Key<span class="token operator">:</span> <span class="token punctuation">{</span>Alex<span class="token punctuation">}</span><span class="token punctuation">,</span> Failed<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span> Success<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行上述用例代码，可以看到后续两次重复提交都能按照设计被成功拦截。</p>
+<pre class="line-numbers language-txt"><code class="language-txt">Key: {Alex}, Failed: {[1, 2, 3]}, Success: {[]}
+Key: {Alex}, Failed: {[1, 2]}, Success: {[]}
+Key: {Alex}, Failed: {[]}, Success: {[1, 2, 3]}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="三、队列应用"><a href="#三、队列应用" class="headerlink" title="三、队列应用"></a>三、队列应用</h3><h4 id="1-思路分析"><a href="#1-思路分析" class="headerlink" title="1. 思路分析"></a>1. 思路分析</h4><p>除了上述提到的基于缓存容器之外，针对并发场景也可利用队列先进先出的特性实现。</p>
 <p>首先让我们从根本上来看可以发现数据不可预测是由于并发导致，那么如果从程序上避免并发问题即迎刃而解。</p>
 <p>那又应该如何消除并发呢？原理其实并不复杂，通过队列将多端输入内容入列，再由统一的消费者读取队列后执行相应的操作，由此便从流程上消除了并发场景。</p>
