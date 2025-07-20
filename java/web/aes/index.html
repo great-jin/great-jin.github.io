@@ -546,14 +546,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-07-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    720
+                    677
                 </div>
                 
 
@@ -640,7 +640,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-工具类-1"><a href="#2-工具类-1" class="headerlink" title="2. 工具类"></a>2. 工具类</h4><p>新建 <code>AesUtil.java</code> 工具类，具体代码如下：</p>
+<h4 id="2-工具类-1"><a href="#2-工具类-1" class="headerlink" title="2. 工具类"></a>2. 工具类</h4><p>新建 <code>AesUtil</code> 工具类，具体代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>binary<span class="token punctuation">.</span>Base64<span class="token punctuation">;</span>
 <span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>Cipher<span class="token punctuation">;</span>
 <span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span>IvParameterSpec<span class="token punctuation">;</span>
@@ -652,65 +652,65 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
      * 加密
      */</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">encrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"AES/CBC/NoPadding"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//"算法/模式/补码方式"NoPadding PkcsPadding</span>
-            <span class="token keyword">int</span> blockSize <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">getBlockSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dataBytes <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> plaintextLength <span class="token operator">=</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>plaintextLength <span class="token operator">%</span> blockSize <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                plaintextLength <span class="token operator">=</span> plaintextLength <span class="token operator">+</span> <span class="token punctuation">(</span>blockSize <span class="token operator">-</span> <span class="token punctuation">(</span>plaintextLength <span class="token operator">%</span> blockSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> plaintext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>plaintextLength<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>dataBytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> plaintext<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            SecretKeySpec keyspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            IvParameterSpec ivspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>Cipher<span class="token punctuation">.</span>ENCRYPT_MODE<span class="token punctuation">,</span> keyspec<span class="token punctuation">,</span> ivspec<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>plaintext<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeToString</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span>ALGORITHM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> blockSize <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">getBlockSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dataBytes <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> length <span class="token operator">=</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">%</span> blockSize <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            length <span class="token operator">=</span> length <span class="token operator">+</span> <span class="token punctuation">(</span>blockSize <span class="token operator">-</span> <span class="token punctuation">(</span>length <span class="token operator">%</span> blockSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
+
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> plaintext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>dataBytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> plaintext<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>
+                Cipher<span class="token punctuation">.</span>ENCRYPT_MODE<span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>plaintext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeToString</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">/**
      * 解密
      */</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">desEncrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span>ALGORITHM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>
+                Cipher<span class="token punctuation">.</span>DECRYPT_MODE<span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h4><p>完成上述的工具类封装之后就可以直接使用了，下面是一个简单的使用示例。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AESTest</span><span class="token punctuation">{</span>
+    
+    <span class="token comment" spellcheck="true">// 默认的 KEY 与 IV ，统一的 16 位字符串即可</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> String KEY <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> String IV <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        String data <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
+
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"AES/CBC/NoPadding"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            SecretKeySpec keyspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            IvParameterSpec ivspec <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>Cipher<span class="token punctuation">.</span>DECRYPT_MODE<span class="token punctuation">,</span> keyspec<span class="token punctuation">,</span> ivspec<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> original <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>encrypted1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            String originalString <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>original<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> originalString<span class="token punctuation">;</span>
+            String enStr <span class="token operator">=</span> <span class="token function">encrypt</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"加密："</span> <span class="token operator">+</span> enStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            String deStr <span class="token operator">=</span> <span class="token function">desEncrypt</span><span class="token punctuation">(</span>enStr<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"解密："</span> <span class="token operator">+</span> deStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h4><p>完成上述的工具类封装之后就可以直接使用了，下面是一个简单的使用示例。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 默认的 KEY 与 IV ，统一的 16 位字符串即可</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> String KEY <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> String IV <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
-
-<span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    String data <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        String enStr <span class="token operator">=</span> <span class="token function">encrypt</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"加密："</span> <span class="token operator">+</span> enStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        String deStr <span class="token operator">=</span> <span class="token function">desEncrypt</span><span class="token punctuation">(</span>enStr<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"解密："</span> <span class="token operator">+</span> deStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p><strong>参考链接：</strong></p>
 <ol>
@@ -1317,7 +1317,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">292.2k</span>
+                <span class="white-color">292.1k</span>
             
             
             
