@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-29
+                    2025-07-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3k
+                    2.9k
                 </div>
                 
 
@@ -788,7 +788,7 @@
 <h3 id="四、BlockingQueue"><a href="#四、BlockingQueue" class="headerlink" title="四、BlockingQueue"></a>四、BlockingQueue</h3><h4 id="1-基本操作"><a href="#1-基本操作" class="headerlink" title="1. 基本操作"></a>1. 基本操作</h4><p><code>Java</code> 中默认提供了两类阻塞队列，其结构为线程安全，扩展了一系列方法实现阻塞读存。</p>
 <ul>
 <li><code>ArrayBlockingQueue</code>：有界集合，队列容量在初始化时指定，一旦定义后续无法变更。</li>
-<li><code>LinkedBlockingQueue</code>：无界集合，若初始化时指定容量则效果等同于 `ArrayBlockingQueue``，若不指定容量则为无界集合。</li>
+<li><code>LinkedBlockingQueue</code>：无界集合，若初始化时指定容量则效果等同于 <code>ArrayBlockingQueue</code>，即不指定容量则为无界集合。</li>
 </ul>
 <p>在阻塞队列中除了 <code>offer()、poll()</code> 方法可以指定阻塞时间，同时提供了 <code>put()、take()</code> 方法实现阻塞读存。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -826,30 +826,15 @@
     <span class="token keyword">while</span> <span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+
     <span class="token comment" spellcheck="true">// Get element</span>
     <span class="token comment" spellcheck="true">// If capacity is full then wait, if still full return null</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、SynchronousQueue"><a href="#五、SynchronousQueue" class="headerlink" title="五、SynchronousQueue"></a>五、SynchronousQueue</h3><h4 id="1-基本操作-1"><a href="#1-基本操作-1" class="headerlink" title="1. 基本操作"></a>1. 基本操作</h4><p><code>SynchronousQueue</code> 是一种特殊的阻塞队列，其通过 <code>put()</code> 与 <code>take()</code> 存入与读取数据。</p>
-<p>其特殊之处在于当通过 <code>put()</code> 存入数据时要求必须存在另一线程执行 <code>take()</code> 方法，否则将一直处于阻塞状态，<code>take()</code> 操作同理。</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">方法</td>
-        <th style="text-align: center;">作用</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">put()</td>
-        <td style="text-align: center;">存入数据，必须存在线程执行 take() 否则将阻塞。</td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">take()</td>
-        <td style="text-align: center;">读取数据，必须存在线程执行 put() 否则将阻塞。</td>
-    </tr>
-</table>
-
-
-<h4 id="2-示例演示-1"><a href="#2-示例演示-1" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p>如下示例分别创建了两个读写线程，<code>t1</code> 线程用于执行 <code>put()</code> 写入，<code>t2</code> 线程用于执行 <code>take()</code> 读取。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、SynchronousQueue"><a href="#五、SynchronousQueue" class="headerlink" title="五、SynchronousQueue"></a>五、SynchronousQueue</h3><h4 id="1-基本操作-1"><a href="#1-基本操作-1" class="headerlink" title="1. 基本操作"></a>1. 基本操作</h4><p><code>SynchronousQueue</code> 是一类特殊的阻塞队列，故名思意即同步队列，其最大特征是其并不提供任何容量，在入队必须同时存在接收方执行出队，反之亦然。</p>
+<p>通过 <code>put()</code> 与 <code>take()</code> 读存数据，当通过 <code>put()</code> 存入数据时要求必须存在另一线程执行 <code>take()</code> 方法，否则将一直处于阻塞状态，<code>take()</code> 操作同理。</p>
+<h4 id="2-代码示例"><a href="#2-代码示例" class="headerlink" title="2. 代码示例"></a>2. 代码示例</h4><p>如下示例分别创建了两个读写线程，<code>t1</code> 线程用于执行 <code>put()</code> 写入，<code>t2</code> 线程用于执行 <code>take()</code> 读取。</p>
 <p>在 <code>t1</code> 线程中通过 <code>sleep(5)</code> 模拟休眠五秒，运行示例代码可以看到当启动程序后 <code>t2</code> 线程在打印 <code>start take</code> 将陷入阻碍状态，只有在 <code>t1</code> 中休眠结束后执行 <code>put()</code> 操作 <code>t2</code> 才会退出阻塞读取数据并打印 <code>end take</code></p>
 <p>同理如果将 <code>t1</code> 中的 <code>sleep(5)</code> 移至 <code>t2</code> 的 <code>take()</code> 之前，运行程序后 <code>t1</code> 的 <code>put()</code> 操作的则会进入阻塞等待 <code>t2</code> 的休眠结束执行 <code>take()</code> 才会退出阻塞。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">synchronousQueueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -908,7 +893,7 @@
 </table>
 
 
-<h4 id="2-示例演示-2"><a href="#2-示例演示-2" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>LinkedTransferQueue</code> 的测试示例代码如下，与 <code>SynchronousQueue</code> 模拟场景类型这里不再详细介绍。</p>
+<h4 id="2-示例演示-1"><a href="#2-示例演示-1" class="headerlink" title="2. 示例演示"></a>2. 示例演示</h4><p><code>LinkedTransferQueue</code> 的测试示例代码如下，与 <code>SynchronousQueue</code> 模拟场景类型这里不再详细介绍。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">transferQueueDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     LinkedTransferQueue<span class="token operator">&lt;</span>Integer<span class="token operator">></span> transferQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedTransferQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>

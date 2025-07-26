@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-07-26
                 </div>
                 
 
@@ -560,7 +560,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    30 分
+                    29 分
                 </div>
                 
 
@@ -1037,14 +1037,14 @@ Writer-2 sleep over.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、RedissonLock"><a href="#六、RedissonLock" class="headerlink" title="六、RedissonLock"></a>六、RedissonLock</h3><p>在实际生产开发中，为了实现高可用我们通过将服务通过集群部署在不同节点上，而此时用户的单个操作可能就会被集群中的多个节点重复执行。针对这种情况，上面的两类锁显然就不太适用，因为二者都是针对单节点的服务而言，因此这时候就需要用到分布式锁。</p>
 <p>用简单一点的大白话来讲，可以把整个集群环境当成一个主线程，而每个节点就是一个线程，分布式锁就是用于控制不同节点间的操作原子性。</p>
-<h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p><code>RedissonLock</code> 是一款基于 <code>Redis</code> 实现的分布式锁，因此需要导入对应的依赖。</p>
+<h4 id="1-服务连接"><a href="#1-服务连接" class="headerlink" title="1. 服务连接"></a>1. 服务连接</h4><p>首先当然需要在 <code>pom</code> 文件中引入 <code>RedissonLock</code> 相应依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.redisson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>redisson<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.17.5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务连接"><a href="#2-服务连接" class="headerlink" title="2. 服务连接"></a>2. 服务连接</h4><p>下面详细介绍一下其基本使用，由于是基于 <code>Redis</code> 实现所以需要提前创建服务连接。</p>
+<p>完成依赖引入之后开箱即用，只需创建 <code>Redis</code> 实例即可，代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Config config <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     config<span class="token punctuation">.</span><span class="token function">useSingleServer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -1055,42 +1055,88 @@ Writer-2 sleep over.
             <span class="token comment" spellcheck="true">// 设置存储数据库</span>
             <span class="token punctuation">.</span><span class="token function">setDatabase</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 创建连接</span>
-    redissonClient <span class="token operator">=</span> Redisson<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    RedissonClient redissonClient <span class="token operator">=</span> Redisson<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-基本使用"><a href="#3-基本使用" class="headerlink" title="3. 基本使用"></a>3. 基本使用</h4><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，这里就不再具体举例，仅介绍一下其常用方法。</p>
-<p>需要注意一点如果在加锁时未设置过期时间则默认为 <code>30s</code> 。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">infoDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
-    RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 加锁</span>
+<h4 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2. 基本使用"></a>2. 基本使用</h4><p><code>RedissonLock</code> 使用方式与 <code>ReentrantLock</code> 其实基本一致，不同点在于前者会将锁对象存储于 <code>Redis</code> 内存中，脱离于系统从而实现分布式锁的效果。</p>
+<p><code>RedissonLock</code> 锁实例的基本声明定义参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getLock(name)</td>
+        <td style="text-align: center;">获取锁实例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isLocked()</td>
+        <td style="text-align: center;">判断是否加锁状态。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isHeldByCurrentThread()</td>
+        <td style="text-align: center;">判断是否当前线程持有锁。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">unlock()</td>
+        <td style="text-align: center;">释放锁。</td>
+    </tr>
+</table>
+</br>
+
+<p><code>RedissonLock</code> 锁实例的加锁方式参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">lock()</td>
+        <td style="text-align: center;">加锁，阻塞线程。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">lock(long, timeUnit)</td>
+        <td style="text-align: center;">加锁，指定锁过期时间。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">lockAsync()</td>
+        <td style="text-align: center;">异步加锁，非阻塞。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">lockAsync(long, timeUnit)</td>
+        <td style="text-align: center;">异步加锁，指定锁过期时间。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">tryLock()</td>
+        <td style="text-align: center;">加锁，默认阻塞 30s，失败返回 false。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">tryLock(long, timeUnit)</td>
+        <td style="text-align: center;">加锁，指定等待时间，失败返回 false。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">tryLock(waitTime, leaseTime, timeUnit)</td>
+        <td style="text-align: center;">加锁，指定等待时间与加锁时间。</td>
+    </tr>
+</table>
+</br>
+
+<p>最基本使用场景即针对并发场景加锁，并在 <code>finally</code> 释放锁，代码示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 加锁，并指定超时时间</span>
-    lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// do something</span>
 
-    <span class="token comment" spellcheck="true">// 异步加锁 </span>
-    RFuture<span class="token operator">&lt;</span>Void<span class="token operator">></span> future <span class="token operator">=</span> lock<span class="token punctuation">.</span><span class="token function">lockAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 异步加锁, 指定锁超时时长</span>
-    future <span class="token operator">=</span> lock<span class="token punctuation">.</span><span class="token function">lockAsync</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// tryLock() 可以设置等待时间</span>
-    <span class="token keyword">boolean</span> isL1 <span class="token operator">=</span> lock<span class="token punctuation">.</span><span class="token function">tryLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"tryLock: "</span> <span class="token operator">+</span> isL1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 尝试获取锁 waitTime: 等待时间; leaseTime: 锁过期时间</span>
-    <span class="token comment" spellcheck="true">// 在 5 秒内未取到锁返回 false, 取到锁则设置锁过期为 6 秒</span>
-    <span class="token keyword">boolean</span> isL2 <span class="token operator">=</span> lock<span class="token punctuation">.</span><span class="token function">tryLock</span><span class="token punctuation">(</span><span class="token number">5</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">6</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"tryLock: "</span> <span class="token operator">+</span> isL2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">// 解锁</span>
-    lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 是否加锁</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"is locked: "</span> <span class="token operator">+</span> lock<span class="token punctuation">.</span><span class="token function">isLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 加锁次数</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"lock count: "</span> <span class="token operator">+</span> lock<span class="token punctuation">.</span><span class="token function">getHoldCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>lock<span class="token punctuation">.</span><span class="token function">isLocked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> lock<span class="token punctuation">.</span><span class="token function">isHeldByCurrentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-看门狗机制"><a href="#4-看门狗机制" class="headerlink" title="4. 看门狗机制"></a>4. 看门狗机制</h4><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-看门狗机制"><a href="#3-看门狗机制" class="headerlink" title="3. 看门狗机制"></a>3. 看门狗机制</h4><p><code>RedissonLock</code> 默认锁的过期时间为 <code>30s</code> ，如果在任务耗时超过 <code>30s</code> 则会出现提前释放锁的情况，但若手动设置过期时间，有时并无法准确估计任务耗时，又可能存在持锁时间过长造成资源浪费的情况。针对这种情况， <code>RedissonLock</code> 引入了看门狗机制 <code>watchDog</code> ，看门狗程序会固定间隔持锁情况，若锁仍在持有状态将自动续期加锁时间，从而实现动态加锁时长。</p>
 <p>默认的看门狗时间为 <code>30s</code>，即每隔 <code>10s</code> 会读取当前锁的状态，若锁仍为持有状态则自动延长加锁时间 <code>30s</code> 。当然你也可以在创建连接时通过 <code>setLockWatchdogTimeout()</code> 指定看门狗程序时间，如设置为 <code>60s</code> 则每隔 <code>60/3=20s</code> 会检查锁的状态，若锁未释放则延长 <code>60s</code>。</p>
-<p>下面看一个具体示例，在 <code>线程 1</code> 中创建锁时并没有指定过期时间，因此默认过期时间为 <code>30s</code> ，但是因为看门狗机制将会每隔 <code>10s</code> 读取一次锁状态，这里通过 <code>sleep()</code> 模拟任务耗时 <code>60s</code> ，因此当 <code>30s</code> 后锁过期时间又会自动续期到 <code>30s</code>，因此 <code>线程 2</code> 将无法获取锁。只有当休眠结束后释放锁看门狗机制失效后 <code>线程 2</code> 才能获取锁。</p>
+<p>下面看一个具体示例，在 <code>线程 1</code> 中创建锁时并没有指定过期时间，因此默认过期时间为 <code>30s</code>，但是因为看门狗将会每隔 <code>10s</code> 读取一次锁状态，这里通过 <code>sleep()</code> 模拟任务耗时 <code>60s</code> ，因此当 <code>30s</code> 后锁过期时间又会自动续期到 <code>30s</code>，因此 <code>线程 2</code> 将无法获取锁，只有当休眠结束后释放锁看门狗失效后 <code>线程 2</code> 才能获取锁。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">watchDogDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
     RLock lock <span class="token operator">=</span> redissonClient<span class="token punctuation">.</span><span class="token function">getLock</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -1584,54 +1630,6 @@ Writer-2 sleep over.
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/redis/cache/">
-                    <div class="card-image">
-                        
-                        <img src="/album/banner/db/redis/2.jpg" class="responsive-img" alt="Redis缓存优化详解">
-                        
-                        <span class="card-title">Redis缓存优化详解</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Redis缓存问题优化方案详解。
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-22
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
-                                    大数据
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Redis/">
-                        <span class="chip bg-color">Redis</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/java/thread/advance/">
                     <div class="card-image">
                         
@@ -1647,9 +1645,9 @@ Writer-2 sleep over.
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-16
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-16
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1671,6 +1669,54 @@ Writer-2 sleep over.
                     
                     <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
                         <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/vue/js/util/">
+                    <div class="card-image">
+                        
+                        <img src="/album/banner/front/js/3.png" class="responsive-img" alt="JavaScript常用操作">
+                        
+                        <span class="card-title">JavaScript常用操作</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            JavaScript常用操作合集。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                    前端
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript/">
+                        <span class="chip bg-color">JavaScript</span>
                     </a>
                     
                 </div>

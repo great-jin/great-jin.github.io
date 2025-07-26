@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-29
+                    2025-07-26
                 </div>
                 
 
@@ -779,12 +779,12 @@ Key: {Alex}, Failed: {[]}, Success: {[1, 2, 3]}
 <p>首先让我们从根本上来看可以发现数据不可预测是由于并发导致，那么如果从程序上避免并发问题即迎刃而解。</p>
 <p>那又应该如何消除并发呢？原理其实并不复杂，通过队列将多端输入内容入列，再由统一的消费者读取队列后执行相应的操作，由此便从流程上消除了并发场景。</p>
 <h4 id="2-数据生产"><a href="#2-数据生产" class="headerlink" title="2. 数据生产"></a>2. 数据生产</h4><p>下面就将对应的方案转为实际代码实现。</p>
-<p>同样的，对于数据的读写仍需要涉及 <code>ReentrantLock</code> 保存原子性，由于不再需要缓存容器，这里选择了 <code>JDK</code> 中自带的 <code>SynchronousQueue</code> 阻塞队列实例。倘若在集群环境中，则可替换选择 <code>RabbitMQ</code> 及 <code>Kafka</code> 等常见消息队列作为载体。</p>
+<p>同样的，对于数据的读写仍需要涉及 <code>ReentrantLock</code> 保存原子性，由于不再需要缓存容器，这里选择了 <code>JDK</code> 中自带的 <code>LinkedBlockingQueue</code> 阻塞队列实例。倘若在集群环境中，则可替换选择 <code>RabbitMQ</code> 及 <code>Kafka</code> 等常见消息队列作为载体。</p>
 <p>当用户提交操作时，由生产者将数据发送至阻塞队列，代码实现如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcurrencyTest</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> ReentrantLock locker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> SynchronousQueue<span class="token operator">&lt;</span>String<span class="token operator">></span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SynchronousQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> LinkedBlockingQueue<span class="token operator">&lt;</span>String<span class="token operator">></span> queue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@Data</span>
     <span class="token annotation punctuation">@NoArgsConstructor</span>
