@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-02
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    11 分
                 </div>
                 
 
@@ -572,17 +572,22 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p><code>Kafka</code> 是由 <code>Apache</code> 软件基金会开发的一个开源流处理平台，是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者在网站中的所有动作流数据，目的是通过 <code>Hadoop</code> 的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消息。</p>
-<blockquote>
-<p><code>Kafka</code> 作为一种分布式消息队列被广泛应用于以下场景中：</p>
+<h3 id="一、消息队列"><a href="#一、消息队列" class="headerlink" title="一、消息队列"></a>一、消息队列</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>在数据传输场景中，消息队列扮演者重要角色，而 <code>Kafka</code> 凭借高吞吐量与稳定性广泛应用于下述场景中：</p>
 <ul>
 <li><strong>消息通讯</strong>：作为一种分布式消息传递的工具，实现高效的异步消息通讯。</li>
 <li><strong>大数据流处理</strong>：通过批量发送消息、消息压缩等机制有效地处理大量的数据流，为大数据处理提供了支持。</li>
 <li><strong>日志收集与处理</strong>：实现高吞吐量、低延迟的数据采集和处理，常被用于日志的采集、传输和处理。</li>
-<li><strong>数据解耦和异步处理</strong>：通过将数据放入 Kafka 队列，不同的系统和应用可以异步地获取和处理数据，降低系统之间的耦合性。</li>
+<li><strong>数据解耦和异步处理</strong>：通过 <code>Kafka</code> 队列不同的系统和应用可以异步地获取和处理数据，降低系统之间的耦合性。</li>
 </ul>
-</blockquote>
-<p>总之，如果需要处理大量的消息数据，实现数据解耦和异步处理，或者需要实现高吞吐量的数据传输和处理等，都可以考虑引入 <code>Kafka</code> 。下面分别介绍如何在 <code>Maven</code> 工程与 <code>Spring</code> 工程中集成 <code>Kafka</code> 实现消息发布订阅。</p>
-<h3 id="一、Maven集成"><a href="#一、Maven集成" class="headerlink" title="一、Maven集成"></a>一、Maven集成</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>maven</code> 项目中导入 <code>kafka</code> 的相关依赖。</p>
+<h4 id="2-系统解耦"><a href="#2-系统解耦" class="headerlink" title="2. 系统解耦"></a>2. 系统解耦</h4><p>在跨模块亦或跨系统的数据传输设计中，最常见的即通过网络 <code>HTTP</code> 或 <code>RPC</code> 等形式，其优势也相当明显，在使用方式上简洁且结果实时响应。</p>
+<p>但显然也存在其相应的局限性，系统之间被强制绑定，若一方出现卡顿或宕机的场景将影响到其它系统服务。因此，在跨系统的数据传输了，往往我们更倾向于引入中间媒介从而实现系统解耦。</p>
+<p>举个常见的例子，在商城系统中订单模块需要将数据推送发货模块，在采用消息队列的模型下，订单数据发送至消息队列后，由发货模块消费数据，两个模块之间不直接进行交互。所带来的好处的显而易见，当发货系统出现故障时，订单系统仍能正常推送数据，数据暂存队列中。待发货系统服务恢复时，仍能正常消费队列数据。<br><img src="/album/loading.gif" data-original="/album/article/db/kafka/12.png"></p>
+<p>通过降低系统之间的耦合度从而避免的上下游服务异常造成多米诺骨牌效应。仍以上述示例为例，若采用 <code>HTTP</code> 服务请求方式，当下游系统故障服务不可用时，上游系统数据将推送失败。造成的结果便是当下游服务恢复时，上游系统需配合重新执行数据推送。</p>
+<p>解耦的另一好处即系统一方调整时并不会影响关联的系统。同样以商城为例，发货系统进行升级改造服务接收地址发生变更，在 <code>HTTP</code> 传输模型中需要同步调整上游系统。而若采用队列传输模型，上游系统只需按原有方式推送数据，只需下游单方面调整队列消费逻辑即可。</p>
+<h4 id="3-数据削峰"><a href="#3-数据削峰" class="headerlink" title="3. 数据削峰"></a>3. 数据削峰</h4><p>消息队列除了应用于系统解耦外，另一应用便是数据削峰。</p>
+<p>最经典的案例便是打卡系统，在传统的同步处理模型中，在高峰期大量用户操作时，将造成数据拥堵造成系统的性能下降，如线程服务资源的紧张。此时便可引入消息队列实现数据削峰，请终端接收的打卡数据经由队列中转，不处理具体的业务逻辑，提高系统的吞吐量。通过单独的线程池服务处理队列中的打卡数据，执行相应的业务逻辑。</p>
+<p>在此模型下，系统接收数据的能力将大大提高，将海量的数据中转暂存于队列之中，极大提高系统的吞吐量。</p>
+<h3 id="二、Maven集成"><a href="#二、Maven集成" class="headerlink" title="二、Maven集成"></a>二、Maven集成</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>maven</code> 项目中导入 <code>kafka</code> 的相关依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>kafka-clients<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -833,7 +838,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、Spring集成"><a href="#二、Spring集成" class="headerlink" title="二、Spring集成"></a>二、Spring集成</h3><p>在 <code>Spring Boot</code> 中集成 <code>Kafka</code> 则更为简单，下面介绍配置步骤。</p>
+<h3 id="三、Spring集成"><a href="#三、Spring集成" class="headerlink" title="三、Spring集成"></a>三、Spring集成</h3><p>在 <code>Spring Boot</code> 中集成 <code>Kafka</code> 则更为简单，下面介绍配置步骤。</p>
 <h4 id="1-依赖导入-1"><a href="#1-依赖导入-1" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>同样在 <code>Spring Boot</code> 项目中引入相关 <code>Maven</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.kafka<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -866,7 +871,7 @@
       <span class="token key atrule">concurrency</span><span class="token punctuation">:</span> <span class="token number">6</span>
       <span class="token key atrule">ack-mode</span><span class="token punctuation">:</span> MANUAL
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-接收者"><a href="#3-接收者" class="headerlink" title="3. 接收者"></a>3. 接收者</h4><p>创建发送者用于订阅 <code>Topic</code> 接收发送者信息。</p>
+<h4 id="3-数据收发"><a href="#3-数据收发" class="headerlink" title="3. 数据收发"></a>3. 数据收发</h4><h5 id="1-接收者"><a href="#1-接收者" class="headerlink" title="(1) 接收者"></a>(1) 接收者</h5><p>创建发送者用于订阅 <code>Topic</code> 接收发送者信息。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsumerController</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@KafkaListener</span><span class="token punctuation">(</span>topics <span class="token operator">=</span> <span class="token string">"test_topic"</span><span class="token punctuation">)</span>
@@ -876,7 +881,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-发送者"><a href="#4-发送者" class="headerlink" title="4. 发送者"></a>4. 发送者</h4><p>通过调用 <code>KafkaTemplate</code> 即可实现消息发送，若需要发送复杂对象，可配套 <code>Jackson</code> 等工具实现。</p>
+<h5 id="2-发送者"><a href="#2-发送者" class="headerlink" title="(2) 发送者"></a>(2) 发送者</h5><p>通过调用 <code>KafkaTemplate</code> 即可实现消息发送，若需要发送复杂对象，可配套 <code>Jackson</code> 等工具实现。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"api/kafka"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ProducerController</span> <span class="token punctuation">{</span>
@@ -1489,7 +1494,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">292.5k</span>
+                <span class="white-color">293.1k</span>
             
             
             
