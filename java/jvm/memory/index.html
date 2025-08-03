@@ -571,7 +571,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>事情是这样的，在不久之前我不是分享了一篇文章说我写了端口检测关闭的 <code>GUI</code> 工具，如果你还没看过可以去瞧一眼：<a href="https://great-jin.github.io/windows/software/process/">我写了一个程序，让端口占用无路可逃</a>。</p>
+                <p>事情是这样的，在不久之前我不是分享了一篇文章说我写了端口检测关闭的 <code>GUI</code> 工具，如果你还没看过可以去瞧一眼：<a target="_blank" rel="noopener" href="https://great-jin.github.io/windows/software/process/">我写了一个程序，让端口占用无路可逃</a>。</p>
 <p>一切本都平平无奇，直到今天在使用时在任务管理器瞄了一眼，好家伙内存占用怎么有百来兆。<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/1.png"></p>
 <p>不知道你第一眼看到这个内存是作何反应，反正我是挺惊讶的，按我理解 <code>10MB</code> 就已经不得了了，这直接王炸翻了个量级。</p>
 <p>作为一个遥遥领先的 <code>Javer</code>，对于内存爆炸早已见怪不怪，没有什么是加条内存不能解决的，如果不能那就再加一条。但这时候没有甲方，机子的一分一毛全靠自己，况且这稀碎的内存表现怎么让我好意思分享。</p>
@@ -630,9 +630,9 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>运行程序可以看到打印的结果分别为 <code>59760</code> 与 <code>131280</code> 字节，也就是 <code>0.05MB</code> 与 <code>0.12MB</code> 左右，加起来甚至不到 <code>1MB</code>，也跟我之前的直觉相符，内存占用显然也不是在这。<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/5.png"></p>
 <h4 id="3-内存分析"><a href="#3-内存分析" class="headerlink" title="3. 内存分析"></a>3. 内存分析</h4><p>既然看不出个所以然来，那就直接看下程序的内存堆信息这个百来兆到底存了个啥玩意。</p>
-<p>在之前博客中已经分享过通过 <code>jmap</code> 可以查看程序的内存快照信息，可以快速回顾下：<a href="https://great-jin.github.io/java/jvm/optimize/">JVM参数调优记录</a>。在命令行执行 <code>jmap -heap &lt;pid&gt;</code> 可以得到下图结果：<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/6.png"></p>
+<p>在之前博客中已经分享过通过 <code>jmap</code> 可以查看程序的内存快照信息，可以快速回顾下：<a target="_blank" rel="noopener" href="https://great-jin.github.io/java/jvm/optimize/">JVM参数调优记录</a>。在命令行执行 <code>jmap -heap &lt;pid&gt;</code> 可以得到下图结果：<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/6.png"></p>
 <p>让我们拆开进行分析，在第一块信息中展示了程序的内存堆基本信息，其中包含以往介绍过的最大内存 <code>(MaxHeapSize)</code>、元空间 <code>(MetaspaceSize)</code> 以及指针压缩空间 <code>(CompressedClassSpaceSize)</code> 等等。</p>
-<p>你可能会疑惑 <code>NewSize</code> 与 <code>OldSize</code> 这两又是啥东西？在之前介绍 <code>JVM</code> 的文章中有提到过，<code>Java 8</code> 默认使用 <code>Parallel</code> 垃圾收集器，而其又是基于标记复制模式，更具体的即其是使用 <code>Appeal</code> 模式执行内存回收。简单的讲就是将堆内存拆分为了两个部分，青年代及老年代，二者的比例为 <code>1:2</code>，感兴趣的可以回去看下之前的文章：<a href="https://great-jin.github.io/java/jvm/gc/">Java JVM虚拟机详解</a>。</p>
+<p>你可能会疑惑 <code>NewSize</code> 与 <code>OldSize</code> 这两又是啥东西？在之前介绍 <code>JVM</code> 的文章中有提到过，<code>Java 8</code> 默认使用 <code>Parallel</code> 垃圾收集器，而其又是基于标记复制模式，更具体的即其是使用 <code>Appeal</code> 模式执行内存回收。简单的讲就是将堆内存拆分为了两个部分，青年代及老年代，二者的比例为 <code>1:2</code>，感兴趣的可以回去看下之前的文章：<a target="_blank" rel="noopener" href="https://great-jin.github.io/java/jvm/gc/">Java JVM虚拟机详解</a>。</p>
 <p>而之前提到了 <code>JVM</code> 为程序默认分配的初始堆内存大小为 <code>500MB</code>，根据 <code>Appeal</code> 方式的分配比例则青年代及老年代的内存分配大致为：<code>170MB</code> 与 <code>340MB</code>，正好对应了图中的 <code>NewSize</code> 与 <code>OldSize</code>。</p>
 <p>上图中的第二及第三部分，则对应这 <code>Appeal</code> 方式对于堆内存的具体分配，配置逻辑参考下图：<br><img src="/album/loading.gif" data-original="/album/article/java/windcess/8.png"></p>
 <p>观察图中的数据可以看到对象基本都处于青年代的 <code>Eden</code> 分区，大小为 <code>39MB</code>，而对于青年代的另两个分区 <code>From Space</code> 与 <code>To Space</code> 占用率均为 <code>0</code>，同时老年代也仅有 <code>3MB</code> 左右的对象内存占用。</p>
@@ -707,7 +707,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://great-jin.github.io/java/jvm/memory/">https://great-jin.github.io/java/jvm/memory/</a>
+                    <a href="https://budai.pages.dev/java/jvm/memory/">https://budai.pages.dev/java/jvm/memory/</a>
                 </span>
             </div>
             <div class="reprint__notice">
