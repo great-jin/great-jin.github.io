@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.4k
                 </div>
                 
 
@@ -575,7 +575,7 @@
 <blockquote>
 <p>下面手把手带你摸透 <code>JDBC</code> 的前世今生</p>
 </blockquote>
-<h3 id="一、基础介绍"><a href="#一、基础介绍" class="headerlink" title="一、基础介绍"></a>一、基础介绍</h3><h4 id="1-连接创建"><a href="#1-连接创建" class="headerlink" title="1. 连接创建"></a>1. 连接创建</h4><p>通过 <code>JDBC</code> 创建数据库连接比较简单，使用 <code>DriverManager.getConnection()</code> 方法获取即可。</p>
+<h3 id="一、服务建立"><a href="#一、服务建立" class="headerlink" title="一、服务建立"></a>一、服务建立</h3><h4 id="1-连接创建"><a href="#1-连接创建" class="headerlink" title="1. 连接创建"></a>1. 连接创建</h4><p>通过 <code>JDBC</code> 创建数据库连接比较简单，使用 <code>DriverManager.getConnection()</code> 方法获取即可。</p>
 <p>其中通过 <code>Class.forName()</code> 用于指定驱动主类，在当下流行的 <code>Maven</code> 工程中这一步通常可省略。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConnectionUtil</span> <span class="token punctuation">{</span>
 
@@ -594,21 +594,38 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
 <p>这里介绍几类常用数据库的 <code>JDBC</code> 连接串以供参考：</p>
-</blockquote>
-<ul>
-<li><h5 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h5><p>  URL: <code>jdbc:mysql://&#123;host&#125;:&#123;port&#125;/&#123;database&#125;</code>。<br>  ClassName: <code>com.mysql.jdbc.Driver</code>。</p>
-</li>
-<li><h5 id="Oracle"><a href="#Oracle" class="headerlink" title="Oracle"></a>Oracle</h5><p>  URL: <code>jdbc:oracle:thin:@//&#123;host&#125;:&#123;port&#125;/&#123;database&#125;</code>。<br>  ClassName: <code>oracle.jdbc.OracleDriver</code>。</p>
-</li>
-<li><h5 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h5><p>  URL: <code>jdbc:hive2://&#123;host&#125;:&#123;port&#125;/&#123;database&#125;</code>。<br>  ClassName: <code>org.apache.hive.jdbc.HiveDriver</code>。</p>
-</li>
-<li><h5 id="Postgres"><a href="#Postgres" class="headerlink" title="Postgres"></a>Postgres</h5><p>  URL: <code>jdbc:postgresql://&#123;Endpoint&#125;:&#123;port&#125;/&#123;project_name&#125;</code>。<br>  ClassName: <code>org.postgresql.Driver</code>。</p>
-</li>
-</ul>
-<h4 id="2-动态驱动"><a href="#2-动态驱动" class="headerlink" title="2. 动态驱动"></a>2. 动态驱动</h4><p>上述的示例为通过 <code>Maven</code> 工程依赖从而实现自动化的驱动加载，而通过 <code>DriverManager</code> 与 <code>ClassLoader</code> 类加载器实现动态的驱动加载，若需要加载外部文件或网络资源驱动文件，可通 <code>URLClassLoader</code> 加载器实现。</p>
-<p>当实现自定义动态驱动加载时需要注意一点，即同一个工程并不允许同时加载同一驱动的不同版本，当需要加载相应驱动的不同版本时需要先卸载掉之前加载的驱动，否则由于双亲委派的机制即便再次加载仍读取旧版本的驱动依赖。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">数据库</td>
+        <th style="text-align: center;">ClassName</td>
+        <th style="text-align: center;">URL</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">MySQL</td>
+        <td style="text-align: center;">com.mysql.jdbc.Driver</td>
+        <td style="text-align: center;">jdbc:mysql://{host}:{port}/{database}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Oracle</td>
+        <td style="text-align: center;">oracle.jdbc.OracleDriver</td>
+        <td style="text-align: center;">jdbc:oracle:thin:@//{host}:{port}/{database}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Hive</td>
+        <td style="text-align: center;">org.apache.hive.jdbc.HiveDriver</td>
+        <td style="text-align: center;">jdbc:hive2://{host}:{port}/{database}</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Postgres</td>
+        <td style="text-align: center;">org.postgresql.Driver</td>
+        <td style="text-align: center;">jdbc:postgresql://{Endpoint}:{port}/{project_name}</td>
+    </tr>
+</table>
+
+
+<h4 id="2-动态驱动"><a href="#2-动态驱动" class="headerlink" title="2. 动态驱动"></a>2. 动态驱动</h4><p>上述示例为通过 <code>Maven</code> 工程依赖从而实现自动化的驱动加载，而 <code>DriverManager</code> 与 <code>ClassLoader</code> 类加载器实现动态的驱动加载，若需加载外部文件或网络资源驱动文件，可通 <code>URLClassLoader</code> 加载器实现。</p>
+<p>在自定义动态驱动加载时需注意一点，即同一个工程并不允许同时加载同一驱动的不同版本，即加载相应驱动的不同版本时需要先卸载掉之前加载的驱动，否则由于双亲委派的机制即便再次加载仍读取旧版本的驱动依赖。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConnectionUtil</span> <span class="token punctuation">{</span>
 
      <span class="token keyword">public</span> Connection <span class="token function">getConnection</span><span class="token punctuation">(</span>DbEntity dbEntity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -618,10 +635,9 @@
         String driverClass <span class="token operator">=</span> <span class="token string">"oracle.jdbc.driver.OracleDriver"</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
             <span class="token comment" spellcheck="true">// Load driver class and register</span>
-            <span class="token comment" spellcheck="true">// Normal is maven job, but we can use "URLClassLoader" to dynamic load</span>
             ClassLoader classLoader <span class="token operator">=</span> Thread<span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContextClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> aClass <span class="token operator">=</span> classLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>driverClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            DriverManager<span class="token punctuation">.</span><span class="token function">registerDriver</span><span class="token punctuation">(</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>Driver<span class="token punctuation">)</span> aClass<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> clz <span class="token operator">=</span> classLoader<span class="token punctuation">.</span><span class="token function">loadClass</span><span class="token punctuation">(</span>driverClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            DriverManager<span class="token punctuation">.</span><span class="token function">registerDriver</span><span class="token punctuation">(</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>Driver<span class="token punctuation">)</span> clz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token comment" spellcheck="true">// Get connection</span>
             <span class="token keyword">return</span> DriverManager<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> userName<span class="token punctuation">,</span> password<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -629,7 +645,7 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在实现类的卸载时， <code>JDK</code> 中并没有提供显式的类卸载方式，一个类被卸载只能通过 <code>GC</code> 回收的方式，而一个类想要被垃圾回收需要满足下述三个条件：</p>
 <blockquote>
 <ul>
@@ -639,7 +655,26 @@
 </ul>
 </blockquote>
 <p>因此在实现动态驱动加载的时一定要注意创建的对象资源是否正常的关闭，并通过 <code>classLoader = null</code> 或 <code>URLClassLoader</code> 中的 <code>close()</code> 方法销毁类加载器从而保证能够正常的卸载。</p>
-<h4 id="3-语句执行"><a href="#3-语句执行" class="headerlink" title="3. 语句执行"></a>3. 语句执行</h4><p>通过 <code>Statement</code> 对象用于 <code>SQL</code> 语句的执行，具体介绍信息如下。</p>
+<h3 id="二、语句执行"><a href="#二、语句执行" class="headerlink" title="二、语句执行"></a>二、语句执行</h3><h4 id="1-会话连接"><a href="#1-会话连接" class="headerlink" title="1. 会话连接"></a>1. 会话连接</h4><p>通过 <code>Statement</code> 对象用于 <code>SQL</code> 语句的执行，其执行方式包含以下三种：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>  
+        <th style="text-align: center;">描述</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">execute()</td>  
+        <td style="text-align: center;">可用于执行任意 SQL ，如常见的增删改查，返回集为 ResultSet。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">executeQuery()</td>  
+        <td style="text-align: center;">仅用于执行查询操作，返回集为 ResultSet 。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">executeUpdate()</td>  
+        <td style="text-align: center;">仅用于执行修改操作，返回所影响的行数。</td>  
+    </tr>
+</table>
+
 <p>除了基本的 <code>Statement</code> 之外， <code>java.sql</code> 包下扩展了一系列针对不同常见的语句执行类。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -660,52 +695,11 @@
     </tr>
 </table>
 
-<p><code>Statement</code> 的执行方式包含以下三种，不同方式的区别参考下表：</p>
-<table style="display: table; margin-left: auto; margin-right: auto;">
-    <tr>
-        <th style="text-align: center;">方法</td>  
-        <th style="text-align: center;">描述</td> 
-    </tr>
-    <tr>
-        <td style="text-align: center;">execute()</td>  
-        <td style="text-align: center;">可用于执行任意 SQL ，如常见的增删改查，返回集为 ResultSet。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">executeQuery()</td>  
-        <td style="text-align: center;">仅用于执行查询操作，返回集为 ResultSet 。</td>  
-    </tr>
-    <tr>
-        <td style="text-align: center;">executeUpdate()</td>  
-        <td style="text-align: center;">仅用于执行修改操作，返回所影响的行数。</td>  
-    </tr>
-</table>
 
-<p>默认情况下 <code>Statement</code> 对象执行语句后自动立即提交 <code>commit</code>，但在某些业务场景下为了降低与数据库交互次数通常需要关闭自动提交，从而实现批次手动提交提高效率。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Connection conn <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    Statement stmt <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        conn <span class="token operator">=</span> ConnectionUtil<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 关闭自动提交</span>
-        conn<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 创建会话</span>
-        stmt <span class="token operator">=</span> conn<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        String sql <span class="token operator">=</span> <span class="token string">"insert into tb_user values(123, 'alex', 'male')"</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            stmt<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>sql<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true">// 手动提交</span>
-        conn<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 略去资源关闭操作</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-结果查询"><a href="#4-结果查询" class="headerlink" title="4. 结果查询"></a>4. 结果查询</h4><p><code>ResultSet</code> 用于读取 <code>Statement</code> 执行之后的结果集，通过 <code>next()</code> 以游标的方式遍历结果集中的每一行记录。通过 <code>getXXX()</code> 方法读取当前游标行的记录列，如 <code>getString(&quot;name&quot;)</code> 即获取当前游标行记录中列为 <code>name</code> 的值并以 <code>String</code> 方式返回。当然也可以通过下标方式访问，如 <code>getString(1)</code> 即获取第一列的值并以 <code>String</code> 方式返回。</p>
+<h4 id="2-结果查询"><a href="#2-结果查询" class="headerlink" title="2. 结果查询"></a>2. 结果查询</h4><p><code>ResultSet</code> 用于读取 <code>Statement</code> 执行结果集，通过 <code>next()</code> 以游标的方式遍历结果集。</p>
+<p>通过 <code>getXXX()</code> 方法读取当前游标行的记录列，如 <code>getString(&quot;name&quot;)</code> 即获取记录中列 <code>name</code> 的值并以 <code>String</code> 方式返回。当然也可以通过下标方式访问，如 <code>getString(1)</code> 即获取第一列的值并以 <code>String</code> 方式返回。</p>
 <p>下面是一个虚拟表查询示例，其中将 <code>Connection</code> 等资源声明在 <code>try()</code> 中当代码执行完 <code>try&#123;&#125;</code> 语句时会自动进行资源关闭，省去手动添加 <code>finally</code> 关闭资源。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">queryDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     String sql <span class="token operator">=</span> <span class="token string">"select 'alex' as name from dual"</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>
         <span class="token comment" spellcheck="true">// 获取连接</span>
@@ -723,7 +717,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-语句预编"><a href="#5-语句预编" class="headerlink" title="5. 语句预编"></a>5. 语句预编</h4><p>在上面的查询案例中我们并没有添加条件，但在更多的业务场景下是需要根据条件进行筛选。但如果采用字符串拼接的方式，极为可能遭到 <code>SQL</code> 注入攻击。</p>
+<h4 id="3-语句预编"><a href="#3-语句预编" class="headerlink" title="3. 语句预编"></a>3. 语句预编</h4><p>在上面的查询案例中我们并没有添加条件，但在更多的业务场景下是需要根据条件进行筛选。但如果采用字符串拼接的方式，极为可能遭到 <code>SQL</code> 注入攻击。</p>
 <p>如下两种情况下，第一种情况下没有任何问题，根据获取的 <code>ID</code> 和密码查询用户信息。但在第二种情况下，获取的 <code>ID</code> 中恶意拼接了恒等导致密码验证无效，无论输入任何密码结果都为真。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 情况 1</span>
 String id1 <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">;</span>
@@ -760,8 +754,31 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
     <span class="token punctuation">}</span>  
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、进阶操作"><a href="#二、进阶操作" class="headerlink" title="二、进阶操作"></a>二、进阶操作</h3><p>在之前介绍通过 <code>JDBC</code> 方式实现基本的数据查询，下面即更深入的介绍如何实现高效查询。</p>
-<h4 id="1-查询参数"><a href="#1-查询参数" class="headerlink" title="1. 查询参数"></a>1. 查询参数</h4><p>在 <code>Statement</code> 与 <code>ResultSet</code> 中都提供 <code>fetchSize</code> 参数用于指定单次查询的行数。</p>
+<h3 id="三、进阶操作"><a href="#三、进阶操作" class="headerlink" title="三、进阶操作"></a>三、进阶操作</h3><p>在之前介绍通过 <code>JDBC</code> 方式实现基本的数据查询，下面即更深入的介绍如何实现高效查询。</p>
+<h4 id="1-手动事务"><a href="#1-手动事务" class="headerlink" title="1. 手动事务"></a>1. 手动事务</h4><p>默认情况下 <code>Statement</code> 对象执行语句后自动立即提交 <code>commit</code>，但在某些业务场景下为了降低与数据库交互次数通常需要关闭自动提交，从而实现批次手动提交提高效率。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    Connection conn <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        conn <span class="token operator">=</span> ConnectionUtil<span class="token punctuation">.</span><span class="token function">getConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 关闭自动提交</span>
+        conn<span class="token punctuation">.</span><span class="token function">setAutoCommit</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 创建会话</span>
+        Statement stmt <span class="token operator">=</span> conn<span class="token punctuation">.</span><span class="token function">createStatement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            String sql <span class="token operator">=</span> <span class="token string">"insert into tb_user values("</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">", 'alex', 'male')"</span><span class="token punctuation">;</span>
+            stmt<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>sql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 手动提交</span>
+        conn<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span>nonNull<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 发生异常时回滚事务</span>
+            conn<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-查询参数"><a href="#2-查询参数" class="headerlink" title="2. 查询参数"></a>2. 查询参数</h4><p>在 <code>Statement</code> 与 <code>ResultSet</code> 中都提供 <code>fetchSize</code> 参数用于指定单次查询的行数。</p>
 <p>当每次通过 <code>executeQuery()</code> 执行查询都将返回一个结果集，若查询结果过大时，一次性加载内存中显然是十分不合理的，通过 <code>fetchSize</code> 即设置每次读取的记录数，然后分批进行读取从而降低内存负载。</p>
 <p>简而言之，若 <code>fetchSize</code> 越小，加载进内存的数据则越少，但与数据库服务之间的通讯频次则越高，反之则内存压力大而服务器压力小，需要根据具体的业务场景而定。</p>
 <p>在 <code>MySQL</code> 中默认是一次性将数据读入内存，而在 <code>Oracle</code> 中默认的 <code>fetchSize</code> 则为 <code>10</code> 。</p>
@@ -790,7 +807,7 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
     ex<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>  
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-结果缓存"><a href="#2-结果缓存" class="headerlink" title="2. 结果缓存"></a>2. 结果缓存</h4><p>通过 <code>ResultSet</code> 可以读取执行结果，但前提是会话必须一直处于连通状态，即当出现连接波动可能导致程序异常丢失结果。</p>
+<h4 id="3-结果缓存"><a href="#3-结果缓存" class="headerlink" title="3. 结果缓存"></a>3. 结果缓存</h4><p>通过 <code>ResultSet</code> 可以读取执行结果，但前提是会话必须一直处于连通状态，即当出现连接波动可能导致程序异常丢失结果。</p>
 <p>对此 <code>java.sql</code> 包中提供 <code>CachedRowSet</code> 以缓存的方式的读取数据，即将数据先刷入本地缓存中再实现读取，此时即便连接关闭也可实现数据读取，配合 <code>fetchSize</code> 参数可实现全量数据的本地缓存读取，当然此种方式对内存压力相对较高。</p>
 <p><code>CachedRowSet</code> 的具体使用示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">(</span>
@@ -814,7 +831,7 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
         ex<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、连接池"><a href="#三、连接池" class="headerlink" title="三、连接池"></a>三、连接池</h3><p>在项目工程中，通常会频繁的与数据库建立连接，而如果每次都重复的进行创建关闭显然十分消耗服务资源。因此为了提供更高的性能 <code>Java</code> 引入了连接池功能，与线程池类似，都是通过池化技术实现更有效的性能管理。</p>
+<h3 id="四、连接池"><a href="#四、连接池" class="headerlink" title="四、连接池"></a>四、连接池</h3><p>在项目工程中，通常会频繁的与数据库建立连接，而如果每次都重复的进行创建关闭显然十分消耗服务资源。因此为了提供更高的性能 <code>Java</code> 引入了连接池功能，与线程池类似，都是通过池化技术实现更有效的性能管理。</p>
 <p>下面就具体介绍如何自定义创建连接池，这里以 <code>Apache</code> 的 <code>BasicDataSource</code> 为例，当然还有其它如阿里巴巴的 <code>DruidDataSource</code> ，不同连接池实现流程类似，这里不一一介绍。</p>
 <h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>使用 <code>BasicDataSource</code> 连接池需要导入相关的 <code>Maven</code> 依赖，依赖配置如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
@@ -936,7 +953,7 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、元数据信息"><a href="#四、元数据信息" class="headerlink" title="四、元数据信息"></a>四、元数据信息</h3><h4 id="1-表信息"><a href="#1-表信息" class="headerlink" title="1. 表信息"></a>1. 表信息</h4><p>通过 <code>DatabaseMetaData</code> 获取关系型数据库表结构信息，如 <code>库名</code>、 <code>表名</code>、 <code>备注</code> 等信息。</p>
+<h3 id="五、元数据信息"><a href="#五、元数据信息" class="headerlink" title="五、元数据信息"></a>五、元数据信息</h3><h4 id="1-表信息"><a href="#1-表信息" class="headerlink" title="1. 表信息"></a>1. 表信息</h4><p>通过 <code>DatabaseMetaData</code> 获取关系型数据库表结构信息，如 <code>库名</code>、 <code>表名</code>、 <code>备注</code> 等信息。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">TableDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String schema <span class="token operator">=</span> <span class="token string">"budai"</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 读取表与视图</span>
@@ -1610,7 +1627,7 @@ String sql2 <span class="token operator">=</span> <span class="token string">"se
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">295.7k</span>
+                <span class="white-color">295.6k</span>
             
             
             
