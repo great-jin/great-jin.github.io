@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-09
+                    2025-08-06
                 </div>
                 
 
@@ -572,19 +572,18 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p><code>MySQL</code> 凭借小巧且开源的优势，是目前 <code>Web</code> 开发中最为流行的关系型数据库之一，下面就让我们了解一下其相应基本语法。</p>
-<h3 id="一、字符集"><a href="#一、字符集" class="headerlink" title="一、字符集"></a>一、字符集</h3><h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h4><p>在 MySQL 中字符集定义了数据内容的存储格式，不同的字符集代表了不同的表达方式。</p>
+<h3 id="一、字符集"><a href="#一、字符集" class="headerlink" title="一、字符集"></a>一、字符集</h3><h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h4><p>在 <code>MySQL</code> 中字符集定义了数据内容的存储格式，不同的字符集代表了不同的表达方式。</p>
 <p>在系统开发中最为常见的即 <code>utf8</code> 与 <code>utf8mb4</code> 两类字符集，其中 <code>utf8mb4</code> 是真正完整的 <code>UTF-8</code> 实现，支持所有 <code>Unicode</code> 字符（包括 <code>Emoji</code> 和部分中文扩展字符）。</p>
 <p>在 <code>InnoDB</code> 对于单列索引，最大索引长度分别如下：</p>
 <ul>
 <li><code>767</code> 字节（在 <code>COMPACT</code> 或 <code>REDUNDANT</code> 行格式）;</li>
 <li><code>3072</code> 字节（在 <code>DYNAMIC</code> 或 <code>COMPRESSED</code> 行格式，且 <code>innodb_large_prefix=ON</code>）;</li>
 </ul>
-<p>而 <code>utf8</code> 与 <code>utf8mb4</code> 每个字符所占的字节分别为 <code>3</code>，<code>4</code> 字节，意味着二者的最大索引字段长度也不相同。</p>
-<p>以未开启 <code>innodb_large_prefix</code> 为例，二者字符集下索引字段长度最大值分别为：<code>255(767/3)</code> 与 <code>191(767/4)</code>。</p>
-<p>因此，像下面这种情况可能会报错，因为索引字段长度超过限制。</p>
+<p>如 <code>utf8</code> 与 <code>utf8mb4</code> 每个字符所占的字节分别为 <code>3</code>，<code>4</code>，意味着二者的最大索引字段长度也不相同。以未开启 <code>innodb_large_prefix</code> 为例，二者字符集下索引字段长度最大值分别为：<code>255(767/3)</code> 与 <code>191(767/4)</code>。</p>
+<p>因此，下面针对 <code>VARCHAR(500)</code> 长度 <code>500</code> 的列添加将会报错，因为索引字段长度超过限制。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tb_test <span class="token punctuation">(</span>
-  usernmae <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span> <span class="token keyword">CHARACTER SET</span> utf8mb4<span class="token punctuation">,</span>
-  <span class="token keyword">INDEX</span><span class="token punctuation">(</span>usernmae<span class="token punctuation">)</span>
+  username <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span> <span class="token keyword">CHARACTER SET</span> utf8mb4<span class="token punctuation">,</span>
+  <span class="token keyword">INDEX</span><span class="token punctuation">(</span>username<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-符集变更"><a href="#2-符集变更" class="headerlink" title="2. 符集变更"></a>2. 符集变更</h4><h5 id="1-Database"><a href="#1-Database" class="headerlink" title="(1) Database"></a>(1) Database</h5><p>修改数据库的字符集，语法如下：</p>
@@ -733,7 +732,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token keyword">having</span> 
     num <span class="token operator">></span> <span class="token number">1</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、高级查询"><a href="#四、高级查询" class="headerlink" title="四、高级查询"></a>四、高级查询</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>当数据库中数据达到一定量级后，通常我们会使用分页查询。</p>
+<h3 id="四、高级查询"><a href="#四、高级查询" class="headerlink" title="四、高级查询"></a>四、高级查询</h3><h4 id="1-分页查询"><a href="#1-分页查询" class="headerlink" title="1. 分页查询"></a>1. 分页查询</h4><p>当数据库中数据达到一定量级后，通常我们会使用分页查询，基于 <code>LIMIT</code> 与 <code>OFFSET</code> 实现分页效果。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查询前 n 条数据</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">LIMIT</span> <span class="token operator">&lt;</span>num<span class="token operator">></span><span class="token punctuation">;</span>
 
@@ -924,7 +923,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token operator">|</span>   <span class="token number">4</span>   <span class="token operator">|</span>  beth   <span class="token operator">|</span>  female   <span class="token operator">|</span>    <span class="token number">92</span>   <span class="token operator">|</span>        
 <span class="token comment" spellcheck="true">-----------------------------------------</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>需要注意 <code>group_concat()</code> 函数拼接字符存在长度限制，超出部分会自动截断，当拼接内容过长时需要手动修改配置。</p>
+<p>注意 <code>group_concat()</code> 拼接字符存在长度限制，超出部分会自动截断，当内容过长时需要手动修改配置。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 设置全局生效</span>
 <span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> group_concat_max_len <span class="token operator">=</span> <span class="token number">102400</span><span class="token punctuation">;</span>
 
@@ -1539,7 +1538,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">295.6k</span>
+                <span class="white-color">296.8k</span>
             
             
             
