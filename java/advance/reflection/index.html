@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-03
+                    2025-08-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    13 分
                 </div>
                 
 
@@ -612,7 +612,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-对象代理"><a href="#2-对象代理" class="headerlink" title="2. 对象代理"></a>2. 对象代理</h4><p>在应用程序中若需要使用对象通常利用 <code>new</code> 关键字实现，再编译为可执行的二进制 <code>class</code> 文件，而反射则无法简单的利用 <code>new</code> 关键字。因此，在反射中提供了动态代理的方式初始化，即在运行时生成代理对象，实现对原对象的增强。</p>
+<h4 id="2-对象实例"><a href="#2-对象实例" class="headerlink" title="2. 对象实例"></a>2. 对象实例</h4><p>在应用程序中若需要使用对象通常利用 <code>new</code> 关键字实现，再编译为可执行的二进制 <code>class</code> 文件，而反射则无法简单的利用 <code>new</code> 关键字。因此，在反射中提供了动态代理的方式初始化，即在运行时生成代理对象，实现对原对象的增强。</p>
 <p>在 <code>Java</code> 反射中为对象初始化提供了两种方式，第一种即利用获取 <code>Class&lt;?&gt;</code> 对象调用其 <code>newInstance()</code> 方法，第二类即通过反射获取其构造函数再执行其 <code>newInstance()</code>。</p>
 <blockquote>
 <p><code>clazz.newInstance()</code> 与 <code>constructor.newInstance()</code> 区别如下:</p>
@@ -621,11 +621,9 @@
 <li><code>constructor.newInstance()</code>：可以指定代理对象构造参数，通过 <code>setAccessible()</code> 可作用于私有构造器。</li>
 </ul>
 </blockquote>
-<p>动态代理可以用于实现 <code>AOP</code> (面向切面编程)，事务处理等，如下示例中即通过 <code>newInstance()</code> 方式生成 <code>Student</code> 的代理对象，而非使用 <code>new</code> 关键字。</p>
+<p>如下示例中分别通过上述两种方式生成 <code>Student</code> 的实例对象，而非通过 <code>new</code> 关键字构造。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token punctuation">{</span>
-
-    <span class="token keyword">public</span> <span class="token function">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token function">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">instanceDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
@@ -639,167 +637,189 @@
     Student student2 <span class="token operator">=</span> <span class="token punctuation">(</span>Student<span class="token punctuation">)</span> constructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"student-2: "</span> <span class="token operator">+</span> student2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-信息获取"><a href="#3-信息获取" class="headerlink" title="3. 信息获取"></a>3. 信息获取</h4><p>在获取类对象之后即可通过其获取类的基本信息如包名、类型、作用域等等。</p>
-<p>如下述示例即通过获取的类对象从而查询 <code>String.class</code> 类的基本信息。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">basicInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 完整类名：java.lang.String</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Class name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 类名：String</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Simple name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 包名：java.lang</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Package name: "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">// 是否为枚举类</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is enum? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isEnum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 是否为接口类</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is interface? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 类是否私有</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>cls<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" is primitive? "</span> <span class="token operator">+</span> cls<span class="token punctuation">.</span><span class="token function">isPrimitive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><h4 id="1-基本示例"><a href="#1-基本示例" class="headerlink" title="1. 基本示例"></a>1. 基本示例</h4><p>除了获取类等基本信息外通过反射也可获取其字段 <code>(Field)</code>、方法 <code>(Method)</code>、方法参数 <code>(Parameter)</code> 与构造器 <code>(Constructor)</code> 等属性信息，这里仅以获取字段举例，其它类型使用方式同理。</p>
-<p>当上述四类属性声明为非 <code>public</code> 而又需要在外部实现访问时，可通过 <code>setAccessible(true)</code> 方法开放访问权限，这样即便定义为 <code>private</code> 仍可通过访问在类外部中使用。</p>
-<h5 id="1-信息获取"><a href="#1-信息获取" class="headerlink" title="(1) 信息获取"></a>(1) 信息获取</h5><p>在 <code>Java</code> 中为每个类成员都提供 <code>getXXXs()</code>，<code>getDeclaredXXXs()</code>，<code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 四种方法用于获取成员属性，其中包含 <code>Declared</code> 表明读取的为当前类中所定义信息，否则默认读取所有（包含继承的父类），结尾为 <code>s</code> 表示读取所有集合，否则为指定名称进行过滤查询。</p>
-<p>这里以类属性字段 <code>Field</code> 为例，其方法描述信息如下。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-信息获取"><a href="#3-信息获取" class="headerlink" title="3. 信息获取"></a>3. 信息获取</h4><p>在获取 <code>Class&lt;?&gt;</code> 实例对象后便可获取其包名与类名等各项信息，参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
-        <tr>
-            <th style="text-align: center;">方法</td>  
-            <th style="text-align: center;">作用</td> 
-        </tr>
-        <tr>
-            <td style="text-align: center;">getFields()</td>  
-            <td style="text-align: center;">获取所有类对象的属性 field（包括父类）。</td>  
-        </tr>
-        <tr>
-            <td style="text-align: center;">getDeclaredFields()</td>  
-            <td style="text-align: center;">获取当前类的所有属性 field（不包括父类）。</td>  
-        </tr>
-        <tr>
-            <td style="text-align: center;">getField(name)</td>  
-            <td style="text-align: center;">根据字段名获取指定属性 field（包括父类）。</td>  
-        </tr>
-        <tr>
-            <td style="text-align: center;">getDeclaredField(name)</td>  
-            <td style="text-align: center;">根据字段名获取当前类的指定属性 field（不包括父类）。</td>  
-        </tr>
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getPackage()</td>
+        <td style="text-align: center;">获取包实例。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getName()</td>
+        <td style="text-align: center;">获取完整限定名，含包名。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">getSimpleName()</td>
+        <td style="text-align: center;">获取类名称，不含包名。</td>
+    </tr>
+</table>
+</br>
+
+<p>而除上表中信息外，反射同时提供了一系列方式判断实例类型属性，这里列举常用方法：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isPrimitive()</td>
+        <td style="text-align: center;">是否私有类。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isEnum()</td>
+        <td style="text-align: center;">是否为枚举。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isInterface()</td>
+        <td style="text-align: center;">是否为接口。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">isAnnotation()</td>
+        <td style="text-align: center;">是否为注解。</td>
+    </tr>
+</table>
+
+
+
+<h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><p>除了获取类等基本信息外通过反射也可获取其字段 <code>(Field)</code>、方法 <code>(Method)</code>、方法参数 <code>(Parameter)</code> 与构造器 <code>(Constructor)</code> 等属性信息，下面让我们来看一下具体方式。</p>
+<h4 id="1-访问方式"><a href="#1-访问方式" class="headerlink" title="1. 访问方式"></a>1. 访问方式</h4><p>针对获取的 <code>Class&lt;?&gt;</code> 实例可由 <code>getXXXs()</code>，<code>getDeclaredXXXs()</code>，<code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 获取成员属性，其中包含 <code>Declared</code> 表明读取的为当前类中所声明，其它默认读取所有（包含继承的父类）。</p>
+<p>但需注意虽然可以读取父类中的属性，但仅包含父类中声明为 <code>public</code> 的属性，针对父类中私有属性在继承中无法通过反射方式获取。</p>
+<p>这里以 <code>Field</code> 字段属性为例，其方法描述信息如下。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>  
+        <th style="text-align: center;">作用</td> 
+    </tr>
+    <tr>
+        <td style="text-align: center;">getFields()</td>  
+        <td style="text-align: center;">获取所有类对象的属性 field（包括父类，但只含其 public）。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">getDeclaredFields()</td>  
+        <td style="text-align: center;">获取当前类的所有属性 field（不包括父类）。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">getField(name)</td>  
+        <td style="text-align: center;">根据字段名获取指定属性 field（包括父类，但只含其 public）。</td>  
+    </tr>
+    <tr>
+        <td style="text-align: center;">getDeclaredField(name)</td>  
+        <td style="text-align: center;">根据字段名获取当前类的指定属性 field（不包括父类）。</td>  
+    </tr>
 </table>
 <br/>
 
-<p>以测试类 <code>Student.java</code> 为例，上述表格中对应方法的基本使用示例如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> NoSuchFieldException <span class="token punctuation">{</span>
+<p>当属性声明为非 <code>public</code> 而又需要在外部实现访问时，可通过 <code>setAccessible(true)</code> 方法开放访问权限，这样即便定义为 <code>private</code> 仍可通过访问在类外部中使用。</p>
+<p>以 <code>Student.java</code> 测试类为例，上述表格中对应方法的示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
     Class<span class="token operator">&lt;</span>Student<span class="token operator">></span> clazz <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 获取父类</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getSuperclass(): "</span> <span class="token operator">+</span> clazz<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 获取自身与其父类所有字段, 只能获取 public 声明字段</span>
+    <span class="token comment" spellcheck="true">// 获取自身所有与其父类中 public 字段</span>
     Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields1 <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getFields(): "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>fields1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 获取自身所有字段</span>
     Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields2 <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getDeclaredFields(): "</span> <span class="token operator">+</span> Arrays<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>fields2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 获取 Student 的指定字段信息</span>
     Field name <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getField(name): "</span> <span class="token operator">+</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 获取字段详细信息</span>
+    <span class="token comment" spellcheck="true">// 设置私有也允许访问</span>
+    name<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 获取字段描述</span>
     <span class="token keyword">int</span> m <span class="token operator">=</span> name<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"getField(name).getModifiers: "</span> <span class="token operator">+</span> m<span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Final: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isFinal</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Public: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isPublic</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Static: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isStatic</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="2-属性赋值"><a href="#2-属性赋值" class="headerlink" title="(2) 属性赋值"></a>(2) 属性赋值</h5><p>同理反射也可通过 <code>set()</code> 方法给实例对象赋值，若字段为私有属性时需要额外设置 <code>setAccessible(true)</code> 。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    Student std <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">85</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-属性调用"><a href="#2-属性调用" class="headerlink" title="2. 属性调用"></a>2. 属性调用</h4><p>当获取字段与方法等实例信息后，便可通过反射方式操作实例调用。</p>
+<p>先以 <code>Field</code> 字段为例，获取相应实例后便可操作 <code>get()</code> 与 <code>set()</code> 实现对象属性的读取与赋值。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> score<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    Foo foo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
     <span class="token comment" spellcheck="true">// Get field instance</span>
-    Field score <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"score"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Set accessible.</span>
+    Field score <span class="token operator">=</span> Foo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"score"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     score<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// Update Filed value</span>
-    score<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>std<span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// Get field value</span>
-    <span class="token keyword">int</span> s1<span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> score<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>std<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>std<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Get value</span>
+    <span class="token keyword">int</span> scoreValue <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> score<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Update value</span>
+    score<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-方法调用"><a href="#2-方法调用" class="headerlink" title="2. 方法调用"></a>2. 方法调用</h4><p>对象的方式反射与字段类似，同样提供了四类获取方式，这里不再重复介绍，这里重点介绍一下在通过反射获取方法对象之后如何进行调用。</p>
-<p>在反射的 <code>Method</code> 对象中为方法调用提供了 <code>invoke()</code> 方法，即通过其实现方法的调用。</p>
-<blockquote>
-<p>查看源码现即可看到 <code>invoke()</code> 定义了两个入参，具体含义如下：</p>
-<ul>
-<li><strong>obj</strong>: 即方法调用对象，在反射中通常通过 <code>newInstance()</code> 创建。 </li>
-<li><strong>args</strong>: 对应目标方法的方法入参，可以为多个或零个。</li>
-</ul>
-</blockquote>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Object <span class="token function">invoke</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">,</span> Object<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span>
-        <span class="token keyword">throws</span> IllegalAccessException<span class="token punctuation">,</span> IllegalArgumentException<span class="token punctuation">,</span>
-           InvocationTargetException
-<span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// 省去具体实现</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>如下述示例中即通过反射调用 <code>Foo</code> 类中的 <code>sayHello()</code> 方法。</p>
-<p>注意使用反射无论在获取字段还是方法当目标作用域为私有无法访问时需要通过 <code>setAccessible(true)</code> 设置允许访问，否则将会抛出 <code>IllegalAccessException</code> 异常。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同理的，基于反射可以获取 <code>Method</code> 方法属性，并通过 <code>invoke()</code> 实现方法的调用，其中 <code>invoke()</code> 方法定义了两个入参，具体信息如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">obj</td>
+        <td style="text-align: center;">对应的实例对象。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">args</td>
+        <td style="text-align: center;">对应方法入参，可以为零个或多个。</td>
+    </tr>
+</table>
+</br>
+
+<p>如下述示例中即通过反射调用 <code>Foo</code> 类中的 <code>sayHello()</code> 方法，注意对于私有方法仍需 <code>setAccessible(true)</code> 设置允许访问，否则将会抛出 <code>IllegalAccessException</code> 异常。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> String <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FooTest</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 获取类对象</span>
-        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.example.Foo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Foo foo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
         <span class="token comment" spellcheck="true">// 获取类中的方法</span>
         Method method <span class="token operator">=</span> cls<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"sayHello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 作用域为私有需要设置允许访问</span>
         method<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token comment" spellcheck="true">// 创建对象，等价于 Foo foo = new Foo()</span>
-        Foo foo <span class="token operator">=</span> cls<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 调用方法，等价于 foo.sayHello()</span>
-        Object invoke <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 输出：Hello World!</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>invoke<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 调用方法</span>
+        method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-静态反射"><a href="#3-静态反射" class="headerlink" title="3. 静态反射"></a>3. 静态反射</h4><p>通过反射操作静态成员时与普通成员有所差异，上述提到的操作中无论是在获取字段 <code>Field</code> 还是在执行 <code>Method</code> 时都需要提前通过 <code>newInstance()</code> 初始化对象再实现调用。</p>
 <p>而我们知道通过 <code>static</code> 声明的成员属于类的共有属性，因此在反射时无需初始化对象调用，直接传入 <code>null</code> 即可，如之前的提到的反射示例其对象的静态反射示例如下，分别通过反射获取了类的静态成员属性与静态方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> String name<span class="token punctuation">;</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FooTest</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> cls <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"com.example.Foo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
         <span class="token comment" spellcheck="true">// 静态属性</span>
         Field field <span class="token operator">=</span> cls<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         field<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         String name <span class="token operator">=</span> <span class="token punctuation">(</span>String<span class="token punctuation">)</span> field<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token comment" spellcheck="true">// 静态方法</span>
         Method method <span class="token operator">=</span> cls<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token string">"sayHello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         method<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Object invoke <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>invoke<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        method<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-程序堆栈"><a href="#4-程序堆栈" class="headerlink" title="4. 程序堆栈"></a>4. 程序堆栈</h4><p>在上面的示例中介绍了在定义时通过反射获取类信息，下面介绍一下如何在运行中获取方法的堆栈信息。</p>
 <p>通过 <code>Thread.currentThread().getStackTrace()</code> 即可获取当前方法调用的堆栈信息 <code>StackTraceElement</code> ，返回的类型为数组对象。 <code>StackTraceElement</code> 类包含了如下基本信息：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -842,7 +862,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.10.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-对象实例"><a href="#2-对象实例" class="headerlink" title="2. 对象实例"></a>2. 对象实例</h4><p><code>org.reflections</code> 类库的核心处理基于 <code>Reflections</code> 对象，通过其指定反射作用对象。</p>
+<h4 id="2-对象实例-1"><a href="#2-对象实例-1" class="headerlink" title="2. 对象实例"></a>2. 对象实例</h4><p><code>org.reflections</code> 类库的核心处理基于 <code>Reflections</code> 对象，通过其指定反射作用对象。</p>
 <p>在传统的反射中通过 <code>Class&lt;?&gt;</code> 针对的是单个类的反射操作，而 <code>Reflections</code> 则更多的应用场景为针对包 <code>package</code> 而言，如下实例中创建了 <code>Reflections</code> 作用于 <code>xyz.ibudai.service</code> 包路径。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String packageName <span class="token operator">=</span> <span class="token string">"xyz.ibudai.service"</span><span class="token punctuation">;</span>
@@ -1554,7 +1574,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">298.2k</span>
+                <span class="white-color">298k</span>
             
             
             
