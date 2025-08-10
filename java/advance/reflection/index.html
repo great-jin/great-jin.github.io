@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-09
+                    2025-08-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.3k
+                    3.4k
                 </div>
                 
 
@@ -686,8 +686,8 @@
 
 
 <h3 id="二、属性反射"><a href="#二、属性反射" class="headerlink" title="二、属性反射"></a>二、属性反射</h3><p>除了获取类等基本信息外通过反射也可获取其字段 <code>(Field)</code>、方法 <code>(Method)</code>、方法参数 <code>(Parameter)</code> 与构造器 <code>(Constructor)</code> 等属性信息，下面让我们来看一下具体方式。</p>
-<h4 id="1-访问方式"><a href="#1-访问方式" class="headerlink" title="1. 访问方式"></a>1. 访问方式</h4><p>针对获取的 <code>Class&lt;?&gt;</code> 实例可由 <code>getXXXs()</code>，<code>getDeclaredXXXs()</code>，<code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 获取成员属性，其中包含 <code>Declared</code> 表明读取的为当前类中所声明，其它默认读取所有（包含继承的父类）。</p>
-<p>但需注意虽然可以读取父类中的属性，但仅包含父类中声明为 <code>public</code> 的属性，针对父类中私有属性在继承中无法通过反射方式获取。</p>
+<h4 id="1-访问方式"><a href="#1-访问方式" class="headerlink" title="1. 访问方式"></a>1. 访问方式</h4><p>针对获取的 <code>Class&lt;?&gt;</code> 实例可由 <code>getXXX()</code> 和 <code>getDeclaredXXX()</code> 方式获取字段与方法等属性。</p>
+<p>其中 <code>Declared</code> 则表明读取的为当前类中所有属性，包含 <code>private</code> 等私有属性。而 <code>getXXX()</code> 仅读取当前类及其继承的父类中 <code>public</code> 的属性，更侧重于对外可见的属性。</p>
 <p>这里以 <code>Field</code> 字段属性为例，其方法描述信息如下。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -696,7 +696,7 @@
     </tr>
     <tr>
         <td style="text-align: center;">getFields()</td>  
-        <td style="text-align: center;">获取所有类对象的属性 field（包括父类，但只含其 public）。</td>  
+        <td style="text-align: center;">获取当前类及其父类中所有 public 字段。</td>  
     </tr>
     <tr>
         <td style="text-align: center;">getDeclaredFields()</td>  
@@ -704,7 +704,7 @@
     </tr>
     <tr>
         <td style="text-align: center;">getField(name)</td>  
-        <td style="text-align: center;">根据字段名获取指定属性 field（包括父类，但只含其 public）。</td>  
+        <td style="text-align: center;">根据字段名获取当前类及其父类中指定的 public 字段。</td>  
     </tr>
     <tr>
         <td style="text-align: center;">getDeclaredField(name)</td>  
@@ -713,10 +713,13 @@
 </table>
 <br/>
 
-<p>当属性声明为非 <code>public</code> 而又需要在外部实现访问时，可通过 <code>setAccessible(true)</code> 方法开放访问权限，这样即便定义为 <code>private</code> 仍可通过访问在类外部中使用。</p>
-<p>以 <code>Student.java</code> 测试类为例，上述表格中对应方法的示例如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-    Class<span class="token operator">&lt;</span>Student<span class="token operator">></span> clazz <span class="token operator">=</span> Student<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<p>此处以 <code>Foo.java</code> 测试类为例，上述表格中对应方法的示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> name<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">fieldDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    Class<span class="token operator">&lt;</span>Foo<span class="token operator">></span> clazz <span class="token operator">=</span> Foo<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 获取自身所有与其父类中 public 字段</span>
     Field<span class="token punctuation">[</span><span class="token punctuation">]</span> fields1 <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -736,8 +739,35 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Public: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isPublic</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Is Static: "</span> <span class="token operator">+</span> Modifier<span class="token punctuation">.</span><span class="token function">isStatic</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-属性调用"><a href="#2-属性调用" class="headerlink" title="2. 属性调用"></a>2. 属性调用</h4><p>当获取字段与方法等实例信息后，便可通过反射方式操作实例调用。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-访问权限"><a href="#2-访问权限" class="headerlink" title="2. 访问权限"></a>2. 访问权限</h4><p>在上一点的代码示例中可以看到在访问资源前通过 <code>setAccessible(true)</code> 设置了可见性。这是因为通过 <code>getDeclaredXXX()</code> 虽能访问类中的私有属性，但直接访问仍会抛出 <code>IllegalAccessException</code> 异常。</p>
+<p>需注意对于私有属性并不是所有操作都需通过 <code>setAccessible(true)</code> 获取访问权限，如 <code>Field#getType()</code> 等只是返回编译期的类型信息，若不涉及字段值的访问则无需。</p>
+<p>只有当涉及数据内容的获取与变更时，为了解决运行时访问问题才需要，在反射中涉及数据内容的操作如下：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">描述</td>
+        <th style="text-align: center;">操作</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">获取字段的值</td>
+        <td style="text-align: center;">field.get(obj)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">修改字段的值</td>
+        <td style="text-align: center;">field.set(obj, value)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">调用私有方法</td>
+        <td style="text-align: center;">method.invoke(obj, args...)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">访问构造器</td>
+        <td style="text-align: center;">constructor.newInstance(...)</td>
+    </tr>
+</table>
+
+
+<h4 id="3-属性调用"><a href="#3-属性调用" class="headerlink" title="3. 属性调用"></a>3. 属性调用</h4><p>当获取字段与方法等实例信息后，便可通过反射方式操作实例调用。</p>
 <p>先以 <code>Field</code> 字段为例，获取相应实例后便可操作 <code>get()</code> 与 <code>set()</code> 实现对象属性的读取与赋值。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
     <span class="token keyword">private</span> <span class="token keyword">int</span> score<span class="token punctuation">;</span>
@@ -773,7 +803,7 @@
 </table>
 </br>
 
-<p>如下述示例中即通过反射调用 <code>Foo</code> 类中的 <code>sayHello()</code> 方法，注意对于私有方法仍需 <code>setAccessible(true)</code> 设置允许访问，否则将会抛出 <code>IllegalAccessException</code> 异常。</p>
+<p>如下代码中通过反射调用 <code>Foo</code> 的 <code>sayHello()</code> 方法，注意私有方法同样需设置 <code>setAccessible(true)</code> 。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
     <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -793,7 +823,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-静态反射"><a href="#3-静态反射" class="headerlink" title="3. 静态反射"></a>3. 静态反射</h4><p>通过反射操作静态成员时与普通成员有所差异，上述提到的操作中无论是在获取字段 <code>Field</code> 还是在执行 <code>Method</code> 时都需要提前通过 <code>newInstance()</code> 初始化对象再实现调用。</p>
+<h4 id="4-静态反射"><a href="#4-静态反射" class="headerlink" title="4. 静态反射"></a>4. 静态反射</h4><p>通过反射操作静态成员时与普通成员有所差异，上述提到的操作中无论是在获取字段 <code>Field</code> 还是在执行 <code>Method</code> 时都需要提前通过 <code>newInstance()</code> 初始化对象再实现调用。</p>
 <p>而我们知道通过 <code>static</code> 声明的成员属于类的共有属性，因此在反射时无需初始化对象调用，直接传入 <code>null</code> 即可，如之前的提到的反射示例其对象的静态反射示例如下，分别通过反射获取了类的静态成员属性与静态方法。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
 
@@ -820,7 +850,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-程序堆栈"><a href="#4-程序堆栈" class="headerlink" title="4. 程序堆栈"></a>4. 程序堆栈</h4><p>在上面的示例中介绍了在定义时通过反射获取类信息，下面介绍一下如何在运行中获取方法的堆栈信息。</p>
+<h4 id="5-程序堆栈"><a href="#5-程序堆栈" class="headerlink" title="5. 程序堆栈"></a>5. 程序堆栈</h4><p>在上面的示例中介绍了在定义时通过反射获取类信息，下面介绍一下如何在运行中获取方法的堆栈信息。</p>
 <p>通过 <code>Thread.currentThread().getStackTrace()</code> 即可获取当前方法调用的堆栈信息 <code>StackTraceElement</code> ，返回的类型为数组对象。 <code>StackTraceElement</code> 类包含了如下基本信息：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1574,7 +1604,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">298k</span>
+                <span class="white-color">298.1k</span>
             
             
             
