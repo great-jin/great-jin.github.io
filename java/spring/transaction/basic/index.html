@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-11
                 </div>
                 
 
@@ -778,9 +778,9 @@
     <span class="token keyword">return</span> i<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、手动事务"><a href="#三、手动事务" class="headerlink" title="三、手动事务"></a>三、手动事务</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>通过 <code>@Transactional</code> 注解方式我们可以快速集成事务到业务中，不过在 <code>Spring</code> 中同样提供了手动事务的开启与提交功能。</p>
-<p>在 <code>Spring</code> 的 <code>IOC</code> 容器中针对 <code>bean</code> 的有一系列的 <code>BeanDefinition</code> 用于描述定义 <code>bean</code> 对象的基本信息，例如 <code>GenericBeanDefinition</code> 等等。对于事务而言，同样也存在 <code>TransactionDefinition</code> 用于定义事务信息。</p>
-<p>对于一个事务的描述，最核心的当然就是隔离级别以及传播行为，<code>TransactionDefinition</code> 也提供了相对应的设置方法：</p>
+<h3 id="三、事务管理"><a href="#三、事务管理" class="headerlink" title="三、事务管理"></a>三、事务管理</h3><h4 id="1-手动事务"><a href="#1-手动事务" class="headerlink" title="1. 手动事务"></a>1. 手动事务</h4><p>基于 <code>@Transactional</code> 注解我们可以快速集成事务到业务中，但在 <code>Spring</code> 中同样提供了手动事务的交互。</p>
+<p>手动事务的管理则基于 <code>BeanDefinition</code> 实现，在 <code>Spring</code> 容器中针对 <code>bean</code> 的有一系列的 <code>BeanDefinition</code> 用于描述定义 <code>bean</code> 对象的基本信息，如 <code>GenericBeanDefinition</code> 等等。</p>
+<p>对于事务而言，同样也存在 <code>TransactionDefinition</code> 用于定义事务信息。对于一个事务的描述，最核心的当然就是隔离级别以及传播行为，在 <code>TransactionDefinition</code> 中其相应的赋值方式如下：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -801,7 +801,8 @@
 </table>
 
 
-<h4 id="2-创建方式"><a href="#2-创建方式" class="headerlink" title="2. 创建方式"></a>2. 创建方式</h4><p>了解了 <code>TransactionDefinition</code> 的基本信息之后下面通过示例介绍如何手动创建事务对象。</p>
+<h4 id="2-创建方式"><a href="#2-创建方式" class="headerlink" title="2. 创建方式"></a>2. 创建方式</h4><p>下面让我们通过具体的示例介绍如何通过 <code>TransactionDefinition</code> 手动创建事务对象。</p>
+<p>根据上一点表格中的内容，先创建对应的 <code>TransactionDefinition</code> 实例并设置隔离级别与传播行为等信息。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> TransactionDefinition <span class="token function">getTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     DefaultTransactionDefinition definition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultTransactionDefinition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">// 事务名称</span>
@@ -832,6 +833,7 @@
         <td style="text-align: center;">回滚事务。</td>
     </tr>
 </table>
+<br/>
 
 <p>同样的，通过 <code>getTransaction()</code> 开启事务后将会返回一个状态值，通过其对事务进行手动管理。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
@@ -869,8 +871,9 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、事务失效"><a href="#四、事务失效" class="headerlink" title="四、事务失效"></a>四、事务失效</h3><h4 id="1-自我引用"><a href="#1-自我引用" class="headerlink" title="1. 自我引用"></a>1. 自我引用</h4><p>注意在 <code>Spring</code> 中无法实现在事务定义类中调用事务方法，否则将会导致代理失败从而引起事务不生效。</p>
-<p>即事务的定义与调用不应该处于同一个类中，如下述示例中 <code>demo()</code> 与 <code>action()</code> 方法处于同一个类中，在 <code>demo()</code> 中调用 <code>action()</code> 将导致事务失效。</p>
+<h4 id="3-事务失效"><a href="#3-事务失效" class="headerlink" title="3. 事务失效"></a>3. 事务失效</h4><p>在 <code>Spring</code> 中使用事务时需特别注意，若未按规范则会出现事务失效的情景。</p>
+<p>由于 <code>Spring</code> 的事务实现依托与对象代理，最常见的失场景即调用 <code>private</code> 私有方法或在当前类调用自身方法。</p>
+<p>如下示例中 <code>demo()</code> 与 <code>action()</code> 方法处于同一个类中，在 <code>demo()</code> 中调用 <code>action()</code> 将导致事务失效。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
 
@@ -905,7 +908,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>需要在使用上述的 <code>AopContext</code> 时需要在工程启动类上添加 <code>@EnableAspectJAutoProxy</code> 注解用于暴露代理对象。</p>
+<p>注意在使用 <code>AopContext</code> 时需在工程启动类上添加 <code>@EnableAspectJAutoProxy</code> 注解用于暴露代理对象。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
 <span class="token annotation punctuation">@EnableAspectJAutoProxy</span><span class="token punctuation">(</span>exposeProxy <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestApplication</span> <span class="token punctuation">{</span>
@@ -941,7 +944,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://budai.pages.dev/java/spring/native/transaction/">https://budai.pages.dev/java/spring/native/transaction/</a>
+                    <a href="https://budai.pages.dev/java/spring/transaction/basic/">https://budai.pages.dev/java/spring/transaction/basic/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1512,7 +1515,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">298.1k</span>
+                <span class="white-color">299.4k</span>
             
             
             

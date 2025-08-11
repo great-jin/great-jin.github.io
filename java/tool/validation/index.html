@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-11
                 </div>
                 
 
@@ -643,7 +643,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-示例演示"><a href="#4-示例演示" class="headerlink" title="4. 示例演示"></a>4. 示例演示</h4><p>至此所有的准备工作都已经完成，下面通过示例演示效果。</p>
+<h4 id="4-集成示例"><a href="#4-集成示例" class="headerlink" title="4. 集成示例"></a>4. 集成示例</h4><p>至此所有的准备工作都已经完成，下面通过示例演示效果。</p>
 <p>首先定义一个参数实体类 <code>User</code>，并在字段添加上 <code>@NotBlank</code> 注解。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
 
@@ -662,16 +662,7 @@
 <p>即定义参数实体可能用于多个接口，而上述的定义方式针对此类场景则无法根据不同接口进行区分，因此需要添加分组功能以达到该目的。</p>
 <h4 id="2-功能实现"><a href="#2-功能实现" class="headerlink" title="2. 功能实现"></a>2. 功能实现</h4><p>分组实现思路也并不难，需要定义注解为可重复声明，之前介绍注解的文章中已经详细展开介绍了，这里实现机制就不再具体展开了，可参考之前的文章: <a target="_blank" rel="noopener" href="https://great-jin.github.io/java/advance/annotation/">Java注解基础介绍</a>。</p>
 <p>除了改造为可重复之外，还需要在注解中添加参数 <code>group</code> 进行分组。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">NotBlankGroup</span> <span class="token punctuation">{</span>
-
-    NotBlank<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">}</span>
-
-
-<span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>NotBlankGroup<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>NotBlank<span class="token punctuation">.</span>Group<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">NotBlank</span> <span class="token punctuation">{</span>
@@ -683,8 +674,16 @@
 
     String <span class="token function">message</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
 
+
+    <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+    @<span class="token keyword">interface</span> <span class="token class-name">Group</span> <span class="token punctuation">{</span>
+
+        NotBlank<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>同样修改之前的 <code>NotBlankChecker</code> 规则验证器，在 <code>filter</code> 方法中过滤了指定 <code>group</code> 的分组注解。</p>
 <p>除此之外实现上并无区别，完整代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotBlankChecker</span> <span class="token punctuation">{</span>
@@ -711,7 +710,9 @@
      * 根据分组过滤
      */</span>
     <span class="token keyword">private</span> NotBlank <span class="token function">filter</span><span class="token punctuation">(</span>Field field<span class="token punctuation">,</span> <span class="token keyword">int</span> group<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>NotBlank<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>NotBlankGroup<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>NotBlank<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> 
+                <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>NotBlank<span class="token punctuation">.</span>Group<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">return</span> null<span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
 
@@ -728,14 +729,17 @@
         <span class="token keyword">return</span> annotations<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>修改之前定义的参数实体类，添加上对应的分组 <code>group</code> 参数。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-集成示例"><a href="#3-集成示例" class="headerlink" title="3. 集成示例"></a>3. 集成示例</h4><p>修改之前定义的参数实体类，添加上对应的分组 <code>group</code> 参数。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
 
-    <span class="token annotation punctuation">@NotBlank</span><span class="token punctuation">(</span>group <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@NotBlank</span><span class="token punctuation">.</span><span class="token function">Group</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@NotBlank</span><span class="token punctuation">(</span>message <span class="token operator">=</span> <span class="token string">"msg 0"</span><span class="token punctuation">,</span> group <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token annotation punctuation">@NotBlank</span><span class="token punctuation">(</span>message <span class="token operator">=</span> <span class="token string">"msg 1"</span><span class="token punctuation">,</span> group <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>对应测试示例如下，可以看到上述定义的分组为 <code>1</code>，因此在执行 <code>validate(user, 0)</code> 则不会触发空校验。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo5</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     User user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -744,8 +748,8 @@
     FieldValidate<span class="token punctuation">.</span><span class="token function">validate</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、字段联动"><a href="#三、字段联动" class="headerlink" title="三、字段联动"></a>三、字段联动</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>除了上述提到的这些功能，<code>Spring</code> 中提供了 <code>EL</code> 表达式可以动态执行校验，因此我们即可利用该特性实现字段属性间的联动效果。</p>
-<h4 id="2-EL表达式"><a href="#2-EL表达式" class="headerlink" title="2. EL表达式"></a>2. EL表达式</h4><p>在项目工程中添加 <code>spring-context</code> 依赖，配置如下：</p>
+<h3 id="三、属性联动"><a href="#三、属性联动" class="headerlink" title="三、属性联动"></a>三、属性联动</h3><p>除了上述提到的这些功能，<code>Spring</code> 中提供了 <code>EL</code> 表达式可以动态执行校验，因此我们即可利用该特性实现字段属性间的联动效果。</p>
+<h4 id="1-EL表达式"><a href="#1-EL表达式" class="headerlink" title="1. EL表达式"></a>1. EL表达式</h4><p>在项目工程中添加 <code>spring-context</code> 依赖，配置如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-context<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -815,20 +819,30 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-功能实现"><a href="#3-功能实现" class="headerlink" title="3. 功能实现"></a>3. 功能实现</h4><p>因此，我们即可利用该特性在注解中添加参数 <code>triggered</code> 用于声明 <code>EL</code> 表达式，修改代码为如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>NotBlankGroup<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<h4 id="2-功能实现-1"><a href="#2-功能实现-1" class="headerlink" title="2. 功能实现"></a>2. 功能实现</h4><p>因此，我们即可利用该特性在注解中添加参数 <code>triggered</code> 用于声明 <code>EL</code> 表达式，修改代码为如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Repeatable</span><span class="token punctuation">(</span>NotBlank<span class="token punctuation">.</span>Group<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
 <span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">NotBlank</span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">int</span> <span class="token function">group</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">/**
+     * 分组
+     */</span>
+    Integer <span class="token function">group</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
     String <span class="token function">message</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
 
     String <span class="token function">triggered</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"true"</span><span class="token punctuation">;</span>
 
+    <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+    @<span class="token keyword">interface</span> <span class="token class-name">Group</span> <span class="token punctuation">{</span>
+
+        NotBlank<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>同样在规则校验器添加 EL 表达式解析模块，解析结果若为否则退出。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotBlankChecker</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">check</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">,</span> Field field<span class="token punctuation">,</span> Integer group<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
@@ -860,7 +874,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-示例演示-1"><a href="#4-示例演示-1" class="headerlink" title="4. 示例演示"></a>4. 示例演示</h4><p>创建参数实体类并通过 <code>triggered</code> 编写表达式，如下述则标识只有当 <code>id</code> 值为 <code>2</code> 时才触发校验。</p>
+<h4 id="3-集成示例-1"><a href="#3-集成示例-1" class="headerlink" title="3. 集成示例"></a>3. 集成示例</h4><p>创建参数实体类并通过 <code>triggered</code> 编写表达式，如下述则标识只有当 <code>id</code> 值为 <code>2</code> 时才触发校验。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> Integer id<span class="token punctuation">;</span>
@@ -878,7 +892,7 @@
     FieldValidate<span class="token punctuation">.</span><span class="token function">validate</span><span class="token punctuation">(</span>user2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、拦截切面"><a href="#四、拦截切面" class="headerlink" title="四、拦截切面"></a>四、拦截切面</h3><h4 id="1-基本介绍-2"><a href="#1-基本介绍-2" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在上面的上面的示例中在执行规则验证时通过 <code>FieldValidate</code> 手动执行，如若在 <code>Spring</code> 项目中则可通过切面方式从而更便捷的实现。</p>
+<h3 id="四、拦截切面"><a href="#四、拦截切面" class="headerlink" title="四、拦截切面"></a>四、拦截切面</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在上面的上面的示例中在执行规则验证时通过 <code>FieldValidate</code> 手动执行，如若在 <code>Spring</code> 项目中则可通过切面方式从而更便捷的实现。</p>
 <p>在项目工程中引入 <code>Spring AOP</code> 依赖，配置如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -937,7 +951,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-示例演示-1"><a href="#3-示例演示-1" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>通过上述定义注解以及切面，在 <code>Spring</code> 工程中即可在方法中通过 <code>@Validate</code> 注解标识即可，无需手动调用。</p>
+<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>通过上述定义注解以及切面，在 <code>Spring</code> 工程中即可在方法中通过 <code>@Validate</code> 注解标识即可，无需手动调用。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"demo"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Validate</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// do something</span>
@@ -1543,7 +1557,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">298.1k</span>
+                <span class="white-color">299.4k</span>
             
             
             
