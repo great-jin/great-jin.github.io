@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-18
+                    2025-08-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.3k
+                    2.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    11 分
                 </div>
                 
 
@@ -575,14 +575,14 @@
 <blockquote>
 <p>在这篇文章中将介绍如何通过 <code>EasyExcel</code> 对 <code>Excel</code> 文件进行读写操作。</p>
 </blockquote>
-<h3 id="一、基础读取"><a href="#一、基础读取" class="headerlink" title="一、基础读取"></a>一、基础读取</h3><h4 id="1-模拟数据"><a href="#1-模拟数据" class="headerlink" title="1. 模拟数据"></a>1. 模拟数据</h4><p>首先先准备一个 <code>Excel</code> 数据文件，文件内容如下：</p>
+<h3 id="一、数据读取"><a href="#一、数据读取" class="headerlink" title="一、数据读取"></a>一、数据读取</h3><h4 id="1-基础准备"><a href="#1-基础准备" class="headerlink" title="1. 基础准备"></a>1. 基础准备</h4><p>首先先准备一个 <code>Excel</code> 数据文件，文件内容如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">id</span>    name    gender    birthday
 1    User-1    Male    2024-01-29
 2    User-2    Male    2024-01-29
 3    User-3    Male    2024-01-29
 4    User-4    Male    2024-01-29
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>完成后，为上述的数据创建对应的实体类对象，这里省去了 <code>get</code> 和 <code>set</code> 方法部分内容。</p>
+<p>完成后为上述的数据创建对应的实体类对象，这里略去 <code>get</code> 和 <code>set</code> 方法部分内容。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
@@ -619,12 +619,9 @@
 </table>
 <br/>
 
-<p>需要注意的是在使用 <code>head(xxx.class)</code> 时默认数据字段映射关系是与类属性定义顺序一致的。</p>
-<p>以刚才创建的 <code>User</code> 类为例，<code>Excel</code> 文件中列的定义顺序为 <code>id, name, gender, birthday</code>，则在赋值时其默认实体类中第一个属性即为 <code>id</code> 并以此类推。如果此时 <code>User</code> 的属性定义顺序为 <code>name, id</code> 那么最终读取的数据 <code>id</code> 值将会被赋值给 <code>name</code> 字段。</p>
-<p>下述示例代码即为通过 <code>EasyExcel</code> 读取文件数据。</p>
+<p>下述通过代码示例读取刚才准备的 <code>Excel</code> 文件，内容如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExcelReadTest</span> <span class="token punctuation">{</span>
 
-    <span class="token annotation punctuation">@Test</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         String fileLocate <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\data.xls"</span><span class="token punctuation">;</span>
         <span class="token keyword">try</span> <span class="token punctuation">(</span>InputStream in <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">newInputStream</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>fileLocate<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -632,14 +629,15 @@
                     <span class="token punctuation">.</span><span class="token function">head</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
                     <span class="token punctuation">.</span><span class="token function">sheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                     <span class="token punctuation">.</span><span class="token function">doReadSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
             System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>需注意的是在使用 <code>head(xxx.class)</code> 时默认数据字段映射关系是与类属性定义顺序一致的。</p>
+<p>以刚才创建的 <code>User</code> 类为例，<code>Excel</code> 文件中列的定义顺序为 <code>id, name, gender, birthday</code>，则在赋值时其默认实体类中第一个属性即为 <code>id</code> 并以此类推。如果此时 <code>User</code> 的属性定义顺序为 <code>name, id</code> 那么最终读取的数据 <code>id</code> 值将会被赋值给 <code>name</code> 字段。</p>
 <h4 id="3-动态读取"><a href="#3-动态读取" class="headerlink" title="3. 动态读取"></a>3. 动态读取</h4><p><code>EasyExcel</code> 除了支持实体类映射外还可以动态指定列名实现读取。</p>
 <p>在 <code>head()</code> 中通过集合动态指定文件中的列名，其返回的结果为 <code>List&lt;LinkedMap&lt;Integer, Object&gt;&gt;</code>，其中每一个 <code>LinkMap</code> 对应文件内的一行数据，且 <code>Key</code> 为对应列的下表，<code>Value</code> 为对应单元格的数据。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -660,7 +658,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、数据写入"><a href="#二、数据写入" class="headerlink" title="二、数据写入"></a>二、数据写入</h3><h4 id="1-写入示例"><a href="#1-写入示例" class="headerlink" title="1. 写入示例"></a>1. 写入示例</h4><p><code>EasyExcel</code> 写入操作与读取类似，其中的 <code>excelType()</code> 用于指定文件类型，可选值有下述三类，对应三种不同的数据文件格式。</p>
+<h3 id="二、数据写入"><a href="#二、数据写入" class="headerlink" title="二、数据写入"></a>二、数据写入</h3><h4 id="1-写入示例"><a href="#1-写入示例" class="headerlink" title="1. 写入示例"></a>1. 写入示例</h4><p><code>EasyExcel</code> 写入时支持多种格式，其中的 <code>excelType()</code> 用于指定文件类型。可选值有下述三类，对应三种不同的数据文件格式。</p>
 <pre class="line-numbers language-txt"><code class="language-txt">ExcelTypeEnum.CSV
 ExcelTypeEnum.XLS
 ExcelTypeEnum.XLSX
@@ -768,7 +766,7 @@ ExcelTypeEnum.XLSX
             <span class="token punctuation">.</span><span class="token function">doWrite</span><span class="token punctuation">(</span>rowDatas<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、注解使用"><a href="#三、注解使用" class="headerlink" title="三、注解使用"></a>三、注解使用</h3><p>上面的读写示例中都是采用默认的实体类属性映射方式，但 <code>EasyExcel</code> 提供了更灵活的注解用于字段映射，下面将分别进行介绍。</p>
+<h3 id="三、注解使用"><a href="#三、注解使用" class="headerlink" title="三、注解使用"></a>三、注解使用</h3><p>在上述的读写中我们采用默认的映射方式，属性声明顺序需和文件对应。但 <code>EasyExcel</code> 也提供了注解方式支持更灵活的配置，在更多的业务场景中也是基于此方式集成。</p>
 <h4 id="1-ExcelProperty"><a href="#1-ExcelProperty" class="headerlink" title="1. ExcelProperty"></a>1. ExcelProperty</h4><p><code>@ExcelProperty</code> 注解可指定列与实体字段的映射关系，默认的字段的映射顺序是与属性的定义顺序相关。</p>
 <p>默认生成的文件表头字段取相应的成员变量名称，可通过 <code>value</code> 配置别名，同时 <code>order</code> 可修改表头顺序。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -797,7 +795,8 @@ ExcelTypeEnum.XLSX
     <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-ExcelIgnore"><a href="#2-ExcelIgnore" class="headerlink" title="2. ExcelIgnore"></a>2. ExcelIgnore</h4><p><code>@ExcelIgnore</code> 用于指定需要忽略的属性，由于 EasyExcel 是与类的属性进行映射，如若实体的属性字段数量与文件表头数量不一致导致映射失败。而在实际开发场景中，在数据类中常会涉及到某些不相关的业务字段，此时即通过 <code>@ExcelIgnore</code> 标注为忽略。</p>
+<h4 id="2-ExcelIgnore"><a href="#2-ExcelIgnore" class="headerlink" title="2. ExcelIgnore"></a>2. ExcelIgnore</h4><p><code>@ExcelIgnore</code> 用于指定需要忽略的属性，由于 <code>EasyExcel</code> 是与类的属性进行映射，若实体的属性字段数量与文件表头数量不一致导致映射失败。</p>
+<p>因此，针对某些不相关的业务字段，常利用 <code>@ExcelIgnore</code> 标注为忽略，在写入文件时不会处理对应数据。</p>
 <p>如下示例在读取或写入文件时将忽略 <code>address</code> 字段。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExcelUser</span> <span class="token punctuation">{</span>
 
@@ -818,8 +817,8 @@ ExcelTypeEnum.XLSX
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、读取监听"><a href="#四、读取监听" class="headerlink" title="四、读取监听"></a>四、读取监听</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在 <code>EasyExcel</code> 中执行数据的读取写入时，其也提供了监听器用于在读写过程中的操作。</p>
-<p>监听器的声明方式十分简单，通过继承 <code>AnalysisEventListener&lt;&gt;</code> 泛型接口即可，如下述示例中即定义了一个针对 <code>User</code> 类数据读取的监听器。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReadListener</span> <span class="token keyword">extends</span> <span class="token class-name">AnalysisEventListener</span><span class="token operator">&lt;</span>AnnoUser<span class="token operator">></span> <span class="token punctuation">{</span>
+<p>监听器的声明方式十分简单，通过继承 <code>AnalysisEventListener&lt;&gt;</code> 接口即可，其针对数据的读取提供了一系统回调函数，由此我们便可实现更灵活的数据操作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReadListener</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">extends</span> <span class="token class-name">AnalysisEventListener</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -846,11 +845,20 @@ ExcelTypeEnum.XLSX
         <td style="text-align: center;">文件内所有数据读取完成后的触发事件。</td>
     </tr>
 </table>
+<br/>
 
 <p>下述为一个完成的事件监听器定义示例，代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReadListener</span> <span class="token keyword">extends</span> <span class="token class-name">AnalysisEventListener</span><span class="token operator">&lt;</span>AnnoUser<span class="token operator">></span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReadListener</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">extends</span> <span class="token class-name">AnalysisEventListener</span><span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">final</span> List<span class="token operator">&lt;</span>AnnoUser<span class="token operator">></span> dataList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> Class<span class="token operator">&lt;</span>T<span class="token operator">></span> tClass<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> List<span class="token operator">&lt;</span>T<span class="token operator">></span> dataList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token keyword">public</span> <span class="token function">ReadListener</span><span class="token punctuation">(</span>Class<span class="token operator">&lt;</span>T<span class="token operator">></span> tClass<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tClass <span class="token operator">=</span> tClass<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">/**
      * 文件列名表头读取，可执行内容格式校验
@@ -860,18 +868,16 @@ ExcelTypeEnum.XLSX
      */</span>
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">invokeHeadMap</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> String<span class="token operator">></span> headMap<span class="token punctuation">,</span> AnalysisContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">invokeHeadMap</span><span class="token punctuation">(</span>headMap<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">/**
-     * 读取动作的触发器，可对读取的对应数据执行操作
+     * 读取行数据的触发器，可执行数据校验
      *
      * @param row     当前行数据
      * @param context 上下文对象
      */</span>
     <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">invoke</span><span class="token punctuation">(</span>AnnoUser row<span class="token punctuation">,</span> AnalysisContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 可执行数据合法性校验或格式转化</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">invoke</span><span class="token punctuation">(</span>T row<span class="token punctuation">,</span> AnalysisContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         dataList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
@@ -883,21 +889,20 @@ ExcelTypeEnum.XLSX
      */</span>
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onException</span><span class="token punctuation">(</span>Exception exception<span class="token punctuation">,</span> AnalysisContext context<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 异常处理</span>
     <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">/**
-     * 文件内所有数据读取完成后的触发事件
+     * 所有数据读取完成后的触发事件
      *
      * @param context 上下文对象
      */</span>
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doAfterAllAnalysed</span><span class="token punctuation">(</span>AnalysisContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">// 对完整的数据执行操作</span>
+        <span class="token comment" spellcheck="true">// 可对结果执行初步预处理</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Listener after all: "</span> <span class="token operator">+</span> dataList<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-应用示例"><a href="#3-应用示例" class="headerlink" title="3. 应用示例"></a>3. 应用示例</h4><p>监听器的使用方式同样十分简单，以数据读取为例，在声明 <code>read()</code> 属性时传入即可。</p>
 <p>如下述为监听器的使用示例，与之前的不同仅在于在 <code>read()</code> 中多了 <code>listener</code> 参数。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
@@ -905,19 +910,69 @@ ExcelTypeEnum.XLSX
     String fileLocate <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\data.xls"</span><span class="token punctuation">;</span>
     <span class="token keyword">try</span> <span class="token punctuation">(</span>InputStream in <span class="token operator">=</span> Files<span class="token punctuation">.</span><span class="token function">newInputStream</span><span class="token punctuation">(</span>Paths<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>fileLocate<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">// 创建监听器</span>
-        ReadListener listener <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReadListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 传入监听器</span>
-        List<span class="token operator">&lt;</span>User<span class="token operator">></span> list <span class="token operator">=</span> EasyExcel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>in<span class="token punctuation">,</span> listener<span class="token punctuation">)</span>
+        ReadListener<span class="token operator">&lt;</span>User<span class="token operator">></span> listener <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReadListener</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 传入监听器并操作读取</span>
+        EasyExcel<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>in<span class="token punctuation">,</span> listener<span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">head</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">sheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">doReadSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment" spellcheck="true">// 读取结果</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>listener<span class="token punctuation">.</span><span class="token function">getDataList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、写入监听"><a href="#五、写入监听" class="headerlink" title="五、写入监听"></a>五、写入监听</h3><h4 id="1-内容样式"><a href="#1-内容样式" class="headerlink" title="1. 内容样式"></a>1. 内容样式</h4><p>在文件数据写入时，与读取监听器类似，<code>EasyExcel</code> 提供了对应 <code>CellWriteHandler</code> 可实现数据写入时的回调。</p>
+<p>其集成方式并不复杂，通过实现 <code>CellWriteHandler</code> 接口重写 <code>afterCellDispose()</code>，在写入每个单元格数据后将会执行此回调事件。</p>
+<p>如下述示例即通过 <code>CellWriteHandler</code> 实现表头每列首字符标红。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedCellWriteHandler</span> <span class="token keyword">implements</span> <span class="token class-name">CellWriteHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterCellDispose</span><span class="token punctuation">(</span>CellWriteHandlerContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Integer rowIndex <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">getRowIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Integer columnIndex <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">getColumnIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>rowIndex <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> columnIndex <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        Cell cell <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">getCell</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String content <span class="token operator">=</span> cell<span class="token punctuation">.</span><span class="token function">getStringCellValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>StringUtils<span class="token punctuation">.</span><span class="token function">isBlank</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 空值不处理</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Workbook workbook <span class="token operator">=</span> cell<span class="token punctuation">.</span><span class="token function">getSheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getWorkbook</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 设置字体</span>
+        Font font <span class="token operator">=</span> workbook<span class="token punctuation">.</span><span class="token function">createFont</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        font<span class="token punctuation">.</span><span class="token function">setBold</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        font<span class="token punctuation">.</span><span class="token function">setColor</span><span class="token punctuation">(</span>IndexedColors<span class="token punctuation">.</span>RED<span class="token punctuation">.</span><span class="token function">getIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        RichTextString richText <span class="token operator">=</span> workbook<span class="token punctuation">.</span><span class="token function">getCreationHelper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">createRichTextString</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        richText<span class="token punctuation">.</span><span class="token function">applyFont</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> font<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 回写单元格</span>
+        cell<span class="token punctuation">.</span><span class="token function">setCellValue</span><span class="token punctuation">(</span>richText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-代码集成"><a href="#2-代码集成" class="headerlink" title="2. 代码集成"></a>2. 代码集成</h4><p>针对声明的处理器，在写入时通过 <code>registerWriteHandler()</code> 方法注册。</p>
+<p>仍以前文中的写入为例，其对应的集成代码如下，注意需添加 <code>inMemory(true)</code> 使之生效。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>User<span class="token operator">></span> dataList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dataList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"User-"</span> <span class="token operator">+</span> i<span class="token punctuation">,</span> <span class="token string">"Male"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    String fileLocate <span class="token operator">=</span> <span class="token string">"src\\main\\resources\\data.xls"</span><span class="token punctuation">;</span>
+    EasyExcel<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>fileLocate<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">inMemory</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// 注册处理器</span>
+            <span class="token punctuation">.</span><span class="token function">registerWriteHandler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RedCellWriteHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">head</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">doWrite</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1515,7 +1570,7 @@ ExcelTypeEnum.XLSX
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">299.4k</span>
+                <span class="white-color">299.7k</span>
             
             
             
