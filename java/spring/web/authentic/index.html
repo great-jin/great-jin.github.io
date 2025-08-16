@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-09
+                    2025-08-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    3.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    13 分
                 </div>
                 
 
@@ -688,8 +688,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-接口设计"><a href="#4-接口设计" class="headerlink" title="4. 接口设计"></a>4. 接口设计</h4><p>完成上述工作之后便可在接口服务上绑定菜单权限。</p>
-<p>其中 <code>@PreAuthorize</code> 注解的声明格式为 <code>@bean.method(param)</code>。如下述示例中即给订单查询接口绑定菜单权限 <code>order.query</code>，当请求接口时便会执行上述 <code>PermitManager</code> 中定义的校验逻辑。</p>
+<h4 id="4-接口设计"><a href="#4-接口设计" class="headerlink" title="4. 接口设计"></a>4. 接口设计</h4><p>完成上述工作之后便可在接口服务上绑定菜单权限，其中 <code>@PreAuthorize</code> 兼容 <code>IOC</code> 容器以 <code>bean</code> 形式调用，其配置格式为：<code>@bean.method(param)</code>。</p>
+<p>如下述示例中即给订单查询接口绑定菜单权限 <code>order.query</code>，当请求接口时便会执行上述 <code>PermitManager</code> 中定义的校验逻辑。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/order"</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@RequiredArgsConstructor</span>
@@ -708,35 +708,112 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若执行 <code>@PreAuthorize</code> 注解校验逻辑返回 <code>false</code> 未通过，则不会继续执行方法体内容而会直接详情请求返回 <code>403</code> 无权限。</p>
-<h3 id="三、数据权限"><a href="#三、数据权限" class="headerlink" title="三、数据权限"></a>三、数据权限</h3><p>在上述的介绍中，我们实现了菜单的权限管理，下面让我们来看一下如何实现数据权限管理。</p>
-<h4 id="1-模型设计"><a href="#1-模型设计" class="headerlink" title="1. 模型设计"></a>1. 模型设计</h4><p>在数据鉴权中，显然 <code>RBAC</code> 角色模型不再适用，权限粒度不够将导致水平越权情况发生。</p>
-<p>因此，在数据鉴权中，更多的是采用 <code>ABAC</code> 模型，将用户与数据直接进行关联，实现最小粒度控制。</p>
-<p>以商城系统为例，系统内存在多个店铺，每个用户拥有不同的店铺，用户与店铺之间则通过关联表直接关联。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/auth/5.png"></p>
-<h4 id="2-权限注解"><a href="#2-权限注解" class="headerlink" title="2. 权限注解"></a>2. 权限注解</h4><p>针对 <code>ABAC</code> 模型在代码设计中更推荐的方式是基于注解与切面的方式，从而将通用鉴权逻辑剥离于业务之外。</p>
-<p>通过自定义权限注解，当方法参数标识了注解时执行相应的鉴权逻辑校验。</p>
-<p>同样以刚才提到的用户店铺权限为例，声明注解 <code>@StorePermit</code> 作用于字段即方法，内容如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-        ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>
-        ElementType<span class="token punctuation">.</span>PARAMETER
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">StorePermit</span> <span class="token punctuation">{</span>
+<p>注解以切面链路形式生效，当请求接口时将执行 <code>@PreAuthorize</code> 注解校验逻辑。</p>
+<p>若返回 <code>false</code> 则表示权限不足，则不会继续执行方法体内容而会抛出 <code>AccessDeniedException</code> 异常，可通过 <code>@ExceptionHandler</code> 注解在全局异常中实现管理。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestControllerAdvice</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GlobalExceptionHandler</span> <span class="token punctuation">{</span>
 
+    <span class="token comment" spellcheck="true">/**
+     * 监听异常请求并处理返回
+     */</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"rawtypes"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>Exception<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ResultData <span class="token function">handleNotFoundException</span><span class="token punctuation">(</span>Exception ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ex <span class="token keyword">instanceof</span> <span class="token class-name">AccessDeniedException</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> ResultData<span class="token punctuation">.</span><span class="token function">denies</span><span class="token punctuation">(</span>ex<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> ResultData<span class="token punctuation">.</span><span class="token function">failed</span><span class="token punctuation">(</span>ex<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="三、注解详解"><a href="#三、注解详解" class="headerlink" title="三、注解详解"></a>三、注解详解</h3><p>在上述中初步了解了 <code>@PreAuthorize</code> 使用方式，下面让我们进一步了解注解的使用。</p>
+<p><code>Spring Security</code> 中针对校验提供了多个注解，其中较常用的有下述两个：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">注解</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@PreAuthorize</td>
+        <td style="text-align: center;">在接口前置执行校验。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">@PostAuthorize</td>
+        <td style="text-align: center;">在接口后置执行校验。</td>
+    </tr>
+</table>
+</br>
+
+<p>而除了之前提到的 <code>@bean.method(param)</code> 形式调用外，其支持多样灵活的表达式兼容，下面则分别进行介绍。</p>
+<h4 id="1-对象引用"><a href="#1-对象引用" class="headerlink" title="1. 对象引用"></a>1. 对象引用</h4><p>其中最基础的方式即通过 <code>#</code> 引用获取当前接口入参内容，如下述即校验入参 <code>storeId</code> 值是否为 <code>123</code>。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"#storeId == '123'"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>String storeId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当接口入参为对象时，<code>#</code> 表达式也支持 <code>obj.field</code> 的形式引用特定字段。</p>
+<p>如下述中接口入参为 <code>Store</code> 类，则可以通过 <code>#store.storeId</code> 单独校验 <code>storeId</code> 属性。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Store</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Long storeId<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"#store.storeId == '2'"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>Store store<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在代码设计上，为了适配同样的数据权限管理，这边定义了权限管理接口。</p>
+<h4 id="2-参数别名"><a href="#2-参数别名" class="headerlink" title="2. 参数别名"></a>2. 参数别名</h4><p><code>Spring Security</code> 同时提供了 <code>@P</code> 实现别名配置，当声明的参数名称过长时，可实现代码简化。</p>
+<p>如下述中方法入参字段为 <code>aVeryLongParameterNameOfStore</code>，而通过 <code>@P(&quot;s&quot;)</code> 即可实现参数重命名，在表达式中便可通过 <code>#s.storeId</code> 实现数据引用。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"#s.storeId == '2'"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span><span class="token annotation punctuation">@P</span><span class="token punctuation">(</span><span class="token string">"s"</span><span class="token punctuation">)</span> Store aVeryLongParameterNameOfStore<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-方法调用"><a href="#3-方法调用" class="headerlink" title="3. 方法调用"></a>3. 方法调用</h4><p>在之前的功能鉴权中也看到了可通过 <code>@</code> 实现方法的调用。</p>
+<p>如声明了 <code>bean</code> 实例 <code>ts</code>，且包含方法 <code>isOk()</code>，内容如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span><span class="token punctuation">(</span><span class="token string">"ts"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestServioce</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isOk</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在表达式中则可通过 <code>@bean.method(param)</code> 格式调用，如下即通过 <code>@ts.isOk()</code> 调用上述方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"@ts.isOk()"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>Store store<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-响应内容"><a href="#4-响应内容" class="headerlink" title="4. 响应内容"></a>4. 响应内容</h4><p>在上面提到的几类都是基于 <code>#</code> 实现方法入参引用，而在 <code>@PostAuthorize</code> 中，则可以通过 <code>returnObject</code> 实现返回结果的引用。</p>
+<p>如下述接口中返回的 <code>Store</code> 对象，而通过 <code>returnObject</code> 即可在表达式中引用接口返回的结果。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PostAuthorize</span><span class="token punctuation">(</span><span class="token string">"returnObject.storeId != null"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>String storeId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Store</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="5-组合校验"><a href="#5-组合校验" class="headerlink" title="5. 组合校验"></a>5. 组合校验</h4><p>在表达式中也支持 <code>and</code> 和 <code>or</code> 关键字实现条件的组合内容校验。</p>
+<p>如下即通过 <code>and</code> 实现 <code>storeId=1</code> 且 <code>name=AA</code> 的复合校验。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"#s.storeId == '1' and #s.name == 'AA' "</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>Store s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="四、数据权限"><a href="#四、数据权限" class="headerlink" title="四、数据权限"></a>四、数据权限</h3><p>了解上述基本内容后，那么接下来让我们来看一下如何实现数据权限管理。</p>
+<h4 id="1-模型设计"><a href="#1-模型设计" class="headerlink" title="1. 模型设计"></a>1. 模型设计</h4><p>在数据鉴权中，显然 <code>RBAC</code> 角色模型不再适用，权限粒度不够将导致水平越权情况发生。</p>
+<p>因此，在数据鉴权中，更多的是采用 <code>ABAC</code> 模型，将用户与数据直接进行关联，实现最小粒度控制。</p>
+<p>换言之，即针对接口输入的内容比对是否拥有对应的资源权限。以商城系统为例，系统内存在多个店铺，每个用户拥有不同的店铺，用户与店铺之间则通过关联表直接关联。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/auth/5.png"></p>
+<h4 id="2-工厂设计"><a href="#2-工厂设计" class="headerlink" title="2. 工厂设计"></a>2. 工厂设计</h4><p>在代码设计上，为了适配同样的数据权限管理，这边定义了权限管理接口。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">PermitHandler</span> <span class="token punctuation">{</span>
 
     String <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">boolean</span> <span class="token function">lackPermit</span><span class="token punctuation">(</span>Annotation annotation<span class="token punctuation">,</span> Object arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> <span class="token function">hasPermit</span><span class="token punctuation">(</span>Object arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>下面以店铺权限校验为例，让我们编写对应的校验逻辑。</p>
-<p>在实现上与刚才提到 <code>@PreAuthorize</code> 类似，读取 Security 上下文得到用户后查询用户拥有的店铺权限，并与输入数据进行比对。</p>
-<p>完成的实现代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<p>在实现上与刚才提到 <code>@PreAuthorize</code> 类似，读取 <code>Security</code> 上下文得到用户后查询用户拥有的店铺权限，并与输入数据进行比对。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span><span class="token punctuation">(</span><span class="token string">"storePermitHandler"</span><span class="token punctuation">)</span>
 <span class="token annotation punctuation">@RequiredArgsConstructor</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StorePermitHandler</span> <span class="token keyword">implements</span> <span class="token class-name">PermitHandler</span> <span class="token punctuation">{</span>
 
@@ -749,23 +826,59 @@
     <span class="token punctuation">}</span>
 
     <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">lackPermit</span><span class="token punctuation">(</span>Annotation annotation<span class="token punctuation">,</span> Object arg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>annotation<span class="token punctuation">)</span> <span class="token operator">||</span> annotation<span class="token punctuation">.</span><span class="token function">annotationType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> StorePermit<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">hasPermit</span><span class="token punctuation">(</span>Object arg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
 
         Long userId <span class="token operator">=</span> SecurityManager<span class="token punctuation">.</span><span class="token function">getUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         Set<span class="token operator">&lt;</span>Long<span class="token operator">></span> storeIds <span class="token operator">=</span> storeCache<span class="token punctuation">.</span><span class="token function">readByUser</span><span class="token punctuation">(</span>userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token operator">!</span>storeIds<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>arg<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> storeIds<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>arg<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-切面实现"><a href="#3-切面实现" class="headerlink" title="3. 切面实现"></a>3. 切面实现</h4><p>注解声明与校验逻辑编写完成之后，便可编写对应的切面实现。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-接口设计"><a href="#3-接口设计" class="headerlink" title="3. 接口设计"></a>3. 接口设计</h4><p>完成上述声明后，便可通过 <code>@PreAuthorize</code> 定义具体的接口权限。</p>
+<p>如下述即定义需拥有 <code>store.query</code> 接口查询权限，同时查询的 <code>storeId</code> 需属于用户。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"{storeId}"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"@pm.hasPermit('store.query') and @storePermitHandler.hasPermit(#storeId)"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> ResultData<span class="token operator">&lt;</span>Store<span class="token operator">></span> <span class="token function">query</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> String storeId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Store store <span class="token operator">=</span> storeService<span class="token punctuation">.</span><span class="token function">lambdaQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span>Store<span class="token operator">:</span><span class="token operator">:</span>getStoreId<span class="token punctuation">,</span> storeId<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">one</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> ResultData<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>store<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、手动管理"><a href="#五、手动管理" class="headerlink" title="五、手动管理"></a>五、手动管理</h3><p>在上述的示例中基于 <code>Spring Security</code> 自带注解及表达式可实现数据权限校验。</p>
+<p>但在复杂的业务情况下，表达式复杂度将快速膨胀且无法灵活定义，因此自定义注解则更为合适，下面就具体分享如何设计实现。</p>
+<h4 id="1-权限注解"><a href="#1-权限注解" class="headerlink" title="1. 权限注解"></a>1. 权限注解</h4><p>通过自定义权限注解，当方法参数标识了注解时执行相应的鉴权逻辑校验。</p>
+<p>同样以刚才提到的用户店铺权限为例，声明注解 <code>@StorePermit</code> 作用于字段即方法，内容如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>
+        ElementType<span class="token punctuation">.</span>PARAMETER
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">StorePermit</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样的，在之前的工厂实例基础上新增方法 <code>hasPermit(Annotation annotation, Object arg)</code> 实现校验逻辑，只有当注解存在且为 <code>@StorePermit</code> 时才触发校验。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token annotation punctuation">@RequiredArgsConstructor</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StorePermitHandler</span> <span class="token keyword">implements</span> <span class="token class-name">PermitHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">hasPermit</span><span class="token punctuation">(</span>Annotation annotation<span class="token punctuation">,</span> Object arg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>annotation<span class="token punctuation">)</span> <span class="token operator">||</span> annotation<span class="token punctuation">.</span><span class="token function">annotationType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> StorePermit<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token function">hasPermit</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-切面实现"><a href="#2-切面实现" class="headerlink" title="2. 切面实现"></a>2. 切面实现</h4><p>注解声明与校验逻辑编写完成之后，便可编写对应的切面实现。</p>
 <p>在切面中通过环切遍历接口入参，若声明的接口入参标识的鉴权注解，则执行上述定义的鉴权逻辑。当鉴权不通过时，则返回 <code>403</code> 权限不足。</p>
-<p>同样的，完整的切面实现代码如下：</p>
+<p>完整的切面实现代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Aspect</span>
 <span class="token annotation punctuation">@Component</span>
 <span class="token annotation punctuation">@RequiredArgsConstructor</span>
@@ -790,10 +903,12 @@
         <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> annotations<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             Object arg <span class="token operator">=</span> args<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
             <span class="token keyword">for</span> <span class="token punctuation">(</span>Annotation annotation <span class="token operator">:</span> annotations<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 遍历入参注解</span>
                 <span class="token keyword">for</span> <span class="token punctuation">(</span>Map<span class="token punctuation">.</span>Entry<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> PermitHandler<span class="token operator">></span> entry <span class="token operator">:</span> permitHandlerMap<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
                     PermitHandler handler <span class="token operator">=</span> entry<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">boolean</span> lackPermit <span class="token operator">=</span> handler<span class="token punctuation">.</span><span class="token function">lackPermit</span><span class="token punctuation">(</span>annotation<span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">if</span> <span class="token punctuation">(</span>lackPermit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token keyword">boolean</span> hasPermit <span class="token operator">=</span> handler<span class="token punctuation">.</span><span class="token function">lackPermit</span><span class="token punctuation">(</span>annotation<span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasPermit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token comment" spellcheck="true">// 权限不足</span>
                         <span class="token keyword">return</span> ResultData<span class="token punctuation">.</span><span class="token function">denies</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"Lack %s permission of %s"</span><span class="token punctuation">,</span> handler<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> arg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                     <span class="token punctuation">}</span>
                 <span class="token punctuation">}</span>
@@ -824,8 +939,8 @@
         <span class="token keyword">return</span> method<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-测试接口"><a href="#4-测试接口" class="headerlink" title="4. 测试接口"></a>4. 测试接口</h4><p>完成这一切准备工作之后，让我们以店铺查询接口为例。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-测试接口"><a href="#3-测试接口" class="headerlink" title="3. 测试接口"></a>3. 测试接口</h4><p>完成这一切准备工作之后，让我们以店铺查询接口为例。</p>
 <p>定义店铺查询接口，在接口入参声明 <code>@StorePermit</code> 表示接口启用店铺鉴权检验。当请求接口时则会将输入的店铺与用户拥有的店铺比对，比对不通过则不会执行具体的方法业务。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/store"</span><span class="token punctuation">)</span>
@@ -876,7 +991,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://budai.pages.dev/java/spring/web/auth/">https://budai.pages.dev/java/spring/web/auth/</a>
+                    <a href="https://budai.pages.dev/java/spring/web/authentic/">https://budai.pages.dev/java/spring/web/authentic/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1451,7 +1566,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">299.7k</span>
+                <span class="white-color">302.4k</span>
             
             
             
