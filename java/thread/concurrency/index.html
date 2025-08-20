@@ -546,21 +546,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-07-26
+                    2025-08-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.7k
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    12 分
                 </div>
                 
 
@@ -864,6 +864,28 @@ Key: {Alex}, Failed: {[]}, Success: {[1, 2, 3]}
 <p>运行程序后可以看到输出内容每个元素计数器仅 <code>1</code>，对于重复部分能够成功过滤。</p>
 <pre class="line-numbers language-txt"><code class="language-txt">{a=1, b=1, c=1, d=1}
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="四、线程池集成"><a href="#四、线程池集成" class="headerlink" title="四、线程池集成"></a>四、线程池集成</h3><h4 id="1-方案设计"><a href="#1-方案设计" class="headerlink" title="1. 方案设计"></a>1. 方案设计</h4><p>在上一点的队列方案中，通过 <code>LinkedBlockingQueue</code> 巧妙实现了异步串行功能。而除此方式外，通过线程池同样可实现类似效果，下面让我们来具体看下如何实现。</p>
+<p>我们都知道影响线程池执行任务策略的核心的参数无非就是核心线程数 <code>(CorePoolSize)</code> 以及最大线程数 <code>(MaxPoolSize)</code>，而为了保证串行则可将二者都配置为 <code>1</code>，保证整个过程中仅允许单个线程处理任务。</p>
+<p>同时，将 <code>QueueCapacity</code> 设置为预期任务量的 <code>1.5-2</code> 倍之间，由于 <code>MaxPoolSize=1</code> 因此永远不会创建新线程，提交的任务都将进入缓冲队列等待。而基于队列先进先出的特性，便实现了异步串行阻塞处理，达到了上述队列中的同样效果。</p>
+<h4 id="2-集成示例"><a href="#2-集成示例" class="headerlink" title="2. 集成示例"></a>2. 集成示例</h4><p>下面让演示如何在 <code>Spring</code> 工程中实现上述方案，初始化 <code>ThreadPoolTaskExecutor</code> 线程池对象，设置核心线程数和最大线程数分别都为 <code>1</code>，代码示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> ThreadPoolTaskExecutor <span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ThreadPoolTaskExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolTaskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        executor<span class="token punctuation">.</span><span class="token function">setCorePoolSize</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        executor<span class="token punctuation">.</span><span class="token function">setMaxPoolSize</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        executor<span class="token punctuation">.</span><span class="token function">setQueueCapacity</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 超出队列由用户线程执行</span>
+        executor<span class="token punctuation">.</span><span class="token function">setRejectedExecutionHandler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>CallerRunsPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        executor<span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> executor<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里着重介绍一下如何确定 <code>QueueCapacity</code> 取值。根据业务场景确定并发数量大小，如单次发起数量达到 100，则合理的队列大小应为 <code>150-200</code> 之间，即上述提到 <code>1.5-2</code> 倍。</p>
+<p>其核心在于保证不会无限制的接收任务导致 OOM，同样也不会因为队列过小用户线程自行执行导致的任务并发，使得提交的任务都能进行队列等待，由单线程按照先进先出 <code>(FIFO)</code> 的顺序消费线程任务。</p>
 
                 
             </div>
@@ -1465,7 +1487,7 @@ Key: {Alex}, Failed: {[]}, Success: {[1, 2, 3]}
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">302.4k</span>
+                <span class="white-color">303.2k</span>
             
             
             

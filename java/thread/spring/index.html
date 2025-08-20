@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-20
                 </div>
                 
 
@@ -575,10 +575,36 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在之前的两篇文章中分别介绍了线程的使用与线程锁的应用，还没看过的小伙伴可以点击直通：<a target="_blank" rel="noopener" href="https://great-jin.github.io/java/thread/multiple/">Java多线程编程</a>， <a target="_blank" rel="noopener" href="https://great-jin.github.io/java/thread/lock/">Java线程锁介绍</a>。</p>
+                <p>在之前的两篇文章中分别介绍了线程的使用与线程锁的应用，还没看过的小伙伴可以点击直通：<a target="_blank" rel="noopener" href="https://great-jin.github.io/java/thread/basic/">Java多线程编程</a>， <a target="_blank" rel="noopener" href="https://great-jin.github.io/java/thread/lock/">Java线程锁介绍</a>。</p>
 <p>这篇文章将介绍一下如何在 <code>Spring Boot</code> 项目中使用线程池。 <code>Spring Boot</code> 中一共有两种线程调用方式，一类为通过手动提交线程任务的方式，另一类则通过注解的方式，下面将针对两类方式分别进行说明。</p>
-<h3 id="一、执行策略"><a href="#一、执行策略" class="headerlink" title="一、执行策略"></a>一、执行策略</h3><p><code>Spring</code> 提供了 <code>ThreadPoolTaskExecutor</code> 用于创建线程池，下面将具体介绍使用方式。</p>
-<h4 id="1-执行流程"><a href="#1-执行流程" class="headerlink" title="1. 执行流程"></a>1. 执行流程</h4><p>当在代码中向线程池提交一个线程任务时，系统将会根据下述流程决定线程的创建销毁与否。</p>
+<h3 id="一、服务配置"><a href="#一、服务配置" class="headerlink" title="一、服务配置"></a>一、服务配置</h3><h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><p>在 <code>JDK</code> 中提供了 <code>ThreadPoolExecutor</code> 线程池服务，而在 <code>Spring</code> 中则扩展提供了 <code>ThreadPoolTaskExecutor</code> 以实现线程管理。</p>
+<p><code>ThreadPoolTaskExecutor</code> 配置并不复杂，在 <code>Spring</code> 中通过 <code>@Bean</code> 注入 <code>IOC</code> 容器，示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadConfig</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> ThreadPoolTaskExecutor <span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ThreadPoolTaskExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolTaskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 核心线程数（默认线程数）</span>
+        executor<span class="token punctuation">.</span><span class="token function">setCorePoolSize</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 最大线程数</span>
+        executor<span class="token punctuation">.</span><span class="token function">setMaxPoolSize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 缓冲队列大小</span>
+        executor<span class="token punctuation">.</span><span class="token function">setQueueCapacity</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 允许线程空闲时间（单位：默认为秒）</span>
+        executor<span class="token punctuation">.</span><span class="token function">setKeepAliveSeconds</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 线程池名前缀</span>
+        executor<span class="token punctuation">.</span><span class="token function">setThreadNamePrefix</span><span class="token punctuation">(</span><span class="token string">"ibudai-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 线程池对拒绝任务的处理策略</span>
+        executor<span class="token punctuation">.</span><span class="token function">setRejectedExecutionHandler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>CallerRunsPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 初始化</span>
+        executor<span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> executor<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-工作策略"><a href="#2-工作策略" class="headerlink" title="2. 工作策略"></a>2. 工作策略</h4><p>针对上述提到的参数内容，下面分别展开介绍。</p>
+<p>当在代码中向线程池提交一个线程任务时，系统将会按下图流程决定线程的创建销毁与否。<br><img src="/album/loading.gif" data-original="/album/article/java/thread/pool.png"></p>
 <blockquote>
 <p><strong>(Ⅰ)</strong> 判断线程池中当前存活线程数量是否达到了 <code>corePoolSize</code>。</p>
 </blockquote>
@@ -600,8 +626,9 @@
 <li><strong>达到</strong> ：使用 <code>饱和策略</code> 来处理这个任务。</li>
 <li><strong>未达到</strong> ：新建一个工作线程来执行这个任务。</li>
 </ul>
-<p><strong>需要注意一点</strong>：在线程池中的线程数量超过 <code>corePoolSize</code> 时，每当有线程的空闲时间超过了 <code>keepAliveTime</code> ，这个线程就会被终止，直到线程池中线程的数量不大于 <code>corePoolSize</code> 为止。<br><img src="/album/loading.gif" data-original="/album/article/java/thread/pool.png"></p>
-<h4 id="2-饱和策略"><a href="#2-饱和策略" class="headerlink" title="2. 饱和策略"></a>2. 饱和策略</h4><p>通过饱和策略用于管理当线程资源已满时如何处理新提交的线程任务，默认使用 <code>CallerRunsPolicy</code>。</p>
+<p><strong>需注意一点</strong>：在线程池中的线程数量超过 <code>corePoolSize</code> 时，每当有线程的空闲时间超过了 <code>keepAliveTime</code> ，这个线程就会被终止，直到线程池中线程的数量不大于 <code>corePoolSize</code> 为止。</p>
+<h4 id="3-饱和策略"><a href="#3-饱和策略" class="headerlink" title="3. 饱和策略"></a>3. 饱和策略</h4><p>通过饱和策略用于管理当线程资源已满时如何处理新提交的线程任务，默认使用 <code>CallerRunsPolicy</code>，即由发起方自行执行。</p>
+<p>在 <code>Spring</code> 线程池中针对饱和策略其它可选方案参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">策略</td>  
@@ -626,33 +653,7 @@
 </table>
 
 
-
-<h3 id="二、配置介绍"><a href="#二、配置介绍" class="headerlink" title="二、配置介绍"></a>二、配置介绍</h3><h4 id="1-配置方式"><a href="#1-配置方式" class="headerlink" title="1. 配置方式"></a>1. 配置方式</h4><p>在项目中新建 <code>ThreadConfig</code> 类，用于向容器中注入相应 <code>bean</code> 对象：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadConfig</span> <span class="token punctuation">{</span>
-
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token keyword">public</span> ThreadPoolTaskExecutor <span class="token function">taskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        ThreadPoolTaskExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolTaskExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 核心线程数（默认线程数）</span>
-        executor<span class="token punctuation">.</span><span class="token function">setCorePoolSize</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 最大线程数</span>
-        executor<span class="token punctuation">.</span><span class="token function">setMaxPoolSize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 缓冲队列大小</span>
-        executor<span class="token punctuation">.</span><span class="token function">setQueueCapacity</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 允许线程空闲时间（单位：默认为秒）</span>
-        executor<span class="token punctuation">.</span><span class="token function">setKeepAliveSeconds</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 线程池名前缀</span>
-        executor<span class="token punctuation">.</span><span class="token function">setThreadNamePrefix</span><span class="token punctuation">(</span><span class="token string">"ibudai-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 线程池对拒绝任务的处理策略</span>
-        executor<span class="token punctuation">.</span><span class="token function">setRejectedExecutionHandler</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>CallerRunsPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 初始化</span>
-        executor<span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> executor<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-调用线程池"><a href="#2-调用线程池" class="headerlink" title="2. 调用线程池"></a>2. 调用线程池</h4><p>完成 <code>bean</code> 对象注入后即可通过 <code>@Autowired</code> 获取实例即可，其同样提供 <code>execute()</code> 和 <code>submit()</code> 两种提交方式，区别在于前者没有返回值。</p>
+<h4 id="4-集成示例"><a href="#4-集成示例" class="headerlink" title="4. 集成示例"></a>4. 集成示例</h4><p>完成 <code>bean</code> 对象注入后即可通过 <code>@Autowired</code> 获取实例即可，其同样提供 <code>execute()</code> 和 <code>submit()</code> 两种提交方式，区别在于前者没有返回值。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadTest</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Autowired</span>
@@ -671,7 +672,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、注解方法"><a href="#三、注解方法" class="headerlink" title="三、注解方法"></a>三、注解方法</h3><p>在 <code>Spring Boot</code> 中除了上述显示的通过 <code>taskExecutor</code> 线程池方式提交任务还可以通过 <code>@Async</code> 方式往线程池提交任务。</p>
+<h3 id="二、异步注解"><a href="#二、异步注解" class="headerlink" title="二、异步注解"></a>二、异步注解</h3><p>在 <code>Spring Boot</code> 中除了上述显示的通过 <code>taskExecutor</code> 线程池方式提交任务还可以通过 <code>@Async</code> 方式往线程池提交任务。</p>
 <h4 id="1-启动异步"><a href="#1-启动异步" class="headerlink" title="1. 启动异步"></a>1. 启动异步</h4><p>通过注解方法使用异步任务前需要在项目启动类上添加 <code>@EnableAsync</code> 开启异步。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableAsync</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
@@ -1315,7 +1316,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">302.4k</span>
+                <span class="white-color">303.2k</span>
             
             
             

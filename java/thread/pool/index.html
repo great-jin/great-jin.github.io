@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-08-20
                 </div>
                 
 
@@ -771,7 +771,7 @@
 <p><strong>(Ⅳ) PriorityBlockingQueue</strong></p>
 </blockquote>
 <p><code>PriorityBlockingQueue</code> 是具有优先级的无界阻塞队列。</p>
-<h4 id="4-饱和策略"><a href="#4-饱和策略" class="headerlink" title="4. 饱和策略"></a>4. 饱和策略</h4><p>通过饱和策略用于管理当线程资源已满时如何处理新提交的线程任务。</p>
+<h4 id="4-饱和策略"><a href="#4-饱和策略" class="headerlink" title="4. 饱和策略"></a>4. 饱和策略</h4><p>通过饱和策略用于管理当线程资源已满时如何处理新提交的线程任务，可选策略参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">策略</td>  
@@ -798,29 +798,30 @@
     
 <h4 id="5-创建示例"><a href="#5-创建示例" class="headerlink" title="5. 创建示例"></a>5. 创建示例</h4><p>具体的 <code>ThreadPoolExecutor</code> 线程池创建示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">threadPoolDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// 核心线程数</span>
-    <span class="token keyword">int</span> coreSize <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 最大线程数量</span>
-    <span class="token keyword">int</span> maxSize <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 线程保持活动的时间</span>
-    <span class="token keyword">long</span> keepAliveTime <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// keepAliveTime 的时间单位</span>
-    TimeUnit unit <span class="token operator">=</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 保存等待执行的任务的阻塞队列</span>
-    BlockingQueue<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> workQueue <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayBlockingQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 线程工厂, 可通过线程工厂设置线程名字</span>
-    ThreadFactory threadFactory <span class="token operator">=</span> Executors<span class="token punctuation">.</span><span class="token function">defaultThreadFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 线程饱和策略</span>
-    RejectedExecutionHandler handler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>AbortPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ThreadPoolExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>coreSize<span class="token punctuation">,</span> maxSize<span class="token punctuation">,</span> keepAliveTime<span class="token punctuation">,</span> unit<span class="token punctuation">,</span>
-                workQueue<span class="token punctuation">,</span> threadFactory<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 初始化</span>
+    ThreadPoolExecutor executor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>
+            <span class="token comment" spellcheck="true">// 核心线程数</span>
+            <span class="token number">4</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 最大线程数量</span>
+            <span class="token number">8</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 线程保持活动的时间</span>
+            <span class="token number">60</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// keepAliveTime 时间单位</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 保存等待执行的任务的阻塞队列</span>
+            <span class="token keyword">new</span> <span class="token class-name">ArrayBlockingQueue</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 线程工厂, 可设置线程名字</span>
+            Executors<span class="token punctuation">.</span><span class="token function">defaultThreadFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token comment" spellcheck="true">// 线程饱和策略</span>
+            <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor<span class="token punctuation">.</span>AbortPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">// 任务提交</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         executor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Task</span><span class="token punctuation">(</span><span class="token string">"Task - "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、Future类"><a href="#四、Future类" class="headerlink" title="四、Future类"></a>四、Future类</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>众所周知，线程任务在提交之后执行是异步的，因此其需要载体接收最终的执行结果，<code>Future</code> 类正如字面意思为未来可能的值，用于声明线程返回值。</p>
 <p>例如在通过线程池通过 <code>submit()</code> 提交任务时，其返回结果即为 <code>Future&lt;T&gt;</code> 泛型，当任务执行完成之后可通过 <code>get()</code> 方法获取结果。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">futureDemo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1741,7 +1742,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">302.4k</span>
+                <span class="white-color">303.2k</span>
             
             
             

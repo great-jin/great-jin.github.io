@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-16
+                    2025-08-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.4k
+                    3.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    13 分
+                    14 分
                 </div>
                 
 
@@ -785,14 +785,7 @@
        
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-响应内容"><a href="#4-响应内容" class="headerlink" title="4. 响应内容"></a>4. 响应内容</h4><p>在上面提到的几类都是基于 <code>#</code> 实现方法入参引用，而在 <code>@PostAuthorize</code> 中，则可以通过 <code>returnObject</code> 实现返回结果的引用。</p>
-<p>如下述接口中返回的 <code>Store</code> 对象，而通过 <code>returnObject</code> 即可在表达式中引用接口返回的结果。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PostAuthorize</span><span class="token punctuation">(</span><span class="token string">"returnObject.storeId != null"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>String storeId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Store</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-组合校验"><a href="#5-组合校验" class="headerlink" title="5. 组合校验"></a>5. 组合校验</h4><p>在表达式中也支持 <code>and</code> 和 <code>or</code> 关键字实现条件的组合内容校验。</p>
+<h4 id="4-组合校验"><a href="#4-组合校验" class="headerlink" title="4. 组合校验"></a>4. 组合校验</h4><p>在表达式中也支持 <code>and</code> 和 <code>or</code> 关键字实现条件的组合内容校验。</p>
 <p>如下即通过 <code>and</code> 实现 <code>storeId=1</code> 且 <code>name=AA</code> 的复合校验。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PreAuthorize</span><span class="token punctuation">(</span><span class="token string">"#s.storeId == '1' and #s.name == 'AA' "</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>Store s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -960,6 +953,17 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>通过上述的示例可以看到，通过注解与切面结合的方式，在实现数据鉴权的同时简化鉴权逻辑，业务代码无需再关注相应的权限问题，极大简化了代码复杂度。</p>
+<h3 id="六、后置鉴权"><a href="#六、后置鉴权" class="headerlink" title="六、后置鉴权"></a>六、后置鉴权</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在上述场景中，不论是 <code>@PreAuthorize</code> 或自定义切面都针对前置校验，即根据输入执行对应的权限校验。</p>
+<p>这类方案所依赖的前提即需要能通过输入内容直接或间接关联数据，如通过 <code>storeId</code> 进行精准查询。但当模糊搜索时此方案将失效，如输入条件为时间的范围搜索，此时无法通过输入直接过滤权限。</p>
+<h4 id="2-方案设计"><a href="#2-方案设计" class="headerlink" title="2. 方案设计"></a>2. 方案设计</h4><p>针对此类场景，则需要采取后置权限校验，即针对结果进行鉴权管理，返回相应提示或剔除无权限数据。</p>
+<p>在 <code>Spring Security</code> 同样提供了 <code>@PostAuthorize</code> 基于后置校验，通过 <code>returnObject</code> 引用结果，若返回 <code>false</code> 则会返回 <code>403</code> 无权限。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@PostAuthorize</span><span class="token punctuation">(</span><span class="token string">"returnObject.storeId != null"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Store <span class="token function">query</span><span class="token punctuation">(</span>String storeId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Store</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>采用 <code>@PostAuthorize</code> 存在弊端即模糊搜索时其只能实现全量放行或全量拦截，即当返回集合包含多条记录时无法实现仅返回有权限部分。</p>
+<p>因此，对于部分剔除的场景，可以采用上述自定义切面方式处理，在切面中基于反射剔除无权限记录，实现逻辑类似此处不再赘述。</p>
 <hr>
 <p><strong>参考链接</strong></p>
 <ol>
@@ -1566,7 +1570,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">302.4k</span>
+                <span class="white-color">303.2k</span>
             
             
             
