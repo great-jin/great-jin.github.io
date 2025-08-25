@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="AES 通讯加密详解, 布袋青年">
+    <meta name="keywords" content="MyBatis-Plus 基础教程, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>AES 通讯加密详解 | 布袋青年</title>
+    <title>MyBatis-Plus 基础教程 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -370,12 +370,12 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/coding/AES.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/util/mybatisplus.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">AES 通讯加密详解</h1>
+                    <h1 class="description center-align post-title">MyBatis-Plus 基础教程</h1>
                 </div>
             </div>
         </div>
@@ -510,12 +510,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/JAVA/">
-                                <span class="chip bg-color">JAVA</span>
-                            </a>
-                        
-                            <a href="/tags/Vue/">
-                                <span class="chip bg-color">Vue</span>
+                            <a href="/tags/MyBatis-Plus/">
+                                <span class="chip bg-color">MyBatis Plus</span>
                             </a>
                         
                     </div>
@@ -526,8 +522,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Java%E5%B7%A5%E5%85%B7/" class="post-category">
-                                Java工具
+                            <a href="/categories/Java-Web/" class="post-category">
+                                Java Web
                             </a>
                         
                     </div>
@@ -539,21 +535,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-13
+                    2022-09-17
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-07-20
+                    2025-08-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    677
+                    755
                 </div>
                 
 
@@ -575,147 +571,76 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><code>AES</code> 中文译为高级加密标准，是美国联邦政府采用的一种区块加密标准，这个标准用来替代原先的 <code>DES(Data Encryption Standard)</code>，已然成为对称密钥加密中最流行的算法之一。</p>
+                <p>在后端 <code>Web</code> 工程中， <code>MyBatis</code> 可谓占据了半壁江山，而 MyBatis Plus 正是在此基础上进行二次开发，提供了更便捷的操作。</p>
+<p>往往在一个大型项目中，每一个实体对象所对应的单对象增删改在结构上都是相似的，但每次都认为的手动配置显然过于繁琐。而 <code>MyBatis Plus</code> 则刚好解决了这个难题，其为表对象实体提供了最基本的增删改方法，省去大量重复的工作。</p>
 <blockquote>
-<p>下面具体介绍一下如何在前后端分离工程中利用AES实现数据加密。</p>
+<p>下面就详细介绍如何在 Spring Boot 工程中集成 MyBatis Plus</p>
 </blockquote>
-<h3 id="一、前端配置"><a href="#一、前端配置" class="headerlink" title="一、前端配置"></a>一、前端配置</h3><h4 id="1-AES配置"><a href="#1-AES配置" class="headerlink" title="1. AES配置"></a>1. AES配置</h4><h5 id="1-模块安装"><a href="#1-模块安装" class="headerlink" title="(1) 模块安装"></a>(1) 模块安装</h5><p>在使用 <code>AES</code> 之前需要安装相应的模块依赖。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> crypto-js
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h5 id="2-工具类"><a href="#2-工具类" class="headerlink" title="(2) 工具类"></a>(2) 工具类</h5><p>新建 <code>AES.js</code> 工具文件,需要注意一点的是这里的 <code>keyStr</code> 与 <code>ivStr</code> 长度必须为 <code>16</code> 位。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> CryptoJS <span class="token keyword">from</span> <span class="token string">'crypto-js/crypto-js'</span>
-
-<span class="token comment" spellcheck="true">// 默认的 KEY 与 iv， 16 位字符串即可</span>
-<span class="token keyword">const</span> keyStr <span class="token operator">=</span> <span class="token string">'1234567890123456'</span>
-<span class="token keyword">const</span> ivStr <span class="token operator">=</span> <span class="token string">'1234567890123456'</span>
-
-    <span class="token comment" spellcheck="true">// 加密</span>
-<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> key <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>keyStr<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> srcs <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> encrypted <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>AES<span class="token punctuation">.</span><span class="token function">encrypt</span><span class="token punctuation">(</span>srcs<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-        iv<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>ivStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        mode<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>mode<span class="token punctuation">.</span>CBC<span class="token punctuation">,</span>
-        padding<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>pad<span class="token punctuation">.</span>ZeroPadding
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">.</span>ciphertext<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment" spellcheck="true">// 解密</span>
-<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Decrypt</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">const</span> key <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>keyStr<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> base64 <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>wdataord<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> src <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Base64<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>base64<span class="token punctuation">)</span>
-    <span class="token keyword">const</span> decrypt <span class="token operator">=</span> CryptoJS<span class="token punctuation">.</span>AES<span class="token punctuation">.</span><span class="token function">decrypt</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-        iv<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>ivStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        mode<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>mode<span class="token punctuation">.</span>CBC<span class="token punctuation">,</span>
-        padding<span class="token punctuation">:</span> CryptoJS<span class="token punctuation">.</span>pad<span class="token punctuation">.</span>ZeroPadding
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">const</span> decryptedStr <span class="token operator">=</span> decrypt<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>CryptoJS<span class="token punctuation">.</span>enc<span class="token punctuation">.</span>Utf8<span class="token punctuation">)</span>
-    <span class="token keyword">return</span> decryptedStr<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-AES引用"><a href="#2-AES引用" class="headerlink" title="2. AES引用"></a>2. AES引用</h4><p><code>AES</code> 引用就比较简单了，导入方法后直接调用即可。</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 引入模块</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span>Encrypt<span class="token punctuation">,</span>Decrypt<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@/utils/AES.js'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-<span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">{</span>
-        password<span class="token punctuation">:</span> <span class="token string">''</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token function">OK</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">const</span> params <span class="token operator">=</span> <span class="token function">Encrypt</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>password<span class="token punctuation">)</span>
-        <span class="token comment" spellcheck="true">// 打印加密后内容</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、后端配置"><a href="#二、后端配置" class="headerlink" title="二、后端配置"></a>二、后端配置</h3><h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>Maven</code> 工程配置文件中导入如下依赖。</p>
+<h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>万年不变的老规矩，先在工程中引入 <code>MyBatis Plus</code> 相关 <code>Maven</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.directory.studio<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>org.apache.commons.codec<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.baomidou<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mybatis-plus-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.5.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-工具类-1"><a href="#2-工具类-1" class="headerlink" title="2. 工具类"></a>2. 工具类</h4><p>新建 <code>AesUtil</code> 工具类，具体代码如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>codec<span class="token punctuation">.</span>binary<span class="token punctuation">.</span>Base64<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>Cipher<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span>IvParameterSpec<span class="token punctuation">;</span>
-<span class="token keyword">import</span> javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span>SecretKeySpec<span class="token punctuation">;</span>
+<p><code>MyBatis Plus</code> 对应的配置也略有不同，配置项为 mybatis-plus，内容如下：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">mybatis-plus</span><span class="token punctuation">:</span>
+    <span class="token key atrule">mapper-locations</span><span class="token punctuation">:</span> classpath<span class="token punctuation">:</span>mapper/*.xml
+    <span class="token key atrule">type-aliases-package</span><span class="token punctuation">:</span> xyz.ibudai.entity
+    <span class="token key atrule">configuration</span><span class="token punctuation">:</span>
+        <span class="token key atrule">log-impl</span><span class="token punctuation">:</span> org.apache.ibatis.logging.stdout.StdOutImpl
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-实体类"><a href="#2-实体类" class="headerlink" title="2. 实体类"></a>2. 实体类</h4><p>工程实体类中的属性名称需要和数据库表中名称一致，若表中字段包含下划线则用驼峰代替。</p>
+<p>需要注意实体属性必须和表中完全一致，若实体中的某个字段不存在于表中必须通过 <code>@TableField</code> 注解标注，否则项目将无法正常启动。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserInfo</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> <span class="token punctuation">{</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AesEncryptUtil</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Integer id<span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">/**
-     * 加密
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">encrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span>ALGORITHM<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> blockSize <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">getBlockSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dataBytes <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> length <span class="token operator">=</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">%</span> blockSize <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            length <span class="token operator">=</span> length <span class="token operator">+</span> <span class="token punctuation">(</span>blockSize <span class="token operator">-</span> <span class="token punctuation">(</span>length <span class="token operator">%</span> blockSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> plaintext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>length<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>dataBytes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> plaintext<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> dataBytes<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>
-                Cipher<span class="token punctuation">.</span>ENCRYPT_MODE<span class="token punctuation">,</span>
-                <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>plaintext<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeToString</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
     <span class="token comment" spellcheck="true">/**
-     * 解密
+     * 标识表中不存在该字段
      */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">desEncrypt</span><span class="token punctuation">(</span>String data<span class="token punctuation">,</span> String key<span class="token punctuation">,</span> String iv<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        Cipher cipher <span class="token operator">=</span> Cipher<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span>ALGORITHM<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cipher<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span>
-                Cipher<span class="token punctuation">.</span>DECRYPT_MODE<span class="token punctuation">,</span>
-                <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token keyword">new</span> <span class="token class-name">IvParameterSpec</span><span class="token punctuation">(</span>iv<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@TableField</span><span class="token punctuation">(</span>exist <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String gender<span class="token punctuation">;</span>
 
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encrypted <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Base64</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes <span class="token operator">=</span> cipher<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>encrypted<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+    <span class="token keyword">private</span> String password<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h4><p>完成上述的工具类封装之后就可以直接使用了，下面是一个简单的使用示例。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AESTest</span><span class="token punctuation">{</span>
-    
-    <span class="token comment" spellcheck="true">// 默认的 KEY 与 IV ，统一的 16 位字符串即可</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String KEY <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> String IV <span class="token operator">=</span> <span class="token string">"abcdefghjklmnopq"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-DAO层"><a href="#3-DAO层" class="headerlink" title="3. DAO层"></a>3. DAO层</h4><p>在 <code>Dao层</code> 通过继承 <code>BaseMapper</code> 泛型类即可继承表对象的基础增删改操作。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserInfoDao</span> <span class="token keyword">extends</span> <span class="token class-name">BaseMapper</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token annotation punctuation">@Test</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        String data <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            String enStr <span class="token operator">=</span> <span class="token function">encrypt</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"加密："</span> <span class="token operator">+</span> enStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            String deStr <span class="token operator">=</span> <span class="token function">desEncrypt</span><span class="token punctuation">(</span>enStr<span class="token punctuation">,</span> KEY<span class="token punctuation">,</span> IV<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"解密："</span> <span class="token operator">+</span> deStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<hr>
-<p><strong>参考链接：</strong></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/10d016ce5931">vue实现AES加密</a></li>
-</ol>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>完成之后你会发现即使 <code>UserInfoDao</code> 接口类中我们并未添加任务接口方法，但仍能使用表对象相关的增删改查方法，这便是 <code>MyBatis Plus</code> 为我们所提供的。<br><img src="/album/loading.gif" data-original="/album/article/java/mybatis/1.png"></p>
+<h4 id="4-Service"><a href="#4-Service" class="headerlink" title="4. Service"></a>4. Service</h4><h5 id="1-Service"><a href="#1-Service" class="headerlink" title="(1) Service"></a>(1) Service</h5><p>在 <code>Service</code> 接口类通过继承 <code>IService</code> 泛型类即可继承表对象的基础增删改操作。</p>
+<p>当然如果你有复杂的业务逻辑处理也可在 <code>UserInfoService</code> 自行添加，操作流程与 <code>MyBatis</code> 一致。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserInfoService</span> <span class="token keyword">extends</span> <span class="token class-name">IService</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/album/loading.gif" data-original="/album/article/java/mybatis/2.png"></p>
+<h5 id="2-ServiceImpl"><a href="#2-ServiceImpl" class="headerlink" title="(2) ServiceImpl"></a>(2) ServiceImpl</h5><p>同理这里需要继承 <code>ServiceImpl</code> 泛型类。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span><span class="token punctuation">(</span><span class="token string">"userInfoService"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserInfoServiceImpl</span> 
+    <span class="token keyword">extends</span> <span class="token class-name">ServiceImpl</span><span class="token operator">&lt;</span>UserInfoDao<span class="token punctuation">,</span> UserInfo<span class="token operator">></span> 
+    <span class="token keyword">implements</span> <span class="token class-name">UserInfoService</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="5-Wapper"><a href="#5-Wapper" class="headerlink" title="5. Wapper"></a>5. Wapper</h4><p>通过上面的示例你应该对 <code>MyBatis Plus</code> 有了一个初步的了解。</p>
+<p>但你可以发现但我们需要自定义查询或更新等条件时，光上面的配置就不够用了。为此 <code>MyBatis Plus</code> 引入了 <code>Wapper</code> 构造器用于构造多条件等业务场景。</p>
+<p>其中 <code>eq()</code> 等价于查询语句中的 <code>where &lt;cloumn&gt; = &lt;value&gt;</code> ，注意方法第一个参数是表字段名而非属性字段名。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> list1 <span class="token operator">=</span> userInfoService<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">QueryWrapper</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    UserInfo userInfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserInfo</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">,</span> <span class="token string">"123456"</span><span class="token punctuation">)</span>
+    userInfoService<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>userInfo<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">UpdateWrapper</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">eq</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">,</span> <span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>除 <code>eq()</code> 外其对 <code>SQL</code> 查询条件中的 <code>in or</code> 等关键字等提供了对应的方法，这里不作详细介绍。<br><img src="/album/loading.gif" data-original="/album/article/java/mybatis/3.png"></p>
 
                 
             </div>
@@ -742,7 +667,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://budai.pages.dev/java/web/aes/">https://budai.pages.dev/java/web/aes/</a>
+                    <a href="https://budai.pages.dev/java/spring/web/mybatisplus/">https://budai.pages.dev/java/spring/web/mybatisplus/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -780,12 +705,8 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/JAVA/">
-                                    <span class="chip bg-color">JAVA</span>
-                                </a>
-                            
-                                <a href="/tags/Vue/">
-                                    <span class="chip bg-color">Vue</span>
+                                <a href="/tags/MyBatis-Plus/">
+                                    <span class="chip bg-color">MyBatis Plus</span>
                                 </a>
                             
                         </div>
@@ -961,30 +882,30 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/db/mysql/basis/">
+                <a href="/vue/init/vue3/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/mysql/1.png" class="responsive-img" alt="MySQL基础教程">
+                        <img src="/album/banner/front/vue/5.png" class="responsive-img" alt="Vue3 项目创建教程">
                         
-                        <span class="card-title">MySQL基础教程</span>
+                        <span class="card-title">Vue3 项目创建教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MySQL数据库基本操作介绍。
+                            命令行创建 Vue3 项目。
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-21
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
+                            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-category">
+                                    前端
                                 </a>
                             
                             
@@ -994,8 +915,8 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MySQL/">
-                        <span class="chip bg-color">MySQL</span>
+                    <a href="/tags/Vue/">
+                        <span class="chip bg-color">Vue</span>
                     </a>
                     
                 </div>
@@ -1009,30 +930,30 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/basis/jdbc/">
+                <a href="/db/mysql/backup/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/java/22.png" class="responsive-img" alt="Java JDBC使用详解">
+                        <img src="/album/banner/db/mysql/3.jpg" class="responsive-img" alt="MySQL定时备份脚本">
                         
-                        <span class="card-title">Java JDBC使用详解</span>
+                        <span class="card-title">MySQL定时备份脚本</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Java JDBC数据库使用详解。
+                            Linux 下 MySQL 定时备份脚本。
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    JAVA基础
+                            <a href="/categories/Linux%E8%BF%90%E7%BB%B4/" class="post-category">
+                                    Linux运维
                                 </a>
                             
                             
@@ -1042,8 +963,8 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA/">
-                        <span class="chip bg-color">JAVA</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
@@ -1317,7 +1238,7 @@ methods<span class="token punctuation">:</span> <span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.2k</span>
+                <span class="white-color">303.6k</span>
             
             
             

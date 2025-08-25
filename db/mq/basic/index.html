@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-12
+                    2025-08-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    2.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -578,13 +578,29 @@
 <li><a target="_blank" rel="noopener" href="https://great-jin.github.io/db/kafka/subscribe/">Kafka发布订阅实战</a></li>
 </ul>
 <p>将视线收回到现在，不论是 <code>Kafka</code> 又或是今天的主角 <code>RabbitMQ</code>，其核心都在消息队列上，基于二者的存储方式以及数据传输模型从而衍生出不同的特性以及适用场景。</p>
-<p>以 <code>Kafka</code> 为例，其为队列数据提供了持久化功能，基于主题与消费组的形式拉取生产者所产生的数据，拥有极高的吞吐量广泛应用于大数据领域。而 <code>RabbitMQ</code> 的一大特点即将交换器与队列相结合，通过交换器可实现复杂的数据路由功能。</p>
-<p>在数据传输中 <code>RabbitMQ</code> 虽然也提供了持久化，但默认还是以内存为主，当数据消费完成后即会被删除。同时与 <code>Kafka</code> 消费者主动拉取数据相比，<code>RabbitMQ</code> 则恰好相反由生产者主动推送数据，通过消息确认机制避免了数据丢失与重复消费。</p>
+<p>以 <code>Kafka</code> 为例，其为队列数据提供了持久化功能，基于主题与消费组的形式拉取生产者所产生的数据，拥有极高的吞吐量广泛应用于大数据领域。</p>
+<p><code>RabbitMQ</code> 的特点即将交换器与队列相结合，通过交换机从而实现复杂的数据路由功能。同时与 <code>Kafka</code> 中主动拉取数据相比，<code>RabbitMQ</code> 则恰好相反由生产者主动推送数据，通过消息确认机制避免数据丢失与重复消费。</p>
 <blockquote>
 <p>下面通过项目集成实战介绍 <code>RabbitMQ</code> 的集成应用</p>
 </blockquote>
-<h3 id="一、基础介绍"><a href="#一、基础介绍" class="headerlink" title="一、基础介绍"></a>一、基础介绍</h3><h4 id="1-服务部署"><a href="#1-服务部署" class="headerlink" title="1. 服务部署"></a>1. 服务部署</h4><p><code>RabbitMQ</code> 需要单独的应用服务部署，在开始前先以 <code>Docker</code> 方式快速部署测试服务。</p>
-<p>创建对应的数据映射目录并拉取镜像，这里注意一点拉取的镜像带 <code>management</code> 表示其内置了后台管理页面。</p>
+<h3 id="一、基础介绍"><a href="#一、基础介绍" class="headerlink" title="一、基础介绍"></a>一、基础介绍</h3><h4 id="1-核心概念"><a href="#1-核心概念" class="headerlink" title="1. 核心概念"></a>1. 核心概念</h4><p>在 <code>RabbitMQ</code> 中包含了下述几个核心概念，让我们分别进行介绍。</p>
+<h5 id="1-虚拟机"><a href="#1-虚拟机" class="headerlink" title="(1) 虚拟机"></a>(1) 虚拟机</h5><p>虚拟主机 <code>(Virtual Hosts)</code> 是 <code>RabbitMQ</code> 中实现多租户的途径，通过不同的虚拟主机实现数据隔离。</p>
+<h5 id="2-交换机"><a href="#2-交换机" class="headerlink" title="(2) 交换机"></a>(2) 交换机</h5><p>顾名思义交互机 <code>(Exchange)</code> 即消息的中转站，当生产者发送数据后，消息将先发送至交换机，再进行转发的对应的队列。</p>
+<h5 id="3-路由KEY"><a href="#3-路由KEY" class="headerlink" title="(3) 路由KEY"></a>(3) 路由KEY</h5><p>路由键 <code>(Router Key)</code> 则是交换机与消息队列的缓冲层，通过路由键决定一个消息应该发送至哪个队列。</p>
+<h5 id="4-消息队列"><a href="#4-消息队列" class="headerlink" title="(4) 消息队列"></a>(4) 消息队列</h5><p>消息队列即最终消息的临时存储媒介，经过路由转发的消息将暂存于队列中，等待被消费者所消费。<br><img src="/album/loading.gif" data-original="/album/article/db/mq/0.png"></p>
+<h4 id="2-模块解耦"><a href="#2-模块解耦" class="headerlink" title="2. 模块解耦"></a>2. 模块解耦</h4><p>从上述架构图中你或许会疑惑，<code>Router Key</code> 存在的意义是什么？为什么交换机与消息队列不能直接关联？</p>
+<p>答案其实很简单，<code>Router Key</code> 的引入是 <code>RabbitMQ</code> 为解决功能耦合而提出的特性。通过 <code>Router Key</code> 不仅实现了队列与交换机的解耦，同时 <code>Router Key</code> 的引入提供了一系列更为灵活的消息映射方式。</p>
+<p>试想一下如果没有 <code>Router Key</code>，那消息将只能固定发到某个队列或广播到所有队列。而引入 <code>Router Key</code> 后交换机可根据绑定规则决定路由到哪些队列，同时也提供了实现多对多的路由能力。</p>
+<p>不仅如此，当使用 <code>Router Key</code> 时，由于系统代码中所配置的并非具体的队列名称，在操作变更时无需修改代码仅需调整 <code>RabbitMQ</code> 中的路由规则配置即可，从而降低代码维护成本。</p>
+<h4 id="3-队列类型"><a href="#3-队列类型" class="headerlink" title="3. 队列类型"></a>3. 队列类型</h4><p>在 <code>RabbitMQ</code> 中消息队列存在 <code>Classic</code> 与 <code>Quorum</code> 两种类型，二者区别如下：</p>
+<h5 id="1-Classic-Queue"><a href="#1-Classic-Queue" class="headerlink" title="(1) Classic Queue"></a>(1) Classic Queue</h5><p><code>Classic Queue (CQs)</code> 是 <code>RabbitMQ</code> 最早的队列类型。</p>
+<p>默认单节点存储，若开启镜像队列 <code>(Mirrored Queue)</code> 可复制到多个节点。依赖 <code>Erlang Mnesia</code> 数据库存储，在 <code>RabbitMQ 3.8</code> 以后已逐渐被标记为“旧模型”。</p>
+<p>基于主从复制模式，通过一个 <code>master</code> 与多个 <code>slave</code> 管理。其中子节点非实时同步数据，虽提高了性能但当 <code>master</code> 节点宕机需要选举新的 <code>master</code>，这期间可能丢失未同步的数据。</p>
+<h5 id="2-Quorum-Queue"><a href="#2-Quorum-Queue" class="headerlink" title="(2) Quorum Queue"></a>(2) Quorum Queue</h5><p><code>Quorum Queue</code> 是在 <code>RabbitMQ 3.8</code> 引入用于替代镜像队列。</p>
+<p>基于 <code>Raft</code> 共识算法实现复制和高可用，每条消息会写入多数派节点 <code>(quorum)</code> 从而保证一致性。</p>
+<p>在 <code>Quorum</code> 模型中实现了类似 <code>Kafka</code> 的分片与副本，虽有一定的性能损耗，但保证的一致性。同时随着版本迭代 <code>Classic</code> 已逐渐被启用，在队列的选择上更推荐 <code>Quorum Queue</code>。</p>
+<h3 id="二、项目集成"><a href="#二、项目集成" class="headerlink" title="二、项目集成"></a>二、项目集成</h3><h4 id="1-服务部署"><a href="#1-服务部署" class="headerlink" title="1. 服务部署"></a>1. 服务部署</h4><p>接下来就让我们了解如何在 <code>Spring</code> 工程中集成，开始前先以 <code>Docker</code> 部署 <code>RabbitMQ</code> 测试服务。</p>
+<p>创建对应的数据映射目录并拉取镜像，需注意一点拉取的镜像带 <code>management</code> 表示其内置了后台管理页面。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建数据目录</span>
 <span class="token function">mkdir</span> -p /home/dockerdata/rabbitmq
 
@@ -592,7 +608,7 @@
 docker pull rabbitmq:management
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完成镜像拉取之后就可以启动容器了，这里配置的默认账号为：<code>ibudai/123456</code>，可根据偏好自行调整。</p>
-<p>完成部署后应用服务运行在 <code>5672</code> 端口，默认自带的后台管理在 <code>15672</code> 端口。</p>
+<p>部署完成后应用服务运行在 <code>5672</code> 端口，默认自带的后台管理在 <code>15672</code> 端口。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -id \
 -p 15672:15672 \
 -p 5672:5672 \
@@ -602,19 +618,13 @@ docker pull rabbitmq:management
 -e RABBITMQ_DEFAULT_PASS<span class="token operator">=</span>123456 \
 rabbitmq:management
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-核心概念"><a href="#2-核心概念" class="headerlink" title="2. 核心概念"></a>2. 核心概念</h4><p>在 <code>RabbitMQ</code> 中包含了三个核心概念，下面分别进行讲解。</p>
-<h5 id="1-交换机"><a href="#1-交换机" class="headerlink" title="(1) 交换机"></a>(1) 交换机</h5><p>顾名思义交互机 <code>(Exchange)</code> 即消息的中转站，当生产者发送数据后，消息将先发送至交换机，再进行转发的对应的队列。</p>
-<h5 id="2-路由KEY"><a href="#2-路由KEY" class="headerlink" title="(2) 路由KEY"></a>(2) 路由KEY</h5><p>路由键 <code>(Router Key)</code> 则是交换机与消息队列的缓冲层，通过路由键决定一个消息应该发送至哪个队列。</p>
-<p>通过路由键的存在实现交换机与队列之间的解耦，并且能够实现更复杂的消息转发机制。</p>
-<h5 id="3-消息队列"><a href="#3-消息队列" class="headerlink" title="(3) 消息队列"></a>(3) 消息队列</h5><p>消息队列即最终消息的临时存储媒介，经过路由转发的消息将暂存于队列中，等待被消费者所消费。</p>
-<h3 id="二、项目集成"><a href="#二、项目集成" class="headerlink" title="二、项目集成"></a>二、项目集成</h3><p>接下来就让我们开始正式介绍如何在 <code>Spring</code> 工程中集成使用。</p>
-<h4 id="1-依赖导入"><a href="#1-依赖导入" class="headerlink" title="1. 依赖导入"></a>1. 依赖导入</h4><p>在 <code>Spring</code> 中提供了开箱即用的 <code>rabbitmq</code> 依赖，在工程 <code>pom</code> 中引入相应的 <code>starter</code> 依赖。</p>
+<h4 id="2-集成配置"><a href="#2-集成配置" class="headerlink" title="2. 集成配置"></a>2. 集成配置</h4><p>在 <code>Spring</code> 中提供了开箱即用的 <code>rabbitmq</code> 依赖，在工程 <code>pom</code> 中引入相应的 <code>starter</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-amqp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务配置"><a href="#2-服务配置" class="headerlink" title="2. 服务配置"></a>2. 服务配置</h4><p>当然必不可少的需要在工程的 <code>yaml</code> 配置中添加 <code>RabbitMQ</code> 对应的服务连接信息。</p>
+<p>当然必不可少的需要在工程的 <code>yaml</code> 配置中添加 <code>RabbitMQ</code> 对应的服务连接信息。</p>
 <p>以刚才部署的测试服务为例，对应的配置内容如下：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
     <span class="token key atrule">rabbitmq</span><span class="token punctuation">:</span>
@@ -1170,7 +1180,7 @@ rabbitmq:management
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java/tool/validation/">
+                <a href="/java/utils/validation/">
                     <div class="card-image">
                         
                         <img src="/album/banner/java/15.png" class="responsive-img" alt="小小注解验证轻松拿捏">
@@ -1192,8 +1202,8 @@ rabbitmq:management
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/JAVA%E8%BF%9B%E9%98%B6/" class="post-category">
-                                    JAVA进阶
+                            <a href="/categories/JAVA%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    JAVA工具
                                 </a>
                             
                             
@@ -1478,7 +1488,7 @@ rabbitmq:management
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.2k</span>
+                <span class="white-color">303.6k</span>
             
             
             
