@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-11
+                    2025-09-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.3k
                 </div>
                 
 
@@ -682,8 +682,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-集成示例"><a href="#3-集成示例" class="headerlink" title="3. 集成示例"></a>3. 集成示例</h4><p>下面让我们来看一下如何在工程中进行集成使用。</p>
-<p>让我们先假定业务场景，假如功能需要保存某业务数据，在保存成功后将数据同步至下游系统，而数据同步的总体耗时约 <code>30s</code> 左右。</p>
+<h4 id="3-应用场景"><a href="#3-应用场景" class="headerlink" title="3. 应用场景"></a>3. 应用场景</h4><p>让我们先假定业务场景，假如功能需要保存某业务数据，在保存成功后将数据同步至下游系统，而数据同步的总体耗时约 <code>30s</code> 左右。</p>
 <p>基于此场景，最原始的方式即通过 <code>@Transactional</code> 注解针对整个方法开始事务。但如此设计存在一个问题，推送数据耗时导致事务迟迟无法提交，不仅降低服务性能且长时间事务挂起存在数据一致性问题。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>rollbackFor <span class="token operator">=</span> Exception<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">directInsert</span><span class="token punctuation">(</span>SysUser user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -698,8 +697,10 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>对于涉及事务处理的逻辑而言，永远要保持一个原则：事务最小化。</p>
-<p>因此，对于上述的代码而言可以轻易改造为下述方式，即针对数据库操作部分单独抽象为事务操作，既实现了事务又可取得相对不错的性能。</p>
+<p>对于涉及事务处理的逻辑而言，永远要保持一个原则：<strong>最小化</strong>。</p>
+<p>事务并不是并发的有效解决方法，针对同一条数据而言更优解往往是基于锁与事务的结合。通过锁保证同一记录的冲突，而事务则实现了不同数据间的隔离。</p>
+<p>通过锁与事务的结合，各自实现最小化管理从而取得最佳性能。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/transaction/4.png"></p>
+<h4 id="4-集成示例"><a href="#4-集成示例" class="headerlink" title="4. 集成示例"></a>4. 集成示例</h4><p>因此，对于上述的代码而言可以轻易改造为下述方式，即针对数据库操作部分单独抽象为事务操作，既实现了事务又可取得相对不错的性能。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">manualCallback</span><span class="token punctuation">(</span>SysUser user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">// 数据入库, insert() 需获取代理对象操作，此处略去</span>
     <span class="token function">insert</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1336,7 +1337,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.6k</span>
+                <span class="white-color">304.9k</span>
             
             
             

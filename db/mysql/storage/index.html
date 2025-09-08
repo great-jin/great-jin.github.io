@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-09-08
                 </div>
                 
 
@@ -639,8 +639,10 @@
 <li><p><strong>ROW</strong><br>在 <code>ROW</code> 级别下即记录的是具体的变更数据，如通过 <code>update</code> 更新了 <code>5</code> 条数据，则记录下这五条真实数据内容。即详细记录下每一条数据的变更内容，但缺点也很明显就存储资源占用更高。</p>
 </li>
 <li><p><strong>STATEMENT</strong><br>在 <code>STATEMENT</code> 级别下记录的是对应的执行语句，同样为通过 <code>update</code> 更新了 <code>5</code> 条数据，此时 <code>bin log</code> 记录存储下的则为 <code>update</code> 语句而非具体的数据记录。</p>
+<p>因此，<code>STATEMENT</code> 模式不像 <code>ROW</code> 可获取变更前的数据，只可通过 <code>sql</code> 查询到变更后的最新数据。</p>
 </li>
-<li><p><strong>MIXWD</strong><br>在此级别下默认采用 <code>STATEMENT</code> 记录，但对应临时表以及一些自定义函数会采用 <code>ROW</code> 方式记录。</p>
+<li><p><strong>MIXWD</strong><br>在 <code>MIXWD</code> 混合模式下由 <code>MySQL</code> 动态决策当前变更采用 <code>ROW</code> 或 <code>STATEMENT</code> 方式。</p>
+<p>混合模式下监听到数据格式将不再统一，可能是具体数据也可能是 <code>SQL</code>，解析复杂度更高对消费方并不友好，如非必要并不推荐此模式。</p>
 </li>
 </ul>
 <h3 id="四、存储机制"><a href="#四、存储机制" class="headerlink" title="四、存储机制"></a>四、存储机制</h3><h4 id="1-读写机制"><a href="#1-读写机制" class="headerlink" title="1. 读写机制"></a>1. 读写机制</h4><p>在 <code>MySQL</code> 中数据存储包含 <code>内存</code> 与 <code>磁盘</code> 两个部分，增删改操作首先会被写入到 <code>redo log</code> 中，保证数据的持久性。同时为了提高写入性能，<code>MySQL</code> 还引入了 <code>Change Buffer</code> 机制，将写入的数据先暂存在 <code>Change Buffer</code> 中，再由后台线程定时将其刷入磁盘。</p>
@@ -1276,7 +1278,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.6k</span>
+                <span class="white-color">304.9k</span>
             
             
             

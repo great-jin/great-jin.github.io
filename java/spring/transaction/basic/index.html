@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-11
+                    2025-09-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.7k
+                    3.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    11 分
                 </div>
                 
 
@@ -571,11 +571,37 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、事务管理"><a href="#一、事务管理" class="headerlink" title="一、事务管理"></a>一、事务管理</h3><h4 id="1-场景应用"><a href="#1-场景应用" class="headerlink" title="1. 场景应用"></a>1. 场景应用</h4><p>事务在一个应用中的作用是举足轻重轻重的，合理利用事务能够对保证数据的一致性与完整性。</p>
-<p>举个常见的例子， <code>user-1</code> 向 <code>user-2</code> 转账了 <code>1000</code> 元，在理想的情况下，在 <code>user-1</code> 发出转账后账户余额将减少，而 <code>user-2</code> 在收到转账之后余额对应进行增加，流程如下图所示：<br><img src="/album/loading.gif" data-original="/album/article/java/spring/transaction/1.png"></p>
+                <p>事务在一个应用中的作用是举足轻重轻重的，合理利用事务能够对保证数据的一致性与完整性。</p>
+<p>下面就让我们共同了解如何在 <code>Spring</code> 中使用事务以及使用心得技巧。</p>
+<h3 id="一、事务管理"><a href="#一、事务管理" class="headerlink" title="一、事务管理"></a>一、事务管理</h3><h4 id="1-场景应用"><a href="#1-场景应用" class="headerlink" title="1. 场景应用"></a>1. 场景应用</h4><p>对于事务而言最常见的场景即转账服务， <code>user-1</code> 向 <code>user-2</code> 转账了 <code>1000</code> 元，在理想的情况下，在 <code>user-1</code> 发出转账后账户余额将减少，而 <code>user-2</code> 在收到转账之后余额对应进行增加，流程如下图所示：<br><img src="/album/loading.gif" data-original="/album/article/java/spring/transaction/1.png"></p>
 <p>但在异常的场景中，当 <code>user-1</code> 扣款成功之后由于网络异常等问题导致 <code>user-2</code> 并没有收到实际的收款，但此时 <code>user-1</code> 已经完成了扣款，导致了系统的总金额减少 <code>1000</code> 元。</p>
 <p>此类的数据不一致性对于系统设计而言是相当致命的，而事务的也应运而生。在事务的场景下，上述的流程在任意步骤发生异常时，都将执行数据回滚，只有在整个流程成功结束后，数据才会进行提交进行更新。</p>
-<h4 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2. 基本使用"></a>2. 基本使用</h4><p>在 <code>Spring</code> 工程中使用注解相对较为简单，在启动类上添加 <code>@EnableTransactionManagement</code> 开始事务管理并通过 <code>@Transactiona</code> 注解即可实现对事件开启事务。</p>
+<h4 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2. 实现原理"></a>2. 实现原理</h4><p>在 <code>Spring</code> 定义了 <code>PlatformTransactionManager</code> 接口，从而屏蔽不同底层实现的差异。设计思想上与 <code>JDBC</code> 一致，提供了顶层规范，而由具体的子类实现。</p>
+<p>其中相对常见的子类实现包含下述：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DataSourceTransactionManager</td>
+        <td style="text-align: center;">JDBC / MyBatis 常用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JpaTransactionManager</td>
+        <td style="text-align: center;">JPA/Hibernate</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">JtaTransactionManager</td>
+        <td style="text-align: center;">分布式事务，JTA</td>
+    </tr>
+</table>
+</br>
+
+<p>在我们最熟悉的 <code>@Transactional</code> 事务管理中，基于 <code>AOP</code> 管理实现了链路调用，流程参考下图：<br><img src="/album/loading.gif" data-original="/album/article/java/spring/transaction/0.png"></p>
+<p>其中 <code>Spring</code> 的事务隔离级别调用仍然是 <code>JDBC</code> 的 <code>Connection#setTransactionIsolation()</code>。同时 <code>Spring</code> 在 <code>JDBC</code> 基础事务之上扩展了传播行为，用于控制多个方法之间事务的关系，本质则是通过 <code>TransactionStatus</code> 和 <code>savepoint</code> 来管理。</p>
+<p>在介绍 <code>JDBC</code> 的文章中详细介绍了默认事务使用方式，可以结合二者进行理解：<a href="https://budai.pages.dev/java/basis/jdbc/">Java JDBC使用详解</a>。</p>
+<h4 id="3-集成示例"><a href="#3-集成示例" class="headerlink" title="3. 集成示例"></a>3. 集成示例</h4><p>在 <code>Spring</code> 工程中使用注解相对较为简单，在启动类上添加 <code>@EnableTransactionManagement</code> 开始事务管理并通过 <code>@Transactiona</code> 注解即可实现对事件开启事务。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
 <span class="token comment" spellcheck="true">// 开启事务管理</span>
 <span class="token annotation punctuation">@EnableTransactionManagement</span>
@@ -872,8 +898,8 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-事务失效"><a href="#3-事务失效" class="headerlink" title="3. 事务失效"></a>3. 事务失效</h4><p>在 <code>Spring</code> 中使用事务时需特别注意，若未按规范则会出现事务失效的情景。</p>
-<p>由于 <code>Spring</code> 的事务实现依托与对象代理，最常见的失场景即调用 <code>private</code> 私有方法或在当前类调用自身方法。</p>
-<p>如下示例中 <code>demo()</code> 与 <code>action()</code> 方法处于同一个类中，在 <code>demo()</code> 中调用 <code>action()</code> 将导致事务失效。</p>
+<p>由于 <code>Spring</code> 的事务机制基于对象代理，最常见的即调用 <code>private</code> 方法或在非事务方法中调用事务方法。</p>
+<p>如下 <code>demo()</code> 与 <code>action()</code> 方法处于同一个类中，在非事务方法 <code>demo()</code> 中调用事务方法 <code>action()</code> 将导致 <code>action()</code> 的事务失效。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
 
@@ -889,8 +915,25 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>对于此类的自我调用的有两种处理方式，最简单的方式当然就是将事务方式定义到其它类中，但对应同一模块的业务而言则会导致代码分散。</p>
-<p>针对此类场景，在 <code>Spring</code> 中提供了 <code>AopContext</code> 获取代理对象从而避免事务的自我调用导致的事务失效，使用方式也相对简单，改造上述的示例为下述即可:</p>
+<p>对于此类的自我调用导致事务失效的有着下述几类处理方式：</p>
+<h5 id="1-扩大事务"><a href="#1-扩大事务" class="headerlink" title="(1) 扩大事务"></a>(1) 扩大事务</h5><p>如上述中为 <code>demo()</code> 方法同样开启事务，spring 默认传播行为针对事务方法会加入父级事务中。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestService</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token annotation punctuation">@Transactional</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但通过此方式虽实现了事务效果，但事务扩大易导致数据统一性故并不推荐。</p>
+<h5 id="2-代理对象"><a href="#2-代理对象" class="headerlink" title="(2) 代理对象"></a>(2) 代理对象</h5><p>最简单的方式当然就是将事务方式定义到其它类中，但对应同一模块的业务而言则会导致代码分散。</p>
+<p>因此，在 <code>Spring</code> 中提供了 <code>AopContext</code> 获取代理对象从而避免自我调用导致的事务失效。</p>
+<p>使用方式也相对简单，改造上述的示例为下述即可:</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestServiceA</span> <span class="token punctuation">{</span>
 
@@ -1515,7 +1558,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.6k</span>
+                <span class="white-color">304.9k</span>
             
             
             

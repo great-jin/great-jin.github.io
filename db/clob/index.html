@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-07
+                    2025-09-08
                 </div>
                 
 
@@ -556,7 +556,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -643,6 +643,15 @@
 <span class="token comment" spellcheck="true">-- 4. 将临时字段改名为原目标字段</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token keyword">RENAME</span> <span class="token keyword">COLUMN</span> <span class="token operator">&lt;</span>temp_column<span class="token operator">></span> <span class="token keyword">TO</span> <span class="token operator">&lt;</span>origin_column<span class="token operator">></span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时需注意 <code>Oracle</code> 并不支持对 <code>Clob</code> 字段的函数与分组等操作。</p>
+<p>如下述语句在执行时将失败返回 <code>ORA-00932: 数据类型不一致: 应为 -, 但却获得 CLOB</code>。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    clob_column<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> 
+<span class="token keyword">from</span> 
+    tb_test 
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    clob_column
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-代码集成"><a href="#3-代码集成" class="headerlink" title="3. 代码集成"></a>3. 代码集成</h4><p>在 <code>JDBC</code> 代码集成中，当字符数少于 <code>4000</code> 时可直接通过 <code>setString()</code> 方式赋值。</p>
 <p>但若超过 <code>4000</code> 字符时，由于 <code>Oracle</code> 存在限制不支持超长的数据的直接增改，需创建 <code>Clob</code> 对象或通过 <code>setCharacterStream()</code> 方式保存，相应的代码示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">clobDemo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1317,7 +1326,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">303.6k</span>
+                <span class="white-color">304.9k</span>
             
             
             
