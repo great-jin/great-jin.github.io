@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-09-17
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    2.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    10 分
                 </div>
                 
 
@@ -571,29 +571,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、事务介绍"><a href="#一、事务介绍" class="headerlink" title="一、事务介绍"></a>一、事务介绍</h3><p>在实际应用场景中，许多操作我们并无法保证一定会正确执行，当一个完整的操作链路在某处因特殊原因断开导致后续业务失败，通常即需要实现业务的回滚操作，而这个过程即事务的过程。</p>
-<h4 id="1-数据问题"><a href="#1-数据问题" class="headerlink" title="1. 数据问题"></a>1. 数据问题</h4><h5 id="1-脏读"><a href="#1-脏读" class="headerlink" title="(1) 脏读"></a>(1) 脏读</h5><p>脏读即一个事务读取到另一个的尚未提交的数据。</p>
+                <p>在实际应用场景中，许多操作我们并无法保证一定会正确执行，当一个完整的操作链路在某处因特殊原因断开导致后续业务失败，通常即需要实现业务的回滚操作，而这个过程即事务的过程。</p>
+<h3 id="一、事务介绍"><a href="#一、事务介绍" class="headerlink" title="一、事务介绍"></a>一、事务介绍</h3><h4 id="1-数据问题"><a href="#1-数据问题" class="headerlink" title="1. 数据问题"></a>1. 数据问题</h4><p>在未引入事务之前，让我们一同来看下数据存在的一致性问题。</p>
+<h5 id="1-脏读"><a href="#1-脏读" class="headerlink" title="(1) 脏读"></a>(1) 脏读</h5><p>脏读即一个事务读取到另一个的尚未提交的数据。</p>
 <p>假设表中存在一条记录 <code>id=1, age=20</code>，事务二开始后通过 <code>update</code> 语句将记录改为 <code>age=25</code> 但在随后又执行了回滚操作，若此时在回滚前事务一执行了查询将得到记录 <code>id=1, age=25</code>，但实际经过事务回滚后的表中记录为 <code>id=1, age=20</code>，即事务一读取到了事务二尚未提交的数据。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/transaction/1.png"></p>
 <h5 id="2-不可重复读"><a href="#2-不可重复读" class="headerlink" title="(2) 不可重复读"></a>(2) 不可重复读</h5><p>不可重复读即在一个事务过程中多次读取的同一数据存在不一致情况。</p>
 <p>同样以记录 <code>id=1, age=20</code> 为例，事务一开始之后查询 <code>id=1</code> 的数据得到 <code>id=1, age=20</code>，此时事务二通过 <code>update</code> 语句将记录改为 <code>age=25</code>，若此时事务一再次执行查询得到的结果则为 <code>id=1, age=25</code>，即同一个事务内两次查询的记录结果不一致。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/transaction/2.png"></p>
 <h5 id="3-幻读"><a href="#3-幻读" class="headerlink" title="(3) 幻读"></a>(3) 幻读</h5><p>幻读即在一个事务过程中多次读取的同一数据集存在不一致情况。</p>
 <p>同样以记录 <code>id=1, age=20</code> 为例，事务一开始之后执行 <code>select *</code> 查询得到一条数据，此时事务二新增了记录 <code>id=2</code>，若此时事务一再次执行全量查询得到的记录将有两条，即第二次查询凭空多出一条数据，两次查询的结果集不一致。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/transaction/3.png"></p>
-<h4 id="2-事务隔离"><a href="#2-事务隔离" class="headerlink" title="2. 事务隔离"></a>2. 事务隔离</h4><h5 id="1-READ-UNCOMMITTED"><a href="#1-READ-UNCOMMITTED" class="headerlink" title="(1) READ_UNCOMMITTED"></a>(1) READ_UNCOMMITTED</h5><p>读未提交，一个事务可以读取另一个事务未提交的数据，可能会造成脏读的情况。</p>
+<h4 id="2-事务隔离"><a href="#2-事务隔离" class="headerlink" title="2. 事务隔离"></a>2. 事务隔离</h4><p>针对上述列举的问题，在 <code>MySQL</code> 引入了事务隔离以解决数据一致性。</p>
+<p>在 <code>MySQL</code> 中提供了四类事务隔离机制，下面分别进行论述。</p>
+<h5 id="1-READ-UNCOMMITTED"><a href="#1-READ-UNCOMMITTED" class="headerlink" title="(1) READ_UNCOMMITTED"></a>(1) READ_UNCOMMITTED</h5><p>读未提交，一个事务可以读取另一个事务未提交的数据，可能会造成脏读的情况。</p>
 <h5 id="2-READ-COMMITTED"><a href="#2-READ-COMMITTED" class="headerlink" title="(2) READ_COMMITTED"></a>(2) READ_COMMITTED</h5><p>读已提交，一个事务只能读取到其他事务已经提交的数据，避免了脏读，但可能造成不可重复。</p>
 <h5 id="3-REPEATABLE-READ"><a href="#3-REPEATABLE-READ" class="headerlink" title="(3) REPEATABLE_READ"></a>(3) REPEATABLE_READ</h5><p>可重复读，默认的 <code>MYSQL</code> 隔离级别，当前线程在读取记录时不允许其他线程修改变更，避免了脏读、不可重复读，但可能导致幻读。</p>
 <h5 id="4-SERIALIZABLE"><a href="#4-SERIALIZABLE" class="headerlink" title="(4) SERIALIZABLE"></a>(4) SERIALIZABLE</h5><p>序列化，隔离的最高级别，事务将串行执行，事务的读操作会加读锁，写操作会加写锁，虽不会造成上述提到的几类情况但性能较低。</p>
-<h3 id="二、事务管理"><a href="#二、事务管理" class="headerlink" title="二、事务管理"></a>二、事务管理</h3><h4 id="1-事务创建"><a href="#1-事务创建" class="headerlink" title="1. 事务创建"></a>1. 事务创建</h4><p>在 <code>MySQL</code> 中可以使用 <code>begin</code> 或 <code>start transaction</code> 显式的开启事务，通过 <code>commit</code> 提交事务。若没有显式开启默认则会提交隐式事务，在语句执行结束之后会自动提交，无法实现回滚。</p>
-<p>如最常用的增删改查等语句都是默认开始事务并在语句执行结束时自动提交。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>上述的插入命令默认是开始事务并自动提交的，但是通常我们感知不强，其等价于下述操作。</p>
+<h3 id="二、事务管理"><a href="#二、事务管理" class="headerlink" title="二、事务管理"></a>二、事务管理</h3><h4 id="1-事务创建"><a href="#1-事务创建" class="headerlink" title="1. 事务创建"></a>1. 事务创建</h4><p>在 <code>MySQL</code> 中可以使用 <code>begin</code> 或 <code>start transaction</code> 显式的开启事务，通过 <code>commit</code> 提交事务。</p>
+<p>若没有显式开启默认则会提交隐式事务，在语句执行结束之后会自动提交，无法实现回滚。</p>
+<p>如最常用的增删改查等语句都是默认开始事务并在语句执行结束时自动提交。例如插入默认是开始事务并自动提交的，但是通常我们感知不强，其等价于下述操作。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
 
 <span class="token keyword">insert</span> <span class="token keyword">into</span> tb_user <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token string">'alex'</span><span class="token punctuation">,</span> <span class="token string">'male'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">commit</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-事务回滚"><a href="#2-事务回滚" class="headerlink" title="2. 事务回滚"></a>2. 事务回滚</h4><p>当任务执行异常时需要执行回滚通过 <code>rollback</code> 即可。</p>
+<h4 id="2-事务回滚"><a href="#2-事务回滚" class="headerlink" title="2. 事务回滚"></a>2. 事务回滚</h4><p>事务除实现了隔离之外，另一重要功能即支持回滚机制，进而实现了原子性。</p>
+<p>在执行分步任务中，当执行异常时则可通过 <code>rollback</code> 回滚，即实现全成功或全失败。</p>
 <p>例如下述事务中若在第一个插入完成后执行第二个失败，此时通过 <code>rollback</code> 即可撤销第一个插入语句的效果。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">begin</span><span class="token punctuation">;</span>
 
@@ -606,7 +608,9 @@
 
 <span class="token keyword">commit</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-保存点"><a href="#3-保存点" class="headerlink" title="3. 保存点"></a>3. 保存点</h4><p>在一个事务中可以创建多个 <code>savepoint</code> 标记点，并可通过 <code>rollback to</code> 回滚至指定保存点，通过 <code>release savepoint</code> 关键字删除创建的保存点。</p>
+<h4 id="3-保存点"><a href="#3-保存点" class="headerlink" title="3. 保存点"></a>3. 保存点</h4><p>在上述的事务回滚示例中，通过 <code>rollback</code> 即可轻易实现回滚功能。但也许你也发现其存在的弊端，即默认事务回滚的范围过大难以灵活应用。</p>
+<p>因此，在事务管理中有另一核心概念：保存点 <code>(savepoint)</code>。一个事务中可以创建多个 <code>savepoint</code> 标记点，并可通过 <code>rollback to</code> 回滚至指定保存点。</p>
+<p>如若需要删除保存点，则可通过 <code>release savepoint</code> 关键字删除创建的保存点。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- create </span>
 <span class="token keyword">savepoint</span> sp1<span class="token punctuation">;</span>
 
@@ -649,23 +653,25 @@
 <br/>
 
 <p>实际还有一个删除 <code>flag</code> 隐藏字段，记录被更新或删除并不代表真的删除，而是删除 <code>flag</code> 变了。当通过 <code>delete</code> 关键字执行删除命令时，系统并不是真正意义上的进行删除，而是将对应记录的占用的空间标记为可用。</p>
-<h3 id="四、表锁"><a href="#四、表锁" class="headerlink" title="四、表锁"></a>四、表锁</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>表锁分为两大类：<code>读锁</code> 与 <code>写锁</code> ，当一个会话对某张表加锁后（无论是加 <code>读锁</code> 还是 <code>写锁</code>），其都无法对其它表执行任何操作。</p>
+<h3 id="四、数据表锁"><a href="#四、数据表锁" class="headerlink" title="四、数据表锁"></a>四、数据表锁</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>表锁分为两大类：<code>读锁</code> 与 <code>写锁</code> ，当一个会话对某张表加锁后（无论是加 <code>读锁</code> 还是 <code>写锁</code>），其都无法对其它表执行任何操作。</p>
 <ul>
-<li>当前会话给表加 <code>读锁</code>，当前会话可对加锁表执行 <code>查询</code> 操作，其它会话能 <code>读取</code> 加锁表的数据，但 <code>增改</code> 操作需要等待加锁会话释放表锁。</li>
-<li>当前会话给表加 <code>写锁</code>，当前会话可对加锁表执行任意操作，其它会话对加锁表执行 <code>增删改查</code> 需要等待加锁会话释放表锁。</li>
+<li>当前会话给表加 <code>读锁（read）</code>，当前会话可对加锁表执行 <code>查询</code> 操作，其它会话能 <code>读取</code> 加锁表的数据，但 <code>增改</code> 操作需要等待加锁会话释放表锁。</li>
+<li>当前会话给表加 <code>写锁（write）</code>，当前会话可对加锁表执行任意操作，其它会话对加锁表执行 <code>增删改查</code> 需要等待加锁会话释放表锁。</li>
 </ul>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- lock all table</span>
+<p>其中 <code>type</code> 可选值：<code>read (读锁)</code> 与 <code>write (写锁)</code>。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 对所有表加锁</span>
 FLUSH <span class="token keyword">TABLES</span> <span class="token keyword">with</span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span> <span class="token keyword">lock</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- lock single table, default lock 50s(innodb_lock_wait_timeout).</span>
+<span class="token comment" spellcheck="true">-- 锁指定表</span>
+<span class="token comment" spellcheck="true">-- 默认加锁 50s (innodb_lock_wait_timeout)</span>
 <span class="token keyword">lock</span> <span class="token keyword">TABLES</span> <span class="token operator">&lt;</span>table_name<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">></span><span class="token punctuation">;</span> 
 
-<span class="token comment" spellcheck="true">-- unlock all table</span>
+<span class="token comment" spellcheck="true">-- 解锁所有表</span>
 unlock <span class="token keyword">TABLES</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">-- view lock table</span>
+<span class="token comment" spellcheck="true">-- 查看当前加锁表</span>
 <span class="token keyword">show</span> <span class="token keyword">open</span> <span class="token keyword">TABLES</span> <span class="token keyword">where</span> In_Use <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-元数据锁"><a href="#2-元数据锁" class="headerlink" title="2. 元数据锁"></a>2. 元数据锁</h4><p><code>Metadata lock</code> 是表级锁，行锁中的读写操作对应在 <code>Metadata lock</code> 中都属于读锁。</p>
 <ul>
 <li>所有的 <code>DML</code> 操作都会在表上加一个 <code>Metadata</code> 读锁；</li>
@@ -677,12 +683,12 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
 <span class="token keyword">from</span>
    performance_schema<span class="token punctuation">.</span>metadata_locks<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、行锁"><a href="#五、行锁" class="headerlink" title="五、行锁"></a>五、行锁</h3><p>表锁虽然能够保证数据的原子性但其带来的性能损耗也是显而易见的，因此 <code>MYSQL</code> 中同时引入了行锁实现更细粒度的操作，即锁的作用域是表中的单条记录，对于表中其它数据并不影响。</p>
-<p><code>InnoDB</code> 行锁是通过给记录的 <code>索引项加锁</code> 来实现的，只有通过索引条件检索数据才会生效，否则 <code>InnoDB</code> 将使用表锁。</p>
-<h4 id="1-分类介绍"><a href="#1-分类介绍" class="headerlink" title="1. 分类介绍"></a>1. 分类介绍</h4><p><code>MySQL</code> 中的行锁分为两类：共享锁与排他锁，二者的作用类似于表锁中的读锁与写锁。</p>
+<h3 id="五、数据行锁"><a href="#五、数据行锁" class="headerlink" title="五、数据行锁"></a>五、数据行锁</h3><p>表锁虽然能够保证数据的原子性但其带来的性能损耗也是显而易见的，因此 <code>MYSQL</code> 中同时引入了行锁实现更细粒度的操作，即锁的作用域是表中的单条记录，对于表中其它数据并不影响。</p>
+<h4 id="1-分类介绍"><a href="#1-分类介绍" class="headerlink" title="1. 分类介绍"></a>1. 分类介绍</h4><p>在 <code>InnoDB</code> 中行锁是通过给记录的 <code>索引项加锁</code> 来实现的，只有通过索引条件检索数据才会生效，否则 <code>InnoDB</code> 将使用表锁。</p>
+<p><code>MySQL</code> 中的行锁分为两类：共享锁与排他锁，二者的作用类似于表锁中的读锁与写锁。</p>
 <ul>
-<li><strong>共享锁</strong>：共享锁允许一个事务读数据，不允许修改数据，如果其他事务要再对该行加锁，只能加共享锁。</li>
-<li><strong>排他锁</strong>：排他锁是修改数据时加的锁，可以读取和修改数据，一旦一个事务对该行数据加锁，其他事务将不能再对该数据加任务锁。</li>
+<li><strong>共享锁</strong>：读锁，允许多个事务读数据，但加了共享锁的数据，不能被其他事务修改直到锁释放。</li>
+<li><strong>排他锁</strong>：写锁，允许事务对数据进行读写，但若一个事务对该行数据加排他锁，其他事务则不能再对这行数据加任何锁。</li>
 </ul>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 共享锁</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">LOCK</span> <span class="token operator">IN</span> <span class="token keyword">SHARE MODE</span>
@@ -690,7 +696,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
 <span class="token comment" spellcheck="true">-- 排他锁</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> table_name <span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">FOR</span> <span class="token keyword">UPDATE</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-实现算法"><a href="#2-实现算法" class="headerlink" title="2. 实现算法"></a>2. 实现算法</h4><p><code>MySQL</code> 中 <code>InnoDB</code> 存储引擎支持三种行锁的算法，默认行锁模式为 <code>Next-Key Lock</code>，各自的作用效果如下：</p>
+<h4 id="2-实现模式"><a href="#2-实现模式" class="headerlink" title="2. 实现模式"></a>2. 实现模式</h4><p><code>MySQL</code> 中 <code>InnoDB</code> 存储引擎支持三种行锁的算法，默认行锁模式为 <code>Next-Key Lock</code>，各自的作用效果如下：</p>
 <blockquote>
 <p><strong>(Ⅰ) Record Lock</strong></p>
 </blockquote>
@@ -1319,7 +1325,7 @@ unlock <span class="token keyword">TABLES</span><span class="token punctuation">
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">304.9k</span>
+                <span class="white-color">305.1k</span>
             
             
             
