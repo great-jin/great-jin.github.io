@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-03
+                    2025-09-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    7 分
                 </div>
                 
 
@@ -571,10 +571,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在 <code>JDK 8</code> 中 <code>Java</code> 引入全新功能特性，如 <code>stream</code> 与 <code>time</code> 包等等，但今天的介绍的重点是函数编程。</p>
-<p><code>JDK</code> 中一共提供了四类函数，下面分别进行介绍各自特性以及声明使用方式。</p>
-<h3 id="一、Function"><a href="#一、Function" class="headerlink" title="一、Function"></a>一、Function</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>Function</code> 是在 <code>JDK 8 </code>中新添加的特性，即通过匿名函数方式将传统的方式转化为一个对象，如此设计最大的优点就是可以将一个方法封装为参数传入另一个方法，在一些开发场景中提高代码的复用率，在后面将会详细的进行介绍说明。</p>
-<h4 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2. 初始化"></a>2. 初始化</h4><p><code>Function&lt;T, R&gt;</code> 在初始化时需要制定两个类型，其中 <code>T</code> 为函数入参类型， <code>R</code> 为函数返回类型。</p>
+                <p><code>JDK 8</code> 中 <code>Java</code> 引入许多全新功能特性，如 <code>stream</code> 与 <code>time</code> 包等等，今天则让我们共同了解函数编程。</p>
+<p>针对函数编程，根据不同的出入参特性在 <code>JDK</code> 中一共提供了四类，下面分别进行介绍各自声明使用方式。</p>
+<h3 id="一、Function"><a href="#一、Function" class="headerlink" title="一、Function"></a>一、Function</h3><p><code>Function</code> 即通过匿名函数方式将传统的方式转化为一个对象，如此设计最大的优点就是可以将一个方法封装为参数传入另一个方法，在一些开发场景中提高代码的复用率。</p>
+<h4 id="1-声明方式"><a href="#1-声明方式" class="headerlink" title="1. 声明方式"></a>1. 声明方式</h4><p><code>Function&lt;T, R&gt;</code> 在初始化时需要制定两个类型，其中 <code>T</code> 为函数入参类型， <code>R</code> 为函数返回类型。</p>
 <p>定义之后的 <code>Function</code> 通过 <code>apply()</code> 方法调用，传入的数据类型由初始化确定。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -607,7 +607,7 @@
     <span class="token keyword">return</span> <span class="token string">"Function total: "</span> <span class="token operator">+</span> sum<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-多参数"><a href="#3-多参数" class="headerlink" title="3. 多参数"></a>3. 多参数</h4><p>通过上述的例子相信你已经了解了 <code>Function</code> 函数的基本使用了，但从刚才的例子你或许也发现了一个问题，那就是其默认只能传一个参数，如果需要传入多个参数呢？</p>
+<h4 id="2-多参数"><a href="#2-多参数" class="headerlink" title="2. 多参数"></a>2. 多参数</h4><p>通过上述的例子相信你已经了解了 <code>Function</code> 函数的基本使用了，但从刚才的例子你或许也发现了一个问题，那就是其默认只能传一个参数，如果需要传入多个参数呢？</p>
 <p>为此 <code>JDK</code> 中提供了 <code>Function&lt;T[], R&gt;</code> 用于传入一组同类型参数，但此方式将大大降低代码的可读性，不建议在实际开发中使用。</p>
 <blockquote>
 <p>下面就介绍另外两种多参数初始化方式。</p>
@@ -628,8 +628,8 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="2-TriFunction"><a href="#2-TriFunction" class="headerlink" title="(2) TriFunction"></a>(2) TriFunction</h5><p><code>TriFunction&lt;T1, T2, T3, R&gt;</code> 故名思义，即允许传入三个参数，基本上能够覆盖开发中的大部分场景，这里就不重复介绍了。</p>
-<h3 id="二、Consumer"><a href="#二、Consumer" class="headerlink" title="二、Consumer"></a>二、Consumer</h3><h4 id="1-基本介绍-1"><a href="#1-基本介绍-1" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>在上面中我们初步介绍了 <code>Function</code> 的作用，可以在之前的例子中看出其都是有返回值的，而 <code>Consumer</code> 基本作用与 <code>Function</code> 类型，但最大的不同之处在于其没有返回值，下面直接通过例子进行说明。</p>
-<h4 id="2-初始化-1"><a href="#2-初始化-1" class="headerlink" title="2. 初始化"></a>2. 初始化</h4><p><code>Consumer&lt;T&gt;</code> 因为没有返回值，所以初始化时参数只有一个，没有返回值类型。</p>
+<h3 id="二、Consumer"><a href="#二、Consumer" class="headerlink" title="二、Consumer"></a>二、Consumer</h3><p>在上面中我们初步介绍了 <code>Function</code> 的作用，可以在之前的例子中看出其都是有返回值的，而 <code>Consumer</code> 基本作用与 <code>Function</code> 类型，但最大的不同之处在于其没有返回值，下面直接通过例子进行说明。</p>
+<h4 id="1-声明方式-1"><a href="#1-声明方式-1" class="headerlink" title="1. 声明方式"></a>1. 声明方式</h4><p><code>Consumer&lt;T&gt;</code> 因为没有返回值，所以初始化时参数只有一个，没有返回值类型。</p>
 <p>在 <code>Consumer</code> 中调用函数是通过 <code>accept()</code> 方法，这点与 <code>Function</code> 有所区别。 </p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
 <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -645,9 +645,9 @@
     consumer<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-多参数-1"><a href="#3-多参数-1" class="headerlink" title="3. 多参数"></a>3. 多参数</h4><p><code>Consumer</code> 和 <code>Function</code> 类似，同样提供 <code>BiConsumer</code> 用于传入两个参数。</p>
+<h4 id="2-多参数-1"><a href="#2-多参数-1" class="headerlink" title="2. 多参数"></a>2. 多参数</h4><p><code>Consumer</code> 和 <code>Function</code> 类似，同样提供 <code>BiConsumer</code> 用于传入两个参数。</p>
 <p>注意 <code>Consumer</code> 不提供两个参数以上的初始化方式，具体的初始化声明方式与 <code>BiFunction</code> 类似，这里不进行过多的阐述。</p>
-<h3 id="三、Predicate"><a href="#三、Predicate" class="headerlink" title="三、Predicate"></a>三、Predicate</h3><h4 id="1-基本介绍-2"><a href="#1-基本介绍-2" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>Predicate&lt;T&gt;</code> 允许接收单个参数并最终返回 <code>boolean</code> 类型，与 <code>Function&lt;T, Boolean&gt;</code> 等价。</p>
+<h3 id="三、Predicate"><a href="#三、Predicate" class="headerlink" title="三、Predicate"></a>三、Predicate</h3><h4 id="1-声明方式-2"><a href="#1-声明方式-2" class="headerlink" title="1. 声明方式"></a>1. 声明方式</h4><p><code>Predicate&lt;T&gt;</code> 允许接收单个参数并最终返回 <code>boolean</code> 类型，与 <code>Function&lt;T, Boolean&gt;</code> 等价。</p>
 <p>通过 <code>test()</code> 方法触发 <code>Predicate</code> 函数，下面看一个具体示例：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Predicate<span class="token operator">&lt;</span>Integer<span class="token operator">></span> predicate <span class="token operator">=</span> <span class="token punctuation">(</span>it<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -661,7 +661,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="四、Supplier"><a href="#四、Supplier" class="headerlink" title="四、Supplier"></a>四、Supplier</h3><h4 id="1-基本介绍-3"><a href="#1-基本介绍-3" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p><code>Supplier&lt;R&gt;</code> 函数接口不允许传入参数，最终返回 <code>R</code> 类型结果，通过 <code>get()</code> 方法触发函数。</p>
+<h3 id="四、Supplier"><a href="#四、Supplier" class="headerlink" title="四、Supplier"></a>四、Supplier</h3><h4 id="1-声明方式-3"><a href="#1-声明方式-3" class="headerlink" title="1. 声明方式"></a>1. 声明方式</h4><p><code>Supplier&lt;R&gt;</code> 函数接口不允许传入参数，最终返回 <code>R</code> 类型结果，通过 <code>get()</code> 方法触发函数。</p>
 <p><code>Supplier</code> 相应的使用示例如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     Supplier<span class="token operator">&lt;</span>String<span class="token operator">></span> supplier <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -673,6 +673,85 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、工具集成"><a href="#五、工具集成" class="headerlink" title="五、工具集成"></a>五、工具集成</h3><p>经过上述的介绍，相信你对函数编辑有了初步的了解，下面就让我们看看在项目中使用场景。</p>
+<h4 id="1-数据去重"><a href="#1-数据去重" class="headerlink" title="1. 数据去重"></a>1. 数据去重</h4><p>在集合容器中，作为三大巨头的 <code>List</code> 遍布系统中每个角落，而 <code>List</code> 不同于 <code>Set</code> 即允许存在重复元素。</p>
+<p>因此，<code>List</code> 在许多业务场景下都面临着数据去重的问题，而利用 <code>Function</code> 则可优雅的实现去重效果。</p>
+<p>如下述示例中，利用 Function 与 Map 的特性，便轻易的实现数据去重效果。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token punctuation">,</span> R<span class="token operator">></span> List<span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token function">distinct</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">,</span> Function<span class="token operator">&lt;</span>T<span class="token punctuation">,</span> R<span class="token operator">></span> fun<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span> <span class="token operator">||</span> list<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    Map<span class="token operator">&lt;</span>R<span class="token punctuation">,</span> T<span class="token operator">></span> uniqueMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>T t <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        R key <span class="token operator">=</span> fun<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        uniqueMap<span class="token punctuation">.</span><span class="token function">putIfAbsent</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>uniqueMap<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于上述的工具实现，配合 <code>::</code> 的 <code>lambda</code> 表达式语法让代码进一步的优雅。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Foo<span class="token operator">></span> fooList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    fooList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span>1L<span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    fooList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span>1L<span class="token punctuation">,</span> <span class="token string">"Alex"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    fooList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span>2L<span class="token punctuation">,</span> <span class="token string">"Beth"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    fooList <span class="token operator">=</span> FunctionUtils<span class="token punctuation">.</span><span class="token function">distinct</span><span class="token punctuation">(</span>fooList<span class="token punctuation">,</span> Foo<span class="token operator">:</span><span class="token operator">:</span>getId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>fooList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-分批查询"><a href="#2-分批查询" class="headerlink" title="2. 分批查询"></a>2. 分批查询</h4><p>在 <code>Web</code> 项目中，常涉及的一个场景即 <code>in</code> 的批量查询，而往往不同的数据库对于 <code>in</code> 查询都有着一定限制，且对于单次大批量查询存在一定的性能损耗。</p>
+<p>对于此类场景，最常见的解决方案就是分批查询，针对 <code>in</code> 条件集合按分批查询汇总结果。同样的，让我们来看下通过 <code>Function</code> 如何实现分批处理的工具封装。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token punctuation">,</span> R<span class="token operator">></span> List<span class="token operator">&lt;</span>R<span class="token operator">></span> <span class="token function">batchSearch</span><span class="token punctuation">(</span><span class="token keyword">int</span> batchSize<span class="token punctuation">,</span>
+                                         List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">,</span>
+                                         Function<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">,</span> List<span class="token operator">&lt;</span>R<span class="token operator">>></span> fun<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span> <span class="token operator">||</span> list<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>T<span class="token operator">>></span> lists <span class="token operator">=</span> <span class="token function">partition</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> batchSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>R<span class="token operator">></span> resultList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> t <span class="token operator">:</span> lists<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span>R<span class="token operator">></span> res <span class="token operator">=</span> fun<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span> <span class="token operator">||</span> res<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        resultList<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> resultList<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基于上述的工具，则可轻易实现分批查询的结果汇总，使用实例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Long<span class="token operator">></span> idList <span class="token operator">=</span> <span class="token comment" spellcheck="true">/** 略去值来源 **/</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>Foo<span class="token operator">></span> result <span class="token operator">=</span> FunctionUtils<span class="token punctuation">.</span><span class="token function">batchSearch</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> idList<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token operator">:</span><span class="token operator">:</span>listById<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-批量业务"><a href="#3-批量业务" class="headerlink" title="3. 批量业务"></a>3. 批量业务</h4><p>上面的示例实现了查询的分批汇总，而在数据插入时，针对 <code>insert values</code> 语句的也往往存在长度限制。</p>
+<p>因此，借鉴上述的思路，通过 <code>Consumer</code> 函数即可实现类似的批处理。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">></span> <span class="token keyword">void</span> <span class="token function">action</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> batchSize<span class="token punctuation">,</span> Consumer<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>T<span class="token operator">>></span> consumer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Objects<span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span> <span class="token operator">||</span> list<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    List<span class="token operator">&lt;</span>List<span class="token operator">&lt;</span>T<span class="token operator">>></span> lists <span class="token operator">=</span> <span class="token function">partition</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> batchSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">></span> batchList <span class="token operator">:</span> lists<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        consumer<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>batchList<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样的，下面以数据插入为例，对应的示例代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    List<span class="token operator">&lt;</span>Foo<span class="token operator">></span> fooList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    FunctionUtils<span class="token punctuation">.</span><span class="token function">action</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">,</span> fooList<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token operator">:</span><span class="token operator">:</span>batchInsert<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1270,7 +1349,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">305.1k</span>
+                <span class="white-color">306.4k</span>
             
             
             

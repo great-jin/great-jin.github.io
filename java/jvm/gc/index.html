@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-09-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.1k
+                    5.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    18 分
+                    19 分
                 </div>
                 
 
@@ -612,12 +612,17 @@
 </blockquote>
 <ul>
 <li>将 <code>Eden</code> 和 <code>From Space</code> 中仍然存活的对象一次性复制到 <code>To Space</code> 空间上。</li>
-<li>清理掉 <code>Eden</code> 和及 <code>From Space</code> 空间，若存活的对象 <code>To Space</code> 无法存放则移至老年代。</li>
+<li>清理 <code>Eden</code> 和 <code>From Space</code> 空间，若存活的对象 <code>To Space</code> 无法存放则移至老年代。</li>
 <li>每经历过一次复制到 <code>To Space</code> 空间相对应的对象年龄即增长一次，增长至 <code>15</code> 时即移至老年代。</li>
 <li>通过参数 <code>MaxTenuringThreshold</code> 设置垃圾的最大年龄，默认为 <code>15</code>，取值为 <code>0~15</code>。</li>
 <li>当老年代中的空间不足以存放新生代中晋升的对象时即触发 <code>Full GC</code>，应降低 <code>Full GC</code> 发生频次。</li>
 </ul>
-<h4 id="2-参数配置"><a href="#2-参数配置" class="headerlink" title="2. 参数配置"></a>2. 参数配置</h4><p>在 <code>Appel</code> 式回收方式中较为关键的 <code>JVM</code> 参数为下表中三类，前两个就不再过多阐述上述已经详细介绍了，让我们关注一下第三项。</p>
+<h4 id="2-对象晋升"><a href="#2-对象晋升" class="headerlink" title="2. 对象晋升"></a>2. 对象晋升</h4><p>根据上面的描述，默认情况下当一个对象 <code>YGC</code> 超过 <code>15</code> 次后存活则会晋升至老年代。</p>
+<p>但在实际的场景中，<code>JVM</code> 并不一定会严格遵循这个规则，即依据 <code>Desired Survivor Size</code> 来动态调整对象晋升到老年代的阈值。当 <code>Survivor</code> 区能放下大多数对象则适当增加对象的存活年龄阈值（延迟晋升），反之则降低阈值，让对象更早晋升到老年代，以避免 <code>Survivor</code> 区过度溢出。</p>
+<p>在 JVM 中通过 <code>-XX:TargetSurvivorRatio</code>（默认 <code>50%</code>）实现 <code>Desired Survivor Size</code> 容量控制，其值等于 <code>Survivor 容量 × argetSurvivorRatio</code>。</p>
+<p>如 <code>Survivor</code> 区容量为 <code>10MB</code>，<code>TargetSurvivorRatio = 50%</code>，则 <code>Desired Survivor Size ≈ 5MB</code>。</p>
+<p>通俗一点来讲，即当 <code>Survivor</code> 内存容量占用达到 <code>Desired Survivor Size</code> 之后，为了避免新生代空间不足，即便存活的对象未达到 <code>MaxTenuringThreshold</code> 此时仍然会直接晋升至老年代。</p>
+<h4 id="3-参数配置"><a href="#3-参数配置" class="headerlink" title="3. 参数配置"></a>3. 参数配置</h4><p>在 <code>Appel</code> 式回收方式中较为关键的 <code>JVM</code> 参数为下表中三类，前两个就不再过多阐述上述已经详细介绍了，让我们关注一下第三项。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">参数</td>
@@ -640,7 +645,7 @@
 
 <p>通过刚才的了解我们知道在垃圾回收时一个存活的对象会被先复制到 <code>To Space</code> 区域，当达到 <code>MaxTenuringThreshold</code> 所配置的次数或 <code>To Space</code> 空间不足时将被移到老年代，而 <code>PretenureSizeThreshold</code> 参数则可跳过此阶段。</p>
 <p>例如将其值配置为 <code>1m</code>，那么当对象超过 <code>1m</code> 时则会直接移至老年代而跳过年轻代中 <code>To Space</code> 的复制动作，这样的好处就是对于大对象可以降低操作频次从而提高性能。</p>
-<h4 id="3-示例分析"><a href="#3-示例分析" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>在 <code>JDK 8</code> 中的虚拟机默认为 <code>Parallel GC</code>，其正是基于 <code>Appel</code> 式回收实现，通过 <code>jmap</code> 命令: <code>jmap -heap &lt;pid&gt;</code> 即可查询当前虚拟机的堆内存分布，结果如下：<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
+<h4 id="4-示例分析"><a href="#4-示例分析" class="headerlink" title="4. 示例分析"></a>4. 示例分析</h4><p>在 <code>JDK 8</code> 中的虚拟机默认为 <code>Parallel GC</code>，其正是基于 <code>Appel</code> 式回收实现，通过 <code>jmap</code> 命令: <code>jmap -heap &lt;pid&gt;</code> 即可查询当前虚拟机的堆内存分布，结果如下：<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/cmd/2.png"></p>
 <p>我们主要关注下表中的几个参数，可以看到 <code>NewRatio=2</code> 且 <code>NewSize</code> 与 <code>OldSize</code> 的比例正好为 <code>1:2</code>。</p>
 <p>需要注意一点老年代 <code>(OldSize)</code> 并非直接设置而来，而是通过 <code>NewSize</code> 与 <code>NewRatio</code> 共同进行控制，因此参数中并无 <code>MaxOldSize</code> 项。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
@@ -716,7 +721,7 @@
 <li><p><strong>筛选回收</strong>: 负责更新 <code>Region</code> 的统计数据，对各个 <code>Region</code> 的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个 <code>Region</code> 构成回收集，然后把决定回收的那一部分 <code>Region</code> 的存活对象复制到空的 <code>Region</code> 中，再清理掉整个旧 <code>Region</code> 的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。</p>
 </li>
 </ul>
-<h4 id="3-示例分析-1"><a href="#3-示例分析-1" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>同样，这边以具体的示例来介绍 <code>G1</code> 回收器的具体信息。</p>
+<h4 id="3-示例分析"><a href="#3-示例分析" class="headerlink" title="3. 示例分析"></a>3. 示例分析</h4><p>同样，这边以具体的示例来介绍 <code>G1</code> 回收器的具体信息。</p>
 <p>以 <code>JDK 17</code> 运行一个 <code>demo</code> 工程，通过 <code>jhsdb jmap --heap --pid &lt;pid&gt;</code> 命令打印程序的堆内存信息如下。</p>
 <p>从图中可以看出在 <code>Heap Configuration</code> 部分与上述提到的 <code>Appel</code> 式回收大体上一致，额外多了一个 <code>G1HeapRegionSize</code> 用于配置单个 <code>Region</code> 的大小。<br><img src="/album/loading.gif" data-original="/album/article/java/jvm/13.png"></p>
 <p>让我们将目光放到 <code>G1</code> 内存使用上，可以看到由于堆内存最大值为 <code>8128MB</code> 且单个 <code>Region</code> 大小为 <code>4MB</code>，因此总共划分了 <code>2032</code> 个 <code>Regison</code> 块。</p>
@@ -1342,7 +1347,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">305.1k</span>
+                <span class="white-color">306.4k</span>
             
             
             

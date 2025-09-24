@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-06
+                    2025-09-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.7k
+                    2.8k
                 </div>
                 
 
@@ -778,7 +778,17 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token keyword">group</span> <span class="token keyword">by</span> 
     id<span class="token punctuation">,</span> name<span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>同时若开启了 <code>ONLY_FULL_GROUP_BY</code> 在执行 <code>group by</code> 查询时需要对非分组字段执行取值逻辑，如使用 <code>MAX</code> 或 <code>MIN</code> 函数。</p>
+<p>同时若开启了 <code>ONLY_FULL_GROUP_BY</code> 在执行 <code>group by</code> 查询时需要对非分组字段执行取值逻辑，如使用 <code>MAX()</code> 或 <code>MIN()</code> 函数。</p>
+<p>如下述查询示例中 <code>name</code> 并不在 <code>group by</code> 条件中，在业务上若能保证 <code>id</code> 相同时 <code>name</code> 也一致，则可通过 <code>MAX()</code> 返回结果。除此之外在 <code>MySQL 5.7</code> 之后提供了 <code>any_value()</code> 函数用于返回结果集中的任意一个结果，可实现同样效果。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    id<span class="token punctuation">,</span> 
+    <span class="token function">MAX</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span> 
+    <span class="token function">sum</span><span class="token punctuation">(</span>score<span class="token punctuation">)</span> <span class="token keyword">as</span> num 
+<span class="token keyword">from</span> 
+    tb_user
+<span class="token keyword">group</span> <span class="token keyword">by</span> 
+    id<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查看是否开启 <code>ONLY_FULL_GROUP_BY</code> 通过下述命令查询：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 查看 sql_mode</span>
 <span class="token keyword">SELECT</span> @<span class="token variable">@sql_mode</span><span class="token punctuation">;</span>
@@ -858,17 +868,23 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
 <span class="token comment" spellcheck="true">-------------------------------------------------------</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="5-EXISTS"><a href="#5-EXISTS" class="headerlink" title="5. EXISTS"></a>5. EXISTS</h4><p><code>EXISTS</code> 运算符用于判断查询子句是否有记录，如果有一条或多条记录存在返回 <code>True</code>，否则返回 <code>False</code>。</p>
-<p>与上述 <code>join</code> 连表查询的不同之处在于当子查询记录集合大于父查询集合时，通过 <code>join</code> 方式查询可能存在笛卡尔积的问题，导致查询效率低下，而 <code>EXISTS</code> 则并无此问题。</p>
-<p>下面通过一个具体示例演示 <code>EXISTS</code> 的效果，如下述语句即查询 <code>tb_user</code> 中 <code>username</code> 重复的记录。</p>
+<p>基于此特定，当查询逻辑只需匹配记录是否存在而非返回具体的属性结果时，相对应 join 连表查询而言 <code>EXISTS</code> 通常能取得更优性能。</p>
+<p>让我们通过具体示例演示 <code>EXISTS</code> 的效果，如下述语句即查询 <code>tb_user</code> 表中在 <code>tb_studnt</code> 中存在同名关联记录。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> 
+    user_id<span class="token punctuation">,</span>
     username
 <span class="token keyword">FROM</span> 
-    tb_user
+    tb_user u
 <span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span>
 <span class="token punctuation">(</span>
-    <span class="token keyword">SELECT</span> username <span class="token keyword">FROM</span> tb_user 
+    <span class="token keyword">SELECT</span> 
+        <span class="token number">1</span> 
+    <span class="token keyword">FROM</span> 
+        tb_studnt s
+    <span class="token keyword">WHERE</span>
+        u<span class="token punctuation">.</span>username <span class="token operator">=</span> s<span class="token punctuation">.</span>username
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、常用函数"><a href="#六、常用函数" class="headerlink" title="六、常用函数"></a>六、常用函数</h3><h4 id="1-时间函数"><a href="#1-时间函数" class="headerlink" title="1. 时间函数"></a>1. 时间函数</h4><h5 id="1-date-format"><a href="#1-date-format" class="headerlink" title="(1) date_format()"></a>(1) date_format()</h5><p>通过 <code>date_format()</code> 函数实现时间格式化。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> date_format<span class="token punctuation">(</span><span class="token string">'2022-06-10 02:17:54'</span><span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d %H:00:00'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> time1<span class="token punctuation">;</span>
    
@@ -1538,7 +1554,7 @@ test_db<span class="token punctuation">.</span>tb_info<span class="token punctua
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">305.1k</span>
+                <span class="white-color">306.4k</span>
             
             
             

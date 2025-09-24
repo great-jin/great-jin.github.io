@@ -370,7 +370,7 @@
     
     
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/util/mybatisplus.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/album/banner/java/mybatis/2.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-25
+                    2025-09-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    755
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -576,7 +576,7 @@
 <blockquote>
 <p>下面就详细介绍如何在 Spring Boot 工程中集成 MyBatis Plus</p>
 </blockquote>
-<h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>万年不变的老规矩，先在工程中引入 <code>MyBatis Plus</code> 相关 <code>Maven</code> 依赖。</p>
+<h3 id="一、基础服务"><a href="#一、基础服务" class="headerlink" title="一、基础服务"></a>一、基础服务</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p>万年不变的老规矩，先在工程中引入 <code>MyBatis Plus</code> 相关 <code>Maven</code> 依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.baomidou<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mybatis-plus-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
@@ -607,13 +607,13 @@
     <span class="token keyword">private</span> String password<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-DAO层"><a href="#3-DAO层" class="headerlink" title="3. DAO层"></a>3. DAO层</h4><p>在 <code>Dao层</code> 通过继承 <code>BaseMapper</code> 泛型类即可继承表对象的基础增删改操作。</p>
+<h3 id="二、业务逻辑"><a href="#二、业务逻辑" class="headerlink" title="二、业务逻辑"></a>二、业务逻辑</h3><h4 id="1-DAO层"><a href="#1-DAO层" class="headerlink" title="1. DAO层"></a>1. DAO层</h4><p>在 <code>Dao层</code> 通过继承 <code>BaseMapper</code> 泛型类即可继承表对象的基础增删改操作。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserInfoDao</span> <span class="token keyword">extends</span> <span class="token class-name">BaseMapper</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> <span class="token punctuation">{</span>
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>完成之后你会发现即使 <code>UserInfoDao</code> 接口类中我们并未添加任务接口方法，但仍能使用表对象相关的增删改查方法，这便是 <code>MyBatis Plus</code> 为我们所提供的。<br><img src="/album/loading.gif" data-original="/album/article/java/mybatis/1.png"></p>
-<h4 id="4-Service"><a href="#4-Service" class="headerlink" title="4. Service"></a>4. Service</h4><h5 id="1-Service"><a href="#1-Service" class="headerlink" title="(1) Service"></a>(1) Service</h5><p>在 <code>Service</code> 接口类通过继承 <code>IService</code> 泛型类即可继承表对象的基础增删改操作。</p>
+<h4 id="2-Service"><a href="#2-Service" class="headerlink" title="2. Service"></a>2. Service</h4><h5 id="1-Service"><a href="#1-Service" class="headerlink" title="(1) Service"></a>(1) Service</h5><p>在 <code>Service</code> 接口类通过继承 <code>IService</code> 泛型类即可继承表对象的基础增删改操作。</p>
 <p>当然如果你有复杂的业务逻辑处理也可在 <code>UserInfoService</code> 自行添加，操作流程与 <code>MyBatis</code> 一致。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">UserInfoService</span> <span class="token keyword">extends</span> <span class="token class-name">IService</span><span class="token operator">&lt;</span>UserInfo<span class="token operator">></span> <span class="token punctuation">{</span>
 
@@ -628,7 +628,7 @@
 
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-Wapper"><a href="#5-Wapper" class="headerlink" title="5. Wapper"></a>5. Wapper</h4><p>通过上面的示例你应该对 <code>MyBatis Plus</code> 有了一个初步的了解。</p>
+<h4 id="3-Wapper"><a href="#3-Wapper" class="headerlink" title="3. Wapper"></a>3. Wapper</h4><p>通过上面的示例你应该对 <code>MyBatis Plus</code> 有了一个初步的了解。</p>
 <p>但你可以发现但我们需要自定义查询或更新等条件时，光上面的配置就不够用了。为此 <code>MyBatis Plus</code> 引入了 <code>Wapper</code> 构造器用于构造多条件等业务场景。</p>
 <p>其中 <code>eq()</code> 等价于查询语句中的 <code>where &lt;cloumn&gt; = &lt;value&gt;</code> ，注意方法第一个参数是表字段名而非属性字段名。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -641,6 +641,71 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>除 <code>eq()</code> 外其对 <code>SQL</code> 查询条件中的 <code>in or</code> 等关键字等提供了对应的方法，这里不作详细介绍。<br><img src="/album/loading.gif" data-original="/album/article/java/mybatis/3.png"></p>
+<h3 id="三、进阶操作"><a href="#三、进阶操作" class="headerlink" title="三、进阶操作"></a>三、进阶操作</h3><h4 id="1-自动填充"><a href="#1-自动填充" class="headerlink" title="1. 自动填充"></a>1. 自动填充</h4><p>在表结构设计中，常伴随着 <code>create_by</code> 与 <code>create_time</code> 等基础属性，而这部分赋值逻辑也往往一致。</p>
+<p>因此，在 <code>Mybatis Plus</code> 中提供了 <code>MetaObjectHandler</code> 接口用于实现全局的默认属性自动填充，无需在业务入口编写重复代码。</p>
+<p>在定义声明时并不复杂，分别重写 <code>insertFill()</code> 与 <code>updateFill()</code> 方法，故名思意二者作用于新增与更新阶段。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BaseMetaObjectHandler</span> <span class="token keyword">implements</span> <span class="token class-name">MetaObjectHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insertFill</span><span class="token punctuation">(</span>MetaObject metaObject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setFieldValByName</span><span class="token punctuation">(</span><span class="token string">"create_by"</span><span class="token punctuation">,</span> <span class="token function">getLoginUId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> metaObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setFieldValByName</span><span class="token punctuation">(</span><span class="token string">"create_time"</span><span class="token punctuation">,</span> LocalDateTime<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> metaObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">updateFill</span><span class="token punctuation">(</span>MetaObject metaObject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setFieldValByName</span><span class="token punctuation">(</span><span class="token string">"update_by"</span><span class="token punctuation">,</span> <span class="token function">getLoginUId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> metaObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setFieldValByName</span><span class="token punctuation">(</span><span class="token string">"update_time"</span><span class="token punctuation">,</span> LocalDateTime<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> metaObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">private</span> Long <span class="token function">getLoginUId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 略去</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>而在使用时则通过 <code>@TableField</code> 注解的 <code>fill</code> 属性指定生效范围，取值参考下表：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">属性</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DEFAULT</td>
+        <td style="text-align: center;">默认不生效。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">INSERT</td>
+        <td style="text-align: center;">作用于插入阶段。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">UPDATE</td>
+        <td style="text-align: center;">作用于更新阶段。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">INSERT_UPDATE</td>
+        <td style="text-align: center;">作用于插入与更新阶段。</td>
+    </tr>
+</table>
+</br>
+
+<p>对应的使用代码示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@TableField</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"create_by"</span><span class="token punctuation">,</span> fill <span class="token operator">=</span> FieldFill<span class="token punctuation">.</span>INSERT<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Long createBy<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@TableField</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"create_time"</span><span class="token punctuation">,</span> fill <span class="token operator">=</span> FieldFill<span class="token punctuation">.</span>INSERT<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> LocalDateTime createTime<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@TableField</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"update_by"</span><span class="token punctuation">,</span> fill <span class="token operator">=</span> FieldFill<span class="token punctuation">.</span>INSERT_UPDATE<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Long updateBy<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@TableField</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"update_time"</span><span class="token punctuation">,</span> fill <span class="token operator">=</span> FieldFill<span class="token punctuation">.</span>INSERT_UPDATE<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> LocalDateTime updateTime<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1238,7 +1303,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">305.1k</span>
+                <span class="white-color">306.4k</span>
             
             
             
