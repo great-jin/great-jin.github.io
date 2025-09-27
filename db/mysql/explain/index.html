@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-09-27
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    2.5k
                 </div>
                 
 
@@ -571,18 +571,27 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、执行计划"><a href="#一、执行计划" class="headerlink" title="一、执行计划"></a>一、执行计划</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>执行计划可谓是每个数据库中十分重要的一环，故名思意即通过执行计划可以了解 <code>SQL</code> 脚本对应的执行信息。</p>
+                <p>执行计划可谓是每个数据库中十分重要的一环，故名思意即通过执行计划可以了解 <code>SQL</code> 脚本对应的执行信息。</p>
 <p>在排查慢 <code>SQL</code> 时更尤为重要，通过执行计划可以查看到语句的执行顺序，是否使用索引等等信息，帮助我们更好的优化语句脚本。</p>
-<h4 id="2-数据测试"><a href="#2-数据测试" class="headerlink" title="2. 数据测试"></a>2. 数据测试</h4><p>在开始之前先准备两张测试表，结构相对简单对应的脚本语句如下，另一测试表 <code>tb_02</code> 表结构与其相同。</p>
+<h3 id="一、执行计划"><a href="#一、执行计划" class="headerlink" title="一、执行计划"></a>一、执行计划</h3><h4 id="1-数据准备"><a href="#1-数据准备" class="headerlink" title="1. 数据准备"></a>1. 数据准备</h4><p>在开始之前先准备两张测试表，结构相对简单对应的脚本语句如下。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>tb_01<span class="token punctuation">`</span> <span class="token punctuation">(</span>
   <span class="token punctuation">`</span>Column1<span class="token punctuation">`</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
   <span class="token punctuation">`</span>Column2<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
   <span class="token punctuation">`</span>Column3<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
   <span class="token punctuation">`</span>Column4<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
   <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>Column1<span class="token punctuation">`</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>utf8mb4<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-使用方式"><a href="#3-使用方式" class="headerlink" title="3. 使用方式"></a>3. 使用方式</h4><p>执行计划的使用方式十分简单，只需要在对应的语句前添加 <code>explain</code> 关键字执行即可，执行结果将返回语句执行的详细信息。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/1.png"></p>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>tb_02<span class="token punctuation">`</span> <span class="token punctuation">(</span>
+  <span class="token punctuation">`</span>Column1<span class="token punctuation">`</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column2<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column3<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token punctuation">`</span>Column4<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>Column1<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-案例演示"><a href="#2-案例演示" class="headerlink" title="2. 案例演示"></a>2. 案例演示</h4><p>执行计划的使用方式十分简单，只需要在对应的语句前添加 <code>explain</code> 关键字执行即可，执行结果将返回语句执行的详细信息。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/1.png"></p>
 <p>上图执行结果中字段的描述信息参考下表，后面会详细介绍。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -591,11 +600,11 @@
     </tr>
     <tr>
         <td style="text-align: center;">id</td>
-        <td style="text-align: center;">选择标识符。</td>
+        <td style="text-align: center;">选择标识符，数字越大表示越先执行。</td>
     </tr>
     <tr>
         <td style="text-align: center;">select_type</td>
-        <td style="text-align: center;">表示查询的类型</td>
+        <td style="text-align: center;">表示查询的类型。</td>
     </tr>
     <tr>
         <td style="text-align: center;">table</td>
@@ -603,15 +612,15 @@
     </tr>
     <tr>
         <td style="text-align: center;">partitions</td>
-        <td style="text-align: center;">执行匹配的分区。</td>
+        <td style="text-align: center;">执行匹配的分区，非分区表通常为 NULL。</td>
     </tr>
     <tr>
         <td style="text-align: center;">type</td>
-        <td style="text-align: center;">表示表的连接类型</td>
+        <td style="text-align: center;">表示表的连接类型。</td>
     </tr>
     <tr>
         <td style="text-align: center;">possible_keys</td>
-        <td style="text-align: center;">表示查询时，可能使用的索引。</td>
+        <td style="text-align: center;">表示查询时可能使用的索引。</td>
     </tr>
     <tr>
         <td style="text-align: center;">key</td>
@@ -619,15 +628,15 @@
     </tr>
     <tr>
         <td style="text-align: center;">key_len</td>
-        <td style="text-align: center;">索引字段的长度。</td>
+        <td style="text-align: center;">使用索引的长度，越短说明利用度越高。</td>
     </tr>
     <tr>
         <td style="text-align: center;">ref</td>
-        <td style="text-align: center;">列与索引的比较。</td>
+        <td style="text-align: center;">显示索引列是与哪个列/常量比较。</td>
     </tr>
     <tr>
         <td style="text-align: center;">rows</td>
-        <td style="text-align: center;">扫描出的行数(估算的行数)。</td>
+        <td style="text-align: center;">预估需要扫描出的行数。</td>
     </tr>
     <tr>
         <td style="text-align: center;">filtered</td>
@@ -642,44 +651,146 @@
 
 
 <h3 id="二、属性解读"><a href="#二、属性解读" class="headerlink" title="二、属性解读"></a>二、属性解读</h3><p>在上面的表格中可以看到执行结果所返回的属性并不少，下面挑选几个比较重要的属性进行介绍。</p>
-<h4 id="1-ID"><a href="#1-ID" class="headerlink" title="1. ID"></a>1. ID</h4><p><code>ID</code> 属性返回的值是一个由 <code>1</code> 开始递增的数据，用于标识查询时每张表的查询顺序，当都为 <code>1</code> 时则执行顺序为依次向下。</p>
-<p>例如下述示例中执行连表查询，返回结果中两张表对应的 <code>ID</code> 均为 <code>1</code>，则二者的执行顺序从上执行即 <code>t1</code> 先于 <code>t2</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/2.png"></p>
-<p>可以看出对于 <code>ID</code> 相同的查询属于归属同一分组，执行优先级自上而下，而当涉及到子查询等操作时，子查询的优先级更高相对的 <code>ID</code> 值也越大。如下图中子查询 <code>tb_02</code> 对应的 <code>ID</code> 为 <code>2</code>，表明其执行优先级高于 <code>tb_01</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/3.png"></p>
-<h4 id="2-Type"><a href="#2-Type" class="headerlink" title="2. Type"></a>2. Type</h4><p><code>Type</code> 属性是执行计划中十分重要的一项指标，也是我们判断一条语句是否高效的一大依据。其表示连接类型，常见的类型如下，性能从上至下越来越高，一般好的 <code>SQL</code> 语句至少要达到 <code>range</code> 级别，而 <code>all</code> 级别应当杜绝。</p>
-<blockquote>
-<ul>
-<li><strong>ALL</strong>：全表扫描，应当避免该类型;</li>
-<li><strong>index</strong>：索引全局扫描，<code>index</code> 与 <code>ALL</code> 区别为 <code>index</code> 类型只遍历索引树;</li>
-<li><strong>range</strong>：检索索引一定范围的行;</li>
-<li><strong>ref</strong>：非唯一性索引扫描，返回匹配某个单独值的所有行;</li>
-<li><strong>eq_ref</strong>：唯一索引扫描，对于每个索引键，表中只有一条记录与之匹配，常见主键或唯一索引扫描;</li>
-<li><strong>const</strong>：表示通过一次索引就找到了结果，常见主键或唯一索引扫描;</li>
-<li><strong>system</strong>：<code>system</code> 是 <code>const</code> 类型的特例，当查询的表只有一行的情况下使用 <code>system</code>;</li>
-<li><strong>NULL</strong>：<code>MySQL</code> 在优化过程中分解语句，执行时甚至不用访问表或索引，是最高的登记;</li>
-</ul>
-</blockquote>
+<h4 id="1-ID"><a href="#1-ID" class="headerlink" title="1. ID"></a>1. ID</h4><p><code>ID</code> 返回一个由 <code>1</code> 开始递增的数据，标识查询时每张表的查询顺序，当都为 <code>1</code> 时则执行顺序为依次向下。</p>
+<p>如下述示例中执行连表查询，返回结果中两张表对应的 <code>ID</code> 均为 <code>1</code>，则执行顺序从上至下 <code>t1</code> 先于 <code>t2</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/2.png"></p>
+<p>可以看出对于 <code>ID</code> 相同的查询属于归属同一分组，执行优先级自上而下，而当涉及到子查询等操作时，子查询的优先级更高相对的 <code>ID</code> 值也越大。</p>
+<p>如下图中子查询 <code>tb_02</code> 对应的 <code>ID</code> 为 <code>2</code>，表明其执行优先级高于 <code>tb_01</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/3.png"></p>
+<h4 id="2-select-type"><a href="#2-select-type" class="headerlink" title="2. select_type"></a>2. select_type</h4><p><code>select_type</code> 表示查询语句中对应 <code>SELECT</code> 的类型，用于描述各个查询部分的类型。</p>
+<p>在分析执行计划时，这部分内容并非核心指标，其内容了解即可。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">类型</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">SIMPLE</td>
+        <td style="text-align: center;">简单查询（不包含子查询或 UNION）。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">PRIMARY</td>
+        <td style="text-align: center;">最外层查询。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">SUBQUERY</td>
+        <td style="text-align: center;">子查询中的 SELECT。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DERIVED</td>
+        <td style="text-align: center;">派生表（FROM 子查询）。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">UNION</td>
+        <td style="text-align: center;">UNION 中第二个及之后的 SELECT。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">UNION RESULT</td>
+        <td style="text-align: center;">UNION 合并的结果。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">DEPENDENT SUBQUERY</td>
+        <td style="text-align: center;">依赖外层的子查询。</td>
+    </tr>
+</table>
+
+
+<h4 id="3-Type"><a href="#3-Type" class="headerlink" title="3. Type"></a>3. Type</h4><p><code>Type</code> 表示连接类型，是执行计划中十分重要的一项指标，也是判断一条语句是否高效的核心依据。</p>
+<p>一般性能较好的 <code>SQL</code> 语句至少要达到 <code>range</code> 级别，而对于 <code>all</code> 级别应当杜绝。</p>
+<p>其中常见的类型如下，性能从上至下越来越高，</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">方法</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">NULL</td>
+        <td style="text-align: center;">最高的性能，执行时甚至不用访问表或索引。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">system</td>
+        <td style="text-align: center;">const 类型的特例，当查询的表只有一行。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">const</td>
+        <td style="text-align: center;">表示通过一次索引就找到了结果，常见主键或唯一索引扫描。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">eq_ref</td>
+        <td style="text-align: center;">表中只有一条记录与之匹配，常见主键唯一索引与外键关联。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">ref</td>
+        <td style="text-align: center;">非唯一性索引扫描，返回匹配某个单独值的所有行;</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">range</td>
+        <td style="text-align: center;">索引范围扫描，常见于 BETWEEN、>、< 条件。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">index</td>
+        <td style="text-align: center;">全索引扫描（比全表扫描快，因为只扫索引树）。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">ALL</td>
+        <td style="text-align: center;">全表扫描，应当避免该类型。</td>
+    </tr>
+</table>
+</br>
+
 <p>以之前的测试表为例，查询主键字段 <code>column1</code> 为 <code>1</code> 的数据，查看返回结果可以看到对应 <code>type</code> 的值为 <code>const</code>，即通过主键索引单次即实现数据查询。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/4.png"></p>
-<h4 id="3-Possible-keys"><a href="#3-Possible-keys" class="headerlink" title="3. Possible_keys"></a>3. Possible_keys</h4><p><code>possible_keys</code> 与 <code>key</code> 属性都表示所用到的索引，前者是 <code>MySQL</code> 判断可能用到的索引，而后者是实际查询所用到的索引。</p>
+<h4 id="4-Possible-keys"><a href="#4-Possible-keys" class="headerlink" title="4. Possible_keys"></a>4. Possible_keys</h4><p><code>possible_keys</code> 与 <code>key</code> 属性都表示所用到的索引，前者是 <code>MySQL</code> 判断可能用到的索引，而后者是实际查询所用到的索引。</p>
 <p>在上一点的查询中，通过主键查询数据时可以看到返回 <code>possible_keys</code> 与 <code>key</code> 均为 <code>PRIMARY</code>，表示预测和实际查询的所使用的索引都是主键索引。</p>
 <p>同理，在查询中将条件中的字段替换为普通属性，可以看到结果中的  <code>possible_keys</code> 与 <code>key</code> 都为 <code>null</code>，且结果中的 <code>type</code> 为 <code>ALL</code>，表明查询没有使用任何索引而是执行了全表扫描。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/5.png"></p>
-<p>对于这种全表扫描通常则需要进行优化，最简单的方式即给对应的条件字段条件索引，执行下述脚本添加索引后重新执行上述语句。</p>
-<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">index</span> c2_idx
-<span class="token keyword">on</span> tb_01 <span class="token punctuation">(</span>column2<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>从下图中的结果可以看到此时的 <code>type</code> 为 <code>ref</code> 且 <code>possible_keys</code> 与 <code>key</code> 则为 <code>c2_idx</code>，表明此时查询已经通过索引执行。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/6.png"></p>
-<h4 id="3-Extra"><a href="#3-Extra" class="headerlink" title="3. Extra"></a>3. Extra</h4><p><code>Extra</code> 表示详细说明，一般该列存在下列值，常见的不太友好的值有：<code>Using filesort</code>，<code>Using temporary</code>。</p>
-<blockquote>
-<ul>
-<li><strong>Using where</strong>: 表示不用读取表中所有信息，仅通过索引就可以获取所需数据，即使用列覆盖索引;</li>
-<li><strong>Using temporary</strong>: 表示需要使用临时表来存储结果集，常见于 <code>group by</code> 与 <code>order by</code>;</li>
-<li><strong>Using filesort</strong>: 表示无法利用索引完成的排序，此类情景通常需要进行优化;</li>
-<li><strong>Using join buffer</strong>: 表示使用了连接缓存，如果出现了这个值，建议根据查询的添加索引;</li>
-<li><strong>Impossible where</strong>: 表示 <code>where</code> 语句会一直 <code>false</code>，导致没有符合条件的行;</li>
-<li><strong>Select tables optimized away</strong>: 这个值意味着 <code>sql</code> 优化到不能在优化了;</li>
-<li><strong>No tables used</strong>: <code>Query</code> 语句中使用 <code>from dual</code> 或不含任何 <code>from</code> 子句;</li>
-</ul>
-</blockquote>
-<h3 id="三、操作句柄"><a href="#三、操作句柄" class="headerlink" title="三、操作句柄"></a>三、操作句柄</h3><h4 id="1-基础介绍-1"><a href="#1-基础介绍-1" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>除了执行计划之外，在 <code>MySQL</code> 还提供了操作句柄 <code>Handler</code> 用于描述脚本对数据发生的变更。</p>
+<p>对于这种全表扫描通常则需要进行优化，最简单的方式即给对应的条件字段条件索引。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">index</span> c2_idx <span class="token keyword">on</span> tb_01 <span class="token punctuation">(</span>column2<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>添加索引后重新执行查询语句，从图中结果可以看到此时的 <code>type</code> 为 <code>ref</code> 且 <code>possible_keys</code> 与 <code>key</code> 则为 <code>c2_idx</code>，表明此时查询已经通过索引执行。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/6.png"></p>
+<h4 id="5-ref"><a href="#5-ref" class="headerlink" title="5. ref"></a>5. ref</h4><p><code>ref</code> 表示索引列是与哪个列或常量比较，其通常值为 <code>null</code>、 <code>const</code> 与 <code>fun/func</code>。</p>
+<p><code>ref</code> 可以在一定程度上表示索引是否生效，当值为 <code>fun/func</code> 时表示参与了计算转换。此时即便 <code>Possible_keys</code> 与 <code>key</code> 都正常返回对应的索引信息，但实际索引可能并未生效或索引性能下降，因此需避免此场景。</p>
+<p>其中较为常见的场景即在 <code>join</code> 关联表之间的字符集或 <code>collation</code> 不一致，致使 <code>MySQL</code> 触发了隐式转化而导致的索引性能下降。</p>
+<h4 id="6-Extra"><a href="#6-Extra" class="headerlink" title="6. Extra"></a>6. Extra</h4><p><code>Extra</code> 表示补充详细说明，其中的不太友好的有：<code>Using filesort</code>，<code>Using temporary</code>。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">属性</td>
+        <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Using index</td>
+        <td style="text-align: center;">覆盖索引（只需访问索引，不用回表）。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Using where</td>
+        <td style="text-align: center;">需要通过条件过滤行。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Using join buffer</td>
+        <td style="text-align: center;">表示使用连接缓存，如果出现该值建议为连接键添加索引。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Using temporary</td>
+        <td style="text-align: center;">使用临时表，常见于 GROUP BY、ORDER BY。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Using filesort</td>
+        <td style="text-align: center;">表示无法利用索引完成的排序，通常需要进行优化。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Impossible where</td>
+        <td style="text-align: center;">表示 where 条件没有符合条件的行</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Select tables optimized away</td>
+        <td style="text-align: center;">这个值意味着 sql 优化到不能在优化了</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">No tables used</td>
+        <td style="text-align: center;">虚拟表查询，即 from dual 或不含任何 from 子句。</td>
+    </tr>
+</table>
+</br>
+
+
+
+<h3 id="三、操作句柄"><a href="#三、操作句柄" class="headerlink" title="三、操作句柄"></a>三、操作句柄</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>除了执行计划之外，在 <code>MySQL</code> 还提供了操作句柄 <code>Handler</code> 用于描述脚本对数据发生的变更。</p>
 <p>通过下述命令即可查看当前会话的脚本执行句柄信息，通常在执行查询之前通过 <code>FLUSH</code> 先执行清空。</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 清空句柄</span>
 FLUSH <span class="token keyword">STATUS</span><span class="token punctuation">;</span>
@@ -1383,7 +1494,7 @@ FLUSH <span class="token keyword">STATUS</span><span class="token punctuation">;
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">306.4k</span>
+                <span class="white-color">306.6k</span>
             
             
             
