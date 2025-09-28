@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-09-28
                 </div>
                 
 
@@ -654,26 +654,26 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>commons-pool2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-文件配置"><a href="#2-文件配置" class="headerlink" title="2. 文件配置"></a>2. 文件配置</h4><p>在<code>application.yml</code>文件中新增 Redis 相关配置，其中<code>password</code>是可选的，如果你没有设置密码就注释该行。</p>
+<h4 id="2-文件配置"><a href="#2-文件配置" class="headerlink" title="2. 文件配置"></a>2. 文件配置</h4><p>在项目配置文件中新增 <code>Redis</code> 相关配置，其中 <code>password</code> 是可选的，如果没有设置密码则无需配置。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
     <span class="token key atrule">redis</span><span class="token punctuation">:</span>
-    <span class="token key atrule">host</span><span class="token punctuation">:</span> localhost
-    <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">6379</span>
-    <span class="token key atrule">password</span><span class="token punctuation">:</span> <span class="token number">123456</span>
-    <span class="token key atrule">lettuce</span><span class="token punctuation">:</span>
-        <span class="token key atrule">pool</span><span class="token punctuation">:</span>
-            <span class="token key atrule">max-idle</span><span class="token punctuation">:</span> <span class="token number">8</span>
-            <span class="token key atrule">max-active</span><span class="token punctuation">:</span> <span class="token number">8</span>
-            <span class="token key atrule">max-wait</span><span class="token punctuation">:</span> <span class="token punctuation">-</span>1ms
-            <span class="token key atrule">min-idle</span><span class="token punctuation">:</span> <span class="token number">0</span>
-            <span class="token key atrule">shutdown-timeout</span><span class="token punctuation">:</span> 100ms
+        <span class="token key atrule">host</span><span class="token punctuation">:</span> localhost
+        <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">6379</span>
+        <span class="token key atrule">password</span><span class="token punctuation">:</span> <span class="token number">123456</span>
+        <span class="token key atrule">lettuce</span><span class="token punctuation">:</span>
+            <span class="token key atrule">pool</span><span class="token punctuation">:</span>
+                <span class="token key atrule">max-idle</span><span class="token punctuation">:</span> <span class="token number">8</span>
+                <span class="token key atrule">max-active</span><span class="token punctuation">:</span> <span class="token number">8</span>
+                <span class="token key atrule">max-wait</span><span class="token punctuation">:</span> <span class="token punctuation">-</span>1ms
+                <span class="token key atrule">min-idle</span><span class="token punctuation">:</span> <span class="token number">0</span>
+                <span class="token key atrule">shutdown-timeout</span><span class="token punctuation">:</span> 100ms
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-Redis配置"><a href="#3-Redis配置" class="headerlink" title="3. Redis配置"></a>3. Redis配置</h4><p>通过自定义配置对 Redis 缓存过期时间、键值对序列化进行设置，新建<code>RedisConfig</code>文件，其中<code>key</code>、<code>values</code>序列化使存入缓存的数据以可读的方式存储。</p>
+<h4 id="3-Redis配置"><a href="#3-Redis配置" class="headerlink" title="3. Redis配置"></a>3. Redis配置</h4><p>通过自定义配置对 <code>Redis</code> 缓存过期时间、键值对序列化进行设置，新建 <code>RedisConfig</code> 文件，其中 <code>key</code>、<code>values</code> 序列化使存入缓存的数据以可读的方式存储。</p>
 <p><strong>注意下面两点：</strong></p>
 <ul>
-<li><p>如果设置了 <code>disableCachingNullValues()</code> 禁止缓存空值，在使用<code>@Cacheable</code>时需要添加<code>unless=&quot;#result == null&quot;</code>，否则当查询到空值时程序将会出现异常。</p>
+<li><p>如果设置了 <code>disableCachingNullValues()</code> 禁止缓存空值，在使用 <code>@Cacheable</code> 时需要添加 <code>unless=&quot;#result == null&quot;</code>，否则当查询到空值时程序将会出现异常。</p>
 </li>
-<li><p>如果不设置禁止空值，即空值也进行存储，虽然不会对数据库产生性能损耗，但会浪费<code>Redis</code>缓存空间。因此需要根据具体情况进行判断选择。</p>
+<li><p>如果不设置禁止空值，即空值也进行存储，虽然不会对数据库产生性能损耗，但会浪费 <code>Redis</code> 缓存空间。因此需要根据具体情况进行判断选择。</p>
 </li>
 </ul>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
@@ -762,13 +762,14 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>此时通过<code>Postman</code>调用接口发送重复请求后端查询语句只会执行一次，而不会像之前重复的请求数据库，从而实现性能优化。</p>
-<h4 id="2-缓存删除"><a href="#2-缓存删除" class="headerlink" title="2. 缓存删除"></a>2. 缓存删除</h4><p>我们先看一下它是如何将数据存入缓存的，通过 <code>@Cacheable</code> 注解在获取数据之后通过配置的<code>KEY</code>值将查询的数据以键值对的形式存入缓存。</p>
+<h4 id="2-缓存删除"><a href="#2-缓存删除" class="headerlink" title="2. 缓存删除"></a>2. 缓存删除</h4><p>我们先看一下它是如何将数据存入缓存的，通过 <code>@Cacheable</code> 注解在获取数据之后通过配置的 <code>KEY</code> 值将查询的数据以键值对的形式存入缓存。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> userMapper<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>那么问题就简单了，若要解决数据不一致的情况，只需在更新操作的时候同时将缓存进行删除。当下次再发送请求，由于缓存中没有所需数据，将会重新转到后端数据库请求，此时查询到的数据即为最新数据。</p>
+<p>那么问题就简单了，若要解决数据不一致的情况，只需在更新操作的时候同时将缓存进行删除。</p>
+<p>当下次再发送请求，由于缓存中没有所需数据，将会重新转到后端数据库请求，此时查询到的数据即为最新数据。</p>
 <p>实现起来也很简单，通过 <code>@CacheEvict</code> 注解配置对应的<code>key</code>即可。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span>User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -788,7 +789,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>此时对表中 <code>id = 123</code> 的数据进行了更新，显然缓存中的 <code>users:list</code> 和 <code>users:123</code> 数据和真实数据已经不一致了，但 <code>@CacheEvict</code> 只能删除单条缓存。</p>
-<p>这时候我们就需要<code>@Caching</code>组合多个注解进行缓存删除，代码实现如下：</p>
+<p>这时候我们就需要 <code>@Caching</code> 组合多个注解进行缓存删除，代码实现如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Caching</span><span class="token punctuation">(</span>evict <span class="token operator">=</span> <span class="token punctuation">{</span>
         <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"'list'"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
         <span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span>key <span class="token operator">=</span> <span class="token string">"#user.id"</span><span class="token punctuation">)</span>
@@ -1416,7 +1417,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">306.6k</span>
+                <span class="white-color">306.7k</span>
             
             
             
