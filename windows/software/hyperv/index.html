@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-10-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    598
+                    709
                 </div>
                 
 
@@ -600,6 +600,13 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>编辑文件中下图红框中内容，除了 <code>IPADDR</code> 其它配置与上一步查看的信息一致。<br><img src="/album/loading.gif" data-original="/album/article/win/hyperv/28.png"></p>
 <h4 id="3-重启网络"><a href="#3-重启网络" class="headerlink" title="3. 重启网络"></a>3. 重启网络</h4><p>通过 <code>systemctl restart network</code> 命令重启网络后即可实现与外部网络通信。<br><img src="/album/loading.gif" data-original="/album/article/win/hyperv/29.png"></p>
+<h3 id="六、注意事项"><a href="#六、注意事项" class="headerlink" title="六、注意事项"></a>六、注意事项</h3><h4 id="1-端口调整"><a href="#1-端口调整" class="headerlink" title="1. 端口调整"></a>1. 端口调整</h4><p>安装 <code>Hyper-V</code> 服务之后系统将默认预留部分端口，如启动 <code>Tomcat</code> 服务将提示 <code>Address localhost:1099 is already in use</code>。</p>
+<p>因此，如有需要可调整动态端口配置，通过下述命令查询当前端口配置，默认值为 <code>1024</code> 与 <code>13977</code>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">netsh int ipv show dynamicport tcp
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>通过下述命令修改动态端口配置：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">netsh int ipv <span class="token keyword">set</span> dynamic tcp start<span class="token operator">=</span>49152 num<span class="token operator">=</span>16384
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -863,8 +870,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="post-category">
+                                    大数据
                                 </a>
                             
                             
@@ -1197,7 +1204,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">306.7k</span>
+                <span class="white-color">308.6k</span>
             
             
             
