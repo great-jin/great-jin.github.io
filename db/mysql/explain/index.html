@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-09-27
+                    2025-10-09
                 </div>
                 
 
@@ -556,7 +556,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
 
@@ -744,7 +744,7 @@
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">index</span> c2_idx <span class="token keyword">on</span> tb_01 <span class="token punctuation">(</span>column2<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>添加索引后重新执行查询语句，从图中结果可以看到此时的 <code>type</code> 为 <code>ref</code> 且 <code>possible_keys</code> 与 <code>key</code> 则为 <code>c2_idx</code>，表明此时查询已经通过索引执行。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/explain/6.png"></p>
-<h4 id="5-ref"><a href="#5-ref" class="headerlink" title="5. ref"></a>5. ref</h4><p><code>ref</code> 表示索引列是与哪个列或常量比较，其通常值为 <code>null</code>、 <code>const</code> 与 <code>fun/func</code>。</p>
+<h4 id="5-ref"><a href="#5-ref" class="headerlink" title="5. ref"></a>5. ref</h4><p><code>ref</code> 表示用于索引查找的比较值或来源，如常见值 <code>null</code>、 <code>const</code> 与 <code>fun/func</code>。在连表查询时，该列通常表示的即关联列属性。</p>
 <p><code>ref</code> 可以在一定程度上表示索引是否生效，当值为 <code>fun/func</code> 时表示参与了计算转换。此时即便 <code>Possible_keys</code> 与 <code>key</code> 都正常返回对应的索引信息，但实际索引可能并未生效或索引性能下降，因此需避免此场景。</p>
 <p>其中较为常见的场景即在 <code>join</code> 关联表之间的字符集或 <code>collation</code> 不一致，致使 <code>MySQL</code> 触发了隐式转化而导致的索引性能下降。</p>
 <h4 id="6-Extra"><a href="#6-Extra" class="headerlink" title="6. Extra"></a>6. Extra</h4><p><code>Extra</code> 表示补充详细说明，其中的不太友好的有：<code>Using filesort</code>，<code>Using temporary</code>。</p>
@@ -775,11 +775,11 @@
     </tr>
     <tr>
         <td style="text-align: center;">Impossible where</td>
-        <td style="text-align: center;">表示 where 条件没有符合条件的行</td>
+        <td style="text-align: center;">表示 where 条件没有符合条件的行。</td>
     </tr>
     <tr>
         <td style="text-align: center;">Select tables optimized away</td>
-        <td style="text-align: center;">这个值意味着 sql 优化到不能在优化了</td>
+        <td style="text-align: center;">这个值意味着 sql 优化到不能在优化了。</td>
     </tr>
     <tr>
         <td style="text-align: center;">No tables used</td>
@@ -1494,7 +1494,7 @@ FLUSH <span class="token keyword">STATUS</span><span class="token punctuation">;
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">308.6k</span>
+                <span class="white-color">310.5k</span>
             
             
             

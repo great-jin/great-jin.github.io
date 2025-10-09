@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-10-09
                 </div>
                 
 
@@ -645,13 +645,14 @@
 </table>
 
 
-<h4 id="2-结构介绍"><a href="#2-结构介绍" class="headerlink" title="2. 结构介绍"></a>2. 结构介绍</h4><p>聚簇索引是将索引与数据存储进行共同存储，以 <code>Innodb</code> 中的 <code>B-Tree</code> 结构为例，其叶子节点存储的即为真实记录数据。如存在存在一张表其包含四条记录，则其对应的逻辑索引结构如下图所示。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/1.png"></p>
+<h4 id="2-聚簇索引"><a href="#2-聚簇索引" class="headerlink" title="2. 聚簇索引"></a>2. 聚簇索引</h4><p>聚簇索引是将索引与数据存储进行共同存储，以 <code>Innodb</code> 中的 <code>B-Tree</code> 结构为例，其叶子节点存储的即为真实记录数据。</p>
+<p>如下图所示，存在一张表其包含四条记录，则其对应的逻辑索引结构如下图所示。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/1.png"></p>
 <h4 id="3-辅助索引"><a href="#3-辅助索引" class="headerlink" title="3. 辅助索引"></a>3. 辅助索引</h4><p>聚簇索引具有唯一性即一张表仅允许存在一个聚簇索引，通常使用主键作为索引键构建，若表未手动声明主键则会使用默认生成的 <code>db_row_id</code> 作为索引键。由于一张表仅有一个聚簇索引，因此其它索引都基于聚簇索引，通常称此类索引为 <code>辅助索引</code>。</p>
 <p>辅助索引的叶子节点末端不再存储完整的真实数据，取而代之存储的是对应记录的主键值。因此，针对辅助索引的查询会涉及到两步骤，首先根据辅助索引树查询到目标记录主键，再根据该主键查询聚簇索引最终查询到目标记录，这个过程也称之为回表。</p>
 <p>同样以上述数据为例，在聚簇索引的基础上创建一个以 <code>name</code> 为索引列的索引，当查询 <code>where name = &#39;Alex&#39;</code>，其查询路径为下图中黄色路径。<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/2.png"></p>
-<h4 id="4-结构优点"><a href="#4-结构优点" class="headerlink" title="4. 结构优点"></a>4. 结构优点</h4><p>在 <code>Innodb</code> 中数据的存储单位是页，即当查询时数据时将同一页的数据刷入内存中，又因为聚簇索引数据是直接存储于叶子节点，此时内容中已经包含了具体数据。同时 <code>MySQL</code> 中提供了一系列缓存 <code>(buffer)</code> 机制，当再次访问时内存中数据命中率将会提高从而减少 <code>IO</code> 操作提高查询效率。</p>
+<h4 id="4-特点分析"><a href="#4-特点分析" class="headerlink" title="4. 特点分析"></a>4. 特点分析</h4><h5 id="1-结构优点"><a href="#1-结构优点" class="headerlink" title="(1) 结构优点"></a>(1) 结构优点</h5><p>在 <code>Innodb</code> 中数据的存储单位是页，即当查询时数据时将同一页的数据刷入内存中，又因为聚簇索引数据是直接存储于叶子节点，此时内容中已经包含了具体数据。同时 <code>MySQL</code> 中提供了一系列缓存 <code>(buffer)</code> 机制，当再次访问时内存中数据命中率将会提高从而减少 <code>IO</code> 操作提高查询效率。</p>
 <p>在聚簇索引中，其物理存储结构使得相邻的数据行存储于相邻的物理磁盘中，因此对于范围查询此类涉及到大量数据的操作而言，可减少数据磁盘的 <code>IO</code> 次数，从而提高查询效率。</p>
-<h4 id="5-结构缺点"><a href="#5-结构缺点" class="headerlink" title="5. 结构缺点"></a>5. 结构缺点</h4><p>聚簇索引同样也存在一些不足之处，由于叶子节点存储的为真实数据，当发生插入与更新操作时导致存储结构自平衡引发的数据读写移动，可能会涉及到较为频繁的磁盘 <code>IO</code> 操作。而非聚簇索引叶子节点存储的指定数据的指针索引，其相对应的效率更高。</p>
+<h5 id="2-结构缺点"><a href="#2-结构缺点" class="headerlink" title="(2) 结构缺点"></a>(2) 结构缺点</h5><p>聚簇索引同样也存在一些不足之处，由于叶子节点存储的为真实数据，当发生插入与更新操作时导致存储结构自平衡引发的数据读写移动，可能会涉及到较为频繁的磁盘 <code>IO</code> 操作。而非聚簇索引叶子节点存储的指定数据的指针索引，其相对应的效率更高。</p>
 <p>此外，在聚簇索引中对应主键字段的取值并不建议使用随机数或 <code>UUID</code>，而更建议使用自增或雪花 <code>ID</code> 以保证数据的连贯性，从而减少磁盘 <code>IO</code> 次数提高存储效率。</p>
 <h3 id="三、非聚簇索引"><a href="#三、非聚簇索引" class="headerlink" title="三、非聚簇索引"></a>三、非聚簇索引</h3><h4 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1. 基本介绍"></a>1. 基本介绍</h4><p>非聚簇索引是独立于数据存储的一种索引类型，非聚簇索引的叶子节点存储的是索引值和一个指向对应数据行的指针，在 <code>MyISAM</code> 中采用的即该数据结构。</p>
 <p>还是以上述的数据为例，其对应的非聚簇索引逻辑结构如下图所示：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/index/3.png"></p>
@@ -1355,7 +1356,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">308.6k</span>
+                <span class="white-color">310.5k</span>
             
             
             
