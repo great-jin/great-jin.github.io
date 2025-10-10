@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="UNDO 日志配置详解, 布袋青年">
+    <meta name="keywords" content="数据库 UNDO 日志详解, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>UNDO 日志配置详解 | 布袋青年</title>
+    <title>数据库 UNDO 日志详解 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -375,7 +375,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">UNDO 日志配置详解</h1>
+                    <h1 class="description center-align post-title">数据库 UNDO 日志详解</h1>
                 </div>
             </div>
         </div>
@@ -546,7 +546,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-10-09
+                    2025-10-10
                 </div>
                 
 
@@ -576,12 +576,13 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>在当下百花齐放的数据库中，常能看到 <code>bin log</code>、<code>redo log</code> 及 <code>undo log</code> 等名词，其各自扮演着重要角色。</p>
-<p>而今天则让我们聚焦于 <code>undo log</code>，其是数据库事务的基石，让我们一同深入了解 <code>MySQL</code> 与 <code>Oracle</code> 中 <code>undo log</code> 其相应的机制。</p>
+<p>而今天则让我们聚焦于 <code>undo log</code>，当开启数据事务后，数据库会将变更前的内容记录至 <code>undo</code> 文件中，当触发回滚等操作时，则可读取 <code>undo</code> 日志文件回滚至变更前原始记录，可谓是数据库事务的基石。</p>
+<p>倘若 <code>undo log</code> 空间过慢而未及时清理，则可能导致系统服务瘫痪等风险，下面就让我们一同深入了解 <code>MySQL</code> 与 <code>Oracle</code> 中 <code>undo log</code> 其相应的机制。</p>
 <h3 id="一、MySQL"><a href="#一、MySQL" class="headerlink" title="一、MySQL"></a>一、MySQL</h3><h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><p>正如上述所提到，<code>undo log</code> 用于处理数据库中的事务操作，可通过下述命令查询 <code>undo</code> 相关配置：</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">show</span> VARIABLES <span class="token operator">like</span> <span class="token string">'%undo%'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>MySQL</code> 中 <code>undo</code> 日志涉及指标如图所示：<br><img src="/album/loading.gif" data-original="/album/article/db/mysql/undo/1.png"></p>
-<h5 id="1-innodb-undo-tablespaces"><a href="#1-innodb-undo-tablespaces" class="headerlink" title="(1) innodb_undo_tablespaces"></a>(1) innodb_undo_tablespaces</h5><p>参数为 <code>undo</code> 表空间数量，表示 <code>undo</code> 存储的文件数，如值为 <code>2</code> 数据将分为 <code>undo001、undo002</code> 存储。</p>
+<h5 id="1-innodb-undo-tablespaces"><a href="#1-innodb-undo-tablespaces" class="headerlink" title="(1) innodb_undo_tablespaces"></a>(1) innodb_undo_tablespaces</h5><p>参数为 <code>undo</code> 表空间数量，表示 <code>undo</code> 存储的文件数，如值为 <code>2</code> 数据将分为 <code>undo_001、undo_002</code> 存储。</p>
 <p>其最大值为 <code>128</code>，在 <code>5.7</code> 中默认为 <code>0</code> 表示不独立设置 <code>tablespace</code>，即数据保存于系统表空间 <code>ibdata1</code> 中。在 <code>8.0</code> 之后默认值为 <code>2</code>，注意 <code>innodb_undo_tablespaces</code> 在服务启动之后便不可再进行调整。</p>
 <h5 id="2-innodb-max-undo-log-size"><a href="#2-innodb-max-undo-log-size" class="headerlink" title="(2) innodb_max_undo_log_size"></a>(2) innodb_max_undo_log_size</h5><p>单个 <code>undo</code> 表空间文件的最大值，默认值为 <code>1024MB</code>。</p>
 <h5 id="3-innodb-undo-logs"><a href="#3-innodb-undo-logs" class="headerlink" title="(3) innodb_undo_logs"></a>(3) innodb_undo_logs</h5><p>表示 <code>InnoDB</code> 可用的回滚段 <code>(Rollback Segments)</code>，存储了事务的修改前镜像，此参数在 <code>MySQL 8.0</code> 后已废弃。</p>
@@ -700,8 +701,8 @@
     tablespace_name<span class="token punctuation">,</span>
     <span class="token keyword">status</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5 id="1-status-ACTIVE"><a href="#1-status-ACTIVE" class="headerlink" title="(1) status = ACTIVE"></a>(1) status = ACTIVE</h5><p>表示当前有事务正在使用该 extent，不能覆盖。</p>
-<h5 id="2-status-UNEXPIRED"><a href="#2-status-UNEXPIRED" class="headerlink" title="(2) status = UNEXPIRED"></a>(2) status = UNEXPIRED</h5><p>表示已经没有事务使用，但还在 <code>undo_retention</code> 保留期内，理论上不会覆盖除非空间不足（若处于 <code>NOGUARANTEE</code> 模式）。</p>
+<h5 id="1-status-ACTIVE"><a href="#1-status-ACTIVE" class="headerlink" title="(1) status = ACTIVE"></a>(1) status = ACTIVE</h5><p>表示当前有事务正在使用该 <code>extent</code>，不能覆盖。</p>
+<h5 id="2-status-UNEXPIRED"><a href="#2-status-UNEXPIRED" class="headerlink" title="(2) status = UNEXPIRED"></a>(2) status = UNEXPIRED</h5><p>表示其已经没有事务在使用中，但仍在 <code>undo_retention</code> 保留期内，理论上不会覆盖除非空间不足（若处于 <code>NOGUARANTEE</code> 模式）。</p>
 <h5 id="3-status-EXPIRED"><a href="#3-status-EXPIRED" class="headerlink" title="(3) status = EXPIRED"></a>(3) status = EXPIRED</h5><p>表示已经过了保留期，可以被新的事务覆盖使用；<br></br></p>
 <p>下述语句则不区分 <code>status</code> 状态，统计当前 <code>undo</code> 使用信息:</p>
 <pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
@@ -984,15 +985,15 @@
                 <a href="/db/optimize/">
                     <div class="card-image">
                         
-                        <img src="/album/banner/db/5.png" class="responsive-img" alt="数据库性能进阶优化">
+                        <img src="/album/banner/db/5.png" class="responsive-img" alt="查询调优进阶教程">
                         
-                        <span class="card-title">数据库性能进阶优化</span>
+                        <span class="card-title">查询调优进阶教程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            数据库性能进阶优化。
+                            数据库查询调优进阶教程。
                         
                     </div>
                     <div class="publish-info">
@@ -1337,7 +1338,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">310.5k</span>
+                <span class="white-color">312.1k</span>
             
             
             
