@@ -17,7 +17,7 @@
 
 
     <title>Python依赖管理手册 | 布袋青年</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" href="/medias/icon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/materialize/materialize.min.css">
@@ -37,7 +37,7 @@
 
    <style>
     body{
-       background-image: url(/medias/featureimages/bg.jpg);
+       background-image: url(/medias/featureimages/2.png);
        background-repeat:no-repeat;
        background-size:cover;
        background-attachment:fixed;
@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-18
+                    2025-11-01
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -573,12 +573,30 @@
             <div id="articleContent">
                 <p><code>Python</code> 近些年异军突起的一大原因就是它有着极其庞大三方库，只有你想不到的没有它做不到的，合理的利用已有的三方库能够大大增加你的工作效率。</p>
 <p>今天就让我们系统性的了解如何在 <code>Python</code> 中实现模块依赖管理。</p>
-<h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><h4 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h4><p>首先当然时从 <code>Python</code> 环境安装开始，下面提供两种下载方案：官网和镜像下载。</p>
-<p><code>Python</code> 官网如下，根据操作系统选择下载对应的版本，<a target="_blank" rel="noopener" href="https://www.python.org/downloads/">链接直达</a>。<br><img src="/album/loading.gif" data-original="/album/article/python/module/1.png"></p>
+<h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><h4 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h4><p>在 <code>Windows</code> 环境下 <code>Python</code> 安装极为简单，进入官网后按需下载对应的版本即可，<a target="_blank" rel="noopener" href="https://www.python.org/downloads/">官网直达</a>。<br><img src="/album/loading.gif" data-original="/album/article/python/module/1.png"></p>
 <p>如果上述地址访问较慢，可尝试通过阿里镜像地址进行下载安装。</p>
 <pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//npm.taobao.org/mirrors/python/
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>下载后具体安装步骤比较简单，无脑下一步即可这里就不过多介绍，完成后默认安装路径在：<code>C:\Users\&lt;username&gt;\AppData\Local\Programs\Python</code> 下。</p>
+<h4 id="2-编译安装"><a href="#2-编译安装" class="headerlink" title="2. 编译安装"></a>2. 编译安装</h4><p>在 <code>Linux</code> 环境下安装 <code>Python</code> 则略显复杂，需要从官网下载二进制文件编译安装。</p>
+<p>在具体编译开始前安装相关所需的依赖工具，命令如下：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">yum -y groupinstall <span class="token string">"Development tools"</span>
+yum -y <span class="token function">install</span> zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+yum <span class="token function">install</span> libffi-devel -y
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>完成后同上在官网中选择所需版本文件，上传至服务器后解压，按照下述步骤执行命名：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建安装目录</span>
+<span class="token function">mkdir</span> /usr/local/python3
+
+<span class="token comment" spellcheck="true"># 进入解压后目录编译</span>
+<span class="token function">cd</span> Python-3.9.0
+./configure --prefix<span class="token operator">=</span>/usr/local/python3
+<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完成后便会在 <code>/usr/local/python3</code> 目录下生成编译内容，再次创建软链接后即可。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ln</span> -s /usr/local/python3/bin/python3 /usr/local/bin/python3
+<span class="token function">ln</span> -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="二、类库管理"><a href="#二、类库管理" class="headerlink" title="二、类库管理"></a>二、类库管理</h3><p>安装完 <code>Python</code> 环境后即自带 <code>pip</code> 工具，通过其即可实现依赖管理。</p>
 <h4 id="1-模块查看"><a href="#1-模块查看" class="headerlink" title="1. 模块查看"></a>1. 模块查看</h4><p>通过 <code>list</code> 查看已安装的工具库，使用 <code>show</code> 则可查看指定工具库的信息。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看所有依赖</span>
@@ -1276,7 +1294,7 @@ protobuf==3.20.3
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">312.7k</span>
+                <span class="white-color">312.3k</span>
             
             
             
@@ -1528,15 +1546,15 @@ $(function () {
     
     <script async src="/js/text.js"></script>
     
-    <script type="text/javascript"> var OriginTitile = document.title, st; 
+    <!-- 页面 Title 离开展示 -->
+    <!-- <script type="text/javascript"> var OriginTitile = document.title, st; 
         document.addEventListener("visibilitychange", 
         function () { document.hidden ? (document.title = "｡°(°¯᷄◠¯᷅°)°｡要记得回来哦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪你回来了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) }) 
-    </script>
+    </script> -->
     
     <script type="text/javascript"
        color="100,150,230" opacity='0.7' zIndex="-2" count="200" src="/cdn/canvas-nest.min.js">
     </script>
-    
 
         <style>
             [bg-lazy] {
@@ -1551,5 +1569,4 @@ $(function () {
                 processImages: null,
             };
         </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
-
 </html>
