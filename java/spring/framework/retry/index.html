@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-11-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    728
+                    782
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -579,7 +579,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-retry<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-异常处理"><a href="#2-异常处理" class="headerlink" title="2. 异常处理"></a>2. 异常处理</h4><p><code>Spring Retry</code> 的使用也及其简单，通过 <code>@Retryable</code> 注解配置，其基本配置参考下表。</p>
+<h4 id="2-异常处理"><a href="#2-异常处理" class="headerlink" title="2. 异常处理"></a>2. 异常处理</h4><p><code>Spring Retry</code> 使用也并不复杂，通过 <code>@Retryable</code> 注解配置，相关配置参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">参数</td>
@@ -614,20 +614,21 @@
         <td style="text-align: center;">指定重试后仍失败触发的方法。</td>
     </tr>
 </table>
+<br/>
 
-<p>如下述示例代码中则设置当 <code>call()</code> 方法抛出 <code>RuntimeException</code> 异常时重试两次，每次重试间隔 <code>500</code> 毫秒。</p>
+<p>如下示例代码中则设置当 <code>call()</code> 方法抛出 <code>RuntimeException</code> 异常时重试两次，每次重试间隔 <code>500</code> 毫秒。</p>
+<p>而 <code>@Retryable</code> 除了注解中相关参数除常量定义外，同时支持 <code>$&#123;&#125;</code> 表达式方式读取配置文件中内容。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryService</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Retryable</span><span class="token punctuation">(</span>
             value <span class="token operator">=</span> RuntimeException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span>
             <span class="token comment" spellcheck="true">// 设置尝试次数，默认为 3</span>
-            maxAttempts <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
             <span class="token comment" spellcheck="true">// maxAttemptsExpression = "${retry.maxAttempts}",</span>
+            maxAttempts <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">,</span>
             <span class="token comment" spellcheck="true">// 设置每次尝试间隔时间，默认 1 秒，此处设为 500 毫秒</span>
-            backoff <span class="token operator">=</span> <span class="token annotation punctuation">@Backoff</span><span class="token punctuation">(</span>delay <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">)</span>
-            <span class="token comment" spellcheck="true">// 通过表达式配置间隔时间</span>
             <span class="token comment" spellcheck="true">// backoff = @Backoff(delayExpression = "${retry.maxDelay}")</span>
+            backoff <span class="token operator">=</span> <span class="token annotation punctuation">@Backoff</span><span class="token punctuation">(</span>delay <span class="token operator">=</span> <span class="token number">500</span><span class="token punctuation">)</span>
     <span class="token punctuation">)</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -636,24 +637,22 @@
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-恢复事件"><a href="#3-恢复事件" class="headerlink" title="3. 恢复事件"></a>3. 恢复事件</h4><p>重试的恢复事件由 <code>@Recover</code> 注解控制，即当 <code>@Retryable</code> 方法达到重试次数仍失败时触发。</p>
-<p>需要注意的是 <code>@Recover</code> 注解的标注的方法第一个参数必须与 <code>@Retryable</code> 中的 <code>value</code> 类型一致，剩余参数则必须与 <code>@Retryable</code> 修饰的方法入参一致。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-恢复事件"><a href="#3-恢复事件" class="headerlink" title="3. 恢复事件"></a>3. 恢复事件</h4><p>既然有重试处理相对应的也存在恢复事件，当 <code>@Retryable</code> 方法达到重试次数则会触发 <code>@Recover</code> 声明的逻辑。</p>
+<p><code>@Recover</code> 事件匹配逻辑与方法重载类似，其修饰的方法第一个参数必须与 <code>@Retryable</code> 中的 <code>value</code> 类型一致，而其余参数则必须与 <code>@Retryable</code> 修饰的方法入参保持一致。</p>
+<p>如上述在 <code>@Retryable</code> 中声明的异常类型为 <code>RuntimeException</code> 且方法入参为单入参 <code>boolean</code>，则其对应的 <code>@Recover</code> 声明如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RetryService</span> <span class="token punctuation">{</span>
 
     <span class="token comment" spellcheck="true">/**
      * "@Retryable" 重试指定次数后若仍失败则触发 "@Recover"
-     * &lt;p>
-     * 第一个方法参数为 "@Retryable" 中监听的异常类型
-     * 第二个方法参数为 "@Retryable" 方法中剩余的入参
      */</span>
     <span class="token annotation punctuation">@Recover</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">recover</span><span class="token punctuation">(</span>RuntimeException e<span class="token punctuation">,</span> <span class="token keyword">boolean</span> failed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"================ >>> recover, params: "</span> <span class="token operator">+</span> failed<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>新建测试类 <code>RetryController</code> 调用接口后即可看到控制台分别打印了两句 <code>&gt;&gt;&gt; retry</code> 与一句 <code>&gt;&gt;&gt; recover</code> 日志信息，说明重试机制生效了。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/retry"</span><span class="token punctuation">)</span>
@@ -668,8 +667,8 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-配置管理"><a href="#4-配置管理" class="headerlink" title="4. 配置管理"></a>4. 配置管理</h4><p>除了在方法上通过 <code>@Retryable</code> 注解显式设置尝试策略，也可通过全局的配置修改默认的尝试次数与间隔时间等信息。</p>
-<p>新建配置类 <code>AppConfig</code>，具体的配置内容参考下述示例，此处的配置将全局生效，当然仍可在方法处通过 <code>@Retryable</code> 注解覆盖配置。</p>
+<h4 id="4-配置管理"><a href="#4-配置管理" class="headerlink" title="4. 配置管理"></a>4. 配置管理</h4><p>在之前的方式中都是 <code>@Retryable</code> 注解显式设置具体的尝试策略，而 <code>Spring</code> 也提供了全局的配置修改默认的尝试次数与间隔时间等信息，定义 <code>bean</code> 后则可全局生效替换默认预设值。</p>
+<p>具体的配置内容参考下述示例，此处所配置的将全局生效，当然仍可在方法处通过 <code>@Retryable</code> 注解覆盖。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableRetry</span>
 <span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AppConfig</span> <span class="token punctuation">{</span>
@@ -685,11 +684,10 @@
         FixedBackOffPolicy backOffPolicy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FixedBackOffPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         backOffPolicy<span class="token punctuation">.</span><span class="token function">setBackOffPeriod</span><span class="token punctuation">(</span>2000l<span class="token punctuation">)</span><span class="token punctuation">;</span>
         retryTemplate<span class="token punctuation">.</span><span class="token function">setBackOffPolicy</span><span class="token punctuation">(</span>backOffPolicy<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
         <span class="token keyword">return</span> retryTemplate<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1287,7 +1285,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">313.5k</span>
+                <span class="white-color">313.7k</span>
             
             
             

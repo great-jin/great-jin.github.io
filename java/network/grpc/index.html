@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-11-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    7 分
                 </div>
                 
 
@@ -573,9 +573,9 @@
             <div id="articleContent">
                 <h3 id="一、概念介绍"><a href="#一、概念介绍" class="headerlink" title="一、概念介绍"></a>一、概念介绍</h3><h4 id="1-RPC调用"><a href="#1-RPC调用" class="headerlink" title="1. RPC调用"></a>1. RPC调用</h4><p>开始之前先介绍一下 <code>RPC(Remote procedure call)</code> 的定义，即远程服务调用，即在当前的程序中调用其它程序的服务实现。</p>
 <p>假设存在两个程序 <code>Systemc-A</code> 与 <code>Systemc-B</code>，并在 <code>Systemc-A</code> 中定义了接口 <code>getData()</code>，而实现类在 <code>Systemc-B</code> 中。当 <code>Systemc-A</code> 经过一定手段通过 <code>getData()</code> 接口调用 <code>Systemc-B</code> 中的实现类，这个过程即远程服务调用。<br><img src="/album/loading.gif" data-original="/album/article/java/rpc/1.png"></p>
-<h4 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2. 实现原理"></a>2. 实现原理</h4><p>针对 <code>RPC</code> 服务功能的实现，通常可通过动态代理等特性实现。</p>
+<h4 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2. 实现原理"></a>2. 实现原理</h4><p>针对 <code>RPC</code> 服务功能的实现，在 <code>Java</code> 中常可通过 <code>InvocationHandler</code> 动态代理等特性实现。</p>
 <p>如通过动态代理的方式创建实例对象时获取目标类信息、目标方法及方法参数等信息，再经由网络传输等手段请求至远端服务将传入的信息利用反射实现服务调用并返回。</p>
-<h3 id="二、工程配置"><a href="#二、工程配置" class="headerlink" title="二、工程配置"></a>二、工程配置</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p><code>GRPC</code> 是由 <code>Google</code> 开发的一款 <code>RPC</code> 服务框架，基于 <code>HTTP2</code> 传输协议实现，针对网络层实现一系列优化从而达到高效传输的目的。</p>
+<h3 id="二、GRPC集成"><a href="#二、GRPC集成" class="headerlink" title="二、GRPC集成"></a>二、GRPC集成</h3><h4 id="1-依赖引入"><a href="#1-依赖引入" class="headerlink" title="1. 依赖引入"></a>1. 依赖引入</h4><p><code>GRPC</code> 是由 <code>Google</code> 开发的一款 <code>RPC</code> 服务框架，基于 <code>HTTP2</code> 传输协议实现，针对网络层实现一系列优化从而达到高效传输的目的。</p>
 <p><code>GRPC</code> 提供了多语言的集成方式，包含 <code>Java SDK</code> 依赖，在工程中添加下述依赖即可开箱即用。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.grpc<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -632,8 +632,9 @@
 <h4 id="3-插件安装"><a href="#3-插件安装" class="headerlink" title="3. 插件安装"></a>3. 插件安装</h4><p>除此之外，还需要在 <code>IDEA</code> 中安装 <code>proto</code> 编译插件用于将 <code>proto</code> 文件内容转为 <code>java</code> 文件。</p>
 <p>如果 <code>IDEA</code> 为旗舰版则自带 <code>Protocol Buffers</code> 插件，若为社区版则需要手动去插件市场下载 <code>Protobuf</code> 插件。<br><img src="/album/loading.gif" data-original="/album/article/java/rpc/2.png"></p>
 <h3 id="三、文件编写"><a href="#三、文件编写" class="headerlink" title="三、文件编写"></a>三、文件编写</h3><h4 id="1-基本格式"><a href="#1-基本格式" class="headerlink" title="1. 基本格式"></a>1. 基本格式</h4><p>在 <code>GRPC</code> 中，接口的定义不在处于 <code>java</code> 文件中，而是通过 <code>proto</code> 文件定义。</p>
+<p><code>proto</code> 则是客户端与服务端之间的所约定的接口服务规范，以特定语法规则声明了方法的出入参等信息，双方服务按照文件定义的内容实现服务调用与业务实现。</p>
 <p>并且需要注意的一点是 <code>.proto</code> 文件需要放置于 <code>proto</code> 目录下，其与 <code>java</code> 目录处于同一层级。<br><img src="/album/loading.gif" data-original="/album/article/java/rpc/3.png"></p>
-<p><code>proto</code> 文件定义并不复杂，其中通过 <code>syntax</code> 指定协议版本；<code>package</code> 用于指定报名，与 <code>java</code> 中的包名作用效果类似用于层级管理；<code>option</code> 用于添加参数配置。</p>
+<p><code>proto</code> 文件定义并不复杂，其中通过 <code>syntax</code> 指定协议版本。<code>package</code> 用于指定报名，与 <code>java</code> 中的包名作用效果类似用于层级管理；<code>option</code> 用于添加参数配置。</p>
 <pre class="line-numbers language-proto"><code class="language-proto">syntax = "proto3";
 
 package xyz.ibudai.practice.tool.grpc;
@@ -695,7 +696,8 @@ service TestService <span class="token punctuation">{</span>
 <h4 id="4-文件编译"><a href="#4-文件编译" class="headerlink" title="4. 文件编译"></a>4. 文件编译</h4><p>完成上述内容编写之后需要将其编译为程序可读的 <code>Java</code> 文件。</p>
 <p>在 <code>IDEA</code> 右侧 <code>maven</code> 中找到下述依次执行编译。<br><img src="/album/loading.gif" data-original="/album/article/java/rpc/4.png"></p>
 <p>执行完成后即会在工程的 target 目录下生成对应的文件，其中执行 <code>compile</code> 会生成文件于 <code>target/generated-sources/protobuf/java</code> 下，执行 <code>custom</code> 文件会生成于 <code>target/generated-sources/protobuf/grpc-java</code> 下。<br><img src="/album/loading.gif" data-original="/album/article/java/rpc/5.png"></p>
-<h3 id="四、服务端应用"><a href="#四、服务端应用" class="headerlink" title="四、服务端应用"></a>四、服务端应用</h3><h4 id="1-接口实现"><a href="#1-接口实现" class="headerlink" title="1. 接口实现"></a>1. 接口实现</h4><p>完成上述的接口定义之后即可编写接口的实现类，实现编译生成类 <code>TestServiceGrpc.TestServiceImplBase</code> 并重写接口方法，通过 <code>onNext()</code> 与 <code>onCompleted()</code> 将数据提交返回。</p>
+<h3 id="四、服务端应用"><a href="#四、服务端应用" class="headerlink" title="四、服务端应用"></a>四、服务端应用</h3><h4 id="1-接口实现"><a href="#1-接口实现" class="headerlink" title="1. 接口实现"></a>1. 接口实现</h4><p>在服务端项目中，需维护 <code>proto</code> 文件并根据上述中编译生成代码文件，并基于生成后的代码实现相应的接口。</p>
+<p>如上述的接口实现编译生成类 <code>TestServiceGrpc.TestServiceImplBase</code>，重写接口并通过 <code>onNext()</code> 与 <code>onCompleted()</code> 将数据提交返回。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestServiceImpl</span> <span class="token keyword">extends</span> <span class="token class-name">TestServiceGrpc<span class="token punctuation">.</span>TestServiceImplBase</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -711,9 +713,12 @@ service TestService <span class="token punctuation">{</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>接口实现定义完成后即可启动服务端，通过 <code>ServerBuilder</code> 构建服务端对象，默认 <code>Host</code> 为当前本地 <code>IP</code>，其中 <code>addService()</code> 为添加服务实现类，</p>
+<h4 id="2-服务启动"><a href="#2-服务启动" class="headerlink" title="2. 服务启动"></a>2. 服务启动</h4><p>接口定义完成后即可启动服务端，通过 <code>ServerBuilder</code> 构建服务端对象，默认 <code>Host</code> 为当前本地 <code>IP</code>，其中 <code>addService()</code> 为添加服务实现类，</p>
 <p>完成后通过 <code>start()</code> 启动服务并由 <code>awaitTermination()</code> 阻塞当前线程等待应用关闭。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServerTest</span> <span class="token punctuation">{</span>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> io<span class="token punctuation">.</span>grpc<span class="token punctuation">.</span>Server<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>grpc<span class="token punctuation">.</span>ServerBuilder<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ServerTest</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> PORT <span class="token operator">=</span> <span class="token number">9000</span><span class="token punctuation">;</span>
 
@@ -725,10 +730,13 @@ service TestService <span class="token punctuation">{</span>
         server<span class="token punctuation">.</span><span class="token function">awaitTermination</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="五、客户端应用"><a href="#五、客户端应用" class="headerlink" title="五、客户端应用"></a>五、客户端应用</h3><h4 id="1-接口请求"><a href="#1-接口请求" class="headerlink" title="1. 接口请求"></a>1. 接口请求</h4><p>相对于服务端而言客户端实现实现更为简单，通过 <code>ManagedChannelBuilder</code> 连接至服务端，并由 <code>newBlockingStub()</code> 创建实例对象。</p>
-<p>当创建完实例对象 <code>stub</code> 即与普通的接口调用并无区别，对应的示例如下：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ClientTest</span> <span class="token punctuation">{</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="五、客户端应用"><a href="#五、客户端应用" class="headerlink" title="五、客户端应用"></a>五、客户端应用</h3><h4 id="1-接口请求"><a href="#1-接口请求" class="headerlink" title="1. 接口请求"></a>1. 接口请求</h4><p>在客户端项目中按照定义维护 <code>proto</code> 文件并编译生成相应的代码文件。</p>
+<p>在服务请求中客户端实现则更为简单，通过 <code>ManagedChannelBuilder</code> 连接至服务端，并由 <code>newBlockingStub()</code> 创建实例对象。创建完实例对象 <code>stub</code> 即与普通的接口调用并无区别，对应的示例如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> io<span class="token punctuation">.</span>grpc<span class="token punctuation">.</span>ManagedChannel<span class="token punctuation">;</span>
+<span class="token keyword">import</span> io<span class="token punctuation">.</span>grpc<span class="token punctuation">.</span>ManagedChannelBuilder<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ClientTest</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String HOST <span class="token operator">=</span> <span class="token string">"localhost"</span><span class="token punctuation">;</span>
 
@@ -747,7 +755,7 @@ service TestService <span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p><strong>参考链接</strong></p>
 <ol>
@@ -1350,7 +1358,7 @@ service TestService <span class="token punctuation">{</span>
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">313.5k</span>
+                <span class="white-color">313.7k</span>
             
             
             
