@@ -546,14 +546,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-11-07
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.5k
+                    4.6k
                 </div>
                 
 
@@ -584,6 +584,30 @@
         <th style="text-align: center;">对应 Spring 版本</td> 
     </tr>
     <tr>
+        <td style="text-align: center;">2025.0.x (代号 Northfields)</td>
+        <td style="text-align: center;">3.5.x</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">2024.0.x (代号 Moorgate)</td>
+        <td style="text-align: center;">3.4.x</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">2023.0.x (代号 Leyton)</td>
+        <td style="text-align: center;">3.3.x / 3.2.x</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">2022.0.x (代号 Kilburn)</td>
+        <td style="text-align: center;">3.0.x / 3.1.x (从 2022.0.3 起)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">2021.0.x (代号 Jubilee)</td>
+        <td style="text-align: center;">2.6.x / 2.7.x (从 2021.0.3 起)</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">2020.0.x (代号 Ilford)</td>
+        <td style="text-align: center;">2.4.x / 2.5.x (从 2020.0.3 起)</td>
+    </tr>
+    <tr>
         <td style="text-align: center;">Hoxton</td>
         <td style="text-align: center;">2.2.x, 2.3.x</td>
     </tr>
@@ -608,14 +632,14 @@
 <blockquote>
 <p>按照上述的架构图，本文将详细介绍每个功能模块的具体构建步骤。</p>
 </blockquote>
-<h3 id="一、注册中心"><a href="#一、注册中心" class="headerlink" title="一、注册中心"></a>一、注册中心</h3><p>新建 <code>register-server</code> 工程用于充当服务注册中心，这里选择了 <code>Dalston</code> 版本，因此 <code>Spring Boot</code> 需要选择 <code>1.5.x</code> 版本。</p>
-<h4 id="1-POM依赖"><a href="#1-POM依赖" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h4><p>在新建的工程中导入如下中的 <code>eureka</code> 与 <code>Dalston</code> 依赖。</p>
-<p>注意本文后续中所涉及的工程示例中 <code>Spring</code> 均采用 <code>1.5.4</code> 版本，并都导入了 <code>Dalston</code> 依赖，后续将不再重复说明。</p>
+<h3 id="一、注册中心"><a href="#一、注册中心" class="headerlink" title="一、注册中心"></a>一、注册中心</h3><h4 id="1-项目配置"><a href="#1-项目配置" class="headerlink" title="1. 项目配置"></a>1. 项目配置</h4><p>微服务中核心之一便是服务中心，用于管理多个服务实例，下面就从服务注册展开介绍。</p>
+<p>新建 <code>register-server</code> 工程用于充当服务注册中心，以 <code>Dalston</code> 版本为例，其对应 <code>Spring Boot</code> 版本则为 <code>1.5.x</code>，在新建的工程中导入下述依赖。</p>
+<p>文后续中所涉及示例均采用 <code>Spring Boox 1.5.4</code> 及 <code>Dalston</code>，后续将不再重复说明。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-parent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.5.4.RELEASE<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relativePath</span><span class="token punctuation">/></span></span> <span class="token comment" spellcheck="true">&lt;!-- lookup parent from repository --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relativePath</span><span class="token punctuation">/></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
@@ -637,7 +661,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencyManagement</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-项目配置"><a href="#2-项目配置" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>在工程的 <code>YML</code> 配置文件中添加如下信息，除了基本的端口和服务配置之外同时在 <code>defaultZone</code> 中指定了服务中心的地址，后续客户端将通过该地址进行注册。</p>
+<p>完成后便可在项目中定义服务中心信息，在工程的 <code>YML</code> 配置文件中添加 <code>defaultZone</code> 指定了服务中心的地址，后续客户端将通过该地址进行注册。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9090</span>
 
@@ -656,7 +680,7 @@
       <span class="token comment" spellcheck="true"># 自定义服务注册中心地址</span>
       <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//$<span class="token punctuation">{</span>eureka.instance.hostname<span class="token punctuation">}</span><span class="token punctuation">:</span>$<span class="token punctuation">{</span>server.port<span class="token punctuation">}</span>/eureka/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-注册激活"><a href="#3-注册激活" class="headerlink" title="3. 注册激活"></a>3. 注册激活</h4><p>在工程的启动类上添加 <code>@EnableEurekaServer</code> 注解表示启动服务注册中心。</p>
+<h4 id="2-注册激活"><a href="#2-注册激活" class="headerlink" title="2. 注册激活"></a>2. 注册激活</h4><p>在工程的启动类上添加 <code>@EnableEurekaServer</code> 注解表示启动服务注册中心。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableEurekaServer</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EurekaServiceApplication</span> <span class="token punctuation">{</span>
@@ -667,7 +691,7 @@
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="二-服务注册"><a href="#二-服务注册" class="headerlink" title="二. 服务注册"></a>二. 服务注册</h3><p>新建工程 <code>register-client</code> 模拟客户端服务，通过配置将注册到上述的创建的注册中心。</p>
-<h4 id="1-POM依赖-1"><a href="#1-POM依赖-1" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h4><p>在新建的工程 <code>POM</code> 文件中导入下列依赖，略去 <code>Spring parent</code> 与 <code>Dalston</code>(参考注册中心模块)。</p>
+<h4 id="1-依赖配置"><a href="#1-依赖配置" class="headerlink" title="1. 依赖配置"></a>1. 依赖配置</h4><p>在新建的工程 <code>POM</code> 文件中导入下列依赖，略去 <code>Spring parent</code> 与 <code>Dalston</code>(参考注册中心模块)。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -679,7 +703,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-项目配置-1"><a href="#2-项目配置-1" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>在工程 <code>YML</code> 文件中配置注册中心地址，即上一点中服务注册中心模块 <code>YML</code> 中配置的地址。</p>
+<p>在工程 <code>YML</code> 文件中配置注册中心地址，即上一点中服务注册中心模块 <code>YML</code> 中配置的地址。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9091</span>
 
@@ -693,7 +717,7 @@
       <span class="token comment" spellcheck="true"># 注册到服务中心</span>
       <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>9090/eureka/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-测试接口"><a href="#3-测试接口" class="headerlink" title="3. 测试接口"></a>3. 测试接口</h4><p>在工程中添加一个测试接口，通过 <code>DiscoveryClient</code> 的 <code>getServices()</code> 方法可以获取注册中心中已注册的服务，返回一个集合。</p>
+<h4 id="2-接口测试"><a href="#2-接口测试" class="headerlink" title="2. 接口测试"></a>2. 接口测试</h4><p>在工程中添加一个测试接口，通过 <code>DiscoveryClient</code> 的 <code>getServices()</code> 方法可以获取注册中心中已注册的服务，返回一个集合。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>cloud<span class="token punctuation">.</span>client<span class="token punctuation">.</span>discovery<span class="token punctuation">.</span>DiscoveryClient<span class="token punctuation">;</span>
 
 <span class="token annotation punctuation">@RestController</span>
@@ -709,7 +733,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-注册服务"><a href="#4-注册服务" class="headerlink" title="4. 注册服务"></a>4. 注册服务</h4><p>在工程启动类添加 <code>@EnableDiscoveryClient</code> 注解激活 <code>Eureka</code> 中的 <code>DiscoveryClient</code> 实现。</p>
+<h4 id="3-注册服务"><a href="#3-注册服务" class="headerlink" title="3. 注册服务"></a>3. 注册服务</h4><p>在工程启动类添加 <code>@EnableDiscoveryClient</code> 注解激活 <code>Eureka</code> 中的 <code>DiscoveryClient</code> 实现。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableDiscoveryClient</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EurekaClientApplication</span> <span class="token punctuation">{</span>
@@ -722,9 +746,8 @@
 <p>完成上述准备工作之后启动 <code>register-server</code> 与 <code>register-client</code> 两个工程，浏览器访问服务中心地址（<code>http://localhost:9090</code>）即可查看 <code>Eureka</code> 管理面板。</p>
 <p>通过管理面板可以看到 <code>client-1</code> 已完成注册操作。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/cloud/1.png"></p>
 <p>通过 <code>Postman</code> 等工具请求上述的 <code>getServices</code> 接口，即可获取当前服务中心已注册的服务节点名称，这里服务名取的是项目 <code>YML</code> 配置中的 <code>application name</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/cloud/4.png"></p>
-<h3 id="三、服务消费"><a href="#三、服务消费" class="headerlink" title="三、服务消费"></a>三、服务消费</h3><p>在上面的示例中介绍了如何实现服务注册，但是当存在多个服务时，不同服务之间又该如何实现通讯呢？</p>
-<p>下面将在之前的示例中进一步介绍如何实现服务通讯。</p>
-<h4 id="1-POM依赖-2"><a href="#1-POM依赖-2" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h4><p>新建 <code>basic-consumer</code> 工程，并在 <code>POM</code> 文件中引入下列依赖，这里略去 <code>Spring parent</code> 与 <code>Dalston</code> 。</p>
+<h3 id="三、服务通讯"><a href="#三、服务通讯" class="headerlink" title="三、服务通讯"></a>三、服务通讯</h3><p>在上面的示例中介绍了如何实现服务注册，下面则让我们了解在多个服务之间如何实现数据通讯。</p>
+<h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>新建 <code>basic-consumer</code> 工程，并在 <code>POM</code> 文件中引入下列依赖，这里略去 <code>Spring parent</code> 与 <code>Dalston</code> 。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -742,7 +765,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-项目配置-2"><a href="#2-项目配置-2" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>与之前的 <code>register-client</code> 模块类似，在工程的 <code>YML</code> 添加配置将自身注册到服务中心。</p>
+<p>与之前的 <code>register-client</code> 模块类似，在工程的 <code>YML</code> 添加配置将自身注册到服务中心。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9092</span>
 
@@ -756,7 +779,7 @@
       <span class="token comment" spellcheck="true"># 注册到服务中心</span>
       <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>9090/eureka/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务注册"><a href="#3-服务注册" class="headerlink" title="3. 服务注册"></a>3. 服务注册</h4><p>同样需要在工程启动类添加 <code>@EnableDiscoveryClient</code> 注解开启服务发现。</p>
+<h4 id="2-服务注册"><a href="#2-服务注册" class="headerlink" title="2. 服务注册"></a>2. 服务注册</h4><p>同样需要在工程启动类添加 <code>@EnableDiscoveryClient</code> 注解开启服务发现。</p>
 <p>同时在工程中新建 <code>TemplateConfig</code> 配置类并注入 <code>RestTemplate</code> 对象，其可以理解为 <code>Spring</code> 中的网络客户端，用于后续发送网络请求。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableDiscoveryClient</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
@@ -775,7 +798,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-通讯示例"><a href="#4-通讯示例" class="headerlink" title="4. 通讯示例"></a>4. 通讯示例</h4><p>新建通讯测试接口，通过负载均衡客户端 <code>loadBalancerClient</code> 选择服务中心中相应的服务，如本示例选择了之前已经注册的 <code>client-1</code> 服务。</p>
+<h4 id="3-通讯示例"><a href="#3-通讯示例" class="headerlink" title="3. 通讯示例"></a>3. 通讯示例</h4><p>新建通讯测试接口，通过负载均衡客户端 <code>loadBalancerClient</code> 选择服务中心中相应的服务，如本示例选择了之前已经注册的 <code>client-1</code> 服务。</p>
 <p>客户端选择返回的实例中包含了对应服务的基本信息，如服务地址与端口等等，通过获取的信息使用 <code>restTemplate</code> 发送请求。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
 <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api/basic/consumer"</span><span class="token punctuation">)</span>
@@ -808,7 +831,7 @@
 <p>可以看到通过 <code>basic-cosumer</code> 服务（<code>9092</code>）即实现了 <code>register-client</code> 服务中的 <code>getServices</code> 接口服务调用，因此 <code>consumer</code> 通常也作于各服务之间的通讯媒介。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/cloud/2.png"></p>
 <h3 id="四、Feign调用"><a href="#四、Feign调用" class="headerlink" title="四、Feign调用"></a>四、Feign调用</h3><p>在 <code>basic-consumer</code> 模块中介绍了服务之间的相互通讯，但在服务调用时相对较为繁杂，因此 <code>Spring Cloud</code> 中提供了更便捷的 <code>feign</code> 服务调用方式。</p>
 <p><code>Feign</code> 调用通常用于注册服务中心中各服务之间的请求通讯，下面将介绍如何通过 <code>feign</code> 实现服务之间的通讯。</p>
-<h4 id="1-POM依赖-3"><a href="#1-POM依赖-3" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h4><p>新建 <code>feign-consumer</code> 工程并添加下述依赖，同样略去 <code>Spring parent</code> 与 <code>Dalston</code>。</p>
+<h4 id="1-基础配置-1"><a href="#1-基础配置-1" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p>新建 <code>feign-consumer</code> 工程并添加下述依赖，同样略去 <code>Spring parent</code> 与 <code>Dalston</code>。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -829,7 +852,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-项目配置-3"><a href="#2-项目配置-3" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>同样的在 <code>YML</code> 文件中配置服务中心地址实现注册。</p>
+<p>依赖引入后按照之前方式在 <code>YML</code> 文件中配置服务中心地址实现注册。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9094</span>
 
@@ -843,7 +866,7 @@
       <span class="token comment" spellcheck="true"># 注册到服务中心</span>
       <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>9090/eureka/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-服务注册-1"><a href="#3-服务注册-1" class="headerlink" title="3. 服务注册"></a>3. 服务注册</h4><p>在工程启动类上同时添加 <code>@EnableDiscoveryClient</code> 与 <code>@EnableFeignClients</code> 注解开启服务注册与 <code>Feign</code> 服务。</p>
+<h4 id="2-服务注册-1"><a href="#2-服务注册-1" class="headerlink" title="2. 服务注册"></a>2. 服务注册</h4><p>在工程启动类上同时添加 <code>@EnableDiscoveryClient</code> 与 <code>@EnableFeignClients</code> 注解开启服务注册与 <code>Feign</code> 服务。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableFeignClients</span>
 <span class="token annotation punctuation">@EnableDiscoveryClient</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
@@ -854,7 +877,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-消费示例"><a href="#4-消费示例" class="headerlink" title="4. 消费示例"></a>4. 消费示例</h4><p>新建 <code>FeignService</code> 类并在类上添加 <code>@FeignClient</code> 注解用于指定服务节点，<code>@GetMapping</code> 用于指定对应服务的接口地址。</p>
+<h4 id="3-消费示例"><a href="#3-消费示例" class="headerlink" title="3. 消费示例"></a>3. 消费示例</h4><p>新建 <code>FeignService</code> 类并在类上添加 <code>@FeignClient</code> 注解用于指定服务节点，<code>@GetMapping</code> 用于指定对应服务的接口地址。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@FeignClient</span><span class="token punctuation">(</span><span class="token string">"client-1"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">FeignService</span> <span class="token punctuation">{</span>
 
@@ -982,7 +1005,7 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="六、服务网关"><a href="#六、服务网关" class="headerlink" title="六、服务网关"></a>六、服务网关</h3><p>当一个工程存在多个服务节点并需要对外开放服务时，显然最合适的方式就是提供一个统一的出入口，而并非将每个服务单独开放出去，服务网关的则正是为此而生。</p>
 <p>通过网关，无论内部服务数量有多么庞大，对外的服务路径永远只有一个，从而实现更统一的管理。</p>
-<h4 id="1-POM依赖-4"><a href="#1-POM依赖-4" class="headerlink" title="1. POM依赖"></a>1. POM依赖</h4><p>新建 <code>api-gateway</code> 工程，在 <code>Pom</code> 文件中引入下述依赖。</p>
+<h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><p>新建 <code>api-gateway</code> 工程，在 <code>Pom</code> 文件中引入下述依赖。</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -1004,7 +1027,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-项目配置-4"><a href="#2-项目配置-4" class="headerlink" title="2. 项目配置"></a>2. 项目配置</h4><p>同样在项目的 <code>YML</code> 配置文件中将自身注册到服务中心。</p>
+<p>同样在项目的 <code>YML</code> 配置文件中将自身注册到服务中心。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9095</span>
 
@@ -1018,7 +1041,7 @@
       <span class="token comment" spellcheck="true"># 注册自身服务到服务端</span>
       <span class="token key atrule">defaultZone</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>9090/eureka/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-网关配置"><a href="#3-网关配置" class="headerlink" title="3. 网关配置"></a>3. 网关配置</h4><p>在工程的启动类添加 <code>@EnableZuulProxy</code> 注解激活服务网关。</p>
+<h4 id="2-网关配置"><a href="#2-网关配置" class="headerlink" title="2. 网关配置"></a>2. 网关配置</h4><p>在工程的启动类添加 <code>@EnableZuulProxy</code> 注解激活服务网关。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@EnableZuulProxy</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">APIGatewayApplication</span> <span class="token punctuation">{</span>
@@ -1053,7 +1076,7 @@
 
 <p>完成上述项目配置之后，依次启动 <code>register-server(9090)</code>、<code>register-client(9091)</code> 和 <code>api-gateway(9095)</code> 三个工程，在之前的示例中我们在<code>register-client</code> 开放了接口 <code>/api/client/getServices</code> 接口查询当前已注册的服务，其完整的接口访问地址为：<code>http://localhost:9091/api/client/getServices</code>。</p>
 <p>按照上表的中的网关访问规范，现在我们即可通过网关服务实现 <code>client-1</code> 的接口访问，即上述的接口地址可转化为 <code>http://localhost:9095/client-1/api/client/getServices</code>。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/cloud/5.png"></p>
-<h4 id="4-过滤器"><a href="#4-过滤器" class="headerlink" title="4. 过滤器"></a>4. 过滤器</h4><p>既然服务网关实现了统一请求入口，因此通常在网关会搭配过滤器等实现，用于提前拦截非法请求。</p>
+<h4 id="3-过滤器"><a href="#3-过滤器" class="headerlink" title="3. 过滤器"></a>3. 过滤器</h4><p>既然服务网关实现了统一请求入口，因此通常在网关会搭配过滤器等实现，用于提前拦截非法请求。</p>
 <p>网关拦截器实现和以往的拦截器类似，新建 <code>WebFilter</code> 并继承 <code>ZuulFilter</code> 类，重写类中四类方法，各方法的作用参考下表。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1143,7 +1166,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="5-过滤注册"><a href="#5-过滤注册" class="headerlink" title="5. 过滤注册"></a>5. 过滤注册</h4><p>完成上述过滤器定义之后还需要将其注入 <code>Spring</code> 容器之中才可生效。</p>
+<h4 id="4-过滤注册"><a href="#4-过滤注册" class="headerlink" title="4. 过滤注册"></a>4. 过滤注册</h4><p>完成上述过滤器定义之后还需要将其注入 <code>Spring</code> 容器之中才可生效。</p>
 <p>新建配置类 <code>FilterConfig</code> ，并在其中注入 <code>WebFilter</code> 对象。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FilterConfig</span> <span class="token punctuation">{</span>
@@ -1841,7 +1864,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">313.7k</span>
+                <span class="white-color">314.1k</span>
             
             
             
