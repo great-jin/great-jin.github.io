@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java Build对象构建教程, 布袋青年">
+    <meta name="keywords" content="Builder构建者模式介绍, 布袋青年">
     <meta name="description" content="If I cannot overwhelm with my quality, I will overwhelm with my quantity.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java Build对象构建教程 | 布袋青年</title>
+    <title>Builder构建者模式介绍 | 布袋青年</title>
     <link rel="icon" type="image/png" href="/medias/icon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/great-jin/hexo-cdn@v-1.0/libs/awesome/css/all.css">
@@ -375,7 +375,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java Build对象构建教程</h1>
+                    <h1 class="description center-align post-title">Builder构建者模式介绍</h1>
                 </div>
             </div>
         </div>
@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2025-11-08
                 </div>
                 
 
@@ -556,7 +556,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    4 分
                 </div>
                 
 
@@ -571,18 +571,19 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>如果你足够细心的话，可以发现越来越多的类库其对象初始化方式都不再是传统的构造器方式创建，而是通过 <code>build</code> 方式创建。那 <code>build</code> 方式构造对象和基础的构建器初始化对象又有什么区别？在代码中又该如何使用 <code>build</code> 构造器？又应当在什么应用场景下使用呢？</p>
+                <p>如果你足够细心的话，可以发现越来越多的类库其对象初始化方式都不再是传统的构造器方式创建，而是通过 <code>build</code> 方式创建。</p>
+<p>那 <code>build</code> 方式构造对象和基础的构建器初始化对象又有什么区别？在代码中又该如何使用 <code>build</code> 构造器？又应当在什么应用场景下使用呢？</p>
 <blockquote>
 <p>下面就逐一解答上述几个疑问，让我们进入正文吧。</p>
 </blockquote>
-<h3 id="一、示例介绍"><a href="#一、示例介绍" class="headerlink" title="一、示例介绍"></a>一、示例介绍</h3><p>下面以常用的网络请求类库 <code>OkHttp</code> 为例，其 <code>Request</code> 对象创建正是通过 <code>build</code> 方式实现。</p>
+<h3 id="一、实现方式"><a href="#一、实现方式" class="headerlink" title="一、实现方式"></a>一、实现方式</h3><h4 id="1-基础介绍"><a href="#1-基础介绍" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>以常用的网络请求类库 <code>OkHttp</code> 为例，其 <code>Request</code> 对象创建正是通过 <code>build</code> 方式实现。</p>
 <p>如下示例中通过 build 方式创建了一个基本的 <code>post</code> 类型请求对象。</p>
 <pre class="line-numbers language-java"><code class="language-java">Request request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Request<span class="token punctuation">.</span>Builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、配置教程"><a href="#二、配置教程" class="headerlink" title="二、配置教程"></a>二、配置教程</h3><h4 id="1-实现原理"><a href="#1-实现原理" class="headerlink" title="1. 实现原理"></a>1. 实现原理</h4><p><code>build</code> 方式构建的对象的原理十分简单，就是通过内部类实现数据赋值的一个过程。</p>
+<p><code>build</code> 方式构建的对象的原理十分简单，就是通过内部类实现数据赋值的一个过程。</p>
 <p>新建 <code>TestEntity</code> 类用于后续初始化创建，其中 <code>Builder</code> 内部类正是实现 <code>build</code> 方式初始化关键。</p>
 <p><code>TestEntity</code> 类的完整代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestEntity</span> <span class="token punctuation">{</span>
@@ -652,7 +653,7 @@
     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>property2<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、继承场景"><a href="#三、继承场景" class="headerlink" title="三、继承场景"></a>三、继承场景</h3><h4 id="1-父类定义"><a href="#1-父类定义" class="headerlink" title="1. 父类定义"></a>1. 父类定义</h4><p>在上述的示例中是针对单个类而言，而在具体的系统设计中，通常存在类的继承关系，此时则需要对上述模式进行一定的微调。</p>
+<h3 id="二、继承场景"><a href="#二、继承场景" class="headerlink" title="二、继承场景"></a>二、继承场景</h3><h4 id="1-父类定义"><a href="#1-父类定义" class="headerlink" title="1. 父类定义"></a>1. 父类定义</h4><p>在上述的示例中是针对单个类而言，而在具体的系统设计中，通常存在类的继承关系，此时则需要对上述模式进行一定的微调。</p>
 <p>首先以父类 <code>BaseEntity</code> 为例，和之前提到的定义方法一致，为了节省篇幅此处仅定义当个属性。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BaseEntity</span> <span class="token punctuation">{</span>
 
@@ -719,18 +720,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-示例演示"><a href="#3-示例演示" class="headerlink" title="3. 示例演示"></a>3. 示例演示</h4><p>在上一点提到选择不重写父类的 <code>Builder</code> 的内部方法，则下述初始化第一个属性必须为子类成员变量。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">demo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    BaseEntity entity <span class="token operator">=</span> PersonEntity<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token comment" spellcheck="true">// 子类 city 必须第一个定义，后续则可无序</span>
-            <span class="token punctuation">.</span><span class="token function">city</span><span class="token punctuation">(</span><span class="token string">"NewYork"</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">id</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>entity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-覆盖重写"><a href="#4-覆盖重写" class="headerlink" title="4. 覆盖重写"></a>4. 覆盖重写</h4><p>这里同样分享一下另一种定义方式，在父类中需要将 <code>Builder</code> 成员作用域声明为 <code>protected</code>。</p>
+<h4 id="3-覆盖重写"><a href="#3-覆盖重写" class="headerlink" title="3. 覆盖重写"></a>3. 覆盖重写</h4><p>这里同样分享一下另一种定义方式，在父类中需要将 <code>Builder</code> 成员作用域声明为 <code>protected</code>。</p>
 <pre class="line-numbers language-java"><code class="language-java">
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BaseEntity</span> <span class="token punctuation">{</span>
 

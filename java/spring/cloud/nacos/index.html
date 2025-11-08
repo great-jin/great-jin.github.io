@@ -546,14 +546,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-11-07
+                    2025-11-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    2.7k
                 </div>
                 
 
@@ -575,8 +575,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-应用下载"><a href="#1-应用下载" class="headerlink" title="1. 应用下载"></a>1. 应用下载</h4><p>进入 <code>Nacos</code> 下载页面选择对应版本并下载至本地，官网直达：<a target="_blank" rel="noopener" href="https://github.com/alibaba/nacos/releases">Nacos</a>。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/nacos/1.png"></p>
-<h4 id="2-持久化"><a href="#2-持久化" class="headerlink" title="2. 持久化"></a>2. 持久化</h4><p>在正式之前需要修改 <code>Nacos</code> 的相关配置，如服务模式与数据的持久化配置。</p>
+                <p>在之前的文章中介绍了 <code>Eureka</code> 微服务实现方式，今天则聚焦于另一实现方式：<code>Spring Cloud Alibaba</code>。</p>
+<p>其提供了核心组件 <code>Nacos</code> 贯穿于微服务整个声明周期，为不同服务间架起沟通的桥梁，下面就让我们共同了解如何在项目工程中集成使用。</p>
+<h3 id="一、服务部署"><a href="#一、服务部署" class="headerlink" title="一、服务部署"></a>一、服务部署</h3><h4 id="1-应用下载"><a href="#1-应用下载" class="headerlink" title="1. 应用下载"></a>1. 应用下载</h4><p><code>Nacos</code> 作为独立的服务需单独部署，进入 <code>Nacos</code> 官网根据需要选择对应版本，直达：<a target="_blank" rel="noopener" href="https://github.com/alibaba/nacos/releases">Nacos</a>。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/nacos/1.png"></p>
+<h4 id="2-持久化"><a href="#2-持久化" class="headerlink" title="2. 持久化"></a>2. 持久化</h4><p>下载完成后需要修改 <code>Nacos</code> 的相关配置，如服务模式与数据的持久化配置。</p>
 <p>在 <code>MySQL</code> 中新建数据库 <code>nacos</code> ，然后解压上一步下载的文件并运行 <code>/conf/mysql-schema.sql</code> 脚本文件。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/nacos/2.png"></p>
 <p>创建数据库之后修改解压目录下的 <code>/conf/application.properties</code> 文件，找到下图中配置取消注释并替换为你的数据库配置。<br><img src="/album/loading.gif" data-original="/album/article/java/spring/nacos/3.png"></p>
 <h4 id="3-服务部署"><a href="#3-服务部署" class="headerlink" title="3. 服务部署"></a>3. 服务部署</h4><p>完成上述步骤之后即可启动 <code>Nacos</code> 服务，这里以 <code>Linux</code> 为例，进入解压后的 <code>bin</code> 目录，编辑 <code>startup.sh</code> 脚本将默认启动模式设置为单体模式。</p>
