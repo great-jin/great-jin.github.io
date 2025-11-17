@@ -542,21 +542,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-11-01
+                    2025-11-17
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    3 分
                 </div>
                 
 
@@ -573,31 +573,7 @@
             <div id="articleContent">
                 <p><code>Python</code> 近些年异军突起的一大原因就是它有着极其庞大三方库，只有你想不到的没有它做不到的，合理的利用已有的三方库能够大大增加你的工作效率。</p>
 <p>今天就让我们系统性的了解如何在 <code>Python</code> 中实现模块依赖管理。</p>
-<h3 id="一、服务安装"><a href="#一、服务安装" class="headerlink" title="一、服务安装"></a>一、服务安装</h3><h4 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h4><p>在 <code>Windows</code> 环境下 <code>Python</code> 安装极为简单，进入官网后按需下载对应的版本即可，<a target="_blank" rel="noopener" href="https://www.python.org/downloads/">官网直达</a>。<br><img src="/album/loading.gif" data-original="/album/article/python/module/1.png"></p>
-<p>如果上述地址访问较慢，可尝试通过阿里镜像地址进行下载安装。</p>
-<pre class="line-numbers language-http"><code class="language-http"><span class="token header-name keyword">https:</span>//npm.taobao.org/mirrors/python/
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>下载后具体安装步骤比较简单，无脑下一步即可这里就不过多介绍，完成后默认安装路径在：<code>C:\Users\&lt;username&gt;\AppData\Local\Programs\Python</code> 下。</p>
-<h4 id="2-编译安装"><a href="#2-编译安装" class="headerlink" title="2. 编译安装"></a>2. 编译安装</h4><p>在 <code>Linux</code> 环境下安装 <code>Python</code> 则略显复杂，需要从官网下载二进制文件编译安装。</p>
-<p>在具体编译开始前安装相关所需的依赖工具，命令如下：</p>
-<pre class="line-numbers language-bash"><code class="language-bash">yum -y groupinstall <span class="token string">"Development tools"</span>
-yum -y <span class="token function">install</span> zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
-yum <span class="token function">install</span> libffi-devel -y
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>完成后同上在官网中选择所需版本文件，上传至服务器后解压，按照下述步骤执行命名：</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 创建安装目录</span>
-<span class="token function">mkdir</span> /usr/local/python3
-
-<span class="token comment" spellcheck="true"># 进入解压后目录编译</span>
-<span class="token function">cd</span> Python-3.9.0
-./configure --prefix<span class="token operator">=</span>/usr/local/python3
-<span class="token function">make</span> <span class="token operator">&amp;&amp;</span> <span class="token function">make</span> <span class="token function">install</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>完成后便会在 <code>/usr/local/python3</code> 目录下生成编译内容，再次创建软链接后即可。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">ln</span> -s /usr/local/python3/bin/python3 /usr/local/bin/python3
-<span class="token function">ln</span> -s /usr/local/python3/bin/pip3 /usr/local/bin/pip3
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h3 id="二、类库管理"><a href="#二、类库管理" class="headerlink" title="二、类库管理"></a>二、类库管理</h3><p>安装完 <code>Python</code> 环境后即自带 <code>pip</code> 工具，通过其即可实现依赖管理。</p>
+<h3 id="一、类库管理"><a href="#一、类库管理" class="headerlink" title="一、类库管理"></a>一、类库管理</h3><p>安装完 <code>Python</code> 环境后即自带 <code>pip</code> 工具，通过其即可实现依赖管理。</p>
 <h4 id="1-模块查看"><a href="#1-模块查看" class="headerlink" title="1. 模块查看"></a>1. 模块查看</h4><p>通过 <code>list</code> 查看已安装的工具库，使用 <code>show</code> 则可查看指定工具库的信息。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 查看所有依赖</span>
 pip list
@@ -646,7 +622,7 @@ requests==2.28.2
 # 中国科技大学
 <span class="token header-name keyword">https:</span>//pypi.mirrors.ustc.edu.cn/simple/
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、工程管理"><a href="#三、工程管理" class="headerlink" title="三、工程管理"></a>三、工程管理</h3><h4 id="1-依赖文件"><a href="#1-依赖文件" class="headerlink" title="1. 依赖文件"></a>1. 依赖文件</h4><p>如果在克隆别人分享的项目时，你会发现在项目根目录下通常包含 <code>requirements.txt</code>，文件中内容示例如下。</p>
+<h3 id="二、工程管理"><a href="#二、工程管理" class="headerlink" title="二、工程管理"></a>二、工程管理</h3><h4 id="1-依赖文件"><a href="#1-依赖文件" class="headerlink" title="1. 依赖文件"></a>1. 依赖文件</h4><p>如果在克隆别人分享的项目时，你会发现在项目根目录下通常包含 <code>requirements.txt</code>，文件中内容示例如下。</p>
 <p>简而言之，此文件即定义了项目中所依赖的包工具以及版本信息，他人若需启动项目则可一键下载。</p>
 <pre class="line-numbers language-txt"><code class="language-txt">numpy==2.0.2
 packaging==25.0
@@ -1294,7 +1270,7 @@ protobuf==3.20.3
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">314.1k</span>
+                <span class="white-color">315.1k</span>
             
             
             
