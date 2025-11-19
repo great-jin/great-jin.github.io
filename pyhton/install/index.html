@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-11-18
+                    2025-11-19
                 </div>
                 
 
@@ -637,11 +637,18 @@ ldconfig
 <h4 id="2-GCC升级"><a href="#2-GCC升级" class="headerlink" title="2. GCC升级"></a>2. GCC升级</h4><p>在替换 <code>YUM</code> 镜像服务后便可升级 <code>GCC</code> 版本，执行下述命令升级。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 依赖下载</span>
 yum <span class="token function">install</span> -y centos-release-scl
-yum <span class="token function">install</span> -y  devtoolset-11-gcc*
+yum <span class="token function">install</span> -y devtoolset-11
 
 <span class="token comment" spellcheck="true"># 激活 GCC 11</span>
 scl <span class="token function">enable</span> devtoolset-11 <span class="token function">bash</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>安装成功后可通过 <code>version</code> 参数查看版本信息：</p>
+<pre class="line-numbers language-bash"><code class="language-bash">gcc --version
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>同样的，如果需要永久生效则通过下述命令写入系统文件：</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token keyword">echo</span> <span class="token string">"source /opt/rh/devtoolset-11/enable"</span> <span class="token operator">>></span> ~/.bashrc
+<span class="token function">source</span> ~/.bashrc
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="四、Linux环境"><a href="#四、Linux环境" class="headerlink" title="四、Linux环境"></a>四、Linux环境</h3><h4 id="1-服务编译"><a href="#1-服务编译" class="headerlink" title="1. 服务编译"></a>1. 服务编译</h4><p>至此则可开始具体的 <code>Python</code> 编译，在具体编译开始前安装相关所需的依赖工具，命令如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">yum groupinstall -y <span class="token string">"Development tools"</span>
 yum <span class="token function">install</span> -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
