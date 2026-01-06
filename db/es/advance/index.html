@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-10-08
+                    2026-01-06
                 </div>
                 
 
@@ -583,8 +583,9 @@
 <p>在 <code>Elasticsearch</code> 中这个刷新的间隔通过 <code>refresh_interval</code> 参数进行管理，每个索引的刷新时间都是独立的，默认刷新时间为 <code>1s</code>。</p>
 <p>即当用户执行新增时，数据会先行写入内存缓存区中，内存缓冲区中的数据在 <code>1s</code> 内刷新到一个新的 <code>段</code>，并写入磁盘，而这默认 <code>1s</code> 的差额也是 <code>Elasticsearch</code> 被称为近实时搜索引擎一大原因。</p>
 <h4 id="3-倒排索引"><a href="#3-倒排索引" class="headerlink" title="3. 倒排索引"></a>3. 倒排索引</h4><p>在 <code>Elasticsearch</code> 有一个核心概念即倒排索引，也是其搜索性能优秀的一大原因。</p>
-<p>既然有倒排索引那相应也存在正排索引，也是关系型数据库中常见的模式。对于正排索引，即通过唯一标志定位其相应完整的记录。</p>
-<p>而倒排索引则反其道而行，存储的记录内容通过分词等途径拆分为单独的词组，而每个词组都匹配一个或多个数据记录。因此，在倒排索引中可以轻易实现匹配当前条件匹配的所有记录。</p>
+<p>在关系型数据库中常见的为正排索引，即通过唯一标志定位其相应完整的记录。当操作内容搜索时，只能通过全量逐一进行匹配，效率并不能实现最优解。<br><img src="/album/loading.gif" data-original="/album/article/db/es/9.png"></p>
+<p>而倒排索引则反其道而行，存储的记录内容通过分词等途径拆分为单独的词组，而每个词组都匹配一个或多个数据记录，查询时可直接通过词<code>(Term)</code> 直接定位至对应文档，实现查询效率最大化。</p>
+<p>因此，在倒排索引中可以轻易实现匹配当前条件匹配的所有记录。<br><img src="/album/loading.gif" data-original="/album/article/db/es/10.png"></p>
 <h3 id="二、应用场景"><a href="#二、应用场景" class="headerlink" title="二、应用场景"></a>二、应用场景</h3><h4 id="1-集成模式"><a href="#1-集成模式" class="headerlink" title="1. 集成模式"></a>1. 集成模式</h4><p>在实际的开发当中，与常见的 <code>MySQL</code> 的等即写即读不同，<code>Elasticsearch</code> 常采用异步离线写入方式实现集成。</p>
 <p>最为常见的即以 <code>MySQL</code> 作为主数据源存储数据，并通过手动写入或 <code>binlog</code> 的模式异步同步数据至 <code>Elasticsearch</code>。</p>
 <p>基于此模式下，在数据查询模块下，即可利用 <code>Elasticsearch</code> 查询优势最大化提升系统性能。当然，对于实时性要求相对较高的场景，也可采用实时 <code>Elasticsearch</code> 写入的方式。</p>
@@ -1101,7 +1102,7 @@
             <!-- 版权信息. -->
             Copyright&nbsp;
             
-                <span id="year">2021-2025</span>
+                <span id="year">2021-2026</span>
             
             &nbsp;
             <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
@@ -1193,7 +1194,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">316.2k</span>
+                <span class="white-color">316.3k</span>
             
             
             

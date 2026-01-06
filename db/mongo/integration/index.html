@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-06-03
+                    2026-01-06
                 </div>
                 
 
@@ -573,7 +573,7 @@
             <div id="articleContent">
                 <p><code>MongoDB</code> 作为典型的 <code>NoSQL</code> 数据库拥有优秀的横向扩展能力，不拘束于关系型数据库中的表结构，无需调整便可实现结构变更。</p>
 <p>今天就让我们了解下如何在普通 <code>Maven</code> 以及 <code>Spring Boot</code> 工程中集成使用 <code>MongoDB</code>。</p>
-<h3 id="一、Maven集成"><a href="#一、Maven集成" class="headerlink" title="一、Maven集成"></a>一、Maven集成</h3><h4 id="1-依赖管理"><a href="#1-依赖管理" class="headerlink" title="1. 依赖管理"></a>1. 依赖管理</h4><p>在查找依赖时你可能会发现 <code>Mongo</code> 存在两个配置版本 <code>mongo-java-driver</code> 与 <code>mongodb-driver-sync</code>，前者为旧版依赖其包含异步 <code>API</code> 相对复杂，从 <code>MongoDB 4.0+</code> 开始官方建议使用 <code>mongodb-driver-sync</code>。</p>
+<h3 id="一、Maven集成"><a href="#一、Maven集成" class="headerlink" title="一、Maven集成"></a>一、Maven集成</h3><h4 id="1-服务配置"><a href="#1-服务配置" class="headerlink" title="1. 服务配置"></a>1. 服务配置</h4><p>在查找依赖时你可能会发现 <code>Mongo</code> 存在两个配置版本 <code>mongo-java-driver</code> 与 <code>mongodb-driver-sync</code>，前者为旧版依赖其包含异步 <code>API</code> 相对复杂，从 <code>MongoDB 4.0+</code> 开始官方建议使用 <code>mongodb-driver-sync</code>。</p>
 <p>简而言之，如果无兼容历史版本的需要，则优先使用 <code>mongodb-driver-sync</code>，依赖配置如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.mongodb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -581,7 +581,7 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>4.10.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-服务连接"><a href="#2-服务连接" class="headerlink" title="2. 服务连接"></a>2. 服务连接</h4><p>在执行数据访问前，最基础的当然还是创建客户端连接对象，代码如下：</p>
+<p>在执行数据访问前，最基础的当然还是创建客户端连接对象，代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">createClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     String host <span class="token operator">=</span> <span class="token string">"localhost"</span><span class="token punctuation">;</span>
     Integer port <span class="token operator">=</span> <span class="token number">27017</span><span class="token punctuation">;</span>
@@ -609,7 +609,7 @@
     MongoClient client <span class="token operator">=</span> MongoClients<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>settings<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-URI连接"><a href="#3-URI连接" class="headerlink" title="3. URI连接"></a>3. URI连接</h4><p><code>MongoDB</code> 支持多种连接格式，除了上述的连接方式外 <code>MongoDB</code> 同时支持以 <code>URI</code> 方式，其连接格式如下：</p>
+<h4 id="2-URI连接"><a href="#2-URI连接" class="headerlink" title="2. URI连接"></a>2. URI连接</h4><p><code>MongoDB</code> 支持多种连接格式，除了上述的连接方式外 <code>MongoDB</code> 同时支持以 <code>URI</code> 方式，其连接格式如下：</p>
 <pre class="line-numbers language-sql"><code class="language-sql">mongodb:<span class="token comment" spellcheck="true">//&lt;username>:&lt;passsword>@&lt;host>:&lt;port>/&lt;collection></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>需注意一点，当用户名或密码中包含特殊字符时，在配置 <code>uri</code> 时需要替换为对应的转义字符，否则将无法连接。</p>
@@ -736,20 +736,20 @@ MongoClientSettings settings <span class="token operator">=</span> MongoClientSe
     <span class="token keyword">return</span> mongoCollection<span class="token punctuation">.</span><span class="token function">deleteOne</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Document</span><span class="token punctuation">(</span>condition<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getDeletedCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="二、Spring集成"><a href="#二、Spring集成" class="headerlink" title="二、Spring集成"></a>二、Spring集成</h3><h4 id="1-依赖管理-1"><a href="#1-依赖管理-1" class="headerlink" title="1. 依赖管理"></a>1. 依赖管理</h4><p>在 <code>Spring Boot</code> 中依赖就十分简单了，引入对应的 <code>starter</code> 即可，依赖如下：</p>
+<h3 id="二、Spring集成"><a href="#二、Spring集成" class="headerlink" title="二、Spring集成"></a>二、Spring集成</h3><h4 id="1-连接配置"><a href="#1-连接配置" class="headerlink" title="1. 连接配置"></a>1. 连接配置</h4><p>在 <code>Spring Boot</code> 中依赖就十分简单了，引入对应的 <code>starter</code> 即可，依赖如下：</p>
 <pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-mongodb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-连接配置"><a href="#2-连接配置" class="headerlink" title="2. 连接配置"></a>2. 连接配置</h4><p>引入依赖后需在项目中配置 <code>MongoDB</code> 的连接信息，在 <code>application.yml</code> 中添加下述内容。</p>
+<p>引入依赖后需在项目中配置 <code>MongoDB</code> 的连接信息，在 <code>application.yml</code> 中添加下述内容。</p>
 <p>这里采用 <code>URI</code> 方式连接，与之前 <code>Maven</code> 方式集成中提到的类似，如果用户名或密码包含特殊字符转替换为转义字符。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
   <span class="token key atrule">data</span><span class="token punctuation">:</span>
     <span class="token key atrule">mongodb</span><span class="token punctuation">:</span>
       <span class="token key atrule">uri</span><span class="token punctuation">:</span> mongodb<span class="token punctuation">:</span>//root<span class="token punctuation">:</span>123456@localhost<span class="token punctuation">:</span>27017/test_collection<span class="token punctuation">?</span>authSource=admin
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-数据新增-1"><a href="#3-数据新增-1" class="headerlink" title="3. 数据新增"></a>3. 数据新增</h4><p>完成配置后即可开始相应访问交互，与 <code>Maven</code> 中不同的是你可以通过 <code>MongoTemplate</code> 便可轻易的实现与 <code>MongoDB</code> 的相应交互。</p>
+<h4 id="2-数据新增"><a href="#2-数据新增" class="headerlink" title="2. 数据新增"></a>2. 数据新增</h4><p>完成配置后即可开始相应访问交互，与 <code>Maven</code> 中不同的是你可以通过 <code>MongoTemplate</code> 便可轻易的实现与 <code>MongoDB</code> 的相应交互。</p>
 <p>在 <code>MongoDB</code> 中提供了两种新增接口 <code>save()</code> 与 <code>insert()</code>，二者最大的区别前者新增时若数据已存在则会报错失败，而 <code>insert()</code> 方法则会直接覆盖旧数据。</p>
 <p>相应的新增方法实现如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
@@ -772,7 +772,7 @@ MongoClientSettings settings <span class="token operator">=</span> MongoClientSe
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="4-数据查询-1"><a href="#4-数据查询-1" class="headerlink" title="4. 数据查询"></a>4. 数据查询</h4><p>在 <code>MongoDB</code> 中通过 <code>Criteria</code> 与 <code>Query</code> 构建查询条件，常用的查询接口参考下表：</p>
+<h4 id="3-数据查询"><a href="#3-数据查询" class="headerlink" title="3. 数据查询"></a>3. 数据查询</h4><p>在 <code>MongoDB</code> 中通过 <code>Criteria</code> 与 <code>Query</code> 构建查询条件，常用的查询接口参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">方法</td>
@@ -1341,7 +1341,7 @@ MongoClientSettings settings <span class="token operator">=</span> MongoClientSe
             <!-- 版权信息. -->
             Copyright&nbsp;
             
-                <span id="year">2021-2025</span>
+                <span id="year">2021-2026</span>
             
             &nbsp;
             <a href="/about" target="_blank">烽火戏诸诸诸侯</a>
@@ -1433,7 +1433,7 @@ MongoClientSettings settings <span class="token operator">=</span> MongoClientSe
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">316.2k</span>
+                <span class="white-color">316.3k</span>
             
             
             
