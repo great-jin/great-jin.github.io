@@ -542,14 +542,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-10-08
+                    2026-01-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.2k
                 </div>
                 
 
@@ -672,6 +672,21 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若工程中对 <code>Mybatis</code> 配置了工厂实例，需通过 <code>GlobalConfig</code> 显式指定上述定义的配置类才可生效。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> SqlSessionFactory <span class="token function">sqlSessionFactory</span><span class="token punctuation">(</span>DataSource dataSource<span class="token punctuation">,</span>
+                                           BaseMetaObjectHandler baseMetaObjectHandler<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+    MybatisSqlSessionFactoryBean sessionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MybatisSqlSessionFactoryBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 略去其它配置</span>
+
+    <span class="token comment" spellcheck="true">// 注入 MetaObjectHandler</span>
+    GlobalConfig globalConfig <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GlobalConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    globalConfig<span class="token punctuation">.</span><span class="token function">setMetaObjectHandler</span><span class="token punctuation">(</span>baseMetaObjectHandler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sessionFactory<span class="token punctuation">.</span><span class="token function">setGlobalConfig</span><span class="token punctuation">(</span>globalConfig<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> sessionFactory<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>而在使用时则通过 <code>@TableField</code> 注解的 <code>fill</code> 属性指定生效范围，取值参考下表：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1310,7 +1325,7 @@
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">316.3k</span>
+                <span class="white-color">317.1k</span>
             
             
             
