@@ -542,7 +542,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-05-11
+                    2026-01-17
                 </div>
                 
 
@@ -594,7 +594,7 @@
 <p>通过 <code>vi</code> 命令创建文件 <code>start.sh</code> 脚本内容如下所示。注意如果在最后启动命令中没有使用 <code>$(pwd)</code> 而是使用相对路径则启动之后通过 <code>jps</code> 命令查看进程得到的进程名为 <code>-jar</code>，需要通过 <code>jps -l</code> 查看。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span> 
 <span class="token comment" spellcheck="true"># 替换 jar 包名称</span>
-APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
+APP_NAME<span class="token operator">=</span>demo-1.0.0-SNAPSHOT.jar
 
 tpid<span class="token operator">=</span>`ps -ef<span class="token operator">|</span><span class="token function">grep</span> <span class="token variable">$APP_NAME</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">grep</span><span class="token operator">|</span><span class="token function">grep</span> -v <span class="token function">kill</span><span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'{print <span class="token variable">$2</span>}'</span>`
 <span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">${tpid}</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
@@ -621,8 +621,8 @@ tpid<span class="token operator">=</span>`ps -ef<span class="token operator">|</
 <h4 id="3-停止脚本"><a href="#3-停止脚本" class="headerlink" title="3. 停止脚本"></a>3. 停止脚本</h4><p>同理再新建一个停止脚本 <code>stop.sh</code> 文件。</p>
 <p>脚本内容并不复杂，通过 <code>ps</code> 命令查询对应进程号后使用 <code>kill</code> 关闭进程，完整内容如下：</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
-<span class="token comment" spellcheck="true"># 将 spring-test-1.0.0-SNAPSHOT.jar 修改为自己的 jar 包名</span>
-APP_NAME<span class="token operator">=</span>spring-test-1.0.0-SNAPSHOT.jar
+<span class="token comment" spellcheck="true"># 将 demo-1.0.0-SNAPSHOT.jar 修改为自己的 jar 包名</span>
+APP_NAME<span class="token operator">=</span>demo-1.0.0-SNAPSHOT.jar
 
 PID<span class="token operator">=</span><span class="token punctuation">$(</span>ps -ef <span class="token operator">|</span> <span class="token function">grep</span> <span class="token variable">$APP_NAME</span> <span class="token operator">|</span> <span class="token function">grep</span> -v <span class="token function">grep</span> <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'{ print <span class="token variable">$2</span> }'</span><span class="token punctuation">)</span>
 <span class="token keyword">if</span> <span class="token punctuation">[</span> -z <span class="token string">"<span class="token variable">$PID</span>"</span> <span class="token punctuation">]</span>
@@ -659,30 +659,36 @@ jps
 systemctl daemon-reload
 systemctl restart docker
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h4><p>新建 <code>Dockerfile</code> 文件，配置容器镜像的基本信息。</p>
-<p>其中 <code>ADD</code> 为项目 <code>Jar</code> 包指定别名， <code>EXPOSE</code> 为程序向外开放服务的端口。</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">vi</span> Dockerfile
+<h4 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h4><p>准备构建好的 <code>Jar</code> 运行文件，在同级目录下新建如下内容 <code>Dockerfile</code> 文件。</p>
+<p>其中 <code>ADD</code> 为项目 <code>Jar</code> 包指定别名，<code>EXPOSE</code> 为程序向外开放服务的端口。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 文件内容</span>
+FROM eclipse-temurin:8-jre
 
-<span class="token comment" spellcheck="true"># 文件内容</span>
-FROM java:8
 VOLUME /tmp
 ADD demo-1.0.0-SNAPSHOT.jar demo.jar
+
+<span class="token comment" spellcheck="true"># JVM 容器化参数</span>
+ENV JAVA_OPTS<span class="token operator">=</span><span class="token string">"-Xms1G -Xmx2G"</span>
+
+<span class="token comment" spellcheck="true"># 暴露端口</span>
 EXPOSE 9090
-ENTRYPOINT <span class="token punctuation">[</span><span class="token string">"java"</span>,<span class="token string">"-Djava.security.egd=file:/dev/./urandom"</span>,<span class="token string">"-jar"</span>,<span class="token string">"/demo.jar"</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span class="token comment" spellcheck="true"># 启动命令</span>
+ENTRYPOINT <span class="token punctuation">[</span><span class="token string">"java"</span>, <span class="token string">"<span class="token variable">$JAVA_OPTS</span>"</span>, <span class="token string">"-jar"</span>, <span class="token string">"/demo.jar"</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-构建镜像"><a href="#3-构建镜像" class="headerlink" title="3. 构建镜像"></a>3. 构建镜像</h4><p>将程序 <code>Jar</code> 包上传到 <code>Dockerfile</code> 同级目录，通过 <code>build</code> 命令构建镜像。</p>
-<p>这里我指定了镜像名称为 <code>demo</code> ，版本号为：<code>1.0</code>。</p>
+<p>例如这里我指定了镜像名称为 <code>my-test</code>，并设置镜像版本号为：<code>1.0</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 构建镜像</span>
-docker build -t demo:1.0 <span class="token keyword">.</span>
+docker build -t my-test:1.0 <span class="token keyword">.</span>
 
 <span class="token comment" spellcheck="true"># 查看已有镜像</span>
 docker images       
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-服务启动-1"><a href="#4-服务启动-1" class="headerlink" title="4. 服务启动"></a>4. 服务启动</h4><p>完成镜像构建之后通过 <code>run</code> 命令直接运行即可。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">docker run -d \
---name demo \
+--name my-test \
 -p 9090:9090 \
-demo:1.0
+my-test:1.0
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
@@ -1281,7 +1287,7 @@ demo:1.0
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">325.6k</span>
+                <span class="white-color">326.6k</span>
             
             
             
