@@ -546,21 +546,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-01-14
+                    2026-01-17
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    7k
+                    8.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    29 分
+                    35 分
                 </div>
                 
 
@@ -1220,7 +1220,7 @@ REVISION  CHANGE-CAUSE
 <p>同时，其使用与就绪探针和存活探针并无差异，故这里不再介绍，详情可参考官网：<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes">StartupProbe</a>。</p>
 <h3 id="五、Service"><a href="#五、Service" class="headerlink" title="五、Service"></a>五、Service</h3><h4 id="1-服务模式"><a href="#1-服务模式" class="headerlink" title="1. 服务模式"></a>1. 服务模式</h4><p>之前的示例利用 <code>Deployment</code> 启动了多个副本，那对于这多个 <code>Pod</code> 实例 <code>Kubectl</code> 又如何实现流量管理呢？</p>
 <p>答案就是 <code>Service</code>，通过 <code>Service</code> 以及探针 <code>Kubectl</code> 便可实现高精度的流量管理，以更通俗的话来讲，<code>Service</code> 就是 <code>Kubectl</code> 集群内部的 <code>Nginx</code> 管理服务。</p>
-<p>针对不同的服务方式，<code>Service</code> 提供了下述三类资源管理方式：</p>
+<p>针对不同的服务方式，<code>Service</code> 提供了下述三类资源类型，其中 <code>ClusterIP</code> 与 <code>NodePort</code> 后面会通过具体示例进行介绍，而 <code>LoadBalancer</code> 则为利用各大云服务厂商的负载均衡器对外提供服务，这里便不过多阐述。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">类型</td>
@@ -1239,18 +1239,16 @@ REVISION  CHANGE-CAUSE
         <td style="text-align: center;">使用云提供商的负载均衡器向外部暴露服务。</td>
     </tr>
 </table>
-<br/>
 
-<p>其中 <code>ClusterIP</code> 即传统的集群服务模式，在集群内通过虚拟 <code>IP</code> 接收请求并管理流量，需注意分配的虚拟 <code>IP</code> 只能被 <code>Pod / Node</code> 内部访问而无法对外提供服务。</p>
-<p>设想在 <code>Kubernetes</code> 集群中部署了两个系统，而各自系统都实现了多副本实例，若两个系统间存在交互那如何通讯使流量能够均匀分步到每个节点便成了关键。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/5.png"></p>
-<p>在之前的示例中通过 <code>replicas</code> 实现多副本实例部署，其高可用的前提在于 <code>Kubernetes</code> 服务正常。</p>
-<p>倘若 <code>Kubernetes</code> 服务出现宕机，其内部服务不论再多实例都不起作用，因此实际生产环境中 <code>K8S</code> 同样是以多节点集群的形式存在。而 <code>NodePort</code> 即为 <code>K8S</code> 集群中的每个节点 <code>(Node)</code> 上开一个端口以对外提供访问，<code>K8S</code> 会默认分配端口：<code>30000–32767</code>，访问任意 <code>Node IP + NodePort</code> 都能访问服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/6.png"></p>
-<p>而 <code>LoadBalancer</code> 则为利用各大云服务厂商的负载均衡器对外提供服务，这里就不过多阐述。</p>
-<h4 id="2-服务搭建"><a href="#2-服务搭建" class="headerlink" title="2. 服务搭建"></a>2. 服务搭建</h4><p>同样的，让我们以具体的配置进行演示，以 <code>ClusterIP</code> 为例新建 <code>test-svc.yaml</code> 配置文件如下：</p>
+
+<h4 id="2-ClusterIP"><a href="#2-ClusterIP" class="headerlink" title="2. ClusterIP"></a>2. ClusterIP</h4><p><code>ClusterIP</code> 即传统的集群服务模式，在集群内通过分配虚拟 <code>IP</code> 管理流量，注意这个虚拟 <code>IP</code> 只能被 <code>Pod / Node</code> 内部访问而无法对外提供服务。</p>
+<p>让我们来看由具体的场景作为切入点，设想在 <code>Kubernetes</code> 集群中部署了两个系统，而各自系统都实现了多副本实例，那么两个系统间存在交互那如何通讯使流量能够均匀分步到每个节点便成了关键。</p>
+<p>在这类场景中，可以理解 <code>ClusterIP</code> 为集群内部的负载均衡器，其模糊了系统内部运行细节而将其作为一个整体与集群内其它系统实现服务通讯。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/5.png"></p>
+<p>同样的，让我们以来看具体的配置示例，以 <code>ClusterIP</code> 为例新建 <code>test-svc-cluster.yaml</code> 文件如下：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
 <span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
 <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
-  <span class="token key atrule">name</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>svc
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>svc<span class="token punctuation">-</span>cluster
 <span class="token key atrule">spec</span><span class="token punctuation">:</span>
   <span class="token key atrule">type</span><span class="token punctuation">:</span> ClusterIP
   <span class="token key atrule">selector</span><span class="token punctuation">:</span>
@@ -1259,12 +1257,20 @@ REVISION  CHANGE-CAUSE
     <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9090</span>
       <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">9090</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>与之前 <code>Deployment</code> 中的 <code>selector.matchLabels.app</code> 类似，这里的 <code>spec.selector.app</code> 同样用于配置标签，标识哪些 Pod 被当前 <code>Service</code> 所管理。</p>
+<p>其中 <code>kind: Service</code> 指定服务类型为 <code>service</code>，与之前 <code>Deployment</code> 类似这里通过 <code>spec.selector.app</code> 同样用于配置标签，标识哪些 <code>Pod</code> 被当前 <code>Service</code> 所管理。</p>
 <p>而 <code>targetPort</code> 属性用于将 <code>Pod</code> 实例内的端口 <code>port</code> 进行映射暴露。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">配置</td>
         <th style="text-align: center;">描述</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">metadata.name</td>
+        <td style="text-align: center;">指定 Service 名称。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">spec.type</td>
+        <td style="text-align: center;">指定 Service 类型，可选：ClusterIP，NodePort，LoadBalancer。</td>
     </tr>
     <tr>
         <td style="text-align: center;">spec.selector.app</td>
@@ -1291,7 +1297,7 @@ NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span class="token p
 kubernetes   ClusterIP   10.96.0.1        <span class="token operator">&lt;</span>none<span class="token operator">></span>        443/TCP    9d
 test-svc     ClusterIP   10.104.110.236   <span class="token operator">&lt;</span>none<span class="token operator">></span>        9090/TCP   12s
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>同时通过 <code>get endpoints</code> 命令查看可以看到其成功通过 <code>label</code> 关联之前创建的多个 <code>Pod</code> 节点，在 <code>ENDPOINTS</code> 列其对应列举了所创建的 <code>3</code> 个 <code>Pod</code> 实例 <code>IP</code>。</p>
+<p>同时通过 <code>get endpoints</code> 命令查看可以看到其成功通过 <code>label</code> 关联之前创建的多个 <code>Pod</code> 节点，在 <code>ENDPOINTS</code> 所列的服务信息也恰好与所创建的 <code>3</code> 个 <code>Pod</code> 实例 <code>IP</code> 相匹配。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get endpoints</span>
 Warning: v1 Endpoints is deprecated <span class="token keyword">in</span> v1.33+<span class="token punctuation">;</span> use discovery.k8s.io/v1 EndpointSlice
 NAME         ENDPOINTS                                            AGE
@@ -1304,7 +1310,7 @@ test-deployment-6ccd7f9d44-2chzq   1/1     Running   0          47h   10.244.0.2
 test-deployment-6ccd7f9d44-d7sr7   1/1     Running   0          47h   10.244.0.25   minikube   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
 test-deployment-6ccd7f9d44-r8xb7   1/1     Running   0          47h   10.244.0.23   minikube   <span class="token operator">&lt;</span>none<span class="token operator">></span>           <span class="token operator">&lt;</span>none<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>让我们进入 <code>Minikube</code> 请求服务进行验证，可以看到多次请求同一个分配的虚拟集群 <code>IP</code>，<code>Service</code> 仍能成功将流量覆盖到集群中的所有节点。</p>
+<p>让我们进入 <code>Minikube VM</code> 进行验证，多次请求同一个分配的虚拟 <code>IP</code> 可以看到返回了不同节点的 <code>Hostname</code>，说明 <code>Service</code> 成功实现负载均衡将流量覆盖到集群中的所有节点。</p>
 <pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># minikube ssh</span>
 docker@minikube:~$ curl http://10.104.110.236:9090/api/hello
 test-deployment-6ccd7f9d44-2chzq say Hello<span class="token operator">!</span>
@@ -1315,12 +1321,50 @@ test-deployment-6ccd7f9d44-d7sr7 say Hello<span class="token operator">!</span>
 docker@minikube:~$ curl http://10.104.110.236:9090/api/hello
 test-deployment-6ccd7f9d44-r8xb7 say Hello<span class="token operator">!</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-NodePort"><a href="#3-NodePort" class="headerlink" title="3. NodePort"></a>3. NodePort</h4><p>正如上述所说的 <code>ClusterIP</code> 所分配的虚拟 <code>IP</code> 并不提供对外服务能力，但在开发调试中又常存在需临时访问服务的诉求，而 <code>NodePort</code> 正是为了解决这一痛点。</p>
+<p>在刚刚的示例中通过 <code>replicas</code> 多副本实现高性能与高可用，倘若 <code>Kubernetes</code> 服务出现宕机，其内部服务不论再多实例都不起作用，因此实际生产环境中 <code>K8S</code> 同样是以多节点集群的形式存在。</p>
+<p>而 <code>NodePort</code> 即为 <code>K8S</code> 集群中的每个节点 <code>(Node)</code> 上开一个端口以对外提供访问，<code>K8S</code> 会默认分配端口：<code>30000–32767</code>，访问任意 <code>Node IP + NodePort</code> 都能访问服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/6.png"></p>
+<p>老规矩还是来看具体的示例，新建 <code>test-svc-np.yaml</code> 配置如下：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>svc<span class="token punctuation">-</span>np
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> ClusterIP
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>label
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9090</span>
+      <span class="token key atrule">nodePort</span><span class="token punctuation">:</span> <span class="token number">30000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>NodePort</code> 的绝大部分配置与上述 <code>ClusterIP</code> 并无差异，其中 <code>ports.port</code> 指定内网服务端口，而 <code>ports.nodePort</code> 则用于指定对外暴露的端口，需注意这个值可选范围在 <code>30000–32767</code>，若未指定则会随机分配。</p>
+<p>如上述配置中即将内网 <code>9090</code> 服务暴露至 <code>30000</code> 端口，此时便可通过 <code>NodeIP + NodePort</code> 的方式访问服务。</p>
+<p>可以看到此时通过 <code>Node IP</code> 便可访问服务，为临时的服务测试访问提供了通道。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 启动服务</span>
+<span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl apply -f test-svc-np.yaml</span>
+service/test-svc-np configured
+
+<span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get svc</span>
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span class="token punctuation">(</span>S<span class="token punctuation">)</span>          AGE
+kubernetes    ClusterIP   10.96.0.1        <span class="token operator">&lt;</span>none<span class="token operator">></span>        443/TCP          12d
+test-svc-np   NodePort    10.97.183.23     <span class="token operator">&lt;</span>none<span class="token operator">></span>        9090:30000/TCP   2m2s
+
+<span class="token comment" spellcheck="true"># 获取 IP</span>
+<span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># minikube service test-svc-np --url</span>
+http://192.168.49.2:30000
+
+<span class="token comment" spellcheck="true"># 访问服务</span>
+<span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl http://192.168.49.2:30000/api/hello</span>
+test-deployment-6ccd7f9d44-d7sr7 say Hello<span class="token operator">!</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于 <code>Minikube</code> 与真实宿主机仍然存在一层网络隔离，所以上述的请求都是基于 <code>Minikube VM</code> 服务环境下，若在服务测试时需要将端口临时暴露给宿主机，则可通过 <code>kubectl port-forward</code> 命令。</p>
+<p>如下便将集群内部的 <code>9090</code> 端口临时映射暴露至宿主机 <code>9091</code> 端口，但需注意 <code>port-forward</code> 只是调试隧道并不保证负载均衡能力，建议仅可作用临时调试使用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">kubectl port-forward svc/test-svc-np 9091:9090 --address 0.0.0.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="六、Ingress"><a href="#六、Ingress" class="headerlink" title="六、Ingress"></a>六、Ingress</h3><h4 id="1-网关服务"><a href="#1-网关服务" class="headerlink" title="1. 网关服务"></a>1. 网关服务</h4><p>在上述的 <code>Service</code> 中通过 <code>ClusterIP</code> 实现了集群内部的流量管理，那又如何实现与外部的通讯交互？同时，集群内多个服务拥有多个 <code>Service</code> 时又该如何高效的进行管理也成了一大问题。</p>
 <p>而这一切的问题都指向同一个答案，那就是：<code>Ingress</code>。</p>
-<p>若在 <code>minikube</code> 集群下要使用 <code>Ingress</code> 需要先启动 <code>Ingress-Controller</code> 服务。</p>
-<pre class="line-numbers language-bash"><code class="language-bash">minikube addons <span class="token function">enable</span> ingress
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="2-服务示例"><a href="#2-服务示例" class="headerlink" title="2. 服务示例"></a>2. 服务示例</h4><p>新建 <code>test-ingress.yaml</code> 配置文件如下，<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress/">Ingress</a>。</p>
+<p>需要注意的是，<code>Ingress</code> 本身并不提供与集群外部的直接访问功能，而是提供了集群内与外部的路由网关服务。其通过协议配置的机制来解析 <code>URI</code>、主机名称、路径等 <code>Web</code> 等，是统一的 <code>HTTP/HTTPS</code> 流量入口与路由规则层。</p>
+<h4 id="2-配置规则"><a href="#2-配置规则" class="headerlink" title="2. 配置规则"></a>2. 配置规则</h4><p>同样来看具体配置示例，新建 <code>test-ingress.yaml</code> 文件如下：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
 <span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress
 <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
@@ -1335,10 +1379,81 @@ test-deployment-6ccd7f9d44-r8xb7 say Hello<span class="token operator">!</span>
             <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
             <span class="token key atrule">backend</span><span class="token punctuation">:</span>
               <span class="token key atrule">service</span><span class="token punctuation">:</span>
-                <span class="token key atrule">name</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>svc
+                <span class="token key atrule">name</span><span class="token punctuation">:</span> test<span class="token punctuation">-</span>svc<span class="token punctuation">-</span>cluster
                 <span class="token key atrule">port</span><span class="token punctuation">:</span>
                   <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">9090</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Ingress</code> 核心配置项说明如下，若需更详细内容可参阅官网文档：<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/services-networking/ingress/">Ingress</a>。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数</td>
+        <th style="text-align: center;">作用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">metadata.name</td>
+        <td style="text-align: center;">指定 Ingress 名称。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">metadata.annotations</td>
+        <td style="text-align: center;">指定 Ingress 配置指令。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">http.paths.path</td>
+        <td style="text-align: center;">指定网关路由路径。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">http.paths.pathType</td>
+        <td style="text-align: center;">路径配置类型，可选：Exact，Prefix，ImplementationSpecific。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">http.paths.backend.service</td>
+        <td style="text-align: center;">路由所匹配的后端 service 服务。</td>
+    </tr>
+</table>
+</br>
+
+<p>其中 <code>annotations</code> 用于 <code>Ingress</code> 控制器配置行为，参考所选择的不同 <code>Ingress</code> 控制器查询其相应文档了解具体配置，如 <code>minikube</code> 默认使用 <a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/tutorials/nginx_tcp_udp_ingress/">Nginx-Ingress</a> 。</p>
+<p>而 <code>pathType</code> 相对较好理解即路径匹配规则，如最常用的 <code>Exact</code> 与 <code>Prefix</code> 分别代表严格匹配和前缀匹配。</p>
+<p><code>backend</code> 配置项则用于指定当路由规则匹配时的流量转发，如上示例将在匹配 <code>/api/hello</code> 时将流量转发至 <code>test-svc-cluster</code> 的 <code>service</code> 服务。</p>
+<h4 id="3-服务示例-1"><a href="#3-服务示例-1" class="headerlink" title="3. 服务示例"></a>3. 服务示例</h4><p>那么就让我们运行上述的配置示例来查看其效果，注意在 <code>minikube</code> 集群下要使用 <code>Ingress</code> 需要先启动 <code>Ingress-Controller</code> 服务。</p>
+<pre class="line-numbers language-bash"><code class="language-bash">minikube addons <span class="token function">enable</span> ingress
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>通过 <code>apply -f</code> 启动后可以看到服务正常并监听 <code>80</code> 端口。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl apply -f test-ingress.yaml</span>
+<span class="token comment" spellcheck="true"># ingress.extensions/test-ingress created</span>
+
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get ingress</span>
+NAME           CLASS   HOSTS   ADDRESS   PORTS   AGE
+test-ingress   nginx   *                 80      10s
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>正如刚刚提到 <code>Ingress</code> 并不提供服务访问能力而是作为网关路由，所以要访问需要借助 <code>NodePort</code> 实现。</p>
+<p>刚才提到了 <code>minikube</code> 默认使用 <code>Nginx-Ingress</code>，其在对应命名下空间下提供了默认 <code>NodePort</code> 服务 <code>ingress-nginx-controller</code>。</p>
+<p>通过 <code>--url</code> 便可获取其对应的访问地址，其中第一个是 <code>32666</code> 对应 <code>80</code> 端口即 <code>HTTP</code> 服务，第二个相对应的 <code>HTTPS</code> 服务。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get svc -n ingress-nginx</span>
+NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span class="token punctuation">(</span>S<span class="token punctuation">)</span>                      AGE
+ingress-nginx-controller             NodePort    10.106.147.226   <span class="token operator">&lt;</span>none<span class="token operator">></span>        80:32666/TCP,443:30206/TCP   1h
+ingress-nginx-controller-admission   ClusterIP   10.106.174.196   <span class="token operator">&lt;</span>none<span class="token operator">></span>        443/TCP                      1h
+
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># minikube service ingress-nginx-controller -n ingress-nginx --url</span>
+http://192.168.49.2:32666
+http://192.168.49.2:30206
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>获取服务访问信息之后，便可通过此 <code>IP</code> 请求服务，可以看到成功实现负载均衡请求。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl http://192.168.49.2:32666/api/hello</span>
+test-deployment-75ff6944d7-kfjcd say Hello<span class="token operator">!</span>
+
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl http://192.168.49.2:32666/api/hello</span>
+test-deployment-75ff6944d7-zllwl say Hello<span class="token operator">!</span>
+
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># curl http://192.168.49.2:32666/api/hello</span>
+test-deployment-75ff6944d7-vqx95 say Hello<span class="token operator">!</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-优势差异"><a href="#4-优势差异" class="headerlink" title="4. 优势差异"></a>4. 优势差异</h4><p>看到这你或许有个疑问，说到底这不是还是通过 <code>NodePort</code> 访问服务吗？那跟直接 <code>Service</code> 又有什么区别？</p>
+<p>下面让我们以具体的场景进行介绍 <code>Ingress</code> 其核心竞争力到底在哪？</p>
+<p>假设当前集群存在 <code>3</code> 个不同的系统集群 <code>Service-1</code>、<code>Service-2</code> 与 <code>Service-3</code>，通过 <code>NodePort</code> 方式对外提供服务，即存在 <code>9091:30001</code>、<code>9092:30002</code> 与 <code>9093:30003</code>，示意图如下：<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/7.png"></p>
+<p>通过图示可以看到服务器需要对外暴露三个端口，与之相对应防火墙我们也许配置三套规则规则。而在企业环境中服务数量往往及其庞大，那么其管理成本也将陡升。</p>
+<p>那么 <code>Ingress</code> 其优势显而易见，将上述的场景通过 <code>Ingress</code> 改造后图示如下，集群只需对外暴露一个端口即可，提高安全性的同时维护成本也大大降低。</p>
+<p>即便抛开这一切不谈，<code>Ingress</code> 所提供的 <code>SSL/TLS</code> 与域名服务解析等等能力也是 <code>Service</code> 所不具备。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/8.png"></p>
 <h3 id="七、命名空间"><a href="#七、命名空间" class="headerlink" title="七、命名空间"></a>七、命名空间</h3><h4 id="1-基础介绍-2"><a href="#1-基础介绍-2" class="headerlink" title="1. 基础介绍"></a>1. 基础介绍</h4><p>和所有的应用一样，通常在一套集群下我们会部署多个环境服务，因此环境隔壁也在服务部署中也必不可少。</p>
 <p>而在 <code>Kubernetes</code> 中一样提供了命名空间 <code>namespace</code> 用于实现环境隔离。</p>
 <p>默认下所有的操作都在 <code>default</code> 命名空间下，通过 <code>get namespace</code> 可以查看当前所有命名空间。</p>
@@ -1390,7 +1505,7 @@ kubernetes-dashboard   Active   3d7h
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://budai.pages.dev/linux/docker/k8s/">https://budai.pages.dev/linux/docker/k8s/</a>
+                    <a href="https://budai.pages.dev/linux/docker/kubernetes/">https://budai.pages.dev/linux/docker/kubernetes/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1610,7 +1725,7 @@ kubernetes-dashboard   Active   3d7h
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/linux/docker/k8s/">
+                <a href="/linux/docker/kubernetes/">
                     <div class="card-image">
                         
                         <img src="/album/banner/linux/docker/8.png" class="responsive-img" alt="Kubernetes 基础教程">
@@ -1971,7 +2086,7 @@ kubernetes-dashboard   Active   3d7h
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">324.1k</span>
+                <span class="white-color">325.6k</span>
             
             
             
