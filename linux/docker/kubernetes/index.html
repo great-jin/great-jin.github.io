@@ -546,21 +546,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-01-17
+                    2026-01-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8.5k
+                    8.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    35 分
+                    36 分
                 </div>
                 
 
@@ -1321,9 +1321,10 @@ test-deployment-6ccd7f9d44-d7sr7 say Hello<span class="token operator">!</span>
 docker@minikube:~$ curl http://10.104.110.236:9090/api/hello
 test-deployment-6ccd7f9d44-r8xb7 say Hello<span class="token operator">!</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-NodePort"><a href="#3-NodePort" class="headerlink" title="3. NodePort"></a>3. NodePort</h4><p>正如上述所说的 <code>ClusterIP</code> 所分配的虚拟 <code>IP</code> 并不提供对外服务能力，但在开发调试中又常存在需临时访问服务的诉求，而 <code>NodePort</code> 正是为了解决这一痛点。</p>
-<p>在刚刚的示例中通过 <code>replicas</code> 多副本实现高性能与高可用，倘若 <code>Kubernetes</code> 服务出现宕机，其内部服务不论再多实例都不起作用，因此实际生产环境中 <code>K8S</code> 同样是以多节点集群的形式存在。</p>
-<p>而 <code>NodePort</code> 即为 <code>K8S</code> 集群中的每个节点 <code>(Node)</code> 上开一个端口以对外提供访问，<code>K8S</code> 会默认分配端口：<code>30000–32767</code>，访问任意 <code>Node IP + NodePort</code> 都能访问服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/6.png"></p>
+<h4 id="3-NodePort"><a href="#3-NodePort" class="headerlink" title="3. NodePort"></a>3. NodePort</h4><p>正如上述所说的 <code>ClusterIP</code> 所分配的虚拟 <code>IP</code> 并不提供对外服务能力，而服务的对外访问诉求正是通过 <code>NodePort</code> 解决。</p>
+<p>首先让我们来看一下 <code>Node</code> 节点的定义，在之前的示例中基于 <code>replicas</code> 多副本实现了高性能与高可用，但若 <code>Kubernetes</code> 服务自身出现宕机，其内部服务不论再多实例都不起作用。</p>
+<p>因此，实际生产环境中 <code>Kubernetes</code> 同样是以多节点组成的集群的形式存在，而这每个节点称之为 <code>Node</code>。</p>
+<p><code>NodePort</code> 即为 <code>Kubernetes</code> 集群中的每个节点 <code>(Node)</code> 上开一个端口以对外提供访问，<code>K8S</code> 会默认分配端口：<code>30000–32767</code>，访问任意 <code>Node IP + NodePort</code> 都能访问服务。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/6.png"></p>
 <p>老规矩还是来看具体的示例，新建 <code>test-svc-np.yaml</code> 配置如下：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
 <span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
@@ -1361,6 +1362,14 @@ test-deployment-6ccd7f9d44-d7sr7 say Hello<span class="token operator">!</span>
 <p>如下便将集群内部的 <code>9090</code> 端口临时映射暴露至宿主机 <code>9091</code> 端口，但需注意 <code>port-forward</code> 只是调试隧道并不保证负载均衡能力，建议仅可作用临时调试使用。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">kubectl port-forward svc/test-svc-np 9091:9090 --address 0.0.0.0
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="4-LoadBalancer"><a href="#4-LoadBalancer" class="headerlink" title="4. LoadBalancer"></a>4. LoadBalancer</h4><p><code>LoadBalancer</code> 是基于云厂商的向外部暴露服务，生产环境中更多的采用此类方式。</p>
+<p>以刚刚的 <code>NodePort</code> 为例，外部访问需求明确知道节点 <code>IP</code>，流量入口永远被固定到指定节点无法实现负载均衡，同时端口也被限制于 <code>30000-32767</code> 之间，对于 <code>Web</code> 服务而言则不符合 <code>80/443</code> 的使用习惯。</p>
+<p>当启动 <code>LB</code> 服务时则获取其 <code>EXTERNAL-IP</code> 进行资源访问，请求将均匀负载均衡至集群的所有的 <code>Node</code> 上，由于 <code>Minikube</code> 本地集群的原因这里 <code>EXTERNAL-IP</code> 无法正常访问，可通过 <code>tunal</code> 方式实现，详情参考官网：<a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/handbook/accessing/#loadbalancer-access">loadbalancer-access</a>。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get svc</span>
+NAME          TYPE           CLUSTER-IP       EXTERNAL-IP   PORT<span class="token punctuation">(</span>S<span class="token punctuation">)</span>          AGE
+test-svc-lb   LoadBalancer   10.106.96.175    <span class="token operator">&lt;</span>pending<span class="token operator">></span>     9090:32322/TCP   8s
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>简而言之，<code>LoadBalancer</code> 才是生产推荐服务暴露方式，用于实现对外入口与流量调度器。<br><img src="/album/loading.gif" data-original="/album/article/linux/k8s/9.png"></p>
 <h3 id="六、Ingress"><a href="#六、Ingress" class="headerlink" title="六、Ingress"></a>六、Ingress</h3><h4 id="1-网关服务"><a href="#1-网关服务" class="headerlink" title="1. 网关服务"></a>1. 网关服务</h4><p>在上述的 <code>Service</code> 中通过 <code>ClusterIP</code> 实现了集群内部的流量管理，那又如何实现与外部的通讯交互？同时，集群内多个服务拥有多个 <code>Service</code> 时又该如何高效的进行管理也成了一大问题。</p>
 <p>而这一切的问题都指向同一个答案，那就是：<code>Ingress</code>。</p>
 <p>需要注意的是，<code>Ingress</code> 本身并不提供与集群外部的直接访问功能，而是提供了集群内与外部的路由网关服务。其通过协议配置的机制来解析 <code>URI</code>、主机名称、路径等 <code>Web</code> 等，是统一的 <code>HTTP/HTTPS</code> 流量入口与路由规则层。</p>
@@ -2084,7 +2093,7 @@ kubernetes-dashboard   Active   3d7h
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">326.6k</span>
+                <span class="white-color">326.8k</span>
             
             
             
