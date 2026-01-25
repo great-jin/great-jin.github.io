@@ -546,21 +546,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-01-24
+                    2026-01-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    7.1k
+                    7.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    29 分
+                    30 分
                 </div>
                 
 
@@ -967,8 +967,7 @@ test-pod   1/1     Running             1 <span class="token punctuation">(</span
 </table>
 
 
-<h4 id="4-目录挂载"><a href="#4-目录挂载" class="headerlink" title="4. 目录挂载"></a>4. 目录挂载</h4><p>熟悉 <code>Docker</code> 的都知道，容器的每次删除重建并不会保留其中的数据文件，故通常会采用目录挂载的方式实现数据的持久化。</p>
-<p>在 <code>Pod</code> 中也并不例外，每次执行 <code>delete pod</code> 后其容器中的所有内载文件将一并删除无法找回。</p>
+<h4 id="4-目录挂载"><a href="#4-目录挂载" class="headerlink" title="4. 目录挂载"></a>4. 目录挂载</h4><p>在 <code>Pod</code> 服务中，容器的每次删除重建并不会保留已有的数据文件，每次执行 <code>delete pod</code> 后其容器中的所有内载文件将删除且无法找回。</p>
 <p>因此，部署服务时对于重要数据同样需配置目录映射，在 <code>Docker</code> 中若需实现容器与宿主机的目录映射通过 <code>-v</code> 参数便可实现，而在 <code>Pod</code> 中配置方式与其相似。</p>
 <p>还是以刚刚的 <code>test-pod.yaml</code> 文件为例，若需要将宿主机的 <code>/home/data</code> 目录与容器目录 <code>/app/data</code> 相映射，其配置如下：</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
@@ -998,8 +997,8 @@ test-pod   1/1     Running             1 <span class="token punctuation">(</span
 <p>同时，由于我们是基于 <code>Minikube</code> 所以这边需要增加一步操作将宿主机与 <code>Minikube</code> 进行映射：</p>
 <pre class="line-numbers language-bash"><code class="language-bash">minikube <span class="token function">mount</span> <span class="token operator">&lt;</span>宿主机目录<span class="token operator">></span>:<span class="token operator">&lt;</span>Minikube 目录<span class="token operator">></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>通过上述的配置即可实现 <code>Pod</code> 的目录映射，但你也发现的问题所在即强依赖于服务节点，在集群模式下的 <code>Kubernetes</code> 不同节点可能分步在不同服务器上，映射目录并不互通。</p>
-<p>因此对于集群目录映射提供了 <code>PersistentVolumeClaim</code> 持久化配置方式，将数据独立存储管理，如下配置中声明了空间大小为 <code>5GB</code> 的持久化目录。</p>
+<p>通过上述的配置即可实现 <code>Pod</code> 的目录映射，但这种方式强依赖于服务节点，在集群模式下的 <code>Kubernetes</code> 不同节点可能分步在不同服务器上，因此映射目录并不互通，若 <code>Pod</code> 服务位于不同节点映射将失效。</p>
+<p>针对这类场景，<code>Kubernetes</code> 为集群化部署提供了 <code>PersistentVolumeClaim</code> 持久化配置方式，将数据独立存储管理，如下配置中声明了空间大小为 <code>5GB</code> 的持久化目录。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
 <span class="token key atrule">kind</span><span class="token punctuation">:</span> PersistentVolumeClaim
 <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
@@ -1011,7 +1010,16 @@ test-pod   1/1     Running             1 <span class="token punctuation">(</span
     <span class="token key atrule">requests</span><span class="token punctuation">:</span>
       <span class="token key atrule">storage</span><span class="token punctuation">:</span> 5Gi
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>而后同样通过 <code>volumes</code> 与 <code>volumeMounts</code> 即可实现目录映射，此时即便删除 <code>test-pod</code> 节点，数据仍会持久化保存于 <code>my-pvc</code> 当中。</p>
+<p>通过 <code>get pvc</code> 命令便可看到上述配置所定义的文件服务已成功运行。</p>
+<p>需注意 <code>pvc</code> 默认不支持创建时拷贝文件，若需实现对应效果可通过 <code>InitContainer</code> 启动创建一次性 <code>Pod</code> 在启动时手动写入数据至 <code>pvc</code>，此时数据便可一直存在供其它服务使用。</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl apply -f test-pvc.yaml </span>
+persistentvolumeclaim/my-pvc created
+
+<span class="token punctuation">[</span>root@localhost app<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># kubectl get pvc</span>
+NAME     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+my-pvc   Bound    pvc-567c103e-b68f-40d7-931d-e2ed54345e73   5Gi        RWO            standard       <span class="token operator">&lt;</span>unset<span class="token operator">></span>                 2m44s
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>而后同样通过 <code>volumes</code> 与 <code>volumeMounts</code> 即可实现目录映射，此时 <code>Pod</code> 下所声明目录下产生的所有文件内容都将同步拷贝映射至文件服务中，即便删除 <code>test-pod</code> 节点数据仍会持久化保存于 <code>my-pvc</code> 当中。</p>
 <pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
 <span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
 <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
@@ -1622,7 +1630,7 @@ REVISION  CHANGE-CAUSE
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2026-01-17
+                            <i class="far fa-clock fa-fw icon-date"></i>2026-01-15
                         </span>
                         <span class="publish-author">
                             
@@ -1966,7 +1974,7 @@ REVISION  CHANGE-CAUSE
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">328.1k</span>
+                <span class="white-color">328.3k</span>
             
             
             
