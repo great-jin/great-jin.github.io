@@ -827,6 +827,7 @@ test-pod say Hello<span class="token operator">!</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到针对 <code>CPU</code> 与内存的配置提供了 <code>requests</code> 与 <code>limits</code> 两类配置项，参考下表：</p>
 <p>需注意其中 <code>requests</code> 配置的服务时启动预申请资源大小，在达到 <code>requests</code> 设定值后若服务器资源空闲 <code>Pod</code> 会尝试使用更多资源。而 <code>limits</code> 则为服务可用资源上限，达到该阈值将强制触发 <code>Pod</code> 服务重启。</p>
+<p>同时，对于 <code>CPU</code> 与内存在实现效果上略有不同，<code>CPU</code> 限制由 <code>CPU Throttling</code> 管理，当负载到达 <code>limits</code> 值将强制重启。而当内存达到阈值时 <code>Pod</code> 并不一定会立刻重启，而会在集群内可分配内存不足时触发。</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
         <th style="text-align: center;">参数</td>
@@ -843,7 +844,7 @@ test-pod say Hello<span class="token operator">!</span>
 </table>
 </br>
 
-<p>尤为关键的一点资源的配置将会直接影响到 <code>Pod</code> 节点的流量调度，即便以默认的同权重负载均衡下，<code>Kubernetes</code> 则会转而优先将请求等流转到资源占用更低的 <code>Pod</code> 副本实例。</p>
+<p><code>resources</code> 不仅影响 <code>Pod</code> 运行状态，其同时也会影响到 <code>Pod</code> 的流量调度，即便以默认的同权重负载均衡下，<code>Kubernetes</code> 则会转而优先将请求等流转到资源占用更低的 <code>Pod</code> 副本实例。</p>
 <p>另外较为特殊的是 <code>Kubernetes</code> 中 <code>CPU</code> 资源的度量衡不是常用的核心数 <code>(C)</code> 而是以毫核 <code>(M)</code> 形式，其换算公式为 <code>1C = 1000M</code>。原因在于分布式场景下通常单个 <code>Pod</code> 的负载不高，引入更小的度量衡更便于监控。</p>
 <p>在 <code>Kubernetes</code> 中通过 <code>top</code> 命名查看 <code>Pod</code> 负载信息，若在 <code>Minikube</code> 下需先启用 <code>metrics-server</code>。</p>
 <pre class="line-numbers language-bash"><code class="language-bash">minikube addons <span class="token function">enable</span> metrics-server
@@ -863,7 +864,6 @@ test-pod  2m           12Mi
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>那么对于这两个参数在实际应用又该如何选择呢？</p>
 <p>依照官网的建议，对于绝大多数服务型应如 <code>Web</code> 等服务而言配置 <code>requests</code> 即可，而不应设置 <code>limits</code>，避免运行期间触发阈值后的应用重启导致服务不可用。</p>
-<p>以 <code>Java</code> 应用为例，在 <code>OOM</code> 时服务并不是全局瘫痪而是仍可接收轻处理请求，而 <code>limits</code> 则严格遵守一旦触发将重启服务，期间服务将完成不可用，并没有预留足够时间用于排查等等。</p>
 <h4 id="2-重启策略"><a href="#2-重启策略" class="headerlink" title="2. 重启策略"></a>2. 重启策略</h4><p>不同于手动方式的服务部署，<code>Kubernetes</code> 支持监控服务状态并实现异常自启。</p>
 <p>当 <code>Pod</code> 中的容器退出时，<code>Kubernetes</code> 会以指数级回退延迟机制（10 秒、20 秒、40 秒…）重启容器， 上限为 <code>300</code> 秒。当容器顺利执行了 <code>10</code> 分钟，<code>Kubernetes</code> 就会重置该容器的重启延迟计时器。</p>
 <p>对应 <code>Pod</code> 实例的重启策略配置通过 <code>restartPolicy</code> 配置，可选参数如下：</p>
