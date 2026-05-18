@@ -79,17 +79,6 @@
   
   <li class="hide-on-med-and-down nav-item">
     
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
     <a href="/tags" class="waves-effect waves-light">
       
       <i class="fas fa-tags" style="zoom: 0.6;"></i>
@@ -163,6 +152,17 @@
   
   <li class="hide-on-med-and-down nav-item">
     
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
     <a href="/about" class="waves-effect waves-light">
       
       <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
@@ -205,17 +205,6 @@
           <i class="fa-fw fas fa-home"></i>
           
           首页
-        </a>
-        
-            </li>
-            
-      <li class="m-nav-item">
-        
-        <a href="/archives" class="waves-effect waves-light">
-          
-          <i class="fa-fw fas fa-archive"></i>
-          
-          归档
         </a>
         
             </li>
@@ -290,6 +279,17 @@
                   
                 </ul>
               
+            </li>
+            
+      <li class="m-nav-item">
+        
+        <a href="/archives" class="waves-effect waves-light">
+          
+          <i class="fa-fw fas fa-archive"></i>
+          
+          归档
+        </a>
+        
             </li>
             
       <li class="m-nav-item">
@@ -505,21 +505,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2025-08-25
+                    2026-05-18
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.6k
+                    3.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    10 分
+                    13 分
                 </div>
                 
 
@@ -596,9 +596,9 @@ rabbitmq:management
         <span class="token key atrule">username</span><span class="token punctuation">:</span> ibudai
         <span class="token key atrule">password</span><span class="token punctuation">:</span> <span class="token number">123456</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="三、交换模型"><a href="#三、交换模型" class="headerlink" title="三、交换模型"></a>三、交换模型</h3><p>在 <code>RabbitMQ</code> 的交换机中存在多种模型，不同模型有着自己的传输特点，下面分别进行介绍。</p>
+<h3 id="三、数据模式"><a href="#三、数据模式" class="headerlink" title="三、数据模式"></a>三、数据模式</h3><p>在 <code>RabbitMQ</code> 的交换机中存在多种模型，不同模型有着自己的传输特点，下面分别进行介绍。</p>
 <h4 id="1-精准匹配"><a href="#1-精准匹配" class="headerlink" title="1. 精准匹配"></a>1. 精准匹配</h4><p><code>DirectExchange</code> 顾名思义即直接交换，路由键与消息队列之间一一对应。</p>
-<p>下述示例中创建了 <code>topic_logs</code> 交换机并绑定了两个消息队列，代码如下：</p>
+<p>如下示例创建了 <code>direct_exchange</code> 交换机，同时在此交换机上创建了两个消息队列并绑定了相应的 <code>Routing Key</code>，代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RabbitConfig</span> <span class="token punctuation">{</span>
 
@@ -607,7 +607,7 @@ rabbitmq:management
      */</span>
     <span class="token annotation punctuation">@Bean</span>
     <span class="token keyword">public</span> TopicExchange <span class="token function">directExchange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">DirectExchange</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">DirectExchange</span><span class="token punctuation">(</span><span class="token string">"direct_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token annotation punctuation">@Bean</span>
@@ -649,7 +649,7 @@ rabbitmq:management
      */</span>
     <span class="token annotation punctuation">@Bean</span>
     <span class="token keyword">public</span> TopicExchange <span class="token function">topicExchange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TopicExchange</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TopicExchange</span><span class="token punctuation">(</span><span class="token string">"topic_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token comment" spellcheck="true">// 略去其它，同 DirectExchange</span>
@@ -666,7 +666,7 @@ rabbitmq:management
      */</span>
     <span class="token annotation punctuation">@Bean</span>
     <span class="token keyword">public</span> FanoutExchange <span class="token function">fanoutExchange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FanoutExchange</span><span class="token punctuation">(</span><span class="token string">"fanout_logs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FanoutExchange</span><span class="token punctuation">(</span><span class="token string">"fanout_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token annotation punctuation">@Bean</span>
@@ -690,6 +690,49 @@ rabbitmq:management
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="4-后台管理"><a href="#4-后台管理" class="headerlink" title="4. 后台管理"></a>4. 后台管理</h4><p>在大型工程中项目中往往涉及多个交换机以及大量的队列，显然通过上述代码显式逐一定义不易于维护。</p>
+<p>因此，可通过 <code>management</code> 后台管理页面进行可视化配置，更为方便简洁。</p>
+<p>如下图为创建交换机入口，其中 <code>Type</code> 可选项即对应上述的：<code>direct</code>、<code>fanout</code> 和 <code>topic</code> 等。<br><img src="/album/loading.gif" data-original="/album/article/db/mq/4.png"></p>
+<p>相对应的，队列的创建页面入口如下，这里的 <code>Type</code> 可选对应前文提到的 <code>Classic</code> 与 <code>Quorum</code>。<br><img src="/album/loading.gif" data-original="/album/article/db/mq/5.png"></p>
+<p>在创建队列之后，便可为队列绑定 <code>routing key</code>，选择进入相应的队列，在 <code>Binding</code> 项填写。</p>
+<p>在绑定路由键时，通常必填项即 <code>From exchange</code> (绑定的交换机) 和 <code>Routing key</code> (路由键)。<br><img src="/album/loading.gif" data-original="/album/article/db/mq/6.png"></p>
+<h4 id="5-死信队列"><a href="#5-死信队列" class="headerlink" title="5. 死信队列"></a>5. 死信队列</h4><p>死信队列 <code>(Dead Letter Queue, DLQ)</code> 是 <code>RabbitMQ</code> 中处理无法被正常消费的消息的机制。当消息满足特定条件时，将被路由到死信队列中，便于后续排查和处理。</p>
+<p>消息变成死信通常有以下几种情况：</p>
+<ul>
+<li><strong>消息被拒绝</strong>：消费者使用 <code>basicReject</code> 或 <code>basicNack</code> 拒绝消息，且 <code>requeue</code> 参数设置为 <code>false</code>。</li>
+<li><strong>消息过期</strong>：消息设置了过期时间 <code>TTL</code>，在队列中超过指定时间未被消费。</li>
+<li><strong>队列达到最大长度</strong>：队列设置了 <code>x-max-length</code> 参数，当队列满时新消息将变成死信。</li>
+</ul>
+<p>在声明队列时通过 <code>x-dead-letter-exchange</code> 和 <code>x-dead-letter-routing-key</code> 参数指定死信交换机和路由键。</p>
+<p>若通过 <code>management</code> 后台即可在创建队列时通过 <code>Arguments</code> 填写，较为简单这里不再赘述。</p>
+<p>下述则为通过代码为队列配置死信队列。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> Queue <span class="token function">businessQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 指定死信交换机</span>
+    args<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-exchange"</span><span class="token punctuation">,</span> <span class="token string">"dead_letter_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 指定死信路由键（可选）</span>
+    args<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-routing-key"</span><span class="token punctuation">,</span> <span class="token string">"dead_letter_routing_key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Queue</span><span class="token punctuation">(</span><span class="token string">"business_queue"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> DirectExchange <span class="token function">deadLetterExchange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">DirectExchange</span><span class="token punctuation">(</span><span class="token string">"dead_letter_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> Queue <span class="token function">deadLetterQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Queue</span><span class="token punctuation">(</span><span class="token string">"dead_letter_queue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Bean</span>
+<span class="token keyword">public</span> Binding <span class="token function">deadLetterBinding</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> BindingBuilder<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token function">deadLetterQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token function">deadLetterExchange</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string">"dead_letter_routing_key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="四、服务收发"><a href="#四、服务收发" class="headerlink" title="四、服务收发"></a>四、服务收发</h3><h4 id="1-消息发送"><a href="#1-消息发送" class="headerlink" title="1. 消息发送"></a>1. 消息发送</h4><p>在发送消息时，通过 <code>RabbitTemplate</code> 实例的 <code>convertAndSend(exchange, routingKey, message) </code> 方法，入参分别代表：交换机、路由 <code>KEY</code> 与需发送的消息。</p>
 <p>传输的消息数据对象默认为字符串，对于复杂对象通常使用 <code>Jackson</code> 或 <code>Gson</code> 等类库序列化后传输。</p>
 <p>在 <code>FanoutExchange</code> 传输模式下则不指定 <code>routingKey</code>，表示发送消息至所有绑定的消息队列。</p>
@@ -699,25 +742,26 @@ rabbitmq:management
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token keyword">private</span> RabbitTemplate rabbitTemplate<span class="token punctuation">;</span>
 
+
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendMessage1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         String message <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// 精准匹配</span>
-        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"direct_exchange"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendMessage2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         String message <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// 模糊匹配</span>
-        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.*"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_exchange"</span><span class="token punctuation">,</span> <span class="token string">"log.*"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sendMessage3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         String message <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
         <span class="token comment" spellcheck="true">// 全局广播</span>
-        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"fanout_logs"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        rabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"fanout_exchange"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-消息消费"><a href="#2-消息消费" class="headerlink" title="2. 消息消费"></a>2. 消息消费</h4><p>对于数据的消费同样十分简单，通过 <code>@RabbitListener</code> 注解即可，其中 <code>queues</code> 参数即对应的消息队列名称。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TopicConsumer</span> <span class="token punctuation">{</span>
@@ -751,7 +795,7 @@ rabbitmq:management
     <span class="token key atrule">virtual-host</span><span class="token punctuation">:</span> /
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完成后通过 <code>ConnectionFactory</code> 创建连接工厂实例，其中虚拟主机 <code>(VirtualHost)</code> 是 <code>RabbitMQ</code> 提供的一种逻辑隔离机制，相当于一个命名空间，用来隔离不同的连接、交换机、队列、用户权限等。</p>
-<p>定义 <code>ConnectionFactory</code> 后便可注入到 <code>RabbitTemplate</code> 实例之中。</p>
+<p>定义 <code>ConnectionFactory</code> 后便可注入到 <code>RabbitTemplate</code> 实例，如下示例便定义了两个不同的 <code>MQ</code> 实例。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RabbitConfig</span> <span class="token punctuation">{</span>
 
@@ -804,14 +848,22 @@ rabbitmq:management
 
 
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        primaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> <span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        primaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span>
+            <span class="token string">"direct_exchange"</span><span class="token punctuation">,</span> 
+            <span class="token string">"log.info"</span><span class="token punctuation">,</span> 
+            <span class="token string">"hello world"</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        secondaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span><span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token string">"log.info"</span><span class="token punctuation">,</span> <span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        secondaryRabbitTemplate<span class="token punctuation">.</span><span class="token function">convertAndSend</span><span class="token punctuation">(</span>
+            <span class="token string">"direct_exchange"</span><span class="token punctuation">,</span> 
+            <span class="token string">"log.info"</span><span class="token punctuation">,</span>
+            <span class="token string">"hello world"</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-消费实例"><a href="#2-消费实例" class="headerlink" title="2. 消费实例"></a>2. 消费实例</h4><p>同样的，在创建了多个连接实例后相应的也需要创建对应的消息接收工厂。</p>
-<p>在之前 <code>@RabbitListener</code> 注解接收消息示例中，通过 <code>queues</code> 指定消息队列。而在多连接实例下，则可通过 <code>containerFactory</code> 配置对应的服务实例。</p>
+<p>在之前 <code>@RabbitListener</code> 注解接收消息示例中我们通过 <code>queues</code> 指定消息队列，而在多连接实例下，则可通过 <code>containerFactory</code> 配置多个不同的服务实例。</p>
 <p>完成的配置示例如下，其中 <code>ConnectionFactory</code> 即上述的连接服务实例。</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RabbitConfig</span> <span class="token punctuation">{</span>
@@ -846,6 +898,52 @@ rabbitmq:management
     </tr>
 </table>
 </br>
+
+<p>除了 <code>AcknowledgeMode</code> 之外，<code>SimpleRabbitListenerContainerFactory</code> 还支持以下常用监听实例参数：</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">参数名</th>
+        <th style="text-align: center;">类型</th>
+        <th style="text-align: center;">默认值</th>
+        <th style="text-align: center;">描述</th>
+    </tr>
+    <tr>
+        <td style="text-align: center;">prefetchCount</td>
+        <td style="text-align: center;">int</td>
+        <td style="text-align: center;">250</td>
+        <td style="text-align: center;">预取消息数量，控制消费者一次拉取的消息条数</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">concurrentConsumers</td>
+        <td style="text-align: center;">int</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">初始并发消费者数量</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">maxConcurrentConsumers</td>
+        <td style="text-align: center;">int</td>
+        <td style="text-align: center;">-</td>
+        <td style="text-align: center;">最大并发消费者数量，需配合 concurrentConsumers 使用</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">transactionSize</td>
+        <td style="text-align: center;">int</td>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">事务大小，批量确认消息数量</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">receiveTimeout</td>
+        <td style="text-align: center;">long</td>
+        <td style="text-align: center;">1000</td>
+        <td style="text-align: center;">接收超时时间（毫秒）</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">shutdownTimeout</td>
+        <td style="text-align: center;">long</td>
+        <td style="text-align: center;">5000</td>
+        <td style="text-align: center;">关闭超时时间（毫秒）</td>
+    </tr>
+</table>
 
 <p>在定义实例之后，即可通过 <code>containerFactory</code> 属性进行指定，完整代码如下：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RabbitListener</span><span class="token punctuation">(</span>queues <span class="token operator">=</span> <span class="token string">"infoQueue"</span><span class="token punctuation">,</span> containerFactory <span class="token operator">=</span> <span class="token string">"primaryContainerFactory"</span><span class="token punctuation">)</span>
@@ -1451,7 +1549,7 @@ rabbitmq:management
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">328.4k</span>
+                <span class="white-color">329.5k</span>
             
             
             
