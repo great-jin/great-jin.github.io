@@ -505,21 +505,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-03-08
+                    2026-05-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6.4k
+                    6.9k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    27 分
+                    29 分
                 </div>
                 
 
@@ -585,19 +585,6 @@
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>server</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servers</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>完成上述定义后，当在项目中通过 <code>distributionManagement</code> 配置私服仓库时，即可通过 <code>id</code> 关联读取上述 <code>server</code> 定义的用户。</p>
-<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>distributionManagement</span><span class="token punctuation">></span></span>    
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>user_1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://127.0.0.1:8080/repository/maven-releases<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span> 
- 
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>snapshotRepository</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>user_2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>  
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://127.0.0.1:8080/repository/maven-snapshots<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>snapshotRepository</span><span class="token punctuation">></span></span>  
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>distributionManagement</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-线上私服"><a href="#4-线上私服" class="headerlink" title="4. 线上私服"></a>4. 线上私服</h4><p>在 <code>setting.xml</code> 文件中通过 <code>profiles</code> 标签组定义配置，如依赖、插件与仓库等。同理 <code>profiles</code> 包含多个 <code>profile</code>，每个 <code>profile</code> 包含下述属性：</p>
 <table style="display: table; margin-left: auto; margin-right: auto;">
     <tr>
@@ -1230,6 +1217,65 @@ mvn clean <span class="token function">install</span> -Denforcer.skip
 
 mvn clean <span class="token function">install</span> -Denforcer.skip<span class="token operator">=</span>true
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="八、依赖发布"><a href="#八、依赖发布" class="headerlink" title="八、依赖发布"></a>八、依赖发布</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h4><p><code>Maven</code> 的另一强大之处在于可以轻易实现依赖分发，即可以将你的依赖库打包供其他项目或其它人使用。</p>
+<p>在发布依赖到私服之前，需要在 <code>settings.xml</code> 文件中配置私服的账号密码，用于发布时的身份验证。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>servers</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>server</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus-releases<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>username</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>username</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>admin123<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>server</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>server</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus-snapshots<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>username</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>username</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>admin123<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>server</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>servers</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时在项目工程的 <code>pom.xml</code> 文件中配置 <code>distributionManagement</code>，指定发布的目标仓库地址。</p>
+<p>注意 <code>distributionManagement</code> 中的 <code>id</code> 必须与上述 <code>settings.xml</code> 中 <code>server</code> 声明的 <code>id</code> 保持一致，否则无法通过身份验证。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>distributionManagement</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus-releases<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://127.0.0.1:8080/repository/maven-releases<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>snapshotRepository</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus-snapshots<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://127.0.0.1:8080/repository/maven-snapshots<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>snapshotRepository</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>distributionManagement</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-版本选择"><a href="#2-版本选择" class="headerlink" title="2. 版本选择"></a>2. 版本选择</h4><p>在依赖版本号的定义中，通常遵循下述规范：</p>
+<ul>
+<li><strong>Release</strong> 版本号格式：<code>主版本.次版本.修订号</code>（如 <code>1.0.0</code>）;</li>
+<li><strong>Snapshot</strong> 版本号格式：<code>主版本.次版本.修订号-SNAPSHOT</code>（如 <code>1.0.0-SNAPSHOT</code>）;</li>
+</ul>
+<p>在 <code>Maven</code> 中，依赖版本的发布分为 <code>Release</code> 和 <code>Snapshot</code> 两种类型，它们有着不同的使用场景和特性。</p>
+<table style="display: table; margin-left: auto; margin-right: auto;">
+    <tr>
+        <th style="text-align: center;">版本</td>
+        <th style="text-align: center;">说明</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Snapshot</td>
+        <td style="text-align: center;">快照仓库，常用于开发环境与内部模块等频繁更新的依赖。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Release</td>
+        <td style="text-align: center;">正式仓库，常用于生产环境、正式发布与对外提供的依赖。</td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">Public</td>
+        <td style="text-align: center;">虚拟仓库，聚合汇总了 Snapshot 与 Release 中的依赖。</td>
+    </tr>
+</table>
+</br>
+
+<p>而在控制如何推送依赖到具体的仓库也十分简单，<code>Maven</code> 将根据依赖所声明的 <code>version</code> 信息自动识别。</p>
+<p>当版本号信息中不带后缀时默认为正式版本，如 <code>1.0.0</code> 会自动推送至 <code>maven-releases</code> 仓库目录下。若需要推送至 添加 <code>maven-snapshots</code> 则需要添加固定后缀<code>-SNAPSHOT</code>，如 <code>1.0.0-SNAPSHOT</code>。</p>
+<p>如下配置执行 <code>mvn clean deploy</code> 后便会将依赖推送至  <code>maven-snapshots</code> 仓库。依赖发布成功后，其他项目即可通过 <code>groupId</code>、<code>artifactId</code> 和 <code>version</code> 引用该依赖。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.0.0-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -1827,7 +1873,7 @@ mvn clean <span class="token function">install</span> -Denforcer.skip<span class
                 &nbsp;|&nbsp;
                 <i class="fas fa-chart-area"></i>&nbsp;
                 站点总字数:&nbsp;
-                <span class="white-color">329.5k</span>
+                <span class="white-color">331.3k</span>
             
             
             
